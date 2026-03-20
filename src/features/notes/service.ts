@@ -15,8 +15,24 @@ export async function listOwnerNotes(ownerId: string) {
   return notesRepo.listForOwner(ownerId);
 }
 
+export async function listPublishedNotes() {
+  const notes = await notesRepo.listPublished();
+
+  return notes.filter((note): note is typeof note & { publishedAt: Date } => note.publishedAt !== null);
+}
+
 export async function getOwnerNoteForEditor(ownerId: string, id: string) {
   return notesRepo.findByIdForOwner(ownerId, id);
+}
+
+export async function getPublishedNoteBySlug(slug: string) {
+  const note = await notesRepo.findPublishedBySlug(slug);
+
+  if (!note?.publishedAt) {
+    return null;
+  }
+
+  return note;
 }
 
 export async function createDraftNote(ownerId: string, input: NoteDraftInput) {
@@ -50,4 +66,32 @@ export async function updateDraftNote(ownerId: string, id: string, input: NoteDr
     markdown,
     excerpt: createNoteExcerpt(markdown, title)
   });
+}
+
+export async function publishNote(ownerId: string, id: string) {
+  const existingNote = await notesRepo.findByIdForOwner(ownerId, id);
+
+  if (!existingNote) {
+    return null;
+  }
+
+  if (existingNote.isPublished) {
+    return existingNote;
+  }
+
+  return notesRepo.updatePublication(id, true);
+}
+
+export async function unpublishNote(ownerId: string, id: string) {
+  const existingNote = await notesRepo.findByIdForOwner(ownerId, id);
+
+  if (!existingNote) {
+    return null;
+  }
+
+  if (!existingNote.isPublished) {
+    return existingNote;
+  }
+
+  return notesRepo.updatePublication(id, false);
 }

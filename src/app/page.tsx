@@ -1,53 +1,49 @@
 import Link from "next/link";
 
-export default function HomePage() {
+import { listPublishedNotes } from "@/features/notes/service";
+
+export default async function HomePage() {
+  const notes = await listPublishedNotes();
+
   return (
-    <div className="home-grid">
-      <section className="hero-card">
-        <p className="eyebrow">Private capture, selective publication</p>
-        <h1>Minakeep keeps the vault private and the notes intentional.</h1>
+    <div className="feature-layout">
+      <section className="hero-card public-hero">
+        <p className="eyebrow">Published notes</p>
+        <h1>Notes the owner has chosen to share.</h1>
         <p className="lede">
-          Minakeep now ships owner authentication, private draft note authoring with markdown preview, deterministic
-          runtime commands, and the Ralph task queue. Public publishing, link capture, and owner retrieval remain
-          separated into later slices.
+          The public homepage stays limited to notes the owner has explicitly published. Drafts remain private inside
+          the vault until they are promoted onto public routes.
         </p>
-        <div className="summary-row">
-          <div>
-            <strong>Public surface</strong>
-            <span>Published notes homepage and note routes</span>
-          </div>
-          <div>
-            <strong>Private surface</strong>
-            <span>Owner login, notes-first `/app`, and private draft editing</span>
-          </div>
-          <div>
-            <strong>Current mode</strong>
-            <span>Draft authoring ready, publishing still queued</span>
-          </div>
-        </div>
       </section>
-      <aside className="panel-card">
-        <p className="eyebrow">Active fronts</p>
-        <strong>Current feature queue</strong>
-        <ul className="inline-list">
-          <li>Note authoring shipped</li>
-          <li>Public publishing</li>
-          <li>Link capture</li>
-          <li>Tags and search</li>
-        </ul>
-        <p>
-          The public homepage stays honest about the current product state: private drafting is live, while public note
-          publishing is intentionally held for the next task instead of implied early.
-        </p>
+
+      <section className="panel-card">
+        <strong>Published notes</strong>
+        {notes.length === 0 ? (
+          <p>No published notes yet. The public site stays empty until the owner explicitly publishes a note.</p>
+        ) : (
+          <div className="note-list">
+            {notes.map((note) => (
+              <article className="note-list-item" key={note.id}>
+                <div>
+                  <Link className="note-list-link" href={`/notes/${note.slug}`}>
+                    {note.title}
+                  </Link>
+                  <p>{note.excerpt || "Published note"}</p>
+                </div>
+                <div className="note-meta">
+                  <span>Published</span>
+                  <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(note.publishedAt)}</span>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
         <div className="button-row">
           <Link className="primary-button" href="/login">
             Owner login
           </Link>
-          <Link className="ghost-button" href="/notes/bootstrap-foundation">
-            Example note route
-          </Link>
         </div>
-      </aside>
+      </section>
     </div>
   );
 }

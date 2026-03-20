@@ -16,3 +16,16 @@ export type NoteEditorRecord = NoteSummary & {
   slug: string;
   markdown: string;
 };
+
+export type PublishedNoteSummary = {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  publishedAt: Date;
+  updatedAt: Date;
+};
+
+export type PublishedNoteRecord = PublishedNoteSummary & {
+  markdown: string;
+};

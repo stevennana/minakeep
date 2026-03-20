@@ -8,7 +8,7 @@ export default async function NewNotePage() {
   return (
     <NoteEditor
       action={createNoteAction}
-      formDescription="Create a private draft note with a title and markdown body. Publishing remains a separate follow-on slice."
+      formDescription="Create a private draft note with a title and markdown body. It stays private until you explicitly publish it from the edit view."
       formTitle="New draft note"
       initialMarkdown=""
       initialTitle=""

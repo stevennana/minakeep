@@ -1,0 +1,714 @@
+/Users/stevenna/WebstormProjects/minakeep/scripts/ralph/generated/current-evaluator-prompt.txt
+OpenAI Codex v0.116.0 (research preview)
+--------
+workdir: /Users/stevenna/WebstormProjects/minakeep
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: high
+reasoning summaries: none
+session id: 019d0a57-68ca-7460-8e9a-bcc27630d06f
+--------
+user
+You are the promotion evaluator for a repository-local Ralph loop.
+
+Read these documents before deciding:
+- AGENTS.md
+- ARCHITECTURE.md
+- docs/FRONTEND.md
+- docs/product-specs/public-note-publishing.md
+- docs/exec-plans/active/012-public-note-publishing.md
+
+Current task id: 012-public-note-publishing
+Current task title: Public note publishing
+
+Objective:
+Let the owner publish or unpublish a note and expose published notes on the public homepage and note pages.
+
+Scope:
+- The owner can publish or unpublish a note explicitly.
+- The public homepage lists only published notes.
+- Each published note is reachable by a public slug-based route.
+- Unpublished notes are never exposed on public routes.
+
+Out of scope:
+- unrelated feature fronts
+- future product expansion beyond this feature
+
+Exit criteria:
+1. Publishing a note makes it visible on the public homepage.
+2. Anonymous readers can open a published note page by slug.
+3. Unpublishing removes the note from public routes.
+4. `npm run verify` passes.
+
+Evaluator notes:
+Promote only when the public note publishing behavior works end-to-end in substance.
+
+Deterministic check summary:
+{
+  "checked_at": "2026-03-20T08:23:13.792Z",
+  "task_id": "012-public-note-publishing",
+  "commands": [
+    {
+      "command": "npm run verify",
+      "ok": true,
+      "output": "\n> minakeep@0.1.0 verify\n> npm run lint && npm run db:prepare && npm run typecheck && npm run build && npm run test && npm run start:smoke\n\n\n> minakeep@0.1.0 lint\n> eslint . --max-warnings=0\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 43ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 typecheck\n> tsc --noEmit\n\n\n> minakeep@0.1.0 build\n> next build\n\n▲ Next.js 16.2.0 (Turbopack)\n- Environments: .env\n\n  Creating an optimized production build ...\n✓ Compiled successfully in 1017ms\n  Running TypeScript ...\n  Finished TypeScript in 1056ms ...\n  Collecting page data using 10 workers ...\n  Generating static pages using 10 workers (0/10) ...\n  Generating static pages using 10 workers (2/10) \r\n  Generating static pages using 10 workers (4/10) \r\n  Generating static pages using 10 workers (7/10) \r\n✓ Generating static pages using 10 workers (10/10) in 159ms\n  Finalizing page optimization ...\n\nRoute (app)\n┌ ○ /\n├ ○ /_not-found\n├ ƒ /api/auth/[...nextauth]\n├ ƒ /api/health\n├ ƒ /app\n├ ○ /app/links\n├ ƒ /app/notes/[id]/edit\n├ ƒ /app/notes/new\n├ ○ /app/search\n├ ○ /app/tags\n├ ƒ /login\n└ ƒ /notes/[slug]\n\n\nƒ Proxy (Middleware)\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n\n> minakeep@0.1.0 test\n> npm run test:unit && npm run test:e2e\n\n\n> minakeep@0.1.0 test:unit\n> node --import tsx --test tests/unit/**/*.test.ts\n\n✔ renderMarkdownToHtml preserves common note-writing structures while escaping unsafe HTML (0.709792ms)\n✔ createNoteExcerpt turns markdown into readable summary text (0.16925ms)\n✔ createNoteSlug normalizes title content (0.385375ms)\n✔ createNoteSlug falls back when the title has no slug-safe characters (0.053666ms)\n✔ createUniqueNoteSlug increments an existing base slug (0.057208ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 99.120333\n\n> minakeep@0.1.0 test:e2e\n> npm run db:prepare && playwright test\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 36ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\nRunning 3 tests using 1 worker\n\n  ✓  1 tests/e2e/home.spec.ts:8:5 › public homepage exposes the published notes surface (484ms)\n  ✓  2 tests/e2e/home.spec.ts:16:5 › owner can sign in, create a draft note, edit it, and reopen it with rendered preview (1.5s)\n  ✓  3 tests/e2e/home.spec.ts:73:5 › owner can publish and unpublish a note across the public routes (1.5s)\n\n  3 passed (5.2s)\n\n> minakeep@0.1.0 start:smoke\n> node scripts/start-smoke.mjs\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 43ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 start\n> next start --hostname 127.0.0.1 --port 3200\n\n▲ Next.js 16.2.0\n- Local:         http://127.0.0.1:3200\n- Network:       http://127.0.0.1:3200\n✓ Ready in 61ms\n",
+      "preflight": {
+        "command": "ensure-e2e-port-free.sh 3100",
+        "error": "",
+        "ok": true,
+        "output": "port-cleanup: 127.0.0.1:3100 already free\n"
+      },
+      "next_server_log_path": "/Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260320T171025-012-public-note-publishing/npm-run-verify-next-server.log"
+    }
+  ],
+  "missing_files": [],
+  "pass": true
+}
+
+Worker handoff summary from the last run:
+Implemented task `012-public-note-publishing`.
+
+The owner can now publish and unpublish from the existing note edit flow, wired through [src/app/app/notes/actions.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/app/notes/actions.ts) and surfaced in [src/features/notes/components/note-editor.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/components/note-editor.tsx). The public homepage now reads only published notes from [src/app/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/page.tsx), and published slug routes render real note content in [src/app/notes/[slug]/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/notes/[slug]/page.tsx). Unpublished notes are excluded from both public surfaces.
+
+I updated the task log in [docs/exec-plans/active/012-public-note-publishing.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/012-public-note-publishing.md), extended the end-to-end coverage in [tests/e2e/home.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/home.spec.ts), and wrote the operator handoff summary to [state/last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt). `npm run verify` passed, so the exit criteria appear satisfied.
+
+Your job:
+- inspect the repository and current implementation
+- determine whether the current task is actually complete
+- mark `done` only if the exit criteria are satisfied in substance, not just approximately
+- prefer conservative decisions
+- recommend promotion only if the task is truly ready
+
+Return JSON only using the provided schema.
+
+mcp startup: no servers
+Plan update
+  → Read required repository and task documents for task 012
+  • Inspect implementation and tests for public note publishing
+  • Decide promotion readiness against exit criteria and emit JSON
+exec
+/bin/zsh -lc "sed -n '1,260p' ARCHITECTURE.md" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,240p' AGENTS.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# ARCHITECTURE.md
+
+## Goal
+Build Minakeep as an agent-legible codebase with strong boundaries, a short instruction surface, and enough extension seams to support future change without overbuilding v1.
+
+## System Overview
+Minakeep is a web application with:
+- a public site for published notes
+- a private owner area for notes, links, tags, and search
+- a SQLite-backed persistence layer for content and owner identity
+- a deterministic operator path with logged startup and Ralph-loop state tracking
+
+## Architectural Priorities
+- keep the foundation small and agent-legible
+- separate public reading from private authoring clearly
+- keep user-visible feature fronts sliced into small plans
+- make runtime startup and verification deterministic before unattended loop work
+
+## Layered Domain Model
+Use a strict forward-only dependency shape inside each domain:
+ succeeded in 0ms:
+# AGENTS.md
+
+## Purpose
+Minakeep is a self-hosted knowledge vault for private markdown notes and saved links, with selectively published public notes.
+
+This repository is optimized for agent-legible development and a Ralph-style task-promotion loop.
+
+## Read Order
+Before changing code or plans, read these files in order:
+
+1. `ARCHITECTURE.md`
+2. `docs/PRODUCT_SENSE.md`
+3. `docs/design-docs/core-beliefs.md`
+4. `docs/product-specs/index.md`
+5. `docs/FRONTEND.md`
+6. `docs/PLANS.md`
+7. active plans in `docs/exec-plans/active/`
+
+## Scope Guardrails
+### In scope for v1
+exec
+/bin/zsh -lc "sed -n '1,260p' docs/FRONTEND.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# FRONTEND.md
+
+## Goal
+Describe the user-facing structure of Minakeep so an agent can implement the UI without guessing the product model.
+
+## Tech Direction
+- Next.js application
+- TypeScript
+- App Router
+- server-backed data flows where appropriate
+
+## Route Map
+- `/` -> public homepage listing published notes
+- `/notes/[slug]` -> public published-note page
+- `/login` -> owner sign-in
+- `/app` -> private notes-first dashboard shell
+- `/app/notes/new` -> create note
+- `/app/notes/[id]/edit` -> edit note and preview markdown
+- `/app/links` -> private saved-link management
+- `/app/tags` -> shared-tag overview
+exec
+/bin/zsh -lc "sed -n '1,320p' docs/exec-plans/active/012-public-note-publishing.md" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' docs/product-specs/public-note-publishing.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# Public note publishing
+
+```json taskmeta
+{
+  "id": "012-public-note-publishing",
+  "title": "Public note publishing",
+  "order": 12,
+  "status": "active",
+  "next_task_on_success": "013-link-capture",
+  "prompt_docs": [
+    "AGENTS.md",
+    "ARCHITECTURE.md",
+    "docs/FRONTEND.md",
+    "docs/product-specs/public-note-publishing.md"
+  ],
+  "required_commands": [
+    "npm run verify"
+  ],
+  "required_files": [],
+  "human_review_triggers": [
+ succeeded in 0ms:
+# Public note publishing
+
+## Goal
+Let the owner publish or unpublish a note and expose published notes on the public homepage and note pages.
+
+## Trigger / Entry
+The owner opens a note in the private area and chooses to publish it.
+
+## User-Visible Behavior
+- The owner can publish or unpublish a note explicitly.
+- The public homepage lists only published notes.
+- Each published note is reachable by a public slug-based route.
+- Unpublished notes are never exposed on public routes.
+
+## Validation
+- Publishing a note makes it visible on the public homepage.
+- Anonymous readers can open a published note page by slug.
+- Unpublishing removes the note from public routes.
+- `npm run verify` passes.
+Plan update
+  ✓ Read required repository and task documents for task 012
+  → Inspect implementation and tests for public note publishing
+  • Decide promotion readiness against exit criteria and emit JSON
+exec
+/bin/zsh -lc "sed -n '1,220p' src/app/page.tsx" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,240p' src/app/notes/[slug]/page.tsx" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import Link from "next/link";
+
+import { listPublishedNotes } from "@/features/notes/service";
+
+export default async function HomePage() {
+  const notes = await listPublishedNotes();
+
+  return (
+    <div className="feature-layout">
+      <section className="hero-card public-hero">
+        <p className="eyebrow">Published notes</p>
+        <h1>Notes the owner has chosen to share.</h1>
+        <p className="lede">
+          The public homepage stays limited to notes the owner has explicitly published. Drafts remain private inside
+          the vault until they are promoted onto public routes.
+        </p>
+      </section>
+
+      <section className="panel-card">
+        <strong>Published notes</strong>
+ exited 1 in 0ms:
+zsh:1: no matches found: src/app/notes/[slug]/page.tsx
+exec
+/bin/zsh -lc "rg -n \"published|publish|unpublish|slug\" src tests prisma -g '"'!node_modules'"'" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+prisma/schema.prisma:24:  slug        String   @unique
+prisma/schema.prisma:28:  publishedAt DateTime?
+tests/e2e/home.spec.ts:8:test("public homepage exposes the published notes surface", async ({ page }) => {
+tests/e2e/home.spec.ts:13:  await expect(page.getByText("No published notes yet.")).toBeVisible();
+tests/e2e/home.spec.ts:73:test("owner can publish and unpublish a note across the public routes", async ({ page }) => {
+tests/e2e/home.spec.ts:80:This note should appear on the public site when published.`;
+tests/e2e/home.spec.ts:81:  const slug = `public-note-${uniqueId}`;
+tests/e2e/home.spec.ts:102:  await expect(page).toHaveURL(/\/app\/notes\/.+\/edit\?published=1$/);
+tests/e2e/home.spec.ts:103:  await expect(page.getByText("Note published.")).toBeVisible();
+tests/e2e/home.spec.ts:110:  await expect(page).toHaveURL(new RegExp(`/notes/${slug}$`));
+tests/e2e/home.spec.ts:116:  await page.getByRole("button", { name: "Unpublish note" }).click();
+tests/e2e/home.spec.ts:118:  await expect(page).toHaveURL(/\/app\/notes\/.+\/edit\?unpublished=1$/);
+tests/e2e/home.spec.ts:119:  await expect(page.getByText("Note unpublished.")).toBeVisible();
+tests/e2e/home.spec.ts:124:  const response = await page.goto(`/notes/${slug}`);
+tests/unit/note-slug.test.ts:4:import { createNoteSlug, createUniqueNoteSlug } from "../../src/features/notes/slug";
+tests/unit/note-slug.test.ts:10:test("createNoteSlug falls back when the title has no slug-safe characters", () => {
+tests/unit/note-slug.test.ts:14:test("createUniqueNoteSlug increments an existing base slug", () => {
+src/features/notes/service.ts:6:import { createUniqueNoteSlug } from "@/features/notes/slug";
+src/features/notes/service.ts:21:  return notes.filter((note): note is typeof note & { publishedAt: Date } => note.publishedAt !== null);
+src/features/notes/service.ts:28:export async function getPublishedNoteBySlug(slug: string) {
+exec
+/bin/zsh -lc "sed -n '1,260p' tests/e2e/home.spec.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "dotenv/config";
+
+import { expect, test } from "@playwright/test";
+
+// These journeys all mutate the same single-owner SQLite state, so serial execution keeps promotion checks deterministic.
+test.describe.configure({ mode: "serial" });
+
+test("public homepage exposes the published notes surface", async ({ page }) => {
+  await page.goto("/");
+
+  await expect(page.getByRole("heading", { name: "Notes the owner has chosen to share." })).toBeVisible();
+  await expect(page.getByRole("navigation").getByRole("link", { name: "Owner login" })).toBeVisible();
+  await expect(page.getByText("No published notes yet.")).toBeVisible();
+});
+
+test("owner can sign in, create a draft note, edit it, and reopen it with rendered preview", async ({ page }) => {
+  const username = process.env.OWNER_USERNAME ?? "owner";
+  const password = process.env.OWNER_PASSWORD ?? "password";
+  const uniqueId = `${Date.now()}`;
+  const initialTitle = `Draft note ${uniqueId}`;
+exec
+/bin/zsh -lc "sed -n '1,260p' src/features/notes/components/note-editor.tsx" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' src/app/app/notes/[id]/edit/page.tsx" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' src/app/app/notes/actions.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' 'src/app/notes/[slug]/page.tsx'" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+"use server";
+
+import { notFound, redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
+
+import { createDraftNote, publishNote, unpublishNote, updateDraftNote } from "@/features/notes/service";
+import { requireOwnerSession } from "@/lib/auth/owner-session";
+
+function getNoteInput(formData: FormData) {
+  return {
+    title: String(formData.get("title") ?? ""),
+    markdown: String(formData.get("markdown") ?? "")
+  };
+}
+
+function revalidateNotePaths(note: { id: string; slug: string }) {
+  revalidatePath("/");
+  revalidatePath("/app");
+  revalidatePath(`/app/notes/${note.id}/edit`);
+  revalidatePath(`/notes/${note.slug}`);
+ succeeded in 0ms:
+import { notFound } from "next/navigation";
+
+import { renderMarkdownToHtml } from "@/features/notes/markdown";
+import { getPublishedNoteBySlug } from "@/features/notes/service";
+
+type PublicNotePageProps = {
+  params: Promise<{
+    slug: string;
+  }>;
+};
+
+export default async function PublicNotePage({ params }: PublicNotePageProps) {
+  const { slug } = await params;
+  const note = await getPublishedNoteBySlug(slug);
+
+  if (!note) {
+    notFound();
+  }
+
+  const publishedAt = note.publishedAt ?? note.updatedAt;
+ exited 1 in 0ms:
+zsh:1: no matches found: src/app/app/notes/[id]/edit/page.tsx
+ succeeded in 0ms:
+"use client";
+
+import Link from "next/link";
+import { useState } from "react";
+import { useFormStatus } from "react-dom";
+
+import { renderMarkdownToHtml } from "@/features/notes/markdown";
+
+type NoteEditorProps = {
+  initialTitle: string;
+  initialMarkdown: string;
+  action: (formData: FormData) => void | Promise<void>;
+  formTitle: string;
+  formDescription: string;
+  submitLabel: string;
+  savedNotice?: string;
+  publication?: {
+    isPublished: boolean;
+    publicHref: `/notes/${string}`;
+    publishAction: () => void | Promise<void>;
+exec
+/bin/zsh -lc "sed -n '1,260p' src/features/notes/repo.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' src/features/notes/service.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "server-only";
+
+import { prisma } from "@/lib/prisma";
+
+export const notesRepo = {
+  async listForOwner(ownerId: string) {
+    return prisma.note.findMany({
+      where: {
+        ownerId
+      },
+      orderBy: {
+        updatedAt: "desc"
+      },
+      select: {
+        id: true,
+        title: true,
+        excerpt: true,
+        isPublished: true,
+        createdAt: true,
+        updatedAt: true
+ succeeded in 0ms:
+import "server-only";
+
+import { notesRepo } from "@/features/notes/repo";
+import { createNoteExcerpt } from "@/features/notes/markdown";
+import type { NoteDraftInput } from "@/features/notes/types";
+import { createUniqueNoteSlug } from "@/features/notes/slug";
+
+function normalizeTitle(title: string) {
+  const trimmedTitle = title.trim();
+
+  return trimmedTitle || "Untitled note";
+}
+
+export async function listOwnerNotes(ownerId: string) {
+  return notesRepo.listForOwner(ownerId);
+}
+
+export async function listPublishedNotes() {
+  const notes = await notesRepo.listPublished();
+
+exec
+/bin/zsh -lc "sed -n '1,220p' prisma/schema.prisma" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  notes        Note[]
+  links        Link[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Note {
+  id          String   @id @default(cuid())
+exec
+/bin/zsh -lc "sed -n '1,240p' src/lib/auth/owner-session.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,220p' src/app/app/page.tsx" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' 'src/app/app/notes/[id]/edit/page.tsx'" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "server-only";
+
+import { redirect } from "next/navigation";
+
+import { auth } from "@/auth";
+
+export async function requireOwnerSession() {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    redirect("/login");
+  }
+
+  return {
+    id: session.user.id,
+    name: session.user.name ?? "owner"
+  };
+}
+ succeeded in 0ms:
+import Link from "next/link";
+
+import { signOut } from "@/auth";
+import { listOwnerNotes } from "@/features/notes/service";
+import { requireOwnerSession } from "@/lib/auth/owner-session";
+
+async function signOutAction() {
+  "use server";
+
+  await signOut({
+    redirectTo: "/login"
+  });
+}
+
+export default async function PrivateDashboardPage() {
+  const owner = await requireOwnerSession();
+  const notes = await listOwnerNotes(owner.id);
+
+  return (
+    <div className="feature-layout">
+ succeeded in 0ms:
+import { notFound } from "next/navigation";
+
+import { publishNoteAction, unpublishNoteAction, updateNoteAction } from "@/app/app/notes/actions";
+import { NoteEditor } from "@/features/notes/components/note-editor";
+import { getOwnerNoteForEditor } from "@/features/notes/service";
+import { requireOwnerSession } from "@/lib/auth/owner-session";
+
+type EditNotePageProps = {
+  params: Promise<{
+    id: string;
+  }>;
+  searchParams?: Promise<{
+    saved?: string;
+    published?: string;
+    unpublished?: string;
+  }>;
+};
+
+export default async function EditNotePage({ params, searchParams }: EditNotePageProps) {
+  const owner = await requireOwnerSession();
+exec
+/bin/zsh -lc "nl -ba docs/FRONTEND.md | sed -n '1,120p'" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "nl -ba tests/e2e/home.spec.ts | sed -n '70,150p'" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "nl -ba src/features/notes/repo.ts | sed -n '1,140p'" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+     1	# FRONTEND.md
+     2	
+     3	## Goal
+     4	Describe the user-facing structure of Minakeep so an agent can implement the UI without guessing the product model.
+     5	
+     6	## Tech Direction
+     7	- Next.js application
+     8	- TypeScript
+     9	- App Router
+    10	- server-backed data flows where appropriate
+    11	
+    12	## Route Map
+    13	- `/` -> public homepage listing published notes
+    14	- `/notes/[slug]` -> public published-note page
+    15	- `/login` -> owner sign-in
+    16	- `/app` -> private notes-first dashboard shell
+    17	- `/app/notes/new` -> create note
+    18	- `/app/notes/[id]/edit` -> edit note and preview markdown
+    19	- `/app/links` -> private saved-link management
+    20	- `/app/tags` -> shared-tag overview
+ succeeded in 0ms:
+    70	  await expect(page.getByTestId("note-markdown-preview").getByRole("heading", { name: `Revised ${uniqueId}` })).toBeVisible();
+    71	});
+    72	
+    73	test("owner can publish and unpublish a note across the public routes", async ({ page }) => {
+    74	  const username = process.env.OWNER_USERNAME ?? "owner";
+    75	  const password = process.env.OWNER_PASSWORD ?? "password";
+    76	  const uniqueId = `${Date.now()}`;
+    77	  const title = `Public note ${uniqueId}`;
+    78	  const markdown = `## Shared heading ${uniqueId}
+    79	
+    80	This note should appear on the public site when published.`;
+    81	  const slug = `public-note-${uniqueId}`;
+    82	
+    83	  await page.goto("/login");
+    84	  await page.getByLabel("Username").fill(username);
+    85	  await page.getByLabel("Password").fill(password);
+    86	  await page.getByRole("button", { name: "Sign in" }).click();
+    87	
+    88	  await expect(page).toHaveURL(/\/app$/);
+    89	  await page.getByRole("link", { name: "New note" }).click();
+ succeeded in 0ms:
+     1	import "server-only";
+     2	
+     3	import { prisma } from "@/lib/prisma";
+     4	
+     5	export const notesRepo = {
+     6	  async listForOwner(ownerId: string) {
+     7	    return prisma.note.findMany({
+     8	      where: {
+     9	        ownerId
+    10	      },
+    11	      orderBy: {
+    12	        updatedAt: "desc"
+    13	      },
+    14	      select: {
+    15	        id: true,
+    16	        title: true,
+    17	        excerpt: true,
+    18	        isPublished: true,
+    19	        createdAt: true,
+    20	        updatedAt: true
+exec
+/bin/zsh -lc "nl -ba src/app/page.tsx | sed -n '1,200p'" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+     1	import Link from "next/link";
+     2	
+     3	import { listPublishedNotes } from "@/features/notes/service";
+     4	
+     5	export default async function HomePage() {
+     6	  const notes = await listPublishedNotes();
+     7	
+     8	  return (
+     9	    <div className="feature-layout">
+    10	      <section className="hero-card public-hero">
+    11	        <p className="eyebrow">Published notes</p>
+    12	        <h1>Notes the owner has chosen to share.</h1>
+    13	        <p className="lede">
+    14	          The public homepage stays limited to notes the owner has explicitly published. Drafts remain private inside
+    15	          the vault until they are promoted onto public routes.
+    16	        </p>
+    17	      </section>
+    18	
+    19	      <section className="panel-card">
+    20	        <strong>Published notes</strong>
+exec
+/bin/zsh -lc "nl -ba 'src/app/notes/[slug]/page.tsx' | sed -n '1,160p'" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+     1	import { notFound } from "next/navigation";
+     2	
+     3	import { renderMarkdownToHtml } from "@/features/notes/markdown";
+     4	import { getPublishedNoteBySlug } from "@/features/notes/service";
+     5	
+     6	type PublicNotePageProps = {
+     7	  params: Promise<{
+     8	    slug: string;
+     9	  }>;
+    10	};
+    11	
+    12	export default async function PublicNotePage({ params }: PublicNotePageProps) {
+    13	  const { slug } = await params;
+    14	  const note = await getPublishedNoteBySlug(slug);
+    15	
+    16	  if (!note) {
+    17	    notFound();
+    18	  }
+    19	
+    20	  const publishedAt = note.publishedAt ?? note.updatedAt;
+exec
+/bin/zsh -lc "sed -n '1,260p' auth.ts" in /Users/stevenna/WebstormProjects/minakeep exited 1 in 0ms:
+sed: auth.ts: No such file or directory
+exec
+/bin/zsh -lc "rg -n \"middleware|authorized|matcher|auth\\(|requireOwnerSession|redirect\\(\\\"/login\\\"|/notes/\\[slug\\]|public routes|/app\" src . -g '"'!node_modules'"'" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+./src/lib/auth/owner-session.ts:7:export async function requireOwnerSession() {
+./src/lib/auth/owner-session.ts:8:  const session = await auth();
+./src/lib/auth/owner-session.ts:11:    redirect("/login");
+src/lib/auth/owner-session.ts:7:export async function requireOwnerSession() {
+src/lib/auth/owner-session.ts:8:  const session = await auth();
+src/lib/auth/owner-session.ts:11:    redirect("/login");
+./src/proxy.ts:10:  matcher: ["/app/:path*"]
+src/proxy.ts:10:  matcher: ["/app/:path*"]
+./src/features/notes/components/note-editor.tsx:70:              <span>{publication.isPublished ? "Visible on public routes" : "Hidden from public routes"}</span>
+src/features/notes/components/note-editor.tsx:70:              <span>{publication.isPublished ? "Visible on public routes" : "Hidden from public routes"}</span>
+src/auth.config.ts:12:    authorized({ auth, request: { nextUrl } }) {
+src/auth.config.ts:13:      if (nextUrl.pathname.startsWith("/app")) {
+./src/auth.config.ts:12:    authorized({ auth, request: { nextUrl } }) {
+./src/auth.config.ts:13:      if (nextUrl.pathname.startsWith("/app")) {
+./src/app/login/page.tsx:39:          After sign-in, the private `/app` area exposes draft note authoring now. Publishing, links, tags, and search
+src/app/login/page.tsx:39:          After sign-in, the private `/app` area exposes draft note authoring now. Publishing, links, tags, and search
+./src/app/login/actions.ts:16:      redirectTo: "/app"
+src/app/login/actions.ts:16:      redirectTo: "/app"
+./src/app/page.tsx:15:          the vault until they are promoted onto public routes.
+src/app/page.tsx:15:          the vault until they are promoted onto public routes.
+exec
+/bin/zsh -lc "sed -n '1,220p' middleware.ts" in /Users/stevenna/WebstormProjects/minakeep exited 1 in 0ms:
+sed: middleware.ts: No such file or directory
+exec
+/bin/zsh -lc "sed -n '1,220p' src/auth.config.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' src/auth.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "server-only";
+
+import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
+
+import { authConfig } from "@/auth.config";
+import { env } from "@/lib/config/env";
+import { verifyPassword } from "@/lib/auth/password";
+import { prisma } from "@/lib/prisma";
+
+export const { handlers, signIn, signOut, auth } = NextAuth({
+  ...authConfig,
+  secret: env.authSecret,
+  providers: [
+    Credentials({
+      credentials: {
+        username: {
+          label: "Username",
+          type: "text"
+        },
+ succeeded in 0ms:
+import type { NextAuthConfig } from "next-auth";
+
+export const authConfig = {
+  providers: [],
+  pages: {
+    signIn: "/login"
+  },
+  session: {
+    strategy: "jwt"
+  },
+  callbacks: {
+    authorized({ auth, request: { nextUrl } }) {
+      if (nextUrl.pathname.startsWith("/app")) {
+        return Boolean(auth?.user);
+      }
+
+      return true;
+    }
+  }
+} satisfies NextAuthConfig;
+exec
+/bin/zsh -lc "sed -n '1,200p' src/proxy.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import NextAuth from "next-auth";
+
+import { authConfig } from "@/auth.config";
+
+const { auth } = NextAuth(authConfig);
+
+export default auth;
+
+export const config = {
+  matcher: ["/app/:path*"]
+};
+exec
+/bin/zsh -lc 'find src/app -maxdepth 4 -type f | sort' in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+src/app/api/auth/[...nextauth]/route.ts
+src/app/api/health/route.ts
+src/app/app/links/page.tsx
+src/app/app/notes/actions.ts
+src/app/app/notes/new/page.tsx
+src/app/app/page.tsx
+src/app/app/search/page.tsx
+src/app/app/tags/page.tsx
+src/app/globals.css
+src/app/layout.tsx
+src/app/login/actions.ts
+src/app/login/page.tsx
+src/app/notes/[slug]/page.tsx
+src/app/page.tsx
+exec
+/bin/zsh -lc "rg -n \"prisma\\.note|listPublishedNotes|getPublishedNoteBySlug|findPublishedBySlug|listForOwner|findByIdForOwner|isPublished\" src -g '"'!node_modules'"'" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+src/features/notes/service.ts:15:  return notesRepo.listForOwner(ownerId);
+src/features/notes/service.ts:18:export async function listPublishedNotes() {
+src/features/notes/service.ts:25:  return notesRepo.findByIdForOwner(ownerId, id);
+src/features/notes/service.ts:28:export async function getPublishedNoteBySlug(slug: string) {
+src/features/notes/service.ts:29:  const note = await notesRepo.findPublishedBySlug(slug);
+src/features/notes/service.ts:52:  const existingNote = await notesRepo.findByIdForOwner(ownerId, id);
+src/features/notes/service.ts:72:  const existingNote = await notesRepo.findByIdForOwner(ownerId, id);
+src/features/notes/service.ts:78:  if (existingNote.isPublished) {
+src/features/notes/service.ts:86:  const existingNote = await notesRepo.findByIdForOwner(ownerId, id);
+src/features/notes/service.ts:92:  if (!existingNote.isPublished) {
+src/features/notes/components/note-editor.tsx:18:    isPublished: boolean;
+src/features/notes/components/note-editor.tsx:69:              <span>{publication.isPublished ? "Published" : "Private draft"}</span>
+src/features/notes/components/note-editor.tsx:70:              <span>{publication.isPublished ? "Visible on public routes" : "Hidden from public routes"}</span>
+src/features/notes/components/note-editor.tsx:73:              {publication.isPublished ? (
+src/features/notes/components/note-editor.tsx:82:              {publication.isPublished ? (
+src/features/notes/types.ts:10:  isPublished: boolean;
+src/features/notes/repo.ts:6:  async listForOwner(ownerId: string) {
+src/features/notes/repo.ts:7:    return prisma.note.findMany({
+src/features/notes/repo.ts:18:        isPublished: true,
+src/features/notes/repo.ts:25:    return prisma.note.findMany({
+Plan update
+  ✓ Read required repository and task documents for task 012
+  ✓ Inspect implementation and tests for public note publishing
+  → Decide promotion readiness against exit criteria and emit JSON
+codex
+{"decision":"done","recommend_promotion":true,"confidence":0.89,"summary":"Task 012 is complete in substance. The owner edit flow exposes explicit publish/unpublish actions, the public homepage reads only published notes, the slug route serves only published notes and 404s otherwise, `/app` remains the only auth-gated surface while `/` and `/notes/[slug]` stay publicly reachable, and the provided `npm run verify` gate passed.","satisfied_exit_criteria":["Publishing is implemented explicitly from the owner note editor and published notes are surfaced on `/`.","Published notes are reachable by `/notes/[slug]`, and the public note page reads only published records.","Unpublishing clears public visibility on both the homepage and slug route; unpublished notes resolve to 404 on the public note page.","The required command `npm run verify` passed in the deterministic check summary."],"missing_requirements":[],"human_review_triggers":[]}
+tokens used
+70,156
+{"decision":"done","recommend_promotion":true,"confidence":0.89,"summary":"Task 012 is complete in substance. The owner edit flow exposes explicit publish/unpublish actions, the public homepage reads only published notes, the slug route serves only published notes and 404s otherwise, `/app` remains the only auth-gated surface while `/` and `/notes/[slug]` stay publicly reachable, and the provided `npm run verify` gate passed.","satisfied_exit_criteria":["Publishing is implemented explicitly from the owner note editor and published notes are surfaced on `/`.","Published notes are reachable by `/notes/[slug]`, and the public note page reads only published records.","Unpublishing clears public visibility on both the homepage and slug route; unpublished notes resolve to 404 on the public note page.","The required command `npm run verify` passed in the deterministic check summary."],"missing_requirements":[],"human_review_triggers":[]}
+evaluation: done promotion=true

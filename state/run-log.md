@@ -10,3 +10,18 @@
 - evaluator: started
 - evaluator: status=done promotion=true Task 011 is complete in substance. The repository implements owner-only access for `/app` routes via Auth.js middleware and server-side session checks, supports draft note creation and editing backed by Prisma/SQLite, renders a live markdown preview with shared rendering logic covered by unit tests, keeps drafts private by default through `isPublished` defaulting to `false`, and the required `npm run verify` gate passed in the provided deterministic check. -> state/artifacts/20260320T165727-011-note-authoring/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260320T165727-011-note-authoring/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 011-note-authoring -> 012-public-note-publishing
+- backlog: rendered current=012-public-note-publishing
+- health: o
+- cycle: finished
+
+### cycle 2026-03-20T17:10:25+09:00 task=012-public-note-publishing
+- artifacts: state/artifacts/20260320T171025-012-public-note-publishing
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260320T171025-012-public-note-publishing/worker.jsonl
+- worker-summary: Implemented task `012-public-note-publishing`.
+- evaluator: started
+- evaluator: status=done promotion=true Task 012 is complete in substance. The owner edit flow exposes explicit publish/unpublish actions, the public homepage reads only published notes, the slug route serves only published notes and 404s otherwise, `/app` remains the only auth-gated surface while `/` and `/notes/[slug]` stay publicly reachable, and the provided `npm run verify` gate passed. -> state/artifacts/20260320T171025-012-public-note-publishing/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260320T171025-012-public-note-publishing/npm-run-verify-next-server.log

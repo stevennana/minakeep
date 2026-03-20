@@ -21,6 +21,29 @@ export const notesRepo = {
       }
     });
   },
+  async listPublished() {
+    return prisma.note.findMany({
+      where: {
+        isPublished: true
+      },
+      orderBy: [
+        {
+          publishedAt: "desc"
+        },
+        {
+          updatedAt: "desc"
+        }
+      ],
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        excerpt: true,
+        publishedAt: true,
+        updatedAt: true
+      }
+    });
+  },
   async findByIdForOwner(ownerId: string, id: string) {
     return prisma.note.findFirst({
       where: {
@@ -35,6 +58,23 @@ export const notesRepo = {
         excerpt: true,
         isPublished: true,
         createdAt: true,
+        updatedAt: true
+      }
+    });
+  },
+  async findPublishedBySlug(slug: string) {
+    return prisma.note.findFirst({
+      where: {
+        slug,
+        isPublished: true
+      },
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        markdown: true,
+        excerpt: true,
+        publishedAt: true,
         updatedAt: true
       }
     });
@@ -82,6 +122,27 @@ export const notesRepo = {
         slug: data.slug,
         markdown: data.markdown,
         excerpt: data.excerpt
+      },
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        markdown: true,
+        excerpt: true,
+        isPublished: true,
+        createdAt: true,
+        updatedAt: true
+      }
+    });
+  },
+  async updatePublication(id: string, isPublished: boolean) {
+    return prisma.note.update({
+      where: {
+        id
+      },
+      data: {
+        isPublished,
+        publishedAt: isPublished ? new Date() : null
       },
       select: {
         id: true,

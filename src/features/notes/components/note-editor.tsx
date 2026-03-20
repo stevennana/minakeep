@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { useFormStatus } from "react-dom";
 
@@ -13,6 +14,12 @@ type NoteEditorProps = {
   formDescription: string;
   submitLabel: string;
   savedNotice?: string;
+  publication?: {
+    isPublished: boolean;
+    publicHref: `/notes/${string}`;
+    publishAction: () => void | Promise<void>;
+    unpublishAction: () => void | Promise<void>;
+  };
 };
 
 function SaveButton({ label }: { label: string }) {
@@ -25,6 +32,16 @@ function SaveButton({ label }: { label: string }) {
   );
 }
 
+function PublicationButton({ idleLabel, pendingLabel }: { idleLabel: string; pendingLabel: string }) {
+  const { pending } = useFormStatus();
+
+  return (
+    <button className="ghost-button" type="submit">
+      {pending ? pendingLabel : idleLabel}
+    </button>
+  );
+}
+
 export function NoteEditor({
   initialTitle,
   initialMarkdown,
@@ -32,7 +49,8 @@ export function NoteEditor({
   formTitle,
   formDescription,
   submitLabel,
-  savedNotice
+  savedNotice,
+  publication
 }: NoteEditorProps) {
   const [title, setTitle] = useState(initialTitle);
   const [markdown, setMarkdown] = useState(initialMarkdown);
@@ -45,6 +63,30 @@ export function NoteEditor({
         <p className="eyebrow">Private note authoring</p>
         <h1>{formTitle}</h1>
         <p className="lede">{formDescription}</p>
+        {publication ? (
+          <div className="publication-panel">
+            <div className="note-meta">
+              <span>{publication.isPublished ? "Published" : "Private draft"}</span>
+              <span>{publication.isPublished ? "Visible on public routes" : "Hidden from public routes"}</span>
+            </div>
+            <div className="button-row">
+              {publication.isPublished ? (
+                <form action={publication.unpublishAction}>
+                  <PublicationButton idleLabel="Unpublish note" pendingLabel="Unpublishing..." />
+                </form>
+              ) : (
+                <form action={publication.publishAction}>
+                  <PublicationButton idleLabel="Publish note" pendingLabel="Publishing..." />
+                </form>
+              )}
+              {publication.isPublished ? (
+                <Link className="ghost-button" href={publication.publicHref}>
+                  View public note
+                </Link>
+              ) : null}
+            </div>
+          </div>
+        ) : null}
         {savedNotice ? <p className="status-note">{savedNotice}</p> : null}
       </section>
 

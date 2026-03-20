@@ -2,36 +2,36 @@ Read the following repository documents before making changes:
 - AGENTS.md
 - ARCHITECTURE.md
 - docs/FRONTEND.md
-- docs/product-specs/note-authoring.md
-- docs/exec-plans/active/011-note-authoring.md
+- docs/product-specs/public-note-publishing.md
+- docs/exec-plans/active/012-public-note-publishing.md
 
-Current task id: 011-note-authoring
-Current task title: Note authoring
+Current task id: 012-public-note-publishing
+Current task title: Public note publishing
 
 Objective:
-Let the owner sign in, create draft markdown notes, edit them, and preview the rendered result inside the private Minakeep area.
+Let the owner publish or unpublish a note and expose published notes on the public homepage and note pages.
 
 Scope:
-- The owner can create a draft note with a title and markdown body.
-- The owner can edit an existing draft note.
-- The private note editor shows markdown preview alongside editing.
-- Draft notes remain private by default.
+- The owner can publish or unpublish a note explicitly.
+- The public homepage lists only published notes.
+- Each published note is reachable by a public slug-based route.
+- Unpublished notes are never exposed on public routes.
 
 Out of scope:
 - unrelated feature fronts
 - future product expansion beyond this feature
 
 Exit criteria:
-1. Owner sign-in succeeds and protected note routes are reachable only after authentication.
-2. A created draft note persists and can be reopened for editing.
-3. Markdown preview reflects saved content accurately enough for normal note writing.
+1. Publishing a note makes it visible on the public homepage.
+2. Anonymous readers can open a published note page by slug.
+3. Unpublishing removes the note from public routes.
 4. `npm run verify` passes.
 
 Required checks:
 - npm run verify
 
 Evaluator notes:
-Promote only when the note authoring behavior works end-to-end in substance.
+Promote only when the public note publishing behavior works end-to-end in substance.
 
 Required repository artifacts for this task:
 - none

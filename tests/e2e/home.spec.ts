@@ -2,11 +2,15 @@ import "dotenv/config";
 
 import { expect, test } from "@playwright/test";
 
-test("public homepage exposes the bootstrap foundation state", async ({ page }) => {
+// These journeys all mutate the same single-owner SQLite state, so serial execution keeps promotion checks deterministic.
+test.describe.configure({ mode: "serial" });
+
+test("public homepage exposes the published notes surface", async ({ page }) => {
   await page.goto("/");
 
-  await expect(page.getByRole("heading", { name: "Minakeep keeps the vault private and the notes intentional." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Notes the owner has chosen to share." })).toBeVisible();
   await expect(page.getByRole("navigation").getByRole("link", { name: "Owner login" })).toBeVisible();
+  await expect(page.getByText("No published notes yet.")).toBeVisible();
 });
 
 test("owner can sign in, create a draft note, edit it, and reopen it with rendered preview", async ({ page }) => {
@@ -64,4 +68,60 @@ Paragraph with **bold** text and a [link](https://example.com).`;
   await expect(page.getByRole("textbox", { name: /^Title$/ })).toHaveValue(updatedTitle);
   await expect(page.getByRole("textbox", { name: /^Markdown body$/ })).toHaveValue(updatedMarkdown);
   await expect(page.getByTestId("note-markdown-preview").getByRole("heading", { name: `Revised ${uniqueId}` })).toBeVisible();
+});
+
+test("owner can publish and unpublish a note across the public routes", async ({ page }) => {
+  const username = process.env.OWNER_USERNAME ?? "owner";
+  const password = process.env.OWNER_PASSWORD ?? "password";
+  const uniqueId = `${Date.now()}`;
+  const title = `Public note ${uniqueId}`;
+  const markdown = `## Shared heading ${uniqueId}
+
+This note should appear on the public site when published.`;
+  const slug = `public-note-${uniqueId}`;
+
+  await page.goto("/login");
+  await page.getByLabel("Username").fill(username);
+  await page.getByLabel("Password").fill(password);
+  await page.getByRole("button", { name: "Sign in" }).click();
+
+  await expect(page).toHaveURL(/\/app$/);
+  await page.getByRole("link", { name: "New note" }).click();
+  await expect(page).toHaveURL(/\/app\/notes\/new$/);
+
+  await page.getByRole("textbox", { name: /^Title$/ }).fill(title);
+  await page.getByRole("textbox", { name: /^Markdown body$/ }).fill(markdown);
+  await page.getByRole("button", { name: "Create draft" }).click();
+
+  await expect(page).toHaveURL(/\/app\/notes\/.+\/edit\?saved=1$/);
+  await expect(page.getByText("Draft saved.")).toBeVisible();
+  await expect(page.getByText("Private draft")).toBeVisible();
+
+  await page.getByRole("button", { name: "Publish note" }).click();
+
+  await expect(page).toHaveURL(/\/app\/notes\/.+\/edit\?published=1$/);
+  await expect(page.getByText("Note published.")).toBeVisible();
+  await expect(page.getByRole("link", { name: "View public note" })).toBeVisible();
+
+  await page.goto("/");
+  await expect(page.getByRole("link", { name: title })).toBeVisible();
+
+  await page.getByRole("link", { name: title }).click();
+  await expect(page).toHaveURL(new RegExp(`/notes/${slug}$`));
+  await expect(page.getByTestId("public-note-markdown").getByRole("heading", { name: `Shared heading ${uniqueId}` })).toBeVisible();
+
+  await page.goto("/app");
+  await page.getByRole("link", { name: title }).click();
+  await expect(page).toHaveURL(/\/app\/notes\/.+\/edit/);
+  await page.getByRole("button", { name: "Unpublish note" }).click();
+
+  await expect(page).toHaveURL(/\/app\/notes\/.+\/edit\?unpublished=1$/);
+  await expect(page.getByText("Note unpublished.")).toBeVisible();
+
+  await page.goto("/");
+  await expect(page.getByRole("link", { name: title })).toHaveCount(0);
+
+  const response = await page.goto(`/notes/${slug}`);
+  expect(response?.status()).toBe(404);
+  await expect(page.getByText("This page could not be found.")).toBeVisible();
 });

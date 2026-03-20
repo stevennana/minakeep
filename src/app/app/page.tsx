@@ -22,8 +22,8 @@ export default async function PrivateDashboardPage() {
         <p className="eyebrow">Private dashboard</p>
         <h1>{owner.name}&rsquo;s notes</h1>
         <p className="lede">
-          Draft notes stay private by default. Create a new note, reopen existing drafts, and keep the next slices for
-          publishing, links, tags, and search separate.
+          Notes stay private by default. Create a new note, reopen existing drafts, and publish only the notes that
+          should appear on the public homepage and note pages.
         </p>
         <div className="button-row">
           <Link className="primary-button" href="/app/notes/new">
@@ -38,7 +38,7 @@ export default async function PrivateDashboardPage() {
       </section>
 
       <section className="panel-card">
-        <strong>Draft notes</strong>
+        <strong>Notes</strong>
         {notes.length === 0 ? (
           <p>No drafts yet. Create the first note to start the private vault.</p>
         ) : (

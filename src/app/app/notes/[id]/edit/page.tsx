@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import { updateNoteAction } from "@/app/app/notes/actions";
+import { publishNoteAction, unpublishNoteAction, updateNoteAction } from "@/app/app/notes/actions";
 import { NoteEditor } from "@/features/notes/components/note-editor";
 import { getOwnerNoteForEditor } from "@/features/notes/service";
 import { requireOwnerSession } from "@/lib/auth/owner-session";
@@ -11,6 +11,8 @@ type EditNotePageProps = {
   }>;
   searchParams?: Promise<{
     saved?: string;
+    published?: string;
+    unpublished?: string;
   }>;
 };
 
@@ -27,11 +29,25 @@ export default async function EditNotePage({ params, searchParams }: EditNotePag
   return (
     <NoteEditor
       action={updateNoteAction.bind(null, note.id)}
-      formDescription="Edit the private draft and confirm the rendered output beside the markdown source."
+      formDescription="Edit the note, confirm the rendered output, and explicitly choose when it should appear on the public site."
       formTitle="Edit draft note"
       initialMarkdown={note.markdown}
       initialTitle={note.title}
-      savedNotice={resolvedSearchParams.saved === "1" ? "Draft saved." : undefined}
+      publication={{
+        isPublished: note.isPublished,
+        publicHref: `/notes/${note.slug}`,
+        publishAction: publishNoteAction.bind(null, note.id),
+        unpublishAction: unpublishNoteAction.bind(null, note.id)
+      }}
+      savedNotice={
+        resolvedSearchParams.published === "1"
+          ? "Note published."
+          : resolvedSearchParams.unpublished === "1"
+            ? "Note unpublished."
+            : resolvedSearchParams.saved === "1"
+              ? "Draft saved."
+              : undefined
+      }
       submitLabel="Save draft"
     />
   );

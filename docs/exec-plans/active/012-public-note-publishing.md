@@ -5,7 +5,7 @@
   "id": "012-public-note-publishing",
   "title": "Public note publishing",
   "order": 12,
-  "status": "queued",
+  "status": "active",
   "next_task_on_success": "013-link-capture",
   "prompt_docs": [
     "AGENTS.md",
@@ -59,3 +59,5 @@ Promote only when the public note publishing behavior works end-to-end in substa
 
 - Start here. Append timestamped progress notes as work lands.
 - Note when existing partial implementations were found and reused instead of replaced.
+- 2026-03-20 17:13 KST: Reused the existing note slug, draft editor, and Prisma publication fields. Confirmed `/` and `/notes/[slug]` were honest placeholders rather than competing implementations.
+- 2026-03-20 17:13 KST: Added explicit publish/unpublish actions in the notes slice, replaced the public placeholders with published-note reads, and extended E2E coverage to verify publish, public read, and unpublish removal end to end.

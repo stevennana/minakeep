@@ -1,4 +1,7 @@
-import { FeaturePlaceholder } from "@/components/feature-placeholder";
+import { notFound } from "next/navigation";
+
+import { renderMarkdownToHtml } from "@/features/notes/markdown";
+import { getPublishedNoteBySlug } from "@/features/notes/service";
 
 type PublicNotePageProps = {
   params: Promise<{
@@ -8,18 +11,29 @@ type PublicNotePageProps = {
 
 export default async function PublicNotePage({ params }: PublicNotePageProps) {
   const { slug } = await params;
+  const note = await getPublishedNoteBySlug(slug);
+
+  if (!note) {
+    notFound();
+  }
+
+  const publishedAt = note.publishedAt ?? note.updatedAt;
 
   return (
     <div className="feature-layout">
-      <FeaturePlaceholder
-        title="Published note page is queued"
-        description={`The slug "${slug}" resolves to the public-note route shell, but public publishing lands in the next feature slice instead of the bootstrap task.`}
-        bullets={[
-          "Public note rendering stays queued until the publishing slice lands.",
-          "Bootstrap keeps the route honest so smoke tests and operators can see the intended surface.",
-          "Once the publishing task lands, this route will render markdown for published notes only."
-        ]}
-      />
+      <article className="feature-card public-note-card">
+        <p className="eyebrow">Published note</p>
+        <h1>{note.title}</h1>
+        <div className="note-meta">
+          <span>Public</span>
+          <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(publishedAt)}</span>
+        </div>
+        <div
+          className="markdown-preview public-note-body"
+          data-testid="public-note-markdown"
+          dangerouslySetInnerHTML={{ __html: renderMarkdownToHtml(note.markdown) }}
+        />
+      </article>
     </div>
   );
 }
