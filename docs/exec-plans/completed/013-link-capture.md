@@ -5,7 +5,7 @@
   "id": "013-link-capture",
   "title": "Link capture",
   "order": 13,
-  "status": "active",
+  "status": "completed",
   "next_task_on_success": "014-tag-filtering-and-owner-search",
   "prompt_docs": [
     "AGENTS.md",
@@ -20,7 +20,8 @@
   "human_review_triggers": [
     "The task broadens into unrelated feature work.",
     "The deterministic checks do not actually prove the claimed behavior."
-  ]
+  ],
+  "completed_at": "2026-03-20T08:47:42.554Z"
 }
 ```
 
@@ -64,3 +65,4 @@ Promote only when the link capture behavior works end-to-end in substance.
 - 2026-03-20 17:31 KST: Extended automated coverage with unit tests for link normalization and an E2E journey that saves a tagged link, confirms it appears in the private links view, and confirms it does not appear on `/`.
 - 2026-03-20 17:36 KST: Confirmed the existing link capture implementation satisfied the feature scope, then tightened the E2E assertions to scope tag checks to the saved-link entry so verification stays deterministic when shared tags already exist.
 - 2026-03-20 17:42 KST: Tightened saved-link URL validation to allow only `http` and `https`, updated the private links error copy accordingly, and added unit plus E2E coverage that rejects `javascript:` URLs before they can appear as live private links.
+- 2026-03-20T08:47:42.554Z: automatically promoted after deterministic checks and evaluator approval.

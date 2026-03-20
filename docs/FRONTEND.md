@@ -34,7 +34,7 @@ Simple credentials form for the single owner account.
 Notes-first shell with fast links into note creation, link management, tags, and search.
 
 ### Note editor
-Textarea-based markdown editing with preview.
+Textarea-based markdown editing with preview and shared tags.
 
 ### Link manager
 Manual bookmark form and private list view.

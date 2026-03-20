@@ -74,7 +74,7 @@ export default async function PrivateDashboardPage() {
             <Link href="/app/search">Search</Link>
           </li>
         </ul>
-        <p>Links are live for private bookmark capture. Tags and search remain staged until their own task slices land.</p>
+        <p>Use tags to narrow private notes and links, and use search for title, URL, and tag retrieval inside the owner area.</p>
       </section>
     </div>
   );

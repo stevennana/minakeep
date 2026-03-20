@@ -34,5 +34,7 @@ export async function createLinkAction(formData: FormData) {
   }
 
   revalidatePath("/app/links");
+  revalidatePath("/app/search");
+  revalidatePath("/app/tags");
   redirect("/app/links?saved=1");
 }

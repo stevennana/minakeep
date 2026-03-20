@@ -4,6 +4,7 @@ import { notesRepo } from "@/features/notes/repo";
 import { createNoteExcerpt } from "@/features/notes/markdown";
 import type { NoteDraftInput } from "@/features/notes/types";
 import { createUniqueNoteSlug } from "@/features/notes/slug";
+import { normalizeTagNames } from "@/features/tags/normalize";
 
 function normalizeTitle(title: string) {
   const trimmedTitle = title.trim();
@@ -38,13 +39,15 @@ export async function getPublishedNoteBySlug(slug: string) {
 export async function createDraftNote(ownerId: string, input: NoteDraftInput) {
   const title = normalizeTitle(input.title);
   const markdown = input.markdown;
+  const tagNames = normalizeTagNames(input.tags);
   const existingSlugs = await notesRepo.listSlugsForOwner(ownerId);
 
   return notesRepo.create(ownerId, {
     title,
     slug: createUniqueNoteSlug(title, existingSlugs),
     markdown,
-    excerpt: createNoteExcerpt(markdown, title)
+    excerpt: createNoteExcerpt(markdown, title),
+    tagNames
   });
 }
 
@@ -57,6 +60,7 @@ export async function updateDraftNote(ownerId: string, id: string, input: NoteDr
 
   const title = normalizeTitle(input.title);
   const markdown = input.markdown;
+  const tagNames = normalizeTagNames(input.tags);
   const existingSlugs = await notesRepo.listSlugsForOwner(ownerId);
   const siblingSlugs = existingSlugs.filter((slug) => slug !== existingNote.slug);
 
@@ -64,7 +68,8 @@ export async function updateDraftNote(ownerId: string, id: string, input: NoteDr
     title,
     slug: createUniqueNoteSlug(title, siblingSlugs),
     markdown,
-    excerpt: createNoteExcerpt(markdown, title)
+    excerpt: createNoteExcerpt(markdown, title),
+    tagNames
   });
 }
 

@@ -4,50 +4,50 @@ Read these documents before deciding:
 - AGENTS.md
 - ARCHITECTURE.md
 - docs/FRONTEND.md
-- docs/product-specs/link-capture.md
-- docs/exec-plans/active/013-link-capture.md
+- docs/product-specs/tag-filtering-and-owner-search.md
+- docs/exec-plans/active/014-tag-filtering-and-owner-search.md
 
-Current task id: 013-link-capture
-Current task title: Link capture
+Current task id: 014-tag-filtering-and-owner-search
+Current task title: Tag filtering and owner search
 
 Objective:
-Let the owner save private links with a manual title, summary, and shared tags inside Minakeep.
+Let the owner organize notes and links with shared tags and basic owner-only search over titles, URLs, and tags.
 
 Scope:
-- The owner can create a saved link with URL, title, summary, and tags.
-- Saved links remain private in v1.
-- The owner can review saved links in the private area.
-- Links share the same tag vocabulary used by notes.
+- The owner can filter notes and links by shared tags.
+- The owner can search notes by title and links by title or URL.
+- Search remains private to the owner area.
+- Public readers do not get a search interface in v1.
 
 Out of scope:
 - unrelated feature fronts
 - future product expansion beyond this feature
 
 Exit criteria:
-1. A saved link persists with its URL, title, summary, and tags.
-2. Saved links are not exposed on public routes.
-3. The private links view shows saved entries clearly enough for later retrieval.
+1. Tag filters narrow the visible private notes and links accurately.
+2. Search returns matching private content using the allowed fields.
+3. Anonymous visitors cannot access owner search routes.
 4. `npm run verify` passes.
 
 Evaluator notes:
-Promote only when the link capture behavior works end-to-end in substance.
+Promote only when the tag filtering and owner search behavior works end-to-end in substance.
 
 Deterministic check summary:
 {
-  "checked_at": "2026-03-20T08:45:36.262Z",
-  "task_id": "013-link-capture",
+  "checked_at": "2026-03-20T09:00:03.926Z",
+  "task_id": "014-tag-filtering-and-owner-search",
   "commands": [
     {
       "command": "npm run verify",
       "ok": true,
-      "output": "\n> minakeep@0.1.0 verify\n> npm run lint && npm run db:prepare && npm run typecheck && npm run build && npm run test && npm run start:smoke\n\n\n> minakeep@0.1.0 lint\n> eslint . --max-warnings=0\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 36ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 typecheck\n> tsc --noEmit\n\n\n> minakeep@0.1.0 build\n> next build\n\n▲ Next.js 16.2.0 (Turbopack)\n- Environments: .env\n\n  Creating an optimized production build ...\n✓ Compiled successfully in 993ms\n  Running TypeScript ...\n  Finished TypeScript in 1076ms ...\n  Collecting page data using 10 workers ...\n  Generating static pages using 10 workers (0/10) ...\n  Generating static pages using 10 workers (2/10) \r\n  Generating static pages using 10 workers (4/10) \r\n  Generating static pages using 10 workers (7/10) \r\n✓ Generating static pages using 10 workers (10/10) in 150ms\n  Finalizing page optimization ...\n\nRoute (app)\n┌ ○ /\n├ ○ /_not-found\n├ ƒ /api/auth/[...nextauth]\n├ ƒ /api/health\n├ ƒ /app\n├ ƒ /app/links\n├ ƒ /app/notes/[id]/edit\n├ ƒ /app/notes/new\n├ ○ /app/search\n├ ○ /app/tags\n├ ƒ /login\n└ ƒ /notes/[slug]\n\n\nƒ Proxy (Middleware)\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n\n> minakeep@0.1.0 test\n> npm run test:unit && npm run test:e2e\n\n\n> minakeep@0.1.0 test:unit\n> node --import tsx --test tests/unit/**/*.test.ts\n\n✔ normalizeTagNames trims, deduplicates, and lowercases shared tags (7.155208ms)\n✔ normalizeLinkInput trims fields and canonicalizes the URL (0.102ms)\n✔ normalizeLinkInput rejects non-http schemes (0.174667ms)\n✔ renderMarkdownToHtml preserves common note-writing structures while escaping unsafe HTML (0.733875ms)\n✔ createNoteExcerpt turns markdown into readable summary text (0.168875ms)\n✔ createNoteSlug normalizes title content (0.420209ms)\n✔ createNoteSlug falls back when the title has no slug-safe characters (0.054542ms)\n✔ createUniqueNoteSlug increments an existing base slug (0.058875ms)\nℹ tests 8\nℹ suites 0\nℹ pass 8\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 116.500208\n\n> minakeep@0.1.0 test:e2e\n> npm run db:prepare && playwright test\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 36ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\nRunning 5 tests using 1 worker\n\n  ✓  1 tests/e2e/home.spec.ts:8:5 › public homepage exposes the published notes surface (478ms)\n  ✓  2 tests/e2e/home.spec.ts:16:5 › owner can sign in, create a draft note, edit it, and reopen it with rendered preview (1.5s)\n  ✓  3 tests/e2e/home.spec.ts:73:5 › owner can publish and unpublish a note across the public routes (1.5s)\n  ✓  4 tests/e2e/home.spec.ts:129:5 › owner can save and review a private tagged link without exposing it on public routes (866ms)\n  ✓  5 tests/e2e/home.spec.ts:165:5 › owner cannot save a private link with an unsafe URL scheme (557ms)\n\n  5 passed (6.6s)\n\n> minakeep@0.1.0 start:smoke\n> node scripts/start-smoke.mjs\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 36ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 start\n> next start --hostname 127.0.0.1 --port 3200\n\n▲ Next.js 16.2.0\n- Local:         http://127.0.0.1:3200\n- Network:       http://127.0.0.1:3200\n✓ Ready in 63ms\n",
+      "output": "\n> minakeep@0.1.0 verify\n> npm run lint && npm run db:prepare && npm run typecheck && npm run build && npm run test && npm run start:smoke\n\n\n> minakeep@0.1.0 lint\n> eslint . --max-warnings=0\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 35ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 typecheck\n> tsc --noEmit\n\n\n> minakeep@0.1.0 build\n> next build\n\n▲ Next.js 16.2.0 (Turbopack)\n- Environments: .env\n\n  Creating an optimized production build ...\n✓ Compiled successfully in 1013ms\n  Running TypeScript ...\n  Finished TypeScript in 1161ms ...\n  Collecting page data using 10 workers ...\n  Generating static pages using 10 workers (0/10) ...\n  Generating static pages using 10 workers (2/10) \r\n  Generating static pages using 10 workers (4/10) \r\n  Generating static pages using 10 workers (7/10) \r\n✓ Generating static pages using 10 workers (10/10) in 154ms\n  Finalizing page optimization ...\n\nRoute (app)\n┌ ○ /\n├ ○ /_not-found\n├ ƒ /api/auth/[...nextauth]\n├ ƒ /api/health\n├ ƒ /app\n├ ƒ /app/links\n├ ƒ /app/notes/[id]/edit\n├ ƒ /app/notes/new\n├ ƒ /app/search\n├ ƒ /app/tags\n├ ƒ /login\n└ ƒ /notes/[slug]\n\n\nƒ Proxy (Middleware)\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n\n> minakeep@0.1.0 test\n> npm run test:unit && npm run test:e2e\n\n\n> minakeep@0.1.0 test:unit\n> node --import tsx --test tests/unit/**/*.test.ts\n\n✔ normalizeTagNames trims, deduplicates, and lowercases shared tags (7.385542ms)\n✔ normalizeLinkInput trims fields and canonicalizes the URL (0.112583ms)\n✔ normalizeLinkInput rejects non-http schemes (0.169ms)\n✔ renderMarkdownToHtml preserves common note-writing structures while escaping unsafe HTML (0.732625ms)\n✔ createNoteExcerpt turns markdown into readable summary text (0.169916ms)\n✔ createNoteSlug normalizes title content (0.400792ms)\n✔ createNoteSlug falls back when the title has no slug-safe characters (0.066333ms)\n✔ createUniqueNoteSlug increments an existing base slug (0.05875ms)\nℹ tests 8\nℹ suites 0\nℹ pass 8\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 114.631916\n\n> minakeep@0.1.0 test:e2e\n> npm run db:prepare && playwright test\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 37ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\nRunning 7 tests using 1 worker\n\n  ✓  1 tests/e2e/home.spec.ts:8:5 › public homepage exposes the published notes surface (494ms)\n  ✓  2 tests/e2e/home.spec.ts:16:5 › anonymous visitors cannot access the owner search route (215ms)\n  ✓  3 tests/e2e/home.spec.ts:22:5 › owner can sign in, create a draft note, edit it, and reopen it with rendered preview (1.4s)\n  ✓  4 tests/e2e/home.spec.ts:79:5 › owner can publish and unpublish a note across the public routes (1.5s)\n  ✓  5 tests/e2e/home.spec.ts:135:5 › owner can save and review a private tagged link without exposing it on public routes (868ms)\n  ✓  6 tests/e2e/home.spec.ts:171:5 › owner cannot save a private link with an unsafe URL scheme (554ms)\n  ✓  7 tests/e2e/home.spec.ts:197:5 › owner can filter private content by tag and search by title, URL, and tag (1.4s)\n\n  7 passed (8.4s)\n\n> minakeep@0.1.0 start:smoke\n> node scripts/start-smoke.mjs\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 42ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 start\n> next start --hostname 127.0.0.1 --port 3200\n\n▲ Next.js 16.2.0\n- Local:         http://127.0.0.1:3200\n- Network:       http://127.0.0.1:3200\n✓ Ready in 63ms\n",
       "preflight": {
         "command": "ensure-e2e-port-free.sh 3100",
         "error": "",
         "ok": true,
         "output": "port-cleanup: 127.0.0.1:3100 already free\n"
       },
-      "next_server_log_path": "/Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260320T174147-013-link-capture/npm-run-verify-next-server.log"
+      "next_server_log_path": "/Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260320T174812-014-tag-filtering-and-owner-search/npm-run-verify-next-server.log"
     }
   ],
   "missing_files": [],
@@ -55,9 +55,11 @@ Deterministic check summary:
 }
 
 Worker handoff summary from the last run:
-Saved-link URL handling is now restricted to safe web schemes in [normalize.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/links/normalize.ts#L1), so only `http` and `https` URLs can be stored. I also tightened the `/app/links` error copy and added `noopener noreferrer` on the rendered private link anchors in [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/links/page.tsx#L12), added unit coverage for rejecting `javascript:` URLs in [link-normalize.test.ts](/Users/stevenna/WebstormProjects/minakeep/tests/unit/link-normalize.test.ts#L1), added an E2E case that rejects an unsafe non-HTTP scheme in [home.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/home.spec.ts#L165), and logged the work in [013-link-capture.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/013-link-capture.md#L58).
+Implemented task `014-tag-filtering-and-owner-search` end to end. The owner can now tag notes as well as links, filter private notes and links on [tags page](/Users/stevenna/WebstormProjects/minakeep/src/app/app/tags/page.tsx), and search private content on [search page](/Users/stevenna/WebstormProjects/minakeep/src/app/app/search/page.tsx). The retrieval logic is owner-scoped in [notes repo](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/repo.ts), [links repo](/Users/stevenna/WebstormProjects/minakeep/src/features/links/repo.ts), [tags service](/Users/stevenna/WebstormProjects/minakeep/src/features/tags/service.ts), and [search service](/Users/stevenna/WebstormProjects/minakeep/src/features/search/service.ts), and note tag entry was added in [note editor](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/components/note-editor.tsx).
 
-`npm run verify` passed locally. The task exit criteria appear satisfied, and nothing remains for `013-link-capture`. I also wrote the operator handoff summary to [state/last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt#L1).
+I updated the task/spec docs in [tag-filtering spec](/Users/stevenna/WebstormProjects/minakeep/docs/product-specs/tag-filtering-and-owner-search.md), [frontend doc](/Users/stevenna/WebstormProjects/minakeep/docs/FRONTEND.md), [content model](/Users/stevenna/WebstormProjects/minakeep/docs/design-docs/minakeep-content-model.md), and the [active plan log](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/014-tag-filtering-and-owner-search.md). Playwright now covers anonymous `/app/search` protection plus title, URL, tag filtering/search behavior in [home.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/home.spec.ts), and I wrote the operator handoff into [state/last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
+
+`npm run verify` passed locally. The exit criteria appear satisfied, and nothing remains for this task.
 
 Your job:
 - inspect the repository and current implementation

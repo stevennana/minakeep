@@ -5,7 +5,7 @@
   "id": "014-tag-filtering-and-owner-search",
   "title": "Tag filtering and owner search",
   "order": 14,
-  "status": "queued",
+  "status": "active",
   "next_task_on_success": "015-hardening-and-maintenance",
   "prompt_docs": [
     "AGENTS.md",
@@ -59,3 +59,6 @@ Promote only when the tag filtering and owner search behavior works end-to-end i
 
 - Start here. Append timestamped progress notes as work lands.
 - Note when existing partial implementations were found and reused instead of replaced.
+- 2026-03-20 17:55 KST: Reused the existing Prisma many-to-many `Tag` relations plus the staged `/app/tags` and `/app/search` route shells, and extended the note editor so notes can actually participate in the shared-tag workflow instead of inventing a parallel tagging surface.
+- 2026-03-20 17:55 KST: Added owner-scoped tag-filter and search queries over note titles, link titles, link URLs, and shared tag names, then replaced the placeholder retrieval screens with authenticated server-rendered results.
+- 2026-03-20 17:55 KST: Extended Playwright coverage to prove anonymous visitors are redirected away from `/app/search`, tag filters narrow notes and links correctly, and owner search finds private content by title, URL, and tag.

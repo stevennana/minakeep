@@ -11,7 +11,7 @@ Define the stable content concepts for v1 so note, publish, link, and retrieval 
 - all private content belongs to that owner
 
 ### Note
-- a note has `title`, `slug`, `markdown`, and `excerpt`
+- a note has `title`, `slug`, `markdown`, `excerpt`, and shared tags
 - a note is draft by default
 - a note may be published or unpublished explicitly
 - only published notes are visible on public routes

@@ -1,7 +1,4 @@
-export type SavedTag = {
-  id: string;
-  name: string;
-};
+import type { SavedTag } from "@/features/tags/types";
 
 export type LinkDraftInput = {
   url: string;

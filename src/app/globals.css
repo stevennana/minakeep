@@ -273,7 +273,10 @@ a {
 .link-list-item,
 .link-list-heading,
 .link-list-footer,
-.tag-list {
+.tag-list,
+.tag-filter-list,
+.search-form,
+.retrieval-grid {
   display: grid;
   gap: 16px;
 }
@@ -326,6 +329,41 @@ a {
   background: transparent;
   border-color: var(--line);
   color: var(--muted);
+}
+
+.tag-filter-list {
+  grid-template-columns: repeat(auto-fit, minmax(12rem, max-content));
+  margin-top: 18px;
+}
+
+.tag-filter-link {
+  align-items: flex-start;
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  color: var(--ink);
+  display: grid;
+  gap: 6px;
+  min-height: 4.25rem;
+  padding: 14px 16px;
+}
+
+.tag-filter-link-active {
+  background: rgba(138, 79, 45, 0.1);
+  border-color: rgba(138, 79, 45, 0.22);
+}
+
+.tag-filter-count {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.search-form {
+  align-items: end;
+}
+
+.retrieval-grid {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .markdown-preview {
@@ -515,6 +553,10 @@ a {
 
   .note-list-item {
     grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .retrieval-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

@@ -1,7 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { LinkValidationError, normalizeLinkInput, normalizeTagNames } from "../../src/features/links/normalize";
+import { LinkValidationError, normalizeLinkInput } from "../../src/features/links/normalize";
+import { normalizeTagNames } from "../../src/features/tags/normalize";
 
 test("normalizeTagNames trims, deduplicates, and lowercases shared tags", () => {
   assert.deepEqual(normalizeTagNames(" Research, inbox\nresearch, Reading "), ["inbox", "reading", "research"]);

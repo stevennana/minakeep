@@ -1,6 +1,9 @@
+import type { SavedTag } from "@/features/tags/types";
+
 export type NoteDraftInput = {
   title: string;
   markdown: string;
+  tags: string;
 };
 
 export type NoteSummary = {
@@ -8,6 +11,7 @@ export type NoteSummary = {
   title: string;
   excerpt: string;
   isPublished: boolean;
+  tags: SavedTag[];
   createdAt: Date;
   updatedAt: Date;
 };

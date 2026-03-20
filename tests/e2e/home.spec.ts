@@ -13,6 +13,12 @@ test("public homepage exposes the published notes surface", async ({ page }) => 
   await expect(page.getByText("No published notes yet.")).toBeVisible();
 });
 
+test("anonymous visitors cannot access the owner search route", async ({ page }) => {
+  await page.goto("/app/search");
+
+  await expect(page).toHaveURL(/\/login/);
+});
+
 test("owner can sign in, create a draft note, edit it, and reopen it with rendered preview", async ({ page }) => {
   const username = process.env.OWNER_USERNAME ?? "owner";
   const password = process.env.OWNER_PASSWORD ?? "password";
@@ -186,4 +192,74 @@ test("owner cannot save a private link with an unsafe URL scheme", async ({ page
   await expect(page.getByText("Enter a complete http:// or https:// URL.")).toBeVisible();
   await expect(page.getByRole("link", { name: title })).toHaveCount(0);
   await expect(page.getByText(summary)).toHaveCount(0);
+});
+
+test("owner can filter private content by tag and search by title, URL, and tag", async ({ page }) => {
+  const username = process.env.OWNER_USERNAME ?? "owner";
+  const password = process.env.OWNER_PASSWORD ?? "password";
+  const uniqueId = `${Date.now()}`;
+  const noteTitle = `Filtered note ${uniqueId}`;
+  const noteMarkdown = `# Filtered ${uniqueId}
+
+Private note for shared-tag retrieval.`;
+  const linkTitle = `Filtered link ${uniqueId}`;
+  const linkSummary = `Saved link for owner search ${uniqueId}`;
+  const linkUrlNeedle = `url-needle-${uniqueId}`;
+  const linkUrl = `https://example.com/${linkUrlNeedle}`;
+  const noteOnlyTag = `note-only-${uniqueId}`;
+  const linkOnlyTag = `link-only-${uniqueId}`;
+  const sharedTag = `shared-${uniqueId}`;
+  const searchTag = `search-tag-${uniqueId}`;
+
+  await page.goto("/login");
+  await page.getByLabel("Username").fill(username);
+  await page.getByLabel("Password").fill(password);
+  await page.getByRole("button", { name: "Sign in" }).click();
+
+  await expect(page).toHaveURL(/\/app$/);
+  await page.getByRole("link", { name: "New note" }).click();
+  await expect(page).toHaveURL(/\/app\/notes\/new$/);
+
+  await page.getByRole("textbox", { name: /^Title$/ }).fill(noteTitle);
+  await page.getByRole("textbox", { name: /^Markdown body$/ }).fill(noteMarkdown);
+  await page.getByRole("textbox", { name: /^Tags$/ }).fill(`${noteOnlyTag}, ${sharedTag}, ${searchTag}`);
+  await page.getByRole("button", { name: "Create draft" }).click();
+
+  await expect(page).toHaveURL(/\/app\/notes\/.+\/edit\?saved=1$/);
+  await expect(page.getByText("Draft saved.")).toBeVisible();
+
+  await page.goto("/app/links");
+  await expect(page).toHaveURL(/\/app\/links$/);
+  await page.getByRole("textbox", { name: /^URL$/ }).fill(linkUrl);
+  await page.getByRole("textbox", { name: /^Title$/ }).fill(linkTitle);
+  await page.getByRole("textbox", { name: /^Summary$/ }).fill(linkSummary);
+  await page.getByRole("textbox", { name: /^Tags$/ }).fill(`${linkOnlyTag}, ${sharedTag}, ${searchTag}`);
+  await page.getByRole("button", { name: "Save link" }).click();
+
+  await expect(page).toHaveURL(/\/app\/links\?saved=1$/);
+  await expect(page.getByText("Link saved.")).toBeVisible();
+
+  await page.goto(`/app/tags?tag=${encodeURIComponent(noteOnlyTag)}`);
+  await expect(page.getByRole("link", { name: noteTitle })).toBeVisible();
+  await expect(page.getByRole("link", { name: linkTitle })).toHaveCount(0);
+
+  await page.goto(`/app/tags?tag=${encodeURIComponent(linkOnlyTag)}`);
+  await expect(page.getByRole("link", { name: linkTitle })).toBeVisible();
+  await expect(page.getByRole("link", { name: noteTitle })).toHaveCount(0);
+
+  await page.goto(`/app/tags?tag=${encodeURIComponent(sharedTag)}`);
+  await expect(page.getByRole("link", { name: noteTitle })).toBeVisible();
+  await expect(page.getByRole("link", { name: linkTitle })).toBeVisible();
+
+  await page.goto(`/app/search?q=${encodeURIComponent(noteTitle)}`);
+  await expect(page.getByRole("link", { name: noteTitle })).toBeVisible();
+  await expect(page.getByRole("link", { name: linkTitle })).toHaveCount(0);
+
+  await page.goto(`/app/search?q=${encodeURIComponent(linkUrlNeedle)}`);
+  await expect(page.getByRole("link", { name: linkTitle })).toBeVisible();
+  await expect(page.getByRole("link", { name: noteTitle })).toHaveCount(0);
+
+  await page.goto(`/app/search?q=${encodeURIComponent(searchTag)}`);
+  await expect(page.getByRole("link", { name: noteTitle })).toBeVisible();
+  await expect(page.getByRole("link", { name: linkTitle })).toBeVisible();
 });

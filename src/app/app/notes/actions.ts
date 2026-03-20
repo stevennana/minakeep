@@ -9,13 +9,16 @@ import { requireOwnerSession } from "@/lib/auth/owner-session";
 function getNoteInput(formData: FormData) {
   return {
     title: String(formData.get("title") ?? ""),
-    markdown: String(formData.get("markdown") ?? "")
+    markdown: String(formData.get("markdown") ?? ""),
+    tags: String(formData.get("tags") ?? "")
   };
 }
 
 function revalidateNotePaths(note: { id: string; slug: string }) {
   revalidatePath("/");
   revalidatePath("/app");
+  revalidatePath("/app/search");
+  revalidatePath("/app/tags");
   revalidatePath(`/app/notes/${note.id}/edit`);
   revalidatePath(`/notes/${note.slug}`);
 }

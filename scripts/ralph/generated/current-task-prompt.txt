@@ -2,36 +2,36 @@ Read the following repository documents before making changes:
 - AGENTS.md
 - ARCHITECTURE.md
 - docs/FRONTEND.md
-- docs/product-specs/link-capture.md
-- docs/exec-plans/active/013-link-capture.md
+- docs/product-specs/tag-filtering-and-owner-search.md
+- docs/exec-plans/active/014-tag-filtering-and-owner-search.md
 
-Current task id: 013-link-capture
-Current task title: Link capture
+Current task id: 014-tag-filtering-and-owner-search
+Current task title: Tag filtering and owner search
 
 Objective:
-Let the owner save private links with a manual title, summary, and shared tags inside Minakeep.
+Let the owner organize notes and links with shared tags and basic owner-only search over titles, URLs, and tags.
 
 Scope:
-- The owner can create a saved link with URL, title, summary, and tags.
-- Saved links remain private in v1.
-- The owner can review saved links in the private area.
-- Links share the same tag vocabulary used by notes.
+- The owner can filter notes and links by shared tags.
+- The owner can search notes by title and links by title or URL.
+- Search remains private to the owner area.
+- Public readers do not get a search interface in v1.
 
 Out of scope:
 - unrelated feature fronts
 - future product expansion beyond this feature
 
 Exit criteria:
-1. A saved link persists with its URL, title, summary, and tags.
-2. Saved links are not exposed on public routes.
-3. The private links view shows saved entries clearly enough for later retrieval.
+1. Tag filters narrow the visible private notes and links accurately.
+2. Search returns matching private content using the allowed fields.
+3. Anonymous visitors cannot access owner search routes.
 4. `npm run verify` passes.
 
 Required checks:
 - npm run verify
 
 Evaluator notes:
-Promote only when the link capture behavior works end-to-end in substance.
+Promote only when the tag filtering and owner search behavior works end-to-end in substance.
 
 Required repository artifacts for this task:
 - none
@@ -40,7 +40,7 @@ Required commands for this task:
 - npm run verify
 
 Previous known gaps from the last evaluation:
-- Restrict saved-link URLs to safe schemes before promotion. The current implementation allows arbitrary parseable schemes, but the UI renders them as live links, which makes the feature unsafe in substance.
+- none
 
 Rules:
 - Work only on this task.

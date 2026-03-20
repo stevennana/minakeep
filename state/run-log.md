@@ -70,3 +70,18 @@
 - evaluator: started
 - evaluator: status=done promotion=true The task is complete in substance. The current implementation provides an owner-gated `/app/links` flow that saves URL, title, summary, and normalized tags through the links service/repo into Prisma, with tags attached through the shared `Tag` table. The private links page renders saved entries with title, URL, summary, tags, and updated date for retrieval. Public routes only query published notes, and the E2E suite explicitly verifies that a saved private link appears in `/app/links` but not on `/`. `npm run verify` passed in the provided deterministic check. -> state/artifacts/20260320T174147-013-link-capture/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260320T174147-013-link-capture/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 013-link-capture -> 014-tag-filtering-and-owner-search
+- backlog: rendered current=014-tag-filtering-and-owner-search
+- health: ooxxo
+- cycle: finished
+
+### cycle 2026-03-20T17:48:12+09:00 task=014-tag-filtering-and-owner-search
+- artifacts: state/artifacts/20260320T174812-014-tag-filtering-and-owner-search
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260320T174812-014-tag-filtering-and-owner-search/worker.jsonl
+- worker-summary: Implemented task `014-tag-filtering-and-owner-search` end to end. The owner can now tag notes as well as links, filter private notes and links on [tags page](/Users/stevenna/WebstormProjects/minakeep/src/app/app/tags/page.tsx), and search private content on [search page](/Users/stevenna/WebstormProjects/minakeep/src/app/app/search/page.tsx). The retrieval logic is owner-scoped in [notes repo](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/repo.ts), [links repo](/Users/stevenna/WebstormProjects/minakeep/src/features/links/repo.ts), [tags service](/Users/stevenna/WebstormProjects/minakeep/src/features/tags/service.ts), and [search service](/Users/stevenna/WebstormProjects/minakeep/src/features/search/service.ts), and note tag entry was added in [note editor](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/components/note-editor.tsx).
+- evaluator: started
+- evaluator: status=done promotion=true Repository inspection supports promotion. The implementation adds shared note/link tagging, owner-scoped tag filtering on `/app/tags`, and owner-only search on `/app/search` that matches note titles plus link titles, URLs, and shared tag names. Both routes require an owner session via `requireOwnerSession()`, so anonymous visitors are redirected to `/login`. The task docs, frontend docs, content-model doc, and active plan are consistent with the shipped behavior, and the provided deterministic run shows `npm run verify` passing end to end. -> state/artifacts/20260320T174812-014-tag-filtering-and-owner-search/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260320T174812-014-tag-filtering-and-owner-search/npm-run-verify-next-server.log

@@ -1,0 +1,9 @@
+[main aa00c40] ralph: 013-link-capture 2026-03-20T17:47:42+09:00
+ 20 files changed, 985 insertions(+), 40 deletions(-)
+ create mode 100644 state/artifacts/20260320T173459-013-link-capture/backlog.log
+ create mode 100644 state/artifacts/20260320T173459-013-link-capture/promote.log
+ create mode 100644 state/artifacts/20260320T174147-013-link-capture/commit.log
+ create mode 100644 state/artifacts/20260320T174147-013-link-capture/evaluator.log
+ create mode 100644 state/artifacts/20260320T174147-013-link-capture/task-prompt.log
+ create mode 100644 state/artifacts/20260320T174147-013-link-capture/worker.jsonl
+commit: created

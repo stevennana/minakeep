@@ -1,8 +1,8 @@
 {
-  "task_id": "013-link-capture",
-  "started_at": "2026-03-20T17:41:47+09:00",
-  "artifact_dir": "state/artifacts/20260320T174147-013-link-capture",
+  "task_id": "014-tag-filtering-and-owner-search",
+  "started_at": "2026-03-20T17:48:12+09:00",
+  "artifact_dir": "state/artifacts/20260320T174812-014-tag-filtering-and-owner-search",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-03-20T08:47:42.406Z"
+  "updated_at": "2026-03-20T09:02:23.507Z"
 }

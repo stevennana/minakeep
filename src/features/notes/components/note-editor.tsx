@@ -9,6 +9,7 @@ import { renderMarkdownToHtml } from "@/features/notes/markdown";
 type NoteEditorProps = {
   initialTitle: string;
   initialMarkdown: string;
+  initialTags: string;
   action: (formData: FormData) => void | Promise<void>;
   formTitle: string;
   formDescription: string;
@@ -45,6 +46,7 @@ function PublicationButton({ idleLabel, pendingLabel }: { idleLabel: string; pen
 export function NoteEditor({
   initialTitle,
   initialMarkdown,
+  initialTags,
   action,
   formTitle,
   formDescription,
@@ -54,6 +56,7 @@ export function NoteEditor({
 }: NoteEditorProps) {
   const [title, setTitle] = useState(initialTitle);
   const [markdown, setMarkdown] = useState(initialMarkdown);
+  const [tags, setTags] = useState(initialTags);
   const previewTitle = title.trim() || "Untitled note";
   const previewHtml = renderMarkdownToHtml(markdown);
 
@@ -119,6 +122,20 @@ Use markdown for headings, lists, links, and code.`}
               value={markdown}
             />
           </label>
+
+          <label className="field-group">
+            <span>Tags</span>
+            <input
+              autoComplete="off"
+              className="text-input"
+              name="tags"
+              onChange={(event) => setTags(event.target.value)}
+              placeholder="research, reference"
+              type="text"
+              value={tags}
+            />
+          </label>
+          <p className="field-note">Use commas to share note tags with the rest of the private vault.</p>
 
           <div className="button-row">
             <SaveButton label={submitLabel} />

@@ -2,6 +2,32 @@ import "server-only";
 
 import { prisma } from "@/lib/prisma";
 
+const noteTagSelect = {
+  orderBy: {
+    name: "asc" as const
+  },
+  select: {
+    id: true,
+    name: true
+  }
+};
+
+const noteSummarySelect = {
+  id: true,
+  title: true,
+  excerpt: true,
+  isPublished: true,
+  createdAt: true,
+  updatedAt: true,
+  tags: noteTagSelect
+};
+
+const noteEditorSelect = {
+  ...noteSummarySelect,
+  slug: true,
+  markdown: true
+};
+
 export const notesRepo = {
   async listForOwner(ownerId: string) {
     return prisma.note.findMany({
@@ -11,14 +37,50 @@ export const notesRepo = {
       orderBy: {
         updatedAt: "desc"
       },
-      select: {
-        id: true,
-        title: true,
-        excerpt: true,
-        isPublished: true,
-        createdAt: true,
-        updatedAt: true
-      }
+      select: noteSummarySelect
+    });
+  },
+  async listForOwnerByTag(ownerId: string, tagName: string) {
+    return prisma.note.findMany({
+      where: {
+        ownerId,
+        tags: {
+          some: {
+            name: tagName
+          }
+        }
+      },
+      orderBy: {
+        updatedAt: "desc"
+      },
+      select: noteSummarySelect
+    });
+  },
+  async searchForOwner(ownerId: string, query: string) {
+    return prisma.note.findMany({
+      where: {
+        ownerId,
+        OR: [
+          {
+            title: {
+              contains: query
+            }
+          },
+          {
+            tags: {
+              some: {
+                name: {
+                  contains: query
+                }
+              }
+            }
+          }
+        ]
+      },
+      orderBy: {
+        updatedAt: "desc"
+      },
+      select: noteSummarySelect
     });
   },
   async listPublished() {
@@ -50,16 +112,7 @@ export const notesRepo = {
         id,
         ownerId
       },
-      select: {
-        id: true,
-        title: true,
-        slug: true,
-        markdown: true,
-        excerpt: true,
-        isPublished: true,
-        createdAt: true,
-        updatedAt: true
-      }
+      select: noteEditorSelect
     });
   },
   async findPublishedBySlug(slug: string) {
@@ -91,28 +144,29 @@ export const notesRepo = {
 
     return notes.map((note) => note.slug);
   },
-  async create(ownerId: string, data: { title: string; slug: string; markdown: string; excerpt: string }) {
+  async create(ownerId: string, data: { title: string; slug: string; markdown: string; excerpt: string; tagNames: string[] }) {
     return prisma.note.create({
       data: {
         ownerId,
         title: data.title,
         slug: data.slug,
         markdown: data.markdown,
-        excerpt: data.excerpt
+        excerpt: data.excerpt,
+        tags: {
+          connectOrCreate: data.tagNames.map((name) => ({
+            where: {
+              name
+            },
+            create: {
+              name
+            }
+          }))
+        }
       },
-      select: {
-        id: true,
-        title: true,
-        slug: true,
-        markdown: true,
-        excerpt: true,
-        isPublished: true,
-        createdAt: true,
-        updatedAt: true
-      }
+      select: noteEditorSelect
     });
   },
-  async update(id: string, data: { title: string; slug: string; markdown: string; excerpt: string }) {
+  async update(id: string, data: { title: string; slug: string; markdown: string; excerpt: string; tagNames: string[] }) {
     return prisma.note.update({
       where: {
         id
@@ -121,18 +175,20 @@ export const notesRepo = {
         title: data.title,
         slug: data.slug,
         markdown: data.markdown,
-        excerpt: data.excerpt
+        excerpt: data.excerpt,
+        tags: {
+          set: [],
+          connectOrCreate: data.tagNames.map((name) => ({
+            where: {
+              name
+            },
+            create: {
+              name
+            }
+          }))
+        }
       },
-      select: {
-        id: true,
-        title: true,
-        slug: true,
-        markdown: true,
-        excerpt: true,
-        isPublished: true,
-        createdAt: true,
-        updatedAt: true
-      }
+      select: noteEditorSelect
     });
   },
   async updatePublication(id: string, isPublished: boolean) {
@@ -144,16 +200,7 @@ export const notesRepo = {
         isPublished,
         publishedAt: isPublished ? new Date() : null
       },
-      select: {
-        id: true,
-        title: true,
-        slug: true,
-        markdown: true,
-        excerpt: true,
-        isPublished: true,
-        createdAt: true,
-        updatedAt: true
-      }
+      select: noteEditorSelect
     });
   }
 };

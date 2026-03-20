@@ -1,4 +1,5 @@
 import type { LinkDraftInput } from "@/features/links/types";
+import { normalizeTagNames } from "@/features/tags/normalize";
 
 const SAFE_LINK_PROTOCOLS = new Set(["http:", "https:"]);
 
@@ -27,17 +28,6 @@ export function normalizeLinkUrl(url: string) {
   } catch {
     throw new LinkValidationError("invalid-url");
   }
-}
-
-export function normalizeTagNames(tags: string) {
-  return Array.from(
-    new Set(
-      tags
-        .split(/[\n,]/)
-        .map((tag) => tag.trim().toLowerCase())
-        .filter(Boolean)
-    )
-  ).sort((left, right) => left.localeCompare(right));
 }
 
 export function normalizeLinkInput(input: LinkDraftInput) {
