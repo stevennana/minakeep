@@ -5,7 +5,7 @@
   "id": "015-hardening-and-maintenance",
   "title": "Hardening and maintenance",
   "order": 15,
-  "status": "active",
+  "status": "completed",
   "next_task_on_success": null,
   "prompt_docs": [
     "AGENTS.md",
@@ -24,7 +24,8 @@
   "human_review_triggers": [
     "The task expands into broad feature work.",
     "Reliability or security docs do not match the actual code."
-  ]
+  ],
+  "completed_at": "2026-03-20T09:12:34.962Z"
 }
 ```
 
@@ -67,3 +68,4 @@ Do not promote if the production-style startup path still fails for normal repo 
 - 2026-03-20 18:05 KST: Reused the existing `verify`, `start:smoke`, `start:logged`, and Ralph evaluator paths as the baseline, then audited the current startup, auth, and logging behavior against the reliability/security docs before changing code.
 - 2026-03-20 18:05 KST: Closed the Playwright artifact logging drift by adding a wrapper server script that honors `MINAKEEP_NEXT_SERVER_LOG`, and reconciled stale hardening copy in the quality, reliability, security, Ralph README, and login-surface docs.
 - 2026-03-20 18:08 KST: Confirmed `npm run verify` and `npm run start:smoke` both pass on the updated tree; also confirmed the new Playwright wrapper writes server output when `MINAKEEP_NEXT_SERVER_LOG` is provided, while manual direct wrapper invocations in this sandbox can still hit a local `127.0.0.1:3100` bind restriction outside the required task gates.
+- 2026-03-20T09:12:34.962Z: automatically promoted after deterministic checks and evaluator approval.
