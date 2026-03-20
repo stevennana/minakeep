@@ -14,7 +14,7 @@ function getStatusMessage(error?: string) {
     case "duplicate-url":
       return "That URL is already saved in your private links.";
     case "invalid-url":
-      return "Enter a complete URL, including the protocol.";
+      return "Enter a complete http:// or https:// URL.";
     case "missing-title":
       return "Enter a title for the saved link.";
     case "missing-summary":
@@ -106,7 +106,7 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
               {links.map((link) => (
                 <article className="link-list-item" key={link.id}>
                   <div className="link-list-heading">
-                    <a className="note-list-link" href={link.url} rel="noreferrer" target="_blank">
+                    <a className="note-list-link" href={link.url} rel="noopener noreferrer" target="_blank">
                       {link.title}
                     </a>
                     <p className="link-url">{link.url}</p>

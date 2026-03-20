@@ -55,3 +55,18 @@
 - evaluator: started
 - evaluator: status=not_done promotion=false The link-capture slice is close and the explicit happy-path checks pass, but I would not promote it yet. `src/features/links/normalize.ts` accepts any parseable URL scheme via `new URL(...)`, and `src/app/app/links/page.tsx` renders the stored value directly into a clickable `<a href>`. That means unsafe schemes such as `javascript:` can be saved and executed from the private links UI, which is a substantive feature gap that the deterministic checks do not cover. -> state/artifacts/20260320T173459-013-link-capture/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260320T173459-013-link-capture/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Task 013-link-capture not eligible for promotion.
+- backlog: rendered current=013-link-capture
+- health: ooxx
+- cycle: finished
+
+### cycle 2026-03-20T17:41:47+09:00 task=013-link-capture
+- artifacts: state/artifacts/20260320T174147-013-link-capture
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260320T174147-013-link-capture/worker.jsonl
+- worker-summary: Saved-link URL handling is now restricted to safe web schemes in [normalize.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/links/normalize.ts#L1), so only `http` and `https` URLs can be stored. I also tightened the `/app/links` error copy and added `noopener noreferrer` on the rendered private link anchors in [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/links/page.tsx#L12), added unit coverage for rejecting `javascript:` URLs in [link-normalize.test.ts](/Users/stevenna/WebstormProjects/minakeep/tests/unit/link-normalize.test.ts#L1), added an E2E case that rejects an unsafe non-HTTP scheme in [home.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/home.spec.ts#L165), and logged the work in [013-link-capture.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/013-link-capture.md#L58).
+- evaluator: started
+- evaluator: status=done promotion=true The task is complete in substance. The current implementation provides an owner-gated `/app/links` flow that saves URL, title, summary, and normalized tags through the links service/repo into Prisma, with tags attached through the shared `Tag` table. The private links page renders saved entries with title, URL, summary, tags, and updated date for retrieval. Public routes only query published notes, and the E2E suite explicitly verifies that a saved private link appears in `/app/links` but not on `/`. `npm run verify` passed in the provided deterministic check. -> state/artifacts/20260320T174147-013-link-capture/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260320T174147-013-link-capture/npm-run-verify-next-server.log

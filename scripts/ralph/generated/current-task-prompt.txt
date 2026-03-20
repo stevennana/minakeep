@@ -40,7 +40,7 @@ Required commands for this task:
 - npm run verify
 
 Previous known gaps from the last evaluation:
-- none
+- Restrict saved-link URLs to safe schemes before promotion. The current implementation allows arbitrary parseable schemes, but the UI renders them as live links, which makes the feature unsafe in substance.
 
 Rules:
 - Work only on this task.

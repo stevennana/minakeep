@@ -1,5 +1,7 @@
 import type { LinkDraftInput } from "@/features/links/types";
 
+const SAFE_LINK_PROTOCOLS = new Set(["http:", "https:"]);
+
 export class LinkValidationError extends Error {
   constructor(readonly code: "invalid-url" | "missing-title" | "missing-summary") {
     super(code);
@@ -15,7 +17,13 @@ export function normalizeLinkUrl(url: string) {
   }
 
   try {
-    return new URL(trimmedUrl).toString();
+    const parsedUrl = new URL(trimmedUrl);
+
+    if (!SAFE_LINK_PROTOCOLS.has(parsedUrl.protocol)) {
+      throw new LinkValidationError("invalid-url");
+    }
+
+    return parsedUrl.toString();
   } catch {
     throw new LinkValidationError("invalid-url");
   }

@@ -161,3 +161,29 @@ test("owner can save and review a private tagged link without exposing it on pub
   await expect(page.getByRole("link", { name: title })).toHaveCount(0);
   await expect(page.getByText(summary)).toHaveCount(0);
 });
+
+test("owner cannot save a private link with an unsafe URL scheme", async ({ page }) => {
+  const username = process.env.OWNER_USERNAME ?? "owner";
+  const password = process.env.OWNER_PASSWORD ?? "password";
+  const title = `Unsafe link ${Date.now()}`;
+  const summary = "This should be rejected.";
+
+  await page.goto("/login");
+  await page.getByLabel("Username").fill(username);
+  await page.getByLabel("Password").fill(password);
+  await page.getByRole("button", { name: "Sign in" }).click();
+
+  await expect(page).toHaveURL(/\/app$/);
+  await page.getByRole("link", { name: "Links" }).click();
+
+  await expect(page).toHaveURL(/\/app\/links$/);
+  await page.getByLabel("URL").fill("ftp://example.com/private-reference");
+  await page.getByLabel("Title").fill(title);
+  await page.getByLabel("Summary").fill(summary);
+  await page.getByRole("button", { name: "Save link" }).click();
+
+  await expect(page).toHaveURL(/\/app\/links\?error=invalid-url$/);
+  await expect(page.getByText("Enter a complete http:// or https:// URL.")).toBeVisible();
+  await expect(page.getByRole("link", { name: title })).toHaveCount(0);
+  await expect(page.getByText(summary)).toHaveCount(0);
+});
