@@ -85,3 +85,18 @@
 - evaluator: started
 - evaluator: status=done promotion=true Repository inspection supports promotion. The implementation adds shared note/link tagging, owner-scoped tag filtering on `/app/tags`, and owner-only search on `/app/search` that matches note titles plus link titles, URLs, and shared tag names. Both routes require an owner session via `requireOwnerSession()`, so anonymous visitors are redirected to `/login`. The task docs, frontend docs, content-model doc, and active plan are consistent with the shipped behavior, and the provided deterministic run shows `npm run verify` passing end to end. -> state/artifacts/20260320T174812-014-tag-filtering-and-owner-search/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260320T174812-014-tag-filtering-and-owner-search/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 014-tag-filtering-and-owner-search -> 015-hardening-and-maintenance
+- backlog: rendered current=015-hardening-and-maintenance
+- health: ooxxoo
+- cycle: finished
+
+### cycle 2026-03-20T18:02:53+09:00 task=015-hardening-and-maintenance
+- artifacts: state/artifacts/20260320T180253-015-hardening-and-maintenance
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260320T180253-015-hardening-and-maintenance/worker.jsonl
+- worker-summary: Implemented the hardening pass by adding [scripts/playwright-web-server.mjs](/Users/stevenna/WebstormProjects/minakeep/scripts/playwright-web-server.mjs#L1) and routing Playwright through it in [playwright.config.ts](/Users/stevenna/WebstormProjects/minakeep/playwright.config.ts#L1), so evaluator-provided `MINAKEEP_NEXT_SERVER_LOG` paths now capture Next.js server output. I also reconciled stale repo guidance in [docs/RELIABILITY.md](/Users/stevenna/WebstormProjects/minakeep/docs/RELIABILITY.md#L22), [docs/SECURITY.md](/Users/stevenna/WebstormProjects/minakeep/docs/SECURITY.md#L6), [docs/QUALITY_SCORE.md](/Users/stevenna/WebstormProjects/minakeep/docs/QUALITY_SCORE.md#L14), [scripts/ralph/README.md](/Users/stevenna/WebstormProjects/minakeep/scripts/ralph/README.md), updated the stale login copy in [src/app/login/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/login/page.tsx#L37), appended the task log in [docs/exec-plans/active/015-hardening-and-maintenance.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/015-hardening-and-maintenance.md#L63), and wrote the operator handoff to [state/last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt#L1).
+- evaluator: started
+- evaluator: status=done promotion=true Inspected the required docs plus the relevant implementation and task artifacts. The required gates passed in substance, the production-style startup path is prepared by `db:prepare` and proven by `start:smoke`, the Playwright server-log drift is closed via the wrapper wired through `playwright.config.ts`, and the reliability/security docs now match the shipped auth, logging, public/private route, health-check, and saved-link validation behavior. Remaining debt is explicit in the documented known gaps. -> state/artifacts/20260320T180253-015-hardening-and-maintenance/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260320T180253-015-hardening-and-maintenance/npm-run-verify-next-server.log

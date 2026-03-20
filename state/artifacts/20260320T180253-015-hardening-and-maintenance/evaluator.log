@@ -1,0 +1,974 @@
+/Users/stevenna/WebstormProjects/minakeep/scripts/ralph/generated/current-evaluator-prompt.txt
+OpenAI Codex v0.116.0 (research preview)
+--------
+workdir: /Users/stevenna/WebstormProjects/minakeep
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: high
+reasoning summaries: none
+session id: 019d0a82-7d14-7e60-a439-0710590fe301
+--------
+user
+You are the promotion evaluator for a repository-local Ralph loop.
+
+Read these documents before deciding:
+- AGENTS.md
+- ARCHITECTURE.md
+- docs/QUALITY_SCORE.md
+- docs/RELIABILITY.md
+- docs/SECURITY.md
+- docs/exec-plans/active/015-hardening-and-maintenance.md
+
+Current task id: 015-hardening-and-maintenance
+Current task title: Hardening and maintenance
+
+Objective:
+Close the reliability, security, and automation gaps after the minakeep feature slices land.
+
+Scope:
+- reconcile docs and implementation drift
+- keep the deterministic checks healthy
+- record remaining debt explicitly
+
+Out of scope:
+- major new product features
+- unrelated infrastructure expansion
+
+Exit criteria:
+1. `npm run verify` passes.
+2. `npm run start:smoke` passes.
+3. Reliability and security docs match the implementation.
+4. Remaining debt is explicit.
+
+Evaluator notes:
+Promote only when the repository is ready for longer unattended Ralph-loop runs under the current task contract.
+Do not promote if the production-style startup path still fails for normal repo reasons such as missing runtime preparation.
+
+Deterministic check summary:
+{
+  "checked_at": "2026-03-20T09:10:17.032Z",
+  "task_id": "015-hardening-and-maintenance",
+  "commands": [
+    {
+      "command": "npm run verify",
+      "ok": true,
+      "output": "\n> minakeep@0.1.0 verify\n> npm run lint && npm run db:prepare && npm run typecheck && npm run build && npm run test && npm run start:smoke\n\n\n> minakeep@0.1.0 lint\n> eslint . --max-warnings=0\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 37ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 typecheck\n> tsc --noEmit\n\n\n> minakeep@0.1.0 build\n> next build\n\n▲ Next.js 16.2.0 (Turbopack)\n- Environments: .env\n\n  Creating an optimized production build ...\n✓ Compiled successfully in 1077ms\n  Running TypeScript ...\n  Finished TypeScript in 1163ms ...\n  Collecting page data using 10 workers ...\n  Generating static pages using 10 workers (0/10) ...\n  Generating static pages using 10 workers (2/10) \r\n  Generating static pages using 10 workers (4/10) \r\n  Generating static pages using 10 workers (7/10) \r\n✓ Generating static pages using 10 workers (10/10) in 138ms\n  Finalizing page optimization ...\n\nRoute (app)\n┌ ○ /\n├ ○ /_not-found\n├ ƒ /api/auth/[...nextauth]\n├ ƒ /api/health\n├ ƒ /app\n├ ƒ /app/links\n├ ƒ /app/notes/[id]/edit\n├ ƒ /app/notes/new\n├ ƒ /app/search\n├ ƒ /app/tags\n├ ƒ /login\n└ ƒ /notes/[slug]\n\n\nƒ Proxy (Middleware)\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n\n> minakeep@0.1.0 test\n> npm run test:unit && npm run test:e2e\n\n\n> minakeep@0.1.0 test:unit\n> node --import tsx --test tests/unit/**/*.test.ts\n\n✔ normalizeTagNames trims, deduplicates, and lowercases shared tags (7.40875ms)\n✔ normalizeLinkInput trims fields and canonicalizes the URL (0.111875ms)\n✔ normalizeLinkInput rejects non-http schemes (0.171375ms)\n✔ renderMarkdownToHtml preserves common note-writing structures while escaping unsafe HTML (0.747333ms)\n✔ createNoteExcerpt turns markdown into readable summary text (0.174583ms)\n✔ createNoteSlug normalizes title content (0.422542ms)\n✔ createNoteSlug falls back when the title has no slug-safe characters (0.057584ms)\n✔ createUniqueNoteSlug increments an existing base slug (0.061834ms)\nℹ tests 8\nℹ suites 0\nℹ pass 8\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 113.021334\n\n> minakeep@0.1.0 test:e2e\n> npm run db:prepare && playwright test\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 35ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\nRunning 7 tests using 1 worker\n\n  ✓  1 tests/e2e/home.spec.ts:8:5 › public homepage exposes the published notes surface (453ms)\n  ✓  2 tests/e2e/home.spec.ts:16:5 › anonymous visitors cannot access the owner search route (216ms)\n  ✓  3 tests/e2e/home.spec.ts:22:5 › owner can sign in, create a draft note, edit it, and reopen it with rendered preview (1.4s)\n  ✓  4 tests/e2e/home.spec.ts:79:5 › owner can publish and unpublish a note across the public routes (1.5s)\n  ✓  5 tests/e2e/home.spec.ts:135:5 › owner can save and review a private tagged link without exposing it on public routes (866ms)\n  ✓  6 tests/e2e/home.spec.ts:171:5 › owner cannot save a private link with an unsafe URL scheme (550ms)\n  ✓  7 tests/e2e/home.spec.ts:197:5 › owner can filter private content by tag and search by title, URL, and tag (1.5s)\n\n  7 passed (8.3s)\n\n> minakeep@0.1.0 start:smoke\n> node scripts/start-smoke.mjs\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 44ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 start\n> next start --hostname 127.0.0.1 --port 3200\n\n▲ Next.js 16.2.0\n- Local:         http://127.0.0.1:3200\n- Network:       http://127.0.0.1:3200\n✓ Ready in 62ms\n",
+      "preflight": {
+        "command": "ensure-e2e-port-free.sh 3100",
+        "error": "",
+        "ok": true,
+        "output": "port-cleanup: 127.0.0.1:3100 already free\n"
+      },
+      "next_server_log_path": "/Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260320T180253-015-hardening-and-maintenance/npm-run-verify-next-server.log"
+    },
+    {
+      "command": "npm run start:smoke",
+      "ok": true,
+      "output": "\n> minakeep@0.1.0 start:smoke\n> node scripts/start-smoke.mjs\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 42ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 start\n> next start --hostname 127.0.0.1 --port 3200\n\n▲ Next.js 16.2.0\n- Local:         http://127.0.0.1:3200\n- Network:       http://127.0.0.1:3200\n✓ Ready in 57ms\n"
+    }
+  ],
+  "missing_files": [],
+  "pass": true
+}
+
+Worker handoff summary from the last run:
+Implemented the hardening pass by adding [scripts/playwright-web-server.mjs](/Users/stevenna/WebstormProjects/minakeep/scripts/playwright-web-server.mjs#L1) and routing Playwright through it in [playwright.config.ts](/Users/stevenna/WebstormProjects/minakeep/playwright.config.ts#L1), so evaluator-provided `MINAKEEP_NEXT_SERVER_LOG` paths now capture Next.js server output. I also reconciled stale repo guidance in [docs/RELIABILITY.md](/Users/stevenna/WebstormProjects/minakeep/docs/RELIABILITY.md#L22), [docs/SECURITY.md](/Users/stevenna/WebstormProjects/minakeep/docs/SECURITY.md#L6), [docs/QUALITY_SCORE.md](/Users/stevenna/WebstormProjects/minakeep/docs/QUALITY_SCORE.md#L14), [scripts/ralph/README.md](/Users/stevenna/WebstormProjects/minakeep/scripts/ralph/README.md), updated the stale login copy in [src/app/login/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/login/page.tsx#L37), appended the task log in [docs/exec-plans/active/015-hardening-and-maintenance.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/015-hardening-and-maintenance.md#L63), and wrote the operator handoff to [state/last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt#L1).
+
+`npm run verify` passed. `npm run start:smoke` passed. The exit criteria appear satisfied, and the remaining debt is explicit in [docs/RELIABILITY.md](/Users/stevenna/WebstormProjects/minakeep/docs/RELIABILITY.md#L33). A separate direct wrapper invocation in this sandbox can still hit a local `127.0.0.1:3100` bind restriction, but it did not affect the required task gates and is recorded in the task log.
+
+Your job:
+- inspect the repository and current implementation
+- determine whether the current task is actually complete
+- mark `done` only if the exit criteria are satisfied in substance, not just approximately
+- prefer conservative decisions
+- recommend promotion only if the task is truly ready
+
+Return JSON only using the provided schema.
+
+mcp startup: no servers
+exec
+/bin/zsh -lc 'git status --short' in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: error: couldn't create cache file '/tmp/xcrun_db-Ce7Z5PMO' (errno=Operation not permitted)
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: error: couldn't create cache file '/tmp/xcrun_db-KPunsEQ4' (errno=Operation not permitted)
+ M docs/QUALITY_SCORE.md
+ M docs/RELIABILITY.md
+ M docs/SECURITY.md
+ D docs/exec-plans/active/014-tag-filtering-and-owner-search.md
+ M docs/exec-plans/active/015-hardening-and-maintenance.md
+ M playwright.config.ts
+ M scripts/ralph/README.md
+ M scripts/ralph/generated/current-evaluator-prompt.txt
+ M scripts/ralph/generated/current-task-prompt.txt
+ M src/app/login/page.tsx
+ M state/artifacts/20260320T174812-014-tag-filtering-and-owner-search/commit.log
+ M state/backlog.md
+ M state/current-cycle.json
+ M state/current-task.txt
+ M state/deterministic-checks.json
+ M state/last-result.txt
+exec
+/bin/zsh -lc "pwd && rg --files AGENTS.md ARCHITECTURE.md docs/QUALITY_SCORE.md docs/RELIABILITY.md docs/SECURITY.md docs/exec-plans/active/015-hardening-and-maintenance.md package.json playwright.config.ts scripts/playwright-web-server.mjs src/app/login/page.tsx state/last-result.txt prisma/schema.prisma tests/e2e tests/unit src scripts | sed -n '1,200p'" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+/Users/stevenna/WebstormProjects/minakeep
+docs/SECURITY.md
+docs/QUALITY_SCORE.md
+docs/RELIABILITY.md
+ARCHITECTURE.md
+AGENTS.md
+prisma/schema.prisma
+playwright.config.ts
+src/app/login/page.tsx
+package.json
+docs/exec-plans/active/015-hardening-and-maintenance.md
+state/last-result.txt
+scripts/playwright-web-server.mjs
+tests/e2e/home.spec.ts
+scripts/start-smoke.mjs
+scripts/playwright-web-server.mjs
+scripts/db-prepare.mjs
+scripts/start-logged.mjs
+src/auth.ts
+src/auth.config.ts
+exec
+/bin/zsh -lc "sed -n '1,260p' ARCHITECTURE.md" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' docs/QUALITY_SCORE.md" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,220p' AGENTS.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# QUALITY_SCORE.md
+
+## Purpose
+Track the current quality level of product domains and architectural layers so agent work can target the weakest areas first.
+Quality scores should reflect both implemented behavior and how convincingly the test strategy proves it.
+
+## Rubric
+- **0** nonexistent
+- **1** sketched only
+- **2** scaffoldable and specified
+- **3** functional and reasonably verified
+- **4** strong, legible, and difficult to accidentally regress
+
+## Product Domain Scores
+| Area | Score | Notes |
+|---|---|---|
+| Product clarity | B | Scope is locked to notes, private links, public note publishing, tags, and owner-only search. |
+| Feature slicing | A- | Notes, publishing, links, tags/search, and hardening all ship as small task slices with matching specs. |
+| UX focus | B | Public reading and private authoring stay clearly separated, with owner workflows remaining functional-first. |
+
+ succeeded in 0ms:
+# AGENTS.md
+
+## Purpose
+Minakeep is a self-hosted knowledge vault for private markdown notes and saved links, with selectively published public notes.
+
+This repository is optimized for agent-legible development and a Ralph-style task-promotion loop.
+
+## Read Order
+Before changing code or plans, read these files in order:
+
+1. `ARCHITECTURE.md`
+2. `docs/PRODUCT_SENSE.md`
+3. `docs/design-docs/core-beliefs.md`
+4. `docs/product-specs/index.md`
+5. `docs/FRONTEND.md`
+6. `docs/PLANS.md`
+7. active plans in `docs/exec-plans/active/`
+
+## Scope Guardrails
+### In scope for v1
+ succeeded in 0ms:
+# ARCHITECTURE.md
+
+## Goal
+Build Minakeep as an agent-legible codebase with strong boundaries, a short instruction surface, and enough extension seams to support future change without overbuilding v1.
+
+## System Overview
+Minakeep is a web application with:
+- a public site for published notes
+- a private owner area for notes, links, tags, and search
+- a SQLite-backed persistence layer for content and owner identity
+- a deterministic operator path with logged startup and Ralph-loop state tracking
+
+## Architectural Priorities
+- keep the foundation small and agent-legible
+- separate public reading from private authoring clearly
+- keep user-visible feature fronts sliced into small plans
+- make runtime startup and verification deterministic before unattended loop work
+
+## Layered Domain Model
+Use a strict forward-only dependency shape inside each domain:
+exec
+/bin/zsh -lc "sed -n '1,260p' docs/RELIABILITY.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# RELIABILITY.md
+
+## Purpose
+Define the reliability expectations and failure-handling rules for Minakeep.
+
+## Core Reliability Rules
+- every task must name deterministic checks explicitly
+- stateful runtime prep must be explicit rather than hidden inside build or test scripts
+- route shells should fail safely and clearly when a queued feature is not implemented yet
+- operational artifacts under `state/` and `logs/` should be stable and inspectable
+
+## Verification
+- `npm run db:prepare` prepares SQLite state and owner seed deterministically
+- `npm run start:smoke` boots the production-style server and probes a health endpoint
+- `npm run verify` includes startup proof alongside code-level checks
+- Ralph status and backlog rendering must work without hand-editing state files
+
+## Runtime Startup Contract
+If the app depends on persistent runtime state, document how runtime preparation happens and how a production-style startup smoke proves the `start` path actually works.
+For Minakeep, `npm run db:prepare` is the explicit runtime-prep step and `npm run start:smoke` must be able to boot the built app and probe `/api/health`.
+exec
+/bin/zsh -lc "sed -n '1,260p' docs/exec-plans/active/015-hardening-and-maintenance.md" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' docs/SECURITY.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# Hardening and maintenance
+
+```json taskmeta
+{
+  "id": "015-hardening-and-maintenance",
+  "title": "Hardening and maintenance",
+  "order": 15,
+  "status": "active",
+  "next_task_on_success": null,
+  "prompt_docs": [
+    "AGENTS.md",
+    "ARCHITECTURE.md",
+    "docs/QUALITY_SCORE.md",
+    "docs/RELIABILITY.md",
+    "docs/SECURITY.md"
+  ],
+  "required_commands": [
+    "npm run verify",
+    "npm run start:smoke"
+  ],
+ succeeded in 0ms:
+# SECURITY.md
+
+## Purpose
+Define the security posture for Minakeep's current shipped slice.
+
+## Core Security Rules
+- keep `/app` routes private to the owner account
+- expose only published notes on public routes
+- do not log secrets, passwords, session tokens, or full private note/link payloads
+- validate owner credentials on the server only
+- store only the owner password hash in SQLite
+- accept saved-link URLs only for `http` and `https`
+
+## Secrets and Config
+- keep `AUTH_SECRET`, `DATABASE_URL`, `OWNER_USERNAME`, and `OWNER_PASSWORD` in environment configuration only
+- never commit seeded credentials or secret values
+- document required environment variables in `.env.example` and runtime docs
+
+## Public Surfaces
+- `/` and `/notes/[slug]` are public
+exec
+/bin/zsh -lc "sed -n '1,240p' package.json" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,220p' scripts/start-smoke.mjs" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+{
+  "name": "minakeep",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "db:prepare": "node scripts/db-prepare.mjs",
+    "test:unit": "node --import tsx --test tests/unit/**/*.test.ts",
+    "test:e2e": "npm run db:prepare && playwright test",
+    "test": "npm run test:unit && npm run test:e2e",
+    "start:smoke": "node scripts/start-smoke.mjs",
+    "start:logged": "node scripts/start-logged.mjs",
+    "verify": "npm run lint && npm run db:prepare && npm run typecheck && npm run build && npm run test && npm run start:smoke",
+    "postinstall": "prisma generate"
+  },
+  "prisma": {
+exec
+/bin/zsh -lc "sed -n '1,240p' scripts/playwright-web-server.mjs" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import { existsSync } from "node:fs";
+import { spawn } from "node:child_process";
+
+const port = process.env.SMOKE_PORT ?? "3200";
+const host = "127.0.0.1";
+const npmBin = process.platform === "win32" ? "npm.cmd" : "npm";
+
+function run(command, args) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(command, args, {
+      cwd: process.cwd(),
+      stdio: "inherit",
+      env: process.env
+    });
+
+    child.on("exit", (code) => {
+      if (code === 0) {
+        resolve();
+        return;
+      }
+ succeeded in 0ms:
+import { spawn } from "node:child_process";
+import { createWriteStream, mkdirSync } from "node:fs";
+import path from "node:path";
+
+const npmBin = process.platform === "win32" ? "npm.cmd" : "npm";
+const host = process.env.PLAYWRIGHT_WEB_SERVER_HOST ?? "127.0.0.1";
+const port = process.env.PLAYWRIGHT_WEB_SERVER_PORT ?? "3100";
+const logPath = process.env.MINAKEEP_NEXT_SERVER_LOG;
+
+const logStream = (() => {
+  if (!logPath) {
+    return null;
+  }
+
+  mkdirSync(path.dirname(logPath), { recursive: true });
+  return createWriteStream(logPath, { flags: "a" });
+})();
+
+const child = spawn(npmBin, ["run", "dev", "--", "--hostname", host, "--port", port], {
+  cwd: process.cwd(),
+exec
+/bin/zsh -lc "sed -n '1,240p' playwright.config.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import { defineConfig } from "@playwright/test";
+
+export default defineConfig({
+  testDir: "./tests/e2e",
+  fullyParallel: true,
+  retries: 0,
+  reporter: "list",
+  use: {
+    baseURL: "http://127.0.0.1:3100",
+    trace: "on-first-retry"
+  },
+  webServer: {
+    command: "node scripts/playwright-web-server.mjs",
+    url: "http://127.0.0.1:3100/api/health",
+    reuseExistingServer: !process.env.CI,
+    timeout: 120000
+  }
+});
+exec
+/bin/zsh -lc "sed -n '1,260p' src/lib/logging/server-logger.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+const LEVELS = ["trace", "debug", "info", "warn", "error"] as const;
+
+type LogLevel = (typeof LEVELS)[number];
+
+function resolveLevel(level: string): LogLevel {
+  if (LEVELS.includes(level as LogLevel)) {
+    return level as LogLevel;
+  }
+  return "info";
+}
+
+function shouldLog(current: LogLevel, target: LogLevel) {
+  return LEVELS.indexOf(target) >= LEVELS.indexOf(current);
+}
+
+function write(level: LogLevel, message: string, metadata?: Record<string, unknown>) {
+  const currentLevel = resolveLevel(process.env.LOG_LEVEL ?? "info");
+
+  if (!shouldLog(currentLevel, level)) {
+    return;
+exec
+/bin/zsh -lc "sed -n '1,220p' src/app/api/health/route.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import { NextResponse } from "next/server";
+
+import { serverLogger } from "@/lib/logging/server-logger";
+
+export function GET() {
+  serverLogger.debug("health check ok");
+
+  return NextResponse.json({
+    status: "ok",
+    timestamp: new Date().toISOString()
+  });
+}
+exec
+/bin/zsh -lc "sed -n '1,240p' src/auth.config.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' src/auth.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' src/proxy.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import type { NextAuthConfig } from "next-auth";
+
+export const authConfig = {
+  providers: [],
+  pages: {
+    signIn: "/login"
+  },
+  session: {
+    strategy: "jwt"
+  },
+  callbacks: {
+    authorized({ auth, request: { nextUrl } }) {
+      if (nextUrl.pathname.startsWith("/app")) {
+        return Boolean(auth?.user);
+      }
+
+      return true;
+    }
+  }
+} satisfies NextAuthConfig;
+ succeeded in 0ms:
+import "server-only";
+
+import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
+
+import { authConfig } from "@/auth.config";
+import { env } from "@/lib/config/env";
+import { verifyPassword } from "@/lib/auth/password";
+import { prisma } from "@/lib/prisma";
+
+export const { handlers, signIn, signOut, auth } = NextAuth({
+  ...authConfig,
+  secret: env.authSecret,
+  providers: [
+    Credentials({
+      credentials: {
+        username: {
+          label: "Username",
+          type: "text"
+        },
+ succeeded in 0ms:
+import NextAuth from "next-auth";
+
+import { authConfig } from "@/auth.config";
+
+const { auth } = NextAuth(authConfig);
+
+export default auth;
+
+export const config = {
+  matcher: ["/app/:path*"]
+};
+exec
+/bin/zsh -lc "sed -n '1,260p' src/lib/auth/password.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import { randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
+
+const KEY_LENGTH = 64;
+
+export function createPasswordHash(password: string) {
+  const salt = randomBytes(16).toString("hex");
+  const hash = scryptSync(password, salt, KEY_LENGTH).toString("hex");
+
+  return `${salt}:${hash}`;
+}
+
+export function verifyPassword(password: string, storedValue: string) {
+  const [salt, storedHash] = storedValue.split(":");
+
+  if (!salt || !storedHash) {
+    return false;
+  }
+
+  const candidate = scryptSync(password, salt, KEY_LENGTH);
+  const expected = Buffer.from(storedHash, "hex");
+exec
+/bin/zsh -lc "sed -n '1,260p' src/lib/config/env.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' src/app/login/page.tsx" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+function requireEnv(name: string) {
+  const value = process.env[name];
+
+  if (!value) {
+    throw new Error(`Missing required environment variable: ${name}`);
+  }
+
+  return value;
+}
+
+export const env = {
+  authSecret: requireEnv("AUTH_SECRET"),
+  databaseUrl: requireEnv("DATABASE_URL"),
+  ownerUsername: requireEnv("OWNER_USERNAME"),
+  ownerPassword: requireEnv("OWNER_PASSWORD"),
+  logLevel: process.env.LOG_LEVEL ?? "info"
+};
+ succeeded in 0ms:
+import { loginAction } from "./actions";
+
+type LoginPageProps = {
+  searchParams?: Promise<{
+    error?: string;
+  }>;
+};
+
+export default async function LoginPage({ searchParams }: LoginPageProps) {
+  const resolvedSearchParams = (await searchParams) ?? {};
+  const hasError = resolvedSearchParams.error === "CredentialsSignin";
+
+  return (
+    <div className="feature-layout">
+      <section className="feature-card">
+        <p className="eyebrow">Owner access</p>
+        <h1>Sign in to the private vault.</h1>
+        <p className="lede">
+          Minakeep uses a single owner account configured through the environment and seeded into SQLite by
+          `npm run db:prepare`.
+exec
+/bin/zsh -lc "sed -n '1,260p' scripts/db-prepare.mjs" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' prisma/seed.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' prisma/schema.prisma" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "dotenv/config";
+
+import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaClient } from "@prisma/client";
+
+import { createPasswordHash, verifyPassword } from "../src/lib/auth/password";
+
+const databaseUrl = process.env.DATABASE_URL;
+
+if (!databaseUrl) {
+  throw new Error("DATABASE_URL must be set before seeding.");
+}
+
+const prisma = new PrismaClient({
+  adapter: new PrismaBetterSqlite3({
+    url: databaseUrl
+  })
+});
+
+async function main() {
+ succeeded in 0ms:
+import { spawn } from "node:child_process";
+import path from "node:path";
+
+const BIN_DIR = path.resolve("node_modules", ".bin");
+const prismaBin = path.join(BIN_DIR, process.platform === "win32" ? "prisma.cmd" : "prisma");
+const nodeBin = process.execPath;
+
+function run(command, args) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(command, args, {
+      cwd: process.cwd(),
+      stdio: "inherit",
+      env: process.env
+    });
+
+    child.on("exit", (code) => {
+      if (code === 0) {
+        resolve();
+        return;
+      }
+exec
+/bin/zsh -lc "sed -n '1,260p' src/app/notes/[slug]/page.tsx" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,320p' tests/e2e/home.spec.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  notes        Note[]
+  links        Link[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Note {
+  id          String   @id @default(cuid())
+ exited 1 in 0ms:
+zsh:1: no matches found: src/app/notes/[slug]/page.tsx
+exec
+/bin/zsh -lc "sed -n '1,260p' src/features/links/normalize.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "dotenv/config";
+
+import { expect, test } from "@playwright/test";
+
+// These journeys all mutate the same single-owner SQLite state, so serial execution keeps promotion checks deterministic.
+test.describe.configure({ mode: "serial" });
+
+test("public homepage exposes the published notes surface", async ({ page }) => {
+  await page.goto("/");
+
+  await expect(page.getByRole("heading", { name: "Notes the owner has chosen to share." })).toBeVisible();
+  await expect(page.getByRole("navigation").getByRole("link", { name: "Owner login" })).toBeVisible();
+  await expect(page.getByText("No published notes yet.")).toBeVisible();
+});
+
+test("anonymous visitors cannot access the owner search route", async ({ page }) => {
+  await page.goto("/app/search");
+
+  await expect(page).toHaveURL(/\/login/);
+});
+ succeeded in 0ms:
+import type { LinkDraftInput } from "@/features/links/types";
+import { normalizeTagNames } from "@/features/tags/normalize";
+
+const SAFE_LINK_PROTOCOLS = new Set(["http:", "https:"]);
+
+export class LinkValidationError extends Error {
+  constructor(readonly code: "invalid-url" | "missing-title" | "missing-summary") {
+    super(code);
+    this.name = "LinkValidationError";
+  }
+}
+
+export function normalizeLinkUrl(url: string) {
+  const trimmedUrl = url.trim();
+
+  if (!trimmedUrl) {
+    throw new LinkValidationError("invalid-url");
+  }
+
+  try {
+exec
+/bin/zsh -lc "sed -n '1,220p' .env.example" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' scripts/ralph/README.md" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' scripts/start-logged.mjs" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,220p' state/last-result.txt" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+DATABASE_URL="file:./dev.db"
+AUTH_SECRET="replace-with-a-long-random-secret"
+OWNER_USERNAME="owner"
+OWNER_PASSWORD="replace-with-a-long-password"
+LOG_LEVEL="info"
+PORT="3000"
+ succeeded in 0ms:
+# Minakeep Ralph Loop v2
+
+This package upgrades the repository from a **repair loop** to a **task-promotion loop**.
+
+## What changed
+
+The first version of the loop could repeatedly work on one prompt, but it could not
+reliably decide when to advance. This version adds:
+
+- machine-readable task contracts in `docs/exec-plans/active/*.md`
+- deterministic checks
+- a read-only evaluator pass with structured JSON output
+- automatic promotion to the next task when the current task is truly complete
+
+## Why this matches the OpenAI harness pattern
+
+OpenAI’s harness engineering article describes a system where:
+- humans specify intent
+- repository docs act as the system of record
+- agents iterate until reviewers are satisfied
+ succeeded in 0ms:
+import { mkdirSync, createWriteStream, existsSync } from "node:fs";
+import path from "node:path";
+import { spawn } from "node:child_process";
+
+const npmBin = process.platform === "win32" ? "npm.cmd" : "npm";
+const logsDir = path.resolve("logs");
+const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+const logFile = path.join(logsDir, `server-${timestamp}.log`);
+const port = process.env.PORT ?? "3000";
+
+mkdirSync(logsDir, { recursive: true });
+
+const prepare = spawn(npmBin, ["run", "db:prepare"], {
+  cwd: process.cwd(),
+  stdio: "inherit",
+  env: process.env
+});
+
+const prepareCode = await new Promise((resolve) => {
+  prepare.on("exit", (code) => resolve(code ?? 1));
+ succeeded in 0ms:
+Implemented the hardening pass by adding [scripts/playwright-web-server.mjs](/Users/stevenna/WebstormProjects/minakeep/scripts/playwright-web-server.mjs#L1) and routing Playwright through it in [playwright.config.ts](/Users/stevenna/WebstormProjects/minakeep/playwright.config.ts#L1), so evaluator-provided `MINAKEEP_NEXT_SERVER_LOG` paths now capture Next.js server output. I also reconciled stale repo guidance in [docs/RELIABILITY.md](/Users/stevenna/WebstormProjects/minakeep/docs/RELIABILITY.md#L22), [docs/SECURITY.md](/Users/stevenna/WebstormProjects/minakeep/docs/SECURITY.md#L6), [docs/QUALITY_SCORE.md](/Users/stevenna/WebstormProjects/minakeep/docs/QUALITY_SCORE.md#L14), [scripts/ralph/README.md](/Users/stevenna/WebstormProjects/minakeep/scripts/ralph/README.md), updated the stale login copy in [src/app/login/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/login/page.tsx#L37), appended the task log in [docs/exec-plans/active/015-hardening-and-maintenance.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/015-hardening-and-maintenance.md#L63), and wrote the operator handoff to [state/last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt#L1).
+
+`npm run verify` passed. `npm run start:smoke` passed. The exit criteria appear satisfied, and the remaining debt is explicit in [docs/RELIABILITY.md](/Users/stevenna/WebstormProjects/minakeep/docs/RELIABILITY.md#L33). A separate direct wrapper invocation in this sandbox can still hit a local `127.0.0.1:3100` bind restriction, but it did not affect the required task gates and is recorded in the task log.
+exec
+/bin/zsh -lc "sed -n '1,260p' 'src/app/notes/[slug]/page.tsx'" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import { notFound } from "next/navigation";
+
+import { renderMarkdownToHtml } from "@/features/notes/markdown";
+import { getPublishedNoteBySlug } from "@/features/notes/service";
+
+type PublicNotePageProps = {
+  params: Promise<{
+    slug: string;
+  }>;
+};
+
+export default async function PublicNotePage({ params }: PublicNotePageProps) {
+  const { slug } = await params;
+  const note = await getPublishedNoteBySlug(slug);
+
+  if (!note) {
+    notFound();
+  }
+
+  const publishedAt = note.publishedAt ?? note.updatedAt;
+exec
+/bin/zsh -lc 'rg -n "password|AUTH_SECRET|OWNER_PASSWORD|DATABASE_URL|LOG_LEVEL|MINAKEEP_NEXT_SERVER_LOG|unsafe|http:|https:" docs src tests prisma scripts .env.example' in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+.env.example:1:DATABASE_URL="file:./dev.db"
+.env.example:2:AUTH_SECRET="replace-with-a-long-random-secret"
+.env.example:4:OWNER_PASSWORD="replace-with-a-long-password"
+.env.example:5:LOG_LEVEL="info"
+prisma/seed.ts:6:import { createPasswordHash, verifyPassword } from "../src/lib/auth/password";
+prisma/seed.ts:8:const databaseUrl = process.env.DATABASE_URL;
+prisma/seed.ts:11:  throw new Error("DATABASE_URL must be set before seeding.");
+prisma/seed.ts:22:  const password = process.env.OWNER_PASSWORD;
+prisma/seed.ts:24:  if (!username || !password) {
+prisma/seed.ts:25:    throw new Error("OWNER_USERNAME and OWNER_PASSWORD must be set before seeding the owner account.");
+prisma/seed.ts:38:        passwordHash: createPasswordHash(password)
+prisma/seed.ts:44:  if (verifyPassword(password, existing.passwordHash)) {
+prisma/seed.ts:53:      passwordHash: createPasswordHash(password)
+docs/SECURITY.md:9:- do not log secrets, passwords, session tokens, or full private note/link payloads
+docs/SECURITY.md:11:- store only the owner password hash in SQLite
+docs/SECURITY.md:15:- keep `AUTH_SECRET`, `DATABASE_URL`, `OWNER_USERNAME`, and `OWNER_PASSWORD` in environment configuration only
+docs/SECURITY.md:28:- unsafe saved-link URL schemes are rejected before persistence
+scripts/start-smoke.mjs:61:  await waitForHealth(`http://${host}:${port}/api/health`);
+tests/e2e/home.spec.ts:24:  const password = process.env.OWNER_PASSWORD ?? "password";
+tests/e2e/home.spec.ts:34:Paragraph with **bold** text and a [link](https://example.com).`;
+exec
+/bin/zsh -lc "find state/artifacts/20260320T180253-015-hardening-and-maintenance -maxdepth 2 -type f | sort | sed -n '1,200p'" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+state/artifacts/20260320T180253-015-hardening-and-maintenance/evaluator.log
+state/artifacts/20260320T180253-015-hardening-and-maintenance/npm-run-verify-next-server.log
+state/artifacts/20260320T180253-015-hardening-and-maintenance/task-prompt.log
+state/artifacts/20260320T180253-015-hardening-and-maintenance/worker.jsonl
+exec
+/bin/zsh -lc "sed -n '1,220p' state/deterministic-checks.json" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,120p' state/artifacts/20260320T180253-015-hardening-and-maintenance/npm-run-verify-next-server.log" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+{
+  "checked_at": "2026-03-20T09:10:17.032Z",
+  "task_id": "015-hardening-and-maintenance",
+  "commands": [
+    {
+      "command": "npm run verify",
+      "ok": true,
+      "output": "\n> minakeep@0.1.0 verify\n> npm run lint && npm run db:prepare && npm run typecheck && npm run build && npm run test && npm run start:smoke\n\n\n> minakeep@0.1.0 lint\n> eslint . --max-warnings=0\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 37ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 typecheck\n> tsc --noEmit\n\n\n> minakeep@0.1.0 build\n> next build\n\n▲ Next.js 16.2.0 (Turbopack)\n- Environments: .env\n\n  Creating an optimized production build ...\n✓ Compiled successfully in 1077ms\n  Running TypeScript ...\n  Finished TypeScript in 1163ms ...\n  Collecting page data using 10 workers ...\n  Generating static pages using 10 workers (0/10) ...\n  Generating static pages using 10 workers (2/10) \r\n  Generating static pages using 10 workers (4/10) \r\n  Generating static pages using 10 workers (7/10) \r\n✓ Generating static pages using 10 workers (10/10) in 138ms\n  Finalizing page optimization ...\n\nRoute (app)\n┌ ○ /\n├ ○ /_not-found\n├ ƒ /api/auth/[...nextauth]\n├ ƒ /api/health\n├ ƒ /app\n├ ƒ /app/links\n├ ƒ /app/notes/[id]/edit\n├ ƒ /app/notes/new\n├ ƒ /app/search\n├ ƒ /app/tags\n├ ƒ /login\n└ ƒ /notes/[slug]\n\n\nƒ Proxy (Middleware)\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n\n> minakeep@0.1.0 test\n> npm run test:unit && npm run test:e2e\n\n\n> minakeep@0.1.0 test:unit\n> node --import tsx --test tests/unit/**/*.test.ts\n\n✔ normalizeTagNames trims, deduplicates, and lowercases shared tags (7.40875ms)\n✔ normalizeLinkInput trims fields and canonicalizes the URL (0.111875ms)\n✔ normalizeLinkInput rejects non-http schemes (0.171375ms)\n✔ renderMarkdownToHtml preserves common note-writing structures while escaping unsafe HTML (0.747333ms)\n✔ createNoteExcerpt turns markdown into readable summary text (0.174583ms)\n✔ createNoteSlug normalizes title content (0.422542ms)\n✔ createNoteSlug falls back when the title has no slug-safe characters (0.057584ms)\n✔ createUniqueNoteSlug increments an existing base slug (0.061834ms)\nℹ tests 8\nℹ suites 0\nℹ pass 8\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 113.021334\n\n> minakeep@0.1.0 test:e2e\n> npm run db:prepare && playwright test\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 35ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\nRunning 7 tests using 1 worker\n\n  ✓  1 tests/e2e/home.spec.ts:8:5 › public homepage exposes the published notes surface (453ms)\n  ✓  2 tests/e2e/home.spec.ts:16:5 › anonymous visitors cannot access the owner search route (216ms)\n  ✓  3 tests/e2e/home.spec.ts:22:5 › owner can sign in, create a draft note, edit it, and reopen it with rendered preview (1.4s)\n  ✓  4 tests/e2e/home.spec.ts:79:5 › owner can publish and unpublish a note across the public routes (1.5s)\n  ✓  5 tests/e2e/home.spec.ts:135:5 › owner can save and review a private tagged link without exposing it on public routes (866ms)\n  ✓  6 tests/e2e/home.spec.ts:171:5 › owner cannot save a private link with an unsafe URL scheme (550ms)\n  ✓  7 tests/e2e/home.spec.ts:197:5 › owner can filter private content by tag and search by title, URL, and tag (1.5s)\n\n  7 passed (8.3s)\n\n> minakeep@0.1.0 start:smoke\n> node scripts/start-smoke.mjs\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 44ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 start\n> next start --hostname 127.0.0.1 --port 3200\n\n▲ Next.js 16.2.0\n- Local:         http://127.0.0.1:3200\n- Network:       http://127.0.0.1:3200\n✓ Ready in 62ms\n",
+      "preflight": {
+        "command": "ensure-e2e-port-free.sh 3100",
+        "error": "",
+        "ok": true,
+        "output": "port-cleanup: 127.0.0.1:3100 already free\n"
+      },
+      "next_server_log_path": "/Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260320T180253-015-hardening-and-maintenance/npm-run-verify-next-server.log"
+    },
+    {
+      "command": "npm run start:smoke",
+      "ok": true,
+      "output": "\n> minakeep@0.1.0 start:smoke\n> node scripts/start-smoke.mjs\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 42ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 start\n> next start --hostname 127.0.0.1 --port 3200\n\n▲ Next.js 16.2.0\n- Local:         http://127.0.0.1:3200\n- Network:       http://127.0.0.1:3200\n✓ Ready in 57ms\n"
+ succeeded in 0ms:
+
+> minakeep@0.1.0 dev
+> next dev --hostname 127.0.0.1 --port 3100
+
+[1m[38;2;173;127;168m▲ Next.js 16.2.0[39m[22m (Turbopack)
+- Local:         http://127.0.0.1:3100
+- Network:       http://127.0.0.1:3100
+- Environments: .env
+[32m[1m✓[22m[39m Ready in 188ms
+
+ GET /api/health [32m200[39m in 80ms[2m (next.js: 70ms, application-code: 9ms)[22m
+ GET / [32m200[39m in 180ms[2m (next.js: 27ms, application-code: 153ms)[22m
+ GET /login?callbackUrl=http%3A%2F%2Flocalhost%3A3100%2Fapp%2Fsearch [32m200[39m in 40ms[2m (next.js: 20ms, application-code: 20ms)[22m
+ GET /login?callbackUrl=http%3A%2F%2Flocalhost%3A3100%2Fapp%2Fnotes%2Fnew [32m200[39m in 16ms[2m (next.js: 938µs, application-code: 15ms)[22m
+ GET /app [32m200[39m in 83ms[2m (next.js: 20ms, proxy.ts: 5ms, application-code: 58ms)[22m
+ POST /login?callbackUrl=http%3A%2F%2Flocalhost%3A3100%2Fapp%2Fnotes%2Fnew [34m303[39m in 127ms[2m (next.js: 1264µs, application-code: 126ms)[22m
+  └─ ƒ loginAction({}) in 35ms [2msrc/app/login/actions.ts[22m
+ GET /app/notes/new [32m200[39m in 42ms[2m (next.js: 24ms, proxy.ts: 4ms, application-code: 14ms)[22m
+ GET /app/notes/cmmyohojz0000z2yboykuj4xj/edit?saved=1 [32m200[39m in 223ms[2m (next.js: 201ms, proxy.ts: 2ms, application-code: 20ms)[22m
+ POST /app/notes/new [34m303[39m in 249ms[2m (next.js: 1155µs, proxy.ts: 4ms, application-code: 244ms)[22m
+exec
+/bin/zsh -lc "sed -n '1,240p' src/app/login/actions.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' scripts/ralph/evaluate-task.mjs" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+"use server";
+
+import { AuthError } from "next-auth";
+import { redirect } from "next/navigation";
+
+import { signIn } from "@/auth";
+
+export async function loginAction(formData: FormData) {
+  const username = String(formData.get("username") ?? "");
+  const password = String(formData.get("password") ?? "");
+
+  try {
+    await signIn("credentials", {
+      username,
+      password,
+      redirectTo: "/app"
+    });
+  } catch (error) {
+    if (error instanceof AuthError) {
+      redirect("/login?error=CredentialsSignin");
+ succeeded in 0ms:
+import path from "node:path";
+import { execSync, spawnSync } from "node:child_process";
+import {
+  GENERATED_DIR,
+  STATE_DIR,
+  ensureDir,
+  findTaskDoc,
+  readCurrentTaskId,
+  readText,
+  safeJsonParse,
+  timestamp,
+  writeText,
+  fileExists,
+} from "./lib/task-utils.mjs";
+
+function slugifyCommand(command) {
+  return command
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+exec
+/bin/zsh -lc "sed -n '1,240p' src/features/notes/service.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' src/features/search/service.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "server-only";
+
+import { notesRepo } from "@/features/notes/repo";
+import { createNoteExcerpt } from "@/features/notes/markdown";
+import type { NoteDraftInput } from "@/features/notes/types";
+import { createUniqueNoteSlug } from "@/features/notes/slug";
+import { normalizeTagNames } from "@/features/tags/normalize";
+
+function normalizeTitle(title: string) {
+  const trimmedTitle = title.trim();
+
+  return trimmedTitle || "Untitled note";
+}
+
+export async function listOwnerNotes(ownerId: string) {
+  return notesRepo.listForOwner(ownerId);
+}
+
+export async function listPublishedNotes() {
+  const notes = await notesRepo.listPublished();
+ succeeded in 0ms:
+import "server-only";
+
+import { linksRepo } from "@/features/links/repo";
+import { notesRepo } from "@/features/notes/repo";
+
+function normalizeSearchQuery(query: string | undefined) {
+  return query?.trim() ?? "";
+}
+
+export async function searchOwnerContent(ownerId: string, rawQuery: string | undefined) {
+  const query = normalizeSearchQuery(rawQuery);
+
+  if (!query) {
+    return {
+      query,
+      notes: [],
+      links: []
+    };
+  }
+
+exec
+/bin/zsh -lc "sed -n '1,320p' src/features/notes/repo.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,320p' src/features/links/repo.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' src/app/app/search/page.tsx" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' src/app/page.tsx" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import Link from "next/link";
+
+import { listPublishedNotes } from "@/features/notes/service";
+
+export default async function HomePage() {
+  const notes = await listPublishedNotes();
+
+  return (
+    <div className="feature-layout">
+      <section className="hero-card public-hero">
+        <p className="eyebrow">Published notes</p>
+        <h1>Notes the owner has chosen to share.</h1>
+        <p className="lede">
+          The public homepage stays limited to notes the owner has explicitly published. Drafts remain private inside
+          the vault until they are promoted onto public routes.
+        </p>
+      </section>
+
+      <section className="panel-card">
+        <strong>Published notes</strong>
+ succeeded in 0ms:
+import "server-only";
+
+import { prisma } from "@/lib/prisma";
+
+const linkTagSelect = {
+  orderBy: {
+    name: "asc" as const
+  },
+  select: {
+    id: true,
+    name: true
+  }
+};
+
+const linkSummarySelect = {
+  id: true,
+  url: true,
+  title: true,
+  summary: true,
+  createdAt: true,
+ succeeded in 0ms:
+import "server-only";
+
+import { prisma } from "@/lib/prisma";
+
+const noteTagSelect = {
+  orderBy: {
+    name: "asc" as const
+  },
+  select: {
+    id: true,
+    name: true
+  }
+};
+
+const noteSummarySelect = {
+  id: true,
+  title: true,
+  excerpt: true,
+  isPublished: true,
+  createdAt: true,
+ succeeded in 0ms:
+import Link from "next/link";
+
+import { searchOwnerContent } from "@/features/search/service";
+import { requireOwnerSession } from "@/lib/auth/owner-session";
+
+type SearchPageProps = {
+  searchParams?: Promise<{
+    q?: string;
+  }>;
+};
+
+export default async function SearchPage({ searchParams }: SearchPageProps) {
+  const owner = await requireOwnerSession();
+  const resolvedSearchParams = (await searchParams) ?? {};
+  const results = await searchOwnerContent(owner.id, resolvedSearchParams.q);
+
+  return (
+    <div className="feature-layout">
+      <section className="feature-card">
+        <p className="eyebrow">Owner search</p>
+exec
+/bin/zsh -lc "sed -n '1,220p' src/lib/auth/owner-session.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "server-only";
+
+import { redirect } from "next/navigation";
+
+import { auth } from "@/auth";
+
+export async function requireOwnerSession() {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    redirect("/login");
+  }
+
+  return {
+    id: session.user.id,
+    name: session.user.name ?? "owner"
+  };
+}
+codex
+{"decision":"done","recommend_promotion":true,"confidence":0.89,"summary":"Inspected the required docs plus the relevant implementation and task artifacts. The required gates passed in substance, the production-style startup path is prepared by `db:prepare` and proven by `start:smoke`, the Playwright server-log drift is closed via the wrapper wired through `playwright.config.ts`, and the reliability/security docs now match the shipped auth, logging, public/private route, health-check, and saved-link validation behavior. Remaining debt is explicit in the documented known gaps.","satisfied_exit_criteria":["`npm run verify` passed and its recorded output matches the current task contract.","`npm run start:smoke` passed and the script explicitly prepares runtime state, starts the production server, and probes `/api/health`.","`docs/RELIABILITY.md` matches the implemented startup, logging, evaluator artifact, and verification behavior.","`docs/SECURITY.md` matches the implemented owner-only `/app` protection, public-note-only publishing model, hashed owner password storage, non-sensitive health endpoint, and `http`/`https` link validation.","Remaining debt is explicit, especially in `docs/RELIABILITY.md` Known Gaps and the task progress log."],"missing_requirements":[],"human_review_triggers":[]}
+tokens used
+50,985
+{"decision":"done","recommend_promotion":true,"confidence":0.89,"summary":"Inspected the required docs plus the relevant implementation and task artifacts. The required gates passed in substance, the production-style startup path is prepared by `db:prepare` and proven by `start:smoke`, the Playwright server-log drift is closed via the wrapper wired through `playwright.config.ts`, and the reliability/security docs now match the shipped auth, logging, public/private route, health-check, and saved-link validation behavior. Remaining debt is explicit in the documented known gaps.","satisfied_exit_criteria":["`npm run verify` passed and its recorded output matches the current task contract.","`npm run start:smoke` passed and the script explicitly prepares runtime state, starts the production server, and probes `/api/health`.","`docs/RELIABILITY.md` matches the implemented startup, logging, evaluator artifact, and verification behavior.","`docs/SECURITY.md` matches the implemented owner-only `/app` protection, public-note-only publishing model, hashed owner password storage, non-sensitive health endpoint, and `http`/`https` link validation.","Remaining debt is explicit, especially in `docs/RELIABILITY.md` Known Gaps and the task progress log."],"missing_requirements":[],"human_review_triggers":[]}
+evaluation: done promotion=true

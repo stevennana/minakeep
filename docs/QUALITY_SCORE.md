@@ -15,18 +15,17 @@ Quality scores should reflect both implemented behavior and how convincingly the
 | Area | Score | Notes |
 |---|---|---|
 | Product clarity | B | Scope is locked to notes, private links, public note publishing, tags, and owner-only search. |
-| Feature slicing | B | Distinct specs and tasks exist, but only the foundation is implemented in this bootstrap pass. |
-| UX focus | B | Public reading and private authoring are separated clearly. |
+| Feature slicing | A- | Notes, publishing, links, tags/search, and hardening all ship as small task slices with matching specs. |
+| UX focus | B | Public reading and private authoring stay clearly separated, with owner workflows remaining functional-first. |
 
 ## Architecture Layer Scores
 | Area | Score | Notes |
 |---|---|---|
-| Repo structure | B | Docs-first structure and Ralph loop wiring are part of the foundation. |
-| Runtime determinism | B | SQLite prep, startup smoke, and logged startup are mandatory. |
-| Boundary clarity | B | Notes, links, tags/search, owner auth, and operations stay separate. |
+| Repo structure | A- | Docs-first structure, feature folders, and Ralph loop wiring remain legible after the feature slices landed. |
+| Runtime determinism | A- | `db:prepare`, `verify`, `start:smoke`, and logged Playwright server artifacts keep the operator path inspectable. |
+| Boundary clarity | B+ | Notes, links, tags/search, owner auth, and operations stay separated with forward-only dependencies. |
 
 ## Immediate Quality Priorities
-- keep the docs and scaffold aligned
-- avoid implementing queued feature slices during the bootstrap task
-- make route placeholders and tests honest about what is and is not finished
-- keep verification fast enough for repeated local use while still proving startup
+- keep reliability, security, and Ralph loop docs aligned with the shipped automation path
+- preserve deterministic runtime prep and production-style startup proof as hard promotion gates
+- keep remaining operator and single-node debt explicit instead of leaving it implied

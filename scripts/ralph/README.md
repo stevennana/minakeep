@@ -32,6 +32,7 @@ contracts and adding a separate evaluator step before promotion.
 - `scripts/ralph/render-task-prompt.mjs`: build the worker prompt from the current task
 - `scripts/ralph/evaluate-task.mjs`: run deterministic checks and a read-only evaluator
 - `scripts/ralph/promote-task.mjs`: move a finished task forward
+- `scripts/playwright-web-server.mjs`: wraps the Playwright web server so evaluator-set server log paths capture Next.js output
 - `state/current-task.txt`: current task id
 - `state/current-cycle.json`: live cycle phase/status for the current run
 - `state/evaluation.json`: latest decision
@@ -104,6 +105,7 @@ tail -f logs/server-*.log
 - if the worker goes silent and `worker.jsonl` stops changing past the stall timeout, the harness marks the cycle as `stalled`, writes a stall artifact, appends `!` to the health line, and stops the unattended loop for RCA
 - Required commands come from each task doc’s `taskmeta.required_commands`; `evaluate-task.mjs` runs exactly those commands plus required-file checks.
 - Port cleanup is executed automatically only by the evaluator path for `npm run verify`, `npm run test:e2e`, or other Playwright-bearing commands. Manual local runs do not get that cleanup for free.
+- `scripts/playwright-web-server.mjs` mirrors Playwright's Next.js server output to `MINAKEEP_NEXT_SERVER_LOG` when the evaluator provides that path.
 - `ensure-e2e-port-free.sh` is intentionally aggressive and may terminate unrelated processes bound to `127.0.0.1:3100`.
 - If the evaluator repeatedly returns `not_done`, tighten the active task doc instead of making the prompt larger.
 - If a task is semantically done but not promotable, fix the contract or the deterministic checks; do not manually skip ahead silently.

@@ -10,7 +10,7 @@ export default defineConfig({
     trace: "on-first-retry"
   },
   webServer: {
-    command: "npm run dev -- --hostname 127.0.0.1 --port 3100",
+    command: "node scripts/playwright-web-server.mjs",
     url: "http://127.0.0.1:3100/api/health",
     reuseExistingServer: !process.env.CI,
     timeout: 120000
