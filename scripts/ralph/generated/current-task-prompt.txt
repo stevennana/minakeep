@@ -2,36 +2,36 @@ Read the following repository documents before making changes:
 - AGENTS.md
 - ARCHITECTURE.md
 - docs/FRONTEND.md
-- docs/product-specs/public-note-publishing.md
-- docs/exec-plans/active/012-public-note-publishing.md
+- docs/product-specs/link-capture.md
+- docs/exec-plans/active/013-link-capture.md
 
-Current task id: 012-public-note-publishing
-Current task title: Public note publishing
+Current task id: 013-link-capture
+Current task title: Link capture
 
 Objective:
-Let the owner publish or unpublish a note and expose published notes on the public homepage and note pages.
+Let the owner save private links with a manual title, summary, and shared tags inside Minakeep.
 
 Scope:
-- The owner can publish or unpublish a note explicitly.
-- The public homepage lists only published notes.
-- Each published note is reachable by a public slug-based route.
-- Unpublished notes are never exposed on public routes.
+- The owner can create a saved link with URL, title, summary, and tags.
+- Saved links remain private in v1.
+- The owner can review saved links in the private area.
+- Links share the same tag vocabulary used by notes.
 
 Out of scope:
 - unrelated feature fronts
 - future product expansion beyond this feature
 
 Exit criteria:
-1. Publishing a note makes it visible on the public homepage.
-2. Anonymous readers can open a published note page by slug.
-3. Unpublishing removes the note from public routes.
+1. A saved link persists with its URL, title, summary, and tags.
+2. Saved links are not exposed on public routes.
+3. The private links view shows saved entries clearly enough for later retrieval.
 4. `npm run verify` passes.
 
 Required checks:
 - npm run verify
 
 Evaluator notes:
-Promote only when the public note publishing behavior works end-to-end in substance.
+Promote only when the link capture behavior works end-to-end in substance.
 
 Required repository artifacts for this task:
 - none

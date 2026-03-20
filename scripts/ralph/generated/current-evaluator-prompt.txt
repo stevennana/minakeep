@@ -4,50 +4,50 @@ Read these documents before deciding:
 - AGENTS.md
 - ARCHITECTURE.md
 - docs/FRONTEND.md
-- docs/product-specs/public-note-publishing.md
-- docs/exec-plans/active/012-public-note-publishing.md
+- docs/product-specs/link-capture.md
+- docs/exec-plans/active/013-link-capture.md
 
-Current task id: 012-public-note-publishing
-Current task title: Public note publishing
+Current task id: 013-link-capture
+Current task title: Link capture
 
 Objective:
-Let the owner publish or unpublish a note and expose published notes on the public homepage and note pages.
+Let the owner save private links with a manual title, summary, and shared tags inside Minakeep.
 
 Scope:
-- The owner can publish or unpublish a note explicitly.
-- The public homepage lists only published notes.
-- Each published note is reachable by a public slug-based route.
-- Unpublished notes are never exposed on public routes.
+- The owner can create a saved link with URL, title, summary, and tags.
+- Saved links remain private in v1.
+- The owner can review saved links in the private area.
+- Links share the same tag vocabulary used by notes.
 
 Out of scope:
 - unrelated feature fronts
 - future product expansion beyond this feature
 
 Exit criteria:
-1. Publishing a note makes it visible on the public homepage.
-2. Anonymous readers can open a published note page by slug.
-3. Unpublishing removes the note from public routes.
+1. A saved link persists with its URL, title, summary, and tags.
+2. Saved links are not exposed on public routes.
+3. The private links view shows saved entries clearly enough for later retrieval.
 4. `npm run verify` passes.
 
 Evaluator notes:
-Promote only when the public note publishing behavior works end-to-end in substance.
+Promote only when the link capture behavior works end-to-end in substance.
 
 Deterministic check summary:
 {
-  "checked_at": "2026-03-20T08:23:13.792Z",
-  "task_id": "012-public-note-publishing",
+  "checked_at": "2026-03-20T08:38:17.817Z",
+  "task_id": "013-link-capture",
   "commands": [
     {
       "command": "npm run verify",
       "ok": true,
-      "output": "\n> minakeep@0.1.0 verify\n> npm run lint && npm run db:prepare && npm run typecheck && npm run build && npm run test && npm run start:smoke\n\n\n> minakeep@0.1.0 lint\n> eslint . --max-warnings=0\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 43ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 typecheck\n> tsc --noEmit\n\n\n> minakeep@0.1.0 build\n> next build\n\n▲ Next.js 16.2.0 (Turbopack)\n- Environments: .env\n\n  Creating an optimized production build ...\n✓ Compiled successfully in 1017ms\n  Running TypeScript ...\n  Finished TypeScript in 1056ms ...\n  Collecting page data using 10 workers ...\n  Generating static pages using 10 workers (0/10) ...\n  Generating static pages using 10 workers (2/10) \r\n  Generating static pages using 10 workers (4/10) \r\n  Generating static pages using 10 workers (7/10) \r\n✓ Generating static pages using 10 workers (10/10) in 159ms\n  Finalizing page optimization ...\n\nRoute (app)\n┌ ○ /\n├ ○ /_not-found\n├ ƒ /api/auth/[...nextauth]\n├ ƒ /api/health\n├ ƒ /app\n├ ○ /app/links\n├ ƒ /app/notes/[id]/edit\n├ ƒ /app/notes/new\n├ ○ /app/search\n├ ○ /app/tags\n├ ƒ /login\n└ ƒ /notes/[slug]\n\n\nƒ Proxy (Middleware)\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n\n> minakeep@0.1.0 test\n> npm run test:unit && npm run test:e2e\n\n\n> minakeep@0.1.0 test:unit\n> node --import tsx --test tests/unit/**/*.test.ts\n\n✔ renderMarkdownToHtml preserves common note-writing structures while escaping unsafe HTML (0.709792ms)\n✔ createNoteExcerpt turns markdown into readable summary text (0.16925ms)\n✔ createNoteSlug normalizes title content (0.385375ms)\n✔ createNoteSlug falls back when the title has no slug-safe characters (0.053666ms)\n✔ createUniqueNoteSlug increments an existing base slug (0.057208ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 99.120333\n\n> minakeep@0.1.0 test:e2e\n> npm run db:prepare && playwright test\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 36ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\nRunning 3 tests using 1 worker\n\n  ✓  1 tests/e2e/home.spec.ts:8:5 › public homepage exposes the published notes surface (484ms)\n  ✓  2 tests/e2e/home.spec.ts:16:5 › owner can sign in, create a draft note, edit it, and reopen it with rendered preview (1.5s)\n  ✓  3 tests/e2e/home.spec.ts:73:5 › owner can publish and unpublish a note across the public routes (1.5s)\n\n  3 passed (5.2s)\n\n> minakeep@0.1.0 start:smoke\n> node scripts/start-smoke.mjs\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 43ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 start\n> next start --hostname 127.0.0.1 --port 3200\n\n▲ Next.js 16.2.0\n- Local:         http://127.0.0.1:3200\n- Network:       http://127.0.0.1:3200\n✓ Ready in 61ms\n",
+      "output": "\n> minakeep@0.1.0 verify\n> npm run lint && npm run db:prepare && npm run typecheck && npm run build && npm run test && npm run start:smoke\n\n\n> minakeep@0.1.0 lint\n> eslint . --max-warnings=0\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 42ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 typecheck\n> tsc --noEmit\n\n\n> minakeep@0.1.0 build\n> next build\n\n▲ Next.js 16.2.0 (Turbopack)\n- Environments: .env\n\n  Creating an optimized production build ...\n✓ Compiled successfully in 1007ms\n  Running TypeScript ...\n  Finished TypeScript in 1064ms ...\n  Collecting page data using 10 workers ...\n  Generating static pages using 10 workers (0/10) ...\n  Generating static pages using 10 workers (2/10) \r\n  Generating static pages using 10 workers (4/10) \r\n  Generating static pages using 10 workers (7/10) \r\n✓ Generating static pages using 10 workers (10/10) in 152ms\n  Finalizing page optimization ...\n\nRoute (app)\n┌ ○ /\n├ ○ /_not-found\n├ ƒ /api/auth/[...nextauth]\n├ ƒ /api/health\n├ ƒ /app\n├ ƒ /app/links\n├ ƒ /app/notes/[id]/edit\n├ ƒ /app/notes/new\n├ ○ /app/search\n├ ○ /app/tags\n├ ƒ /login\n└ ƒ /notes/[slug]\n\n\nƒ Proxy (Middleware)\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n\n> minakeep@0.1.0 test\n> npm run test:unit && npm run test:e2e\n\n\n> minakeep@0.1.0 test:unit\n> node --import tsx --test tests/unit/**/*.test.ts\n\n✔ normalizeTagNames trims, deduplicates, and lowercases shared tags (7.292208ms)\n✔ normalizeLinkInput trims fields and canonicalizes the URL (0.115417ms)\n✔ renderMarkdownToHtml preserves common note-writing structures while escaping unsafe HTML (0.762708ms)\n✔ createNoteExcerpt turns markdown into readable summary text (0.180792ms)\n✔ createNoteSlug normalizes title content (0.403125ms)\n✔ createNoteSlug falls back when the title has no slug-safe characters (0.058042ms)\n✔ createUniqueNoteSlug increments an existing base slug (0.059084ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 116.787959\n\n> minakeep@0.1.0 test:e2e\n> npm run db:prepare && playwright test\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 42ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\nRunning 4 tests using 1 worker\n\n  ✓  1 tests/e2e/home.spec.ts:8:5 › public homepage exposes the published notes surface (537ms)\n  ✓  2 tests/e2e/home.spec.ts:16:5 › owner can sign in, create a draft note, edit it, and reopen it with rendered preview (1.5s)\n  ✓  3 tests/e2e/home.spec.ts:73:5 › owner can publish and unpublish a note across the public routes (1.5s)\n  ✓  4 tests/e2e/home.spec.ts:129:5 › owner can save and review a private tagged link without exposing it on public routes (887ms)\n\n  4 passed (6.2s)\n\n> minakeep@0.1.0 start:smoke\n> node scripts/start-smoke.mjs\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 34ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 start\n> next start --hostname 127.0.0.1 --port 3200\n\n▲ Next.js 16.2.0\n- Local:         http://127.0.0.1:3200\n- Network:       http://127.0.0.1:3200\n✓ Ready in 63ms\n",
       "preflight": {
         "command": "ensure-e2e-port-free.sh 3100",
         "error": "",
         "ok": true,
         "output": "port-cleanup: 127.0.0.1:3100 already free\n"
       },
-      "next_server_log_path": "/Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260320T171025-012-public-note-publishing/npm-run-verify-next-server.log"
+      "next_server_log_path": "/Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260320T173459-013-link-capture/npm-run-verify-next-server.log"
     }
   ],
   "missing_files": [],
@@ -55,11 +55,9 @@ Deterministic check summary:
 }
 
 Worker handoff summary from the last run:
-Implemented task `012-public-note-publishing`.
+The current `013-link-capture` implementation already covered the feature scope in the worktree. This pass fixed the remaining deterministic failure by scoping the Playwright tag assertions to the saved link entry created by the test in [tests/e2e/home.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/home.spec.ts#L129), then recorded the concrete completion note in [013-link-capture.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/013-link-capture.md#L58) and refreshed the operator handoff in [state/last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt#L1).
 
-The owner can now publish and unpublish from the existing note edit flow, wired through [src/app/app/notes/actions.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/app/notes/actions.ts) and surfaced in [src/features/notes/components/note-editor.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/components/note-editor.tsx). The public homepage now reads only published notes from [src/app/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/page.tsx), and published slug routes render real note content in [src/app/notes/[slug]/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/notes/[slug]/page.tsx). Unpublished notes are excluded from both public surfaces.
-
-I updated the task log in [docs/exec-plans/active/012-public-note-publishing.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/012-public-note-publishing.md), extended the end-to-end coverage in [tests/e2e/home.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/home.spec.ts), and wrote the operator handoff summary to [state/last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt). `npm run verify` passed, so the exit criteria appear satisfied.
+`npm run verify` passed locally. The exit criteria appear satisfied: saved links persist with URL, title, summary, and shared tags, remain private on public routes, and are reviewable in `/app/links`.
 
 Your job:
 - inspect the repository and current implementation

@@ -1,0 +1,10 @@
+[main 1a0863d] ralph: 012-public-note-publishing 2026-03-20T17:26:13+09:00
+ 32 files changed, 1445 insertions(+), 132 deletions(-)
+ rename docs/exec-plans/{active => completed}/011-note-authoring.md (91%)
+ create mode 100644 state/artifacts/20260320T165727-011-note-authoring/backlog.log
+ create mode 100644 state/artifacts/20260320T165727-011-note-authoring/promote.log
+ create mode 100644 state/artifacts/20260320T171025-012-public-note-publishing/commit.log
+ create mode 100644 state/artifacts/20260320T171025-012-public-note-publishing/evaluator.log
+ create mode 100644 state/artifacts/20260320T171025-012-public-note-publishing/task-prompt.log
+ create mode 100644 state/artifacts/20260320T171025-012-public-note-publishing/worker.jsonl
+commit: created

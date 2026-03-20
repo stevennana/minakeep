@@ -125,3 +125,39 @@ This note should appear on the public site when published.`;
   expect(response?.status()).toBe(404);
   await expect(page.getByText("This page could not be found.")).toBeVisible();
 });
+
+test("owner can save and review a private tagged link without exposing it on public routes", async ({ page }) => {
+  const username = process.env.OWNER_USERNAME ?? "owner";
+  const password = process.env.OWNER_PASSWORD ?? "password";
+  const uniqueId = `${Date.now()}`;
+  const title = `Reference link ${uniqueId}`;
+  const summary = `Summary for saved link ${uniqueId}`;
+  const url = `https://example.com/reference-${uniqueId}`;
+
+  await page.goto("/login");
+  await page.getByLabel("Username").fill(username);
+  await page.getByLabel("Password").fill(password);
+  await page.getByRole("button", { name: "Sign in" }).click();
+
+  await expect(page).toHaveURL(/\/app$/);
+  await page.getByRole("link", { name: "Links" }).click();
+
+  await expect(page).toHaveURL(/\/app\/links$/);
+  await page.getByRole("textbox", { name: /^URL$/ }).fill(url);
+  await page.getByRole("textbox", { name: /^Title$/ }).fill(title);
+  await page.getByRole("textbox", { name: /^Summary$/ }).fill(summary);
+  await page.getByRole("textbox", { name: /^Tags$/ }).fill("research, reading");
+  await page.getByRole("button", { name: "Save link" }).click();
+
+  await expect(page).toHaveURL(/\/app\/links\?saved=1$/);
+  await expect(page.getByText("Link saved.")).toBeVisible();
+  const savedLinkEntry = page.locator("article").filter({ has: page.getByRole("link", { name: title }) });
+  await expect(savedLinkEntry.getByRole("link", { name: title })).toHaveAttribute("href", url);
+  await expect(savedLinkEntry.getByText(summary)).toBeVisible();
+  await expect(savedLinkEntry.getByText("research", { exact: true })).toBeVisible();
+  await expect(savedLinkEntry.getByText("reading", { exact: true })).toBeVisible();
+
+  await page.goto("/");
+  await expect(page.getByRole("link", { name: title })).toHaveCount(0);
+  await expect(page.getByText(summary)).toHaveCount(0);
+});

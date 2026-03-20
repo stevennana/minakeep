@@ -62,7 +62,7 @@ export default async function PrivateDashboardPage() {
       </section>
 
       <section className="panel-card">
-        <strong>Queued private routes</strong>
+        <strong>Private routes</strong>
         <ul className="inline-list">
           <li>
             <Link href="/app/links">Links</Link>
@@ -74,7 +74,7 @@ export default async function PrivateDashboardPage() {
             <Link href="/app/search">Search</Link>
           </li>
         </ul>
-        <p>Those routes remain staged but intentionally placeholder-only until their own task slices land.</p>
+        <p>Links are live for private bookmark capture. Tags and search remain staged until their own task slices land.</p>
       </section>
     </div>
   );

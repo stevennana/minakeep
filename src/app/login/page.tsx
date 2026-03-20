@@ -36,8 +36,8 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
         </form>
         {hasError ? <p className="signin-error">Credentials were rejected. Check the seeded owner username and password.</p> : null}
         <p className="auth-note">
-          After sign-in, the private `/app` area exposes draft note authoring now. Publishing, links, tags, and search
-          remain queued to their own feature slices.
+          After sign-in, the private `/app` area exposes note authoring and private link capture now. Shared tags and
+          search remain queued to their own feature slices.
         </p>
       </section>
     </div>
