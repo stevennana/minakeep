@@ -24,6 +24,10 @@ model Note {
   slug        String   @unique
   markdown    String
   excerpt     String
+  enrichmentStatus    String   @default("pending")
+  enrichmentError     String?
+  enrichmentAttempts  Int      @default(0)
+  enrichmentUpdatedAt DateTime?
   isPublished Boolean  @default(false)
   publishedAt DateTime?
   tags        Tag[]
@@ -38,6 +42,10 @@ model Link {
   url       String
   title     String
   summary   String
+  enrichmentStatus    String   @default("pending")
+  enrichmentError     String?
+  enrichmentAttempts  Int      @default(0)
+  enrichmentUpdatedAt DateTime?
   tags      Tag[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

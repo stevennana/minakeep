@@ -7,6 +7,7 @@ Build Minakeep as an agent-legible codebase with strong boundaries, a short inst
 Minakeep is a web application with:
 - a public site for published notes
 - a private owner area for notes, links, tags, and search
+- an automatic AI enrichment path for notes and links
 - a SQLite-backed persistence layer for content and owner identity
 - a deterministic operator path with logged startup and Ralph-loop state tracking
 
@@ -15,6 +16,8 @@ Minakeep is a web application with:
 - separate public reading from private authoring clearly
 - keep user-visible feature fronts sliced into small plans
 - make runtime startup and verification deterministic before unattended loop work
+- isolate the external AI client behind a narrow service boundary
+- make AI failure visible without letting it block core save flows
 
 ## Layered Domain Model
 Use a strict forward-only dependency shape inside each domain:
@@ -29,13 +32,19 @@ The repository is intended to work well with long-running agent loops. Strict bo
 Single-owner authentication, route protection, and owner-session checks.
 
 ### Notes
-Markdown note drafts, publishing state, slugs, and public rendering.
+Markdown note drafts, publishing state, slugs, public rendering, and note-side enrichment state.
 
 ### Links
-Manual bookmark capture with URL, title, summary, and shared tags.
+Manual bookmark capture with URL/title plus AI-generated summary and shared tags.
 
 ### Tags and search
 Shared tagging plus owner-only filtering and search over titles, URLs, and tags.
+
+### AI enrichment
+Automatic summary/tag generation for notes and links through a Mina-hosted OpenAI-compatible endpoint, with explicit enrichment status and retry behavior.
+
+### Visual system
+Shared design tokens, layout rules, and component language for public and private surfaces.
 
 ### Operations
 Prisma runtime prep, startup smoke, operator logging, and Ralph loop state.
@@ -46,16 +55,18 @@ Prisma runtime prep, startup smoke, operator logging, and Ralph loop state.
 - the private `/app` area is notes-first, with dedicated routes for links, tags, and search
 - server components should be the default for route shells and static surfaces
 - interactive owner forms should stay localized to small client components
+- the next wave should converge public and private surfaces on one elegant knowledge-studio visual system
 
 ### Server
 - Auth.js handles owner sign-in
 - route handlers expose health and future server-backed workflows
 - Prisma access stays behind narrow server-side helpers
 - server logging stays explicit and avoids secrets or full sensitive payloads
+- the external AI client must stay behind a dedicated integration layer and never leak tokens into client-side code
 
 ## Persistence Strategy
 - SQLite is the v1 source of truth
-- Prisma schema defines owner, note, link, and shared tag tables up front
+- Prisma schema defines owner, note, link, and shared tag tables up front, and note/link records carry shared enrichment state fields for status, error, attempt count, and last update time
 - `db:prepare` must generate the client, sync schema, and seed the owner account
 - future migrations should extend the existing schema instead of replacing it ad hoc
 
@@ -64,6 +75,7 @@ Prisma runtime prep, startup smoke, operator logging, and Ralph loop state.
 - `npm run verify` must include lint, typecheck, build, unit tests, E2E tests, and startup smoke
 - `npm run start:logged` gives operators a persistent server log path under `logs/`
 - if the app cannot boot against prepared runtime state, the harness is not ready
+- external AI tasks must add a real-endpoint E2E check when `LLM_BASE`, `TOKEN`, and `MODEL` are configured, using Playwright coverage tagged `@ai-real`
 
 ## Long-Running Agent Readiness
 - docs are the system of record

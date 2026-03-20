@@ -31,6 +31,7 @@ export default async function EditNotePage({ params, searchParams }: EditNotePag
       action={updateNoteAction.bind(null, note.id)}
       formDescription="Edit the note, confirm the rendered output, and explicitly choose when it should appear on the public site."
       formTitle="Edit draft note"
+      enrichment={note.enrichment}
       initialMarkdown={note.markdown}
       initialTags={note.tags.map((tag) => tag.name).join(", ")}
       initialTitle={note.title}

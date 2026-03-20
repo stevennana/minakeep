@@ -6,4 +6,9 @@
 - [x] 013-link-capture — Link capture
 - [x] 014-tag-filtering-and-owner-search — Tag filtering and owner search
 - [x] 015-hardening-and-maintenance — Hardening and maintenance
+- [ ] 016-ai-enrichment-foundation — AI enrichment foundation ← current
+- [ ] 017-note-ai-enrichment — Note AI enrichment
+- [ ] 018-link-ai-enrichment — Link AI enrichment
+- [ ] 019-knowledge-studio-ui-refresh — Knowledge studio UI refresh
+- [ ] 020-ai-ui-hardening — AI and UI hardening
 

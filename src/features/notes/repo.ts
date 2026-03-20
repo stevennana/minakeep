@@ -1,5 +1,7 @@
 import "server-only";
 
+import type { EnrichmentRecordFields } from "@/features/enrichment/types";
+import { toEnrichmentState } from "@/features/enrichment/types";
 import { prisma } from "@/lib/prisma";
 
 const noteTagSelect = {
@@ -17,6 +19,10 @@ const noteSummarySelect = {
   title: true,
   excerpt: true,
   isPublished: true,
+  enrichmentStatus: true,
+  enrichmentError: true,
+  enrichmentAttempts: true,
+  enrichmentUpdatedAt: true,
   createdAt: true,
   updatedAt: true,
   tags: noteTagSelect
@@ -28,9 +34,23 @@ const noteEditorSelect = {
   markdown: true
 };
 
+function mapNoteRecord<TRecord extends EnrichmentRecordFields>(note: TRecord) {
+  const { enrichmentStatus, enrichmentError, enrichmentAttempts, enrichmentUpdatedAt, ...rest } = note;
+
+  return {
+    ...rest,
+    enrichment: toEnrichmentState({
+      enrichmentStatus,
+      enrichmentError,
+      enrichmentAttempts,
+      enrichmentUpdatedAt
+    })
+  };
+}
+
 export const notesRepo = {
   async listForOwner(ownerId: string) {
-    return prisma.note.findMany({
+    const notes = await prisma.note.findMany({
       where: {
         ownerId
       },
@@ -39,9 +59,11 @@ export const notesRepo = {
       },
       select: noteSummarySelect
     });
+
+    return notes.map(mapNoteRecord);
   },
   async listForOwnerByTag(ownerId: string, tagName: string) {
-    return prisma.note.findMany({
+    const notes = await prisma.note.findMany({
       where: {
         ownerId,
         tags: {
@@ -55,9 +77,11 @@ export const notesRepo = {
       },
       select: noteSummarySelect
     });
+
+    return notes.map(mapNoteRecord);
   },
   async searchForOwner(ownerId: string, query: string) {
-    return prisma.note.findMany({
+    const notes = await prisma.note.findMany({
       where: {
         ownerId,
         OR: [
@@ -82,6 +106,8 @@ export const notesRepo = {
       },
       select: noteSummarySelect
     });
+
+    return notes.map(mapNoteRecord);
   },
   async listPublished() {
     return prisma.note.findMany({
@@ -107,13 +133,15 @@ export const notesRepo = {
     });
   },
   async findByIdForOwner(ownerId: string, id: string) {
-    return prisma.note.findFirst({
+    const note = await prisma.note.findFirst({
       where: {
         id,
         ownerId
       },
       select: noteEditorSelect
     });
+
+    return note ? mapNoteRecord(note) : null;
   },
   async findPublishedBySlug(slug: string) {
     return prisma.note.findFirst({
@@ -145,7 +173,7 @@ export const notesRepo = {
     return notes.map((note) => note.slug);
   },
   async create(ownerId: string, data: { title: string; slug: string; markdown: string; excerpt: string; tagNames: string[] }) {
-    return prisma.note.create({
+    const note = await prisma.note.create({
       data: {
         ownerId,
         title: data.title,
@@ -165,9 +193,11 @@ export const notesRepo = {
       },
       select: noteEditorSelect
     });
+
+    return mapNoteRecord(note);
   },
   async update(id: string, data: { title: string; slug: string; markdown: string; excerpt: string; tagNames: string[] }) {
-    return prisma.note.update({
+    const note = await prisma.note.update({
       where: {
         id
       },
@@ -190,9 +220,11 @@ export const notesRepo = {
       },
       select: noteEditorSelect
     });
+
+    return mapNoteRecord(note);
   },
   async updatePublication(id: string, isPublished: boolean) {
-    return prisma.note.update({
+    const note = await prisma.note.update({
       where: {
         id
       },
@@ -202,5 +234,58 @@ export const notesRepo = {
       },
       select: noteEditorSelect
     });
+
+    return mapNoteRecord(note);
+  },
+  async setEnrichmentPending(id: string) {
+    const note = await prisma.note.update({
+      where: {
+        id
+      },
+      data: {
+        enrichmentStatus: "pending",
+        enrichmentError: null,
+        enrichmentAttempts: {
+          increment: 1
+        },
+        enrichmentUpdatedAt: new Date()
+      },
+      select: noteEditorSelect
+    });
+
+    return mapNoteRecord(note);
+  },
+  async setEnrichmentReady(id: string) {
+    const note = await prisma.note.update({
+      where: {
+        id
+      },
+      data: {
+        enrichmentStatus: "ready",
+        enrichmentError: null,
+        enrichmentUpdatedAt: new Date()
+      },
+      select: noteEditorSelect
+    });
+
+    return mapNoteRecord(note);
+  },
+  async setEnrichmentFailed(id: string, error: string) {
+    const note = await prisma.note.update({
+      where: {
+        id
+      },
+      data: {
+        enrichmentStatus: "failed",
+        enrichmentError: error,
+        enrichmentAttempts: {
+          increment: 1
+        },
+        enrichmentUpdatedAt: new Date()
+      },
+      select: noteEditorSelect
+    });
+
+    return mapNoteRecord(note);
   }
 };

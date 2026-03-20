@@ -6,14 +6,17 @@ Define the reliability expectations and failure-handling rules for Minakeep.
 ## Core Reliability Rules
 - every task must name deterministic checks explicitly
 - stateful runtime prep must be explicit rather than hidden inside build or test scripts
-- route shells should fail safely and clearly when a queued feature is not implemented yet
 - operational artifacts under `state/` and `logs/` should be stable and inspectable
+- AI enrichment failures must not block note or link persistence
+- external AI verification must be explicit instead of assumed from unit tests alone
 
 ## Verification
 - `npm run db:prepare` prepares SQLite state and owner seed deterministically
 - `npm run start:smoke` boots the production-style server and probes a health endpoint
 - `npm run verify` includes startup proof alongside code-level checks
 - Ralph status and backlog rendering must work without hand-editing state files
+- AI tasks must require a real-endpoint E2E check when `LLM_BASE`, `TOKEN`, and `MODEL` are present
+- the real-endpoint Playwright path is tagged `@ai-real`, and promotable AI tasks must pass `npm run test:e2e -- --grep @ai-real` when those env vars are configured
 
 ## Runtime Startup Contract
 If the app depends on persistent runtime state, document how runtime preparation happens and how a production-style startup smoke proves the `start` path actually works.
@@ -29,12 +32,15 @@ Playwright-backed verification also writes Next.js server output to a per-cycle 
 Document which behaviors are protected by unit tests, which flows require end-to-end coverage, and which command failures block task promotion.
 When tests cover subtle or business-critical behavior, capture why those tests exist so future loops do not weaken them casually.
 If a user-visible behavior depends on an outside resource such as AI chat or a third-party service, require end-to-end coverage before promotion.
+For the AI enrichment wave, E2E must prove: note save with generated metadata, link save with generated metadata, and save-with-visible-failure when the endpoint fails or times out.
+The shared helper under `tests/e2e/ai-real.ts` is the contract point for checking whether those env vars are present before running real-endpoint journeys.
 
 ## Known Gaps
 - there is no external redundancy or multi-node failover in v1
 - startup and test commands assume local Node and Playwright browser availability
 - E2E verification stays serial because the single-owner flows share one mutable SQLite runtime state
 - `start:logged` is intended for operator inspection, not for Ralph automation
+- external AI reliability will depend on the Mina-hosted endpoint and the quality of visible retry/failure handling
 
 ## Environment-Specific Verification Blockers
 If the direct operator path passes but the current sandboxed or wrapped runner still fails, record that separately from normal product bugs and escalate it explicitly instead of hiding it inside generic “not done” wording.

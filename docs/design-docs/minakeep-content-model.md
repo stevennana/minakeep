@@ -1,7 +1,7 @@
 # Minakeep Content Model
 
 ## Goal
-Define the stable content concepts for v1 so note, publish, link, and retrieval work can be implemented without renaming entities midstream.
+Define the stable content concepts for v1 so note, publish, link, retrieval, and AI enrichment work can be implemented without renaming entities midstream.
 
 ## Entities
 
@@ -15,11 +15,13 @@ Define the stable content concepts for v1 so note, publish, link, and retrieval 
 - a note is draft by default
 - a note may be published or unpublished explicitly
 - only published notes are visible on public routes
+- a note may also carry AI-generated summary/tag metadata and visible enrichment status
 
 ### Link
 - a link has `url`, `title`, `summary`, and shared tags
 - links remain private in v1
 - links are standalone saved items, not note attachments
+- link summary and tags may be AI-owned metadata in the next wave
 
 ### Tag
 - tags are shared across notes and links
@@ -34,3 +36,4 @@ Define the stable content concepts for v1 so note, publish, link, and retrieval 
 - search is owner-only in v1
 - v1 search targets note titles, link titles, URLs, and tags
 - future full-text retrieval work must be proposed as a separate feature wave instead of silently broadening the current contract
+- AI-generated metadata may improve display and tagging before retrieval expands into summary/body search

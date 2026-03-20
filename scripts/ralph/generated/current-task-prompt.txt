@@ -1,46 +1,50 @@
 Read the following repository documents before making changes:
 - AGENTS.md
 - ARCHITECTURE.md
-- docs/QUALITY_SCORE.md
+- docs/FRONTEND.md
 - docs/RELIABILITY.md
 - docs/SECURITY.md
-- docs/exec-plans/active/015-hardening-and-maintenance.md
+- docs/design-docs/ai-enrichment-lifecycle.md
+- docs/exec-plans/active/016-ai-enrichment-foundation.md
 
-Current task id: 015-hardening-and-maintenance
-Current task title: Hardening and maintenance
+Current task id: 016-ai-enrichment-foundation
+Current task title: AI enrichment foundation
 
 Objective:
-Close the reliability, security, and automation gaps after the minakeep feature slices land.
+Introduce the shared Mina-hosted OpenAI-compatible integration layer, enrichment-state model, and promotion-safe real-endpoint test contract needed for the AI wave.
 
 Scope:
-- reconcile docs and implementation drift
-- keep the deterministic checks healthy
-- record remaining debt explicitly
+- add a dedicated server-side AI client boundary for `LLM_BASE`, `TOKEN`, and `MODEL`
+- define how notes and links record enrichment status such as pending, ready, and failed
+- add retry-friendly service interfaces without yet polishing note- or link-specific UX deeply
+- establish the real-endpoint E2E tagging strategy for promotable AI tasks
 
 Out of scope:
-- major new product features
-- unrelated infrastructure expansion
+- full note-specific enrichment UX
+- full link-specific enrichment UX
+- broad visual redesign work
+- AI chat or multi-provider support
 
 Exit criteria:
-1. `npm run verify` passes.
-2. `npm run start:smoke` passes.
-3. Reliability and security docs match the implementation.
-4. Remaining debt is explicit.
+1. The codebase has one narrow server-side AI integration path for the Mina-hosted OpenAI-compatible endpoint.
+2. Notes and links have a shared enrichment-state contract that later tasks can use without guessing.
+3. The AI-task promotion rules explicitly require a real-endpoint E2E path when the AI env vars are configured.
+4. `npm run verify` passes.
 
 Required checks:
-- npm run verify
-- npm run start:smoke
+- `npm run verify`
 
 Evaluator notes:
-Promote only when the repository is ready for longer unattended Ralph-loop runs under the current task contract.
-Do not promote if the production-style startup path still fails for normal repo reasons such as missing runtime preparation.
+Promote only when the foundation clearly prepares later note/link AI tasks without already collapsing those feature fronts together.
+Do not promote if credential handling, failure-state rules, or promotion-gate commands are still ambiguous.
 
 Required repository artifacts for this task:
-- scripts/ralph/README.md
+- .env.example
+- src
+- tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run start:smoke
 
 Previous known gaps from the last evaluation:
 - none

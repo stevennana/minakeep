@@ -1,3 +1,4 @@
+import type { EnrichmentState } from "@/features/enrichment/types";
 import type { SavedTag } from "@/features/tags/types";
 
 export type NoteDraftInput = {
@@ -11,6 +12,7 @@ export type NoteSummary = {
   title: string;
   excerpt: string;
   isPublished: boolean;
+  enrichment: EnrichmentState;
   tags: SavedTag[];
   createdAt: Date;
   updatedAt: Date;

@@ -1,3 +1,4 @@
+import type { EnrichmentState } from "@/features/enrichment/types";
 import type { SavedTag } from "@/features/tags/types";
 
 export type LinkDraftInput = {
@@ -12,6 +13,7 @@ export type SavedLinkSummary = {
   url: string;
   title: string;
   summary: string;
+  enrichment: EnrichmentState;
   tags: SavedTag[];
   createdAt: Date;
   updatedAt: Date;

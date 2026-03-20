@@ -1,5 +1,6 @@
 import "server-only";
 
+import { requestEnrichment, retryEnrichment } from "@/features/enrichment/service";
 import { notesRepo } from "@/features/notes/repo";
 import { createNoteExcerpt } from "@/features/notes/markdown";
 import type { NoteDraftInput } from "@/features/notes/types";
@@ -41,14 +42,17 @@ export async function createDraftNote(ownerId: string, input: NoteDraftInput) {
   const markdown = input.markdown;
   const tagNames = normalizeTagNames(input.tags);
   const existingSlugs = await notesRepo.listSlugsForOwner(ownerId);
-
-  return notesRepo.create(ownerId, {
+  const note = await notesRepo.create(ownerId, {
     title,
     slug: createUniqueNoteSlug(title, existingSlugs),
     markdown,
     excerpt: createNoteExcerpt(markdown, title),
     tagNames
   });
+
+  await requestEnrichment(notesRepo, note.id);
+
+  return note;
 }
 
 export async function updateDraftNote(ownerId: string, id: string, input: NoteDraftInput) {
@@ -63,14 +67,17 @@ export async function updateDraftNote(ownerId: string, id: string, input: NoteDr
   const tagNames = normalizeTagNames(input.tags);
   const existingSlugs = await notesRepo.listSlugsForOwner(ownerId);
   const siblingSlugs = existingSlugs.filter((slug) => slug !== existingNote.slug);
-
-  return notesRepo.update(id, {
+  const note = await notesRepo.update(id, {
     title,
     slug: createUniqueNoteSlug(title, siblingSlugs),
     markdown,
     excerpt: createNoteExcerpt(markdown, title),
     tagNames
   });
+
+  await requestEnrichment(notesRepo, note.id);
+
+  return note;
 }
 
 export async function publishNote(ownerId: string, id: string) {
@@ -99,4 +106,14 @@ export async function unpublishNote(ownerId: string, id: string) {
   }
 
   return notesRepo.updatePublication(id, false);
+}
+
+export async function retryNoteEnrichment(ownerId: string, id: string) {
+  const note = await notesRepo.findByIdForOwner(ownerId, id);
+
+  if (!note) {
+    return null;
+  }
+
+  return retryEnrichment(notesRepo, id);
 }

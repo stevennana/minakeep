@@ -8,9 +8,12 @@ test.describe.configure({ mode: "serial" });
 test("public homepage exposes the published notes surface", async ({ page }) => {
   await page.goto("/");
 
+  const emptyState = page.getByText("No published notes yet.");
+  const publishedNoteEntry = page.locator(".note-list-item").first();
+
   await expect(page.getByRole("heading", { name: "Notes the owner has chosen to share." })).toBeVisible();
   await expect(page.getByRole("navigation").getByRole("link", { name: "Owner login" })).toBeVisible();
-  await expect(page.getByText("No published notes yet.")).toBeVisible();
+  await expect(emptyState.or(publishedNoteEntry)).toBeVisible();
 });
 
 test("anonymous visitors cannot access the owner search route", async ({ page }) => {

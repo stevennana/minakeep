@@ -10,6 +10,7 @@ The owner opens a note in the private area and chooses to publish it.
 - The owner can publish or unpublish a note explicitly.
 - The public homepage lists only published notes.
 - Each published note is reachable by a public slug-based route.
+- Public note listings may show AI-generated summary when available without replacing the authored note body.
 - Unpublished notes are never exposed on public routes.
 
 ## Validation

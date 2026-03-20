@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { useFormStatus } from "react-dom";
 
+import type { EnrichmentState } from "@/features/enrichment/types";
+import { getEnrichmentStatusDetail, getEnrichmentStatusLabel } from "@/features/enrichment/types";
 import { renderMarkdownToHtml } from "@/features/notes/markdown";
 
 type NoteEditorProps = {
@@ -15,6 +17,7 @@ type NoteEditorProps = {
   formDescription: string;
   submitLabel: string;
   savedNotice?: string;
+  enrichment?: EnrichmentState;
   publication?: {
     isPublished: boolean;
     publicHref: `/notes/${string}`;
@@ -52,6 +55,7 @@ export function NoteEditor({
   formDescription,
   submitLabel,
   savedNotice,
+  enrichment,
   publication
 }: NoteEditorProps) {
   const [title, setTitle] = useState(initialTitle);
@@ -91,6 +95,12 @@ export function NoteEditor({
           </div>
         ) : null}
         {savedNotice ? <p className="status-note">{savedNotice}</p> : null}
+        {enrichment ? (
+          <div className="note-meta">
+            <span>{getEnrichmentStatusLabel(enrichment.status)}</span>
+            <span>{getEnrichmentStatusDetail(enrichment)}</span>
+          </div>
+        ) : null}
       </section>
 
       <div className="note-editor-grid">

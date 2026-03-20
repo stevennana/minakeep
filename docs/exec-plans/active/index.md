@@ -5,11 +5,11 @@ This queue is the task-level promotion source of truth for minakeep.
 Only task files in this directory that contain a `taskmeta` JSON block are eligible for automatic selection, evaluation, and promotion.
 
 ## Current recommended sequence
-1. `011-note-authoring.md` -> Let the owner sign in, create draft markdown notes, edit them, and preview the rendered result inside the private Minakeep area.
-2. `012-public-note-publishing.md` -> Let the owner publish or unpublish a note and expose published notes on the public homepage and note pages.
-3. `013-link-capture.md` -> Let the owner save private links with a manual title, summary, and shared tags inside Minakeep.
-4. `014-tag-filtering-and-owner-search.md` -> Let the owner organize notes and links with shared tags and basic owner-only search over titles, URLs, and tags.
-5. `015-hardening-and-maintenance.md` -> Close the reliability, security, and automation gaps after the minakeep feature slices land.
+1. `016-ai-enrichment-foundation.md` -> establish the Mina-hosted OpenAI-compatible client boundary, enrichment state model, and promotion-safe real-endpoint test contract
+2. `017-note-ai-enrichment.md` -> add automatic note summary/tag enrichment with visible status and retry behavior
+3. `018-link-ai-enrichment.md` -> add automatic link summary/tag enrichment with visible status and retry behavior
+4. `019-knowledge-studio-ui-refresh.md` -> refresh the full app into a cohesive elegant knowledge-studio interface
+5. `020-ai-ui-hardening.md` -> reconcile AI reliability, security, and UI polish after the new wave lands
 
 ## Operating rule
 

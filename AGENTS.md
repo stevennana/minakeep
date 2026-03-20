@@ -1,7 +1,7 @@
 # AGENTS.md
 
 ## Purpose
-Minakeep is a self-hosted knowledge vault for private markdown notes and saved links, with selectively published public notes.
+Minakeep is a self-hosted knowledge vault for private markdown notes and saved links, with selectively published public notes, automatic AI enrichment, and a polished knowledge-studio interface.
 
 This repository is optimized for agent-legible development and a Ralph-style task-promotion loop.
 
@@ -19,21 +19,26 @@ Before changing code or plans, read these files in order:
 ## Scope Guardrails
 ### In scope for v1
 - capture private markdown notes
-- save private links with manual URL, title, summary, and shared tags
+- save private links with manual URL and title, plus generated AI summary and tags
 - publish selected notes to a public homepage and public note pages
 - organize notes and links with shared tags and owner-only basic search
+- automatically enrich notes and links with AI-generated summary and tags after save
+- refresh the full app into a dense, polished knowledge-studio UI
 
 ### Explicitly out of scope for v1
-- AI tagging, summarization, or chat features
 - multi-user collaboration or invite flows
 - browser importers, automation rules, OCR, or content archiving
+- AI chat and ask-your-vault interactions
+- multi-provider AI orchestration beyond the Mina-hosted OpenAI-compatible endpoint
 - public link publishing or anonymous search
 
 ## Product Shape
 - public homepage lists published notes only
 - anonymous readers can open published note pages only
-- private owner routes handle note drafting, link saving, tags, and search
-- notes are markdown-first; links are manual bookmarks with short summaries
+- private owner routes handle note drafting, link saving, tags, search, and AI metadata visibility
+- notes are markdown-first; links keep manual URL/title capture but AI-owned summary/tags
+- AI enrichment runs automatically after note or link save and records visible success/failure state
+- public and private surfaces share one elegant knowledge-studio visual system
 
 ## Technical Shape
 - Next.js App Router with TypeScript and npm
@@ -41,6 +46,7 @@ Before changing code or plans, read these files in order:
 - Auth.js credentials for the single owner account
 - Playwright for end-to-end coverage and `node --import tsx --test` for unit coverage
 - Ralph loop scripts under `scripts/ralph/` with mutable run state under `state/`
+- a Mina-hosted OpenAI-compatible AI endpoint configured only through shell/local environment
 
 ## Validation Strategy
 Use layered checks:
@@ -50,7 +56,7 @@ Use layered checks:
 
 Promotion is blocked when required checks fail. Required test commands in active task contracts are hard gates, not suggestions.
 While iterating, prefer the smallest targeted check for the code you just changed. Use the full required command set before considering the task done.
-If a feature depends on an outside resource such as AI chat or another remote service, keep it in the required E2E flows before allowing promotion.
+If a feature depends on an outside resource such as AI or another remote service, keep it in the required E2E flows before allowing promotion.
 For manual server inspection, prefer `npm run start:logged` and set `LOG_LEVEL` intentionally instead of relying only on ephemeral terminal output.
 
 ### Required E2E flows
@@ -58,7 +64,9 @@ For manual server inspection, prefer `npm run start:logged` and set `LOG_LEVEL` 
 - owner can create and edit a draft markdown note
 - owner can publish a note and see it appear on `/`
 - anonymous readers can open a published note page
-- owner can save a tagged link
+- owner can save a link and receive generated AI summary/tags
+- owner can save a note and receive generated AI summary/tags
+- AI failure does not block save and exposes a retry path
 - owner can filter or search private content by title, URL, or tag
 
 ## Documentation Discipline
@@ -81,4 +89,5 @@ For manual server inspection, prefer `npm run start:logged` and set `LOG_LEVEL` 
 - the relevant spec, design docs, and active plan all match the shipped behavior
 - required commands in the active task contract pass locally
 - `npm run start:smoke` proves the production-style app can boot against prepared SQLite state
+- external AI tasks are not promotable until their real-endpoint E2E path passes with configured env vars
 - remaining debt and non-goals are documented instead of implied

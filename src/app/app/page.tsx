@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { signOut } from "@/auth";
+import { getEnrichmentStatusLabel } from "@/features/enrichment/types";
 import { listOwnerNotes } from "@/features/notes/service";
 import { requireOwnerSession } from "@/lib/auth/owner-session";
 
@@ -53,6 +54,7 @@ export default async function PrivateDashboardPage() {
                 </div>
                 <div className="note-meta">
                   <span>{note.isPublished ? "Published" : "Draft"}</span>
+                  <span>{getEnrichmentStatusLabel(note.enrichment.status)}</span>
                   <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(note.updatedAt)}</span>
                 </div>
               </article>

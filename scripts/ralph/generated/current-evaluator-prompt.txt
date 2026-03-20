@@ -3,57 +3,56 @@ You are the promotion evaluator for a repository-local Ralph loop.
 Read these documents before deciding:
 - AGENTS.md
 - ARCHITECTURE.md
-- docs/QUALITY_SCORE.md
+- docs/FRONTEND.md
 - docs/RELIABILITY.md
 - docs/SECURITY.md
-- docs/exec-plans/active/015-hardening-and-maintenance.md
+- docs/design-docs/ai-enrichment-lifecycle.md
+- docs/exec-plans/active/016-ai-enrichment-foundation.md
 
-Current task id: 015-hardening-and-maintenance
-Current task title: Hardening and maintenance
+Current task id: 016-ai-enrichment-foundation
+Current task title: AI enrichment foundation
 
 Objective:
-Close the reliability, security, and automation gaps after the minakeep feature slices land.
+Introduce the shared Mina-hosted OpenAI-compatible integration layer, enrichment-state model, and promotion-safe real-endpoint test contract needed for the AI wave.
 
 Scope:
-- reconcile docs and implementation drift
-- keep the deterministic checks healthy
-- record remaining debt explicitly
+- add a dedicated server-side AI client boundary for `LLM_BASE`, `TOKEN`, and `MODEL`
+- define how notes and links record enrichment status such as pending, ready, and failed
+- add retry-friendly service interfaces without yet polishing note- or link-specific UX deeply
+- establish the real-endpoint E2E tagging strategy for promotable AI tasks
 
 Out of scope:
-- major new product features
-- unrelated infrastructure expansion
+- full note-specific enrichment UX
+- full link-specific enrichment UX
+- broad visual redesign work
+- AI chat or multi-provider support
 
 Exit criteria:
-1. `npm run verify` passes.
-2. `npm run start:smoke` passes.
-3. Reliability and security docs match the implementation.
-4. Remaining debt is explicit.
+1. The codebase has one narrow server-side AI integration path for the Mina-hosted OpenAI-compatible endpoint.
+2. Notes and links have a shared enrichment-state contract that later tasks can use without guessing.
+3. The AI-task promotion rules explicitly require a real-endpoint E2E path when the AI env vars are configured.
+4. `npm run verify` passes.
 
 Evaluator notes:
-Promote only when the repository is ready for longer unattended Ralph-loop runs under the current task contract.
-Do not promote if the production-style startup path still fails for normal repo reasons such as missing runtime preparation.
+Promote only when the foundation clearly prepares later note/link AI tasks without already collapsing those feature fronts together.
+Do not promote if credential handling, failure-state rules, or promotion-gate commands are still ambiguous.
 
 Deterministic check summary:
 {
-  "checked_at": "2026-03-20T09:10:17.032Z",
-  "task_id": "015-hardening-and-maintenance",
+  "checked_at": "2026-03-20T17:36:59.737Z",
+  "task_id": "016-ai-enrichment-foundation",
   "commands": [
     {
       "command": "npm run verify",
       "ok": true,
-      "output": "\n> minakeep@0.1.0 verify\n> npm run lint && npm run db:prepare && npm run typecheck && npm run build && npm run test && npm run start:smoke\n\n\n> minakeep@0.1.0 lint\n> eslint . --max-warnings=0\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 37ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 typecheck\n> tsc --noEmit\n\n\n> minakeep@0.1.0 build\n> next build\n\n▲ Next.js 16.2.0 (Turbopack)\n- Environments: .env\n\n  Creating an optimized production build ...\n✓ Compiled successfully in 1077ms\n  Running TypeScript ...\n  Finished TypeScript in 1163ms ...\n  Collecting page data using 10 workers ...\n  Generating static pages using 10 workers (0/10) ...\n  Generating static pages using 10 workers (2/10) \r\n  Generating static pages using 10 workers (4/10) \r\n  Generating static pages using 10 workers (7/10) \r\n✓ Generating static pages using 10 workers (10/10) in 138ms\n  Finalizing page optimization ...\n\nRoute (app)\n┌ ○ /\n├ ○ /_not-found\n├ ƒ /api/auth/[...nextauth]\n├ ƒ /api/health\n├ ƒ /app\n├ ƒ /app/links\n├ ƒ /app/notes/[id]/edit\n├ ƒ /app/notes/new\n├ ƒ /app/search\n├ ƒ /app/tags\n├ ƒ /login\n└ ƒ /notes/[slug]\n\n\nƒ Proxy (Middleware)\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n\n> minakeep@0.1.0 test\n> npm run test:unit && npm run test:e2e\n\n\n> minakeep@0.1.0 test:unit\n> node --import tsx --test tests/unit/**/*.test.ts\n\n✔ normalizeTagNames trims, deduplicates, and lowercases shared tags (7.40875ms)\n✔ normalizeLinkInput trims fields and canonicalizes the URL (0.111875ms)\n✔ normalizeLinkInput rejects non-http schemes (0.171375ms)\n✔ renderMarkdownToHtml preserves common note-writing structures while escaping unsafe HTML (0.747333ms)\n✔ createNoteExcerpt turns markdown into readable summary text (0.174583ms)\n✔ createNoteSlug normalizes title content (0.422542ms)\n✔ createNoteSlug falls back when the title has no slug-safe characters (0.057584ms)\n✔ createUniqueNoteSlug increments an existing base slug (0.061834ms)\nℹ tests 8\nℹ suites 0\nℹ pass 8\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 113.021334\n\n> minakeep@0.1.0 test:e2e\n> npm run db:prepare && playwright test\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 35ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\nRunning 7 tests using 1 worker\n\n  ✓  1 tests/e2e/home.spec.ts:8:5 › public homepage exposes the published notes surface (453ms)\n  ✓  2 tests/e2e/home.spec.ts:16:5 › anonymous visitors cannot access the owner search route (216ms)\n  ✓  3 tests/e2e/home.spec.ts:22:5 › owner can sign in, create a draft note, edit it, and reopen it with rendered preview (1.4s)\n  ✓  4 tests/e2e/home.spec.ts:79:5 › owner can publish and unpublish a note across the public routes (1.5s)\n  ✓  5 tests/e2e/home.spec.ts:135:5 › owner can save and review a private tagged link without exposing it on public routes (866ms)\n  ✓  6 tests/e2e/home.spec.ts:171:5 › owner cannot save a private link with an unsafe URL scheme (550ms)\n  ✓  7 tests/e2e/home.spec.ts:197:5 › owner can filter private content by tag and search by title, URL, and tag (1.5s)\n\n  7 passed (8.3s)\n\n> minakeep@0.1.0 start:smoke\n> node scripts/start-smoke.mjs\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 44ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 start\n> next start --hostname 127.0.0.1 --port 3200\n\n▲ Next.js 16.2.0\n- Local:         http://127.0.0.1:3200\n- Network:       http://127.0.0.1:3200\n✓ Ready in 62ms\n",
+      "output": "\n> minakeep@0.1.0 verify\n> npm run lint && npm run db:prepare && npm run typecheck && npm run build && npm run test && npm run start:smoke\n\n\n> minakeep@0.1.0 lint\n> eslint . --max-warnings=0\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 36ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 typecheck\n> tsc --noEmit\n\n\n> minakeep@0.1.0 build\n> next build\n\n▲ Next.js 16.2.0 (Turbopack)\n- Environments: .env\n\n  Creating an optimized production build ...\n✓ Compiled successfully in 1151ms\n  Running TypeScript ...\n  Finished TypeScript in 1188ms ...\n  Collecting page data using 10 workers ...\n  Generating static pages using 10 workers (0/10) ...\n  Generating static pages using 10 workers (2/10) \r\n  Generating static pages using 10 workers (4/10) \r\n  Generating static pages using 10 workers (7/10) \r\n✓ Generating static pages using 10 workers (10/10) in 168ms\n  Finalizing page optimization ...\n\nRoute (app)\n┌ ○ /\n├ ○ /_not-found\n├ ƒ /api/auth/[...nextauth]\n├ ƒ /api/health\n├ ƒ /app\n├ ƒ /app/links\n├ ƒ /app/notes/[id]/edit\n├ ƒ /app/notes/new\n├ ƒ /app/search\n├ ƒ /app/tags\n├ ƒ /login\n└ ƒ /notes/[slug]\n\n\nƒ Proxy (Middleware)\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n\n> minakeep@0.1.0 test\n> npm run test:unit && npm run test:e2e\n\n\n> minakeep@0.1.0 test:unit\n> node --import tsx --test tests/unit/**/*.test.ts\n\n✔ getMinaAiConfigStatus returns disabled when no AI env vars are set (0.670875ms)\n✔ buildMinaChatCompletionsRequest shapes the Mina OpenAI-compatible request (0.174875ms)\n✔ normalizeMinaEnrichmentResponse trims the summary and normalizes repeated tags (6.951042ms)\n✔ requestEnrichment records a failed state when the AI env is not configured (0.741542ms)\n✔ requestEnrichment records a pending state when the AI env is configured (0.109875ms)\n✔ normalizeTagNames trims, deduplicates, and lowercases shared tags (7.697625ms)\n✔ normalizeLinkInput trims fields and canonicalizes the URL (0.141042ms)\n✔ normalizeLinkInput rejects non-http schemes (0.206292ms)\n✔ renderMarkdownToHtml preserves common note-writing structures while escaping unsafe HTML (0.797417ms)\n✔ createNoteExcerpt turns markdown into readable summary text (0.177125ms)\n✔ createNoteSlug normalizes title content (0.412417ms)\n✔ createNoteSlug falls back when the title has no slug-safe characters (0.057208ms)\n✔ createUniqueNoteSlug increments an existing base slug (0.059042ms)\nℹ tests 13\nℹ suites 0\nℹ pass 13\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 134.811791\n\n> minakeep@0.1.0 test:e2e\n> npm run db:prepare && playwright test\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 37ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\nRunning 8 tests using 2 workers\n\n  ✓  2 tests/e2e/home.spec.ts:8:5 › public homepage exposes the published notes surface (611ms)\n  ✓  3 tests/e2e/home.spec.ts:19:5 › anonymous visitors cannot access the owner search route (326ms)\n  ✓  1 tests/e2e/auth.spec.ts:5:5 › owner can sign in to the private dashboard (1.0s)\n  ✓  4 tests/e2e/home.spec.ts:25:5 › owner can sign in, create a draft note, edit it, and reopen it with rendered preview (1.1s)\n  ✓  5 tests/e2e/home.spec.ts:82:5 › owner can publish and unpublish a note across the public routes (1.6s)\n  ✓  6 tests/e2e/home.spec.ts:138:5 › owner can save and review a private tagged link without exposing it on public routes (885ms)\n  ✓  7 tests/e2e/home.spec.ts:174:5 › owner cannot save a private link with an unsafe URL scheme (564ms)\n  ✓  8 tests/e2e/home.spec.ts:200:5 › owner can filter private content by tag and search by title, URL, and tag (1.5s)\n\n  8 passed (8.6s)\n\n> minakeep@0.1.0 start:smoke\n> node scripts/start-smoke.mjs\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 42ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 start\n> next start --hostname 127.0.0.1 --port 3200\n\n▲ Next.js 16.2.0\n- Local:         http://127.0.0.1:3200\n- Network:       http://127.0.0.1:3200\n✓ Ready in 58ms\n",
       "preflight": {
         "command": "ensure-e2e-port-free.sh 3100",
         "error": "",
         "ok": true,
         "output": "port-cleanup: 127.0.0.1:3100 already free\n"
       },
-      "next_server_log_path": "/Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260320T180253-015-hardening-and-maintenance/npm-run-verify-next-server.log"
-    },
-    {
-      "command": "npm run start:smoke",
-      "ok": true,
-      "output": "\n> minakeep@0.1.0 start:smoke\n> node scripts/start-smoke.mjs\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 42ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 start\n> next start --hostname 127.0.0.1 --port 3200\n\n▲ Next.js 16.2.0\n- Local:         http://127.0.0.1:3200\n- Network:       http://127.0.0.1:3200\n✓ Ready in 57ms\n"
+      "next_server_log_path": "/Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T022107-016-ai-enrichment-foundation/npm-run-verify-next-server.log"
     }
   ],
   "missing_files": [],
@@ -61,9 +60,13 @@ Deterministic check summary:
 }
 
 Worker handoff summary from the last run:
-Implemented the hardening pass by adding [scripts/playwright-web-server.mjs](/Users/stevenna/WebstormProjects/minakeep/scripts/playwright-web-server.mjs#L1) and routing Playwright through it in [playwright.config.ts](/Users/stevenna/WebstormProjects/minakeep/playwright.config.ts#L1), so evaluator-provided `MINAKEEP_NEXT_SERVER_LOG` paths now capture Next.js server output. I also reconciled stale repo guidance in [docs/RELIABILITY.md](/Users/stevenna/WebstormProjects/minakeep/docs/RELIABILITY.md#L22), [docs/SECURITY.md](/Users/stevenna/WebstormProjects/minakeep/docs/SECURITY.md#L6), [docs/QUALITY_SCORE.md](/Users/stevenna/WebstormProjects/minakeep/docs/QUALITY_SCORE.md#L14), [scripts/ralph/README.md](/Users/stevenna/WebstormProjects/minakeep/scripts/ralph/README.md), updated the stale login copy in [src/app/login/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/login/page.tsx#L37), appended the task log in [docs/exec-plans/active/015-hardening-and-maintenance.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/015-hardening-and-maintenance.md#L63), and wrote the operator handoff to [state/last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt#L1).
+Implemented the AI foundation slice for task `016-ai-enrichment-foundation`.
 
-`npm run verify` passed. `npm run start:smoke` passed. The exit criteria appear satisfied, and the remaining debt is explicit in [docs/RELIABILITY.md](/Users/stevenna/WebstormProjects/minakeep/docs/RELIABILITY.md#L33). A separate direct wrapper invocation in this sandbox can still hit a local `127.0.0.1:3100` bind restriction, but it did not affect the required task gates and is recorded in the task log.
+The main changes are in [prisma/schema.prisma](/Users/stevenna/WebstormProjects/minakeep/prisma/schema.prisma), [src/features/ai/client.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/ai/client.ts), [src/features/enrichment/service.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/enrichment/service.ts), and [src/features/enrichment/types.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/enrichment/types.ts). Notes and links now share one enrichment-state contract (`pending` / `ready` / `failed`, error, attempts, updated time), note/link save flows record that state through existing repo/service boundaries, and the Mina-hosted OpenAI-compatible client is isolated behind one server-side integration path. I also added minimal owner-facing status visibility in the existing note/link surfaces without pulling in the fuller UX reserved for later tasks.
+
+The promotion contract is now explicit in [.env.example](/Users/stevenna/WebstormProjects/minakeep/.env.example), [docs/RELIABILITY.md](/Users/stevenna/WebstormProjects/minakeep/docs/RELIABILITY.md), [docs/design-docs/ai-enrichment-lifecycle.md](/Users/stevenna/WebstormProjects/minakeep/docs/design-docs/ai-enrichment-lifecycle.md), [ARCHITECTURE.md](/Users/stevenna/WebstormProjects/minakeep/ARCHITECTURE.md), and the shared Playwright helper [tests/e2e/ai-real.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ai-real.ts). I also tightened [tests/e2e/home.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/home.spec.ts) so `verify` stays deterministic even when the SQLite file already contains published notes.
+
+`npm run verify` passed locally. The operator handoff summary is written to [state/last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt). Exit criteria appear satisfied; the remaining work is the note/link-specific metadata generation, retry UI, and real-endpoint `@ai-real` journeys in tasks 017 and 018.
 
 Your job:
 - inspect the repository and current implementation

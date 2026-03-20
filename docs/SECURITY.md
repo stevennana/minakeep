@@ -10,9 +10,12 @@ Define the security posture for Minakeep's current shipped slice.
 - validate owner credentials on the server only
 - store only the owner password hash in SQLite
 - accept saved-link URLs only for `http` and `https`
+- keep AI provider tokens and base URLs server-only
+- do not send private note or link content to unconfigured or fallback endpoints silently
 
 ## Secrets and Config
 - keep `AUTH_SECRET`, `DATABASE_URL`, `OWNER_USERNAME`, and `OWNER_PASSWORD` in environment configuration only
+- keep `LLM_BASE`, `TOKEN`, and `MODEL` in shell or local environment only
 - never commit seeded credentials or secret values
 - document required environment variables in `.env.example` and runtime docs
 
@@ -28,3 +31,5 @@ Define the security posture for Minakeep's current shipped slice.
 - unsafe saved-link URL schemes are rejected before persistence
 - no secrets appear in logs, docs examples, or test fixtures
 - owner auth and route protection stay covered by automated checks before promotion
+- AI integration must prove that tokens stay server-side and that failure paths do not leak raw endpoint credentials or full private payloads
+- missing or incomplete AI env config must record a visible failed enrichment state instead of silently falling back to another endpoint

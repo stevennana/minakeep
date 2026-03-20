@@ -1,4 +1,5 @@
 import { createLinkAction } from "@/app/app/links/actions";
+import { getEnrichmentStatusDetail, getEnrichmentStatusLabel } from "@/features/enrichment/types";
 import { listOwnerLinks } from "@/features/links/service";
 import { requireOwnerSession } from "@/lib/auth/owner-session";
 
@@ -126,9 +127,11 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
                     </div>
                     <div className="note-meta">
                       <span>Private link</span>
+                      <span>{getEnrichmentStatusLabel(link.enrichment.status)}</span>
                       <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(link.updatedAt)}</span>
                     </div>
                   </div>
+                  {link.enrichment.status === "failed" ? <p className="field-note">{getEnrichmentStatusDetail(link.enrichment)}</p> : null}
                 </article>
               ))}
             </div>

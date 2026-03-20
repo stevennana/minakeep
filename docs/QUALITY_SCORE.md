@@ -14,18 +14,18 @@ Quality scores should reflect both implemented behavior and how convincingly the
 ## Product Domain Scores
 | Area | Score | Notes |
 |---|---|---|
-| Product clarity | B | Scope is locked to notes, private links, public note publishing, tags, and owner-only search. |
-| Feature slicing | A- | Notes, publishing, links, tags/search, and hardening all ship as small task slices with matching specs. |
-| UX focus | B | Public reading and private authoring stay clearly separated, with owner workflows remaining functional-first. |
+| Product clarity | B | The next wave is now defined around AI enrichment plus a full-app visual refresh, but the repo docs need that change propagated consistently. |
+| Feature slicing | B+ | The completed first tranche is well-sliced; the next tranche must keep AI foundation, note AI, link AI, design refresh, and hardening separate. |
+| UX focus | B | The current product is functional, but the planned knowledge-studio redesign raises the quality bar materially. |
 
 ## Architecture Layer Scores
 | Area | Score | Notes |
 |---|---|---|
-| Repo structure | A- | Docs-first structure, feature folders, and Ralph loop wiring remain legible after the feature slices landed. |
-| Runtime determinism | A- | `db:prepare`, `verify`, `start:smoke`, and logged Playwright server artifacts keep the operator path inspectable. |
-| Boundary clarity | B+ | Notes, links, tags/search, owner auth, and operations stay separated with forward-only dependencies. |
+| Repo structure | A- | Docs-first structure, feature folders, and Ralph loop wiring remain legible after the first tranche landed. |
+| Runtime determinism | B+ | Core runtime is stable, but external AI now introduces a new promotion-critical dependency that must be verified explicitly. |
+| Boundary clarity | B | Notes, links, tags/search, owner auth, and operations are clear; AI integration now needs its own service boundary to stay clean. |
 
 ## Immediate Quality Priorities
-- keep reliability, security, and Ralph loop docs aligned with the shipped automation path
+- keep the AI endpoint contract and real-endpoint E2E requirement explicit
 - preserve deterministic runtime prep and production-style startup proof as hard promotion gates
-- keep remaining operator and single-node debt explicit instead of leaving it implied
+- use the design refresh to improve polish without reducing route clarity or information density

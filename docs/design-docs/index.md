@@ -9,7 +9,9 @@ This directory contains durable design decisions that are deeper than the top-le
 | `core-beliefs.md` | confirmed | operating principles for the repo |
 | `system-shape.md` | confirmed | project-specific design constraints |
 | `minakeep-information-architecture.md` | confirmed | public/private route split and navigation responsibilities |
-| `minakeep-content-model.md` | confirmed | owner, note, link, tag, and publish-state decisions |
+| `minakeep-content-model.md` | confirmed | owner, note, link, tag, publish-state, and enrichment-state decisions |
+| `ai-enrichment-lifecycle.md` | confirmed | automatic AI summary/tag generation, failure handling, and retry contract |
+| `knowledge-studio-visual-system.md` | confirmed | reference-inspired but distinct visual language for the whole app |
 
 ## Rule
 When a rule keeps getting re-explained in prompts or review comments, promote it into a design doc, test, or static check.
