@@ -47,7 +47,8 @@ Required commands for this task:
 - npm run start:smoke
 
 Previous known gaps from the last evaluation:
-- none
+- Reconcile the pending-view auto-refresh contract: either implement automatic refresh on the other owner surfaces that present pending enrichment state (`/app`, `/app/search`, `/app/tags`) or narrow `docs/RELIABILITY.md:38` so it matches the actual shipped behavior.
+- Re-check the doc-alignment exit criterion after that reconciliation; the current tree still has a reliability-doc/implementation mismatch.
 
 Rules:
 - Work only on this task.

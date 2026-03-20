@@ -1,6 +1,6 @@
 import { createLinkAction, retryLinkEnrichmentAction } from "@/app/app/links/actions";
+import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pending-refresh";
 import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
-import { LinkPendingRefresh } from "@/features/links/components/link-pending-refresh";
 import { listOwnerLinks } from "@/features/links/service";
 import { requireOwnerSession } from "@/lib/auth/owner-session";
 
@@ -39,7 +39,7 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
 
   return (
     <div className="feature-layout">
-      <LinkPendingRefresh enabled={links.some((link) => link.enrichment.status === "pending")} />
+      <EnrichmentPendingRefresh enabled={links.some((link) => link.enrichment.status === "pending")} />
       <section className="hero-card">
         <p className="eyebrow">Private links</p>
         <h1>Save links for later retrieval.</h1>

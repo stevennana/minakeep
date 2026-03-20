@@ -2,6 +2,7 @@ import Link from "next/link";
 import { unstable_noStore as noStore } from "next/cache";
 
 import { signOut } from "@/auth";
+import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pending-refresh";
 import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
 import { listOwnerNotes } from "@/features/notes/service";
 import { requireOwnerSession } from "@/lib/auth/owner-session";
@@ -24,6 +25,7 @@ export default async function PrivateDashboardPage() {
 
   return (
     <div className="feature-layout">
+      <EnrichmentPendingRefresh enabled={notes.some((note) => note.enrichment.status === "pending")} />
       <section className="hero-card">
         <p className="eyebrow">Private dashboard</p>
         <h1>{owner.name}&rsquo;s notes</h1>

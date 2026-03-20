@@ -35,7 +35,7 @@ When tests cover subtle or business-critical behavior, capture why those tests e
 If a user-visible behavior depends on an outside resource such as AI chat or a third-party service, require end-to-end coverage before promotion.
 For the AI enrichment wave, E2E must prove: note save with generated metadata, link save with generated metadata, and save-with-visible-failure when the endpoint fails or times out.
 The shared helper under `tests/e2e/ai-real.ts` is the contract point for checking whether those env vars are present before running real-endpoint journeys.
-Pending owner views should auto-refresh while enrichment is running, and retry should be a visible action only from a failed state rather than a second control path for already-pending work.
+Owner surfaces that render pending enrichment state should auto-refresh while enrichment is running, including the private dashboard, links, search, tags, and note editor routes. Retry should be a visible action only from a failed state rather than a second control path for already-pending work.
 
 ## Known Gaps
 - there is no external redundancy or multi-node failover in v1

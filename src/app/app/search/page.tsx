@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pending-refresh";
 import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
 import { searchOwnerContent } from "@/features/search/service";
 import { requireOwnerSession } from "@/lib/auth/owner-session";
@@ -15,9 +16,13 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const resolvedSearchParams = (await searchParams) ?? {};
   const results = await searchOwnerContent(owner.id, resolvedSearchParams.q);
   const resultCount = results.notes.length + results.links.length;
+  const hasPendingResults =
+    results.notes.some((note) => note.enrichment.status === "pending") ||
+    results.links.some((link) => link.enrichment.status === "pending");
 
   return (
     <div className="feature-layout">
+      <EnrichmentPendingRefresh enabled={hasPendingResults} />
       <section className="hero-card">
         <p className="eyebrow">Owner search</p>
         <h1>Search private titles, URLs, and tags.</h1>

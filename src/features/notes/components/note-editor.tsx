@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useFormStatus } from "react-dom";
-import { useRouter } from "next/navigation";
 
+import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pending-refresh";
 import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
 import type { EnrichmentState } from "@/features/enrichment/types";
 import { getEnrichmentStatusLabel } from "@/features/enrichment/types";
@@ -75,28 +75,14 @@ export function NoteEditor({
   retryAction,
   publication
 }: NoteEditorProps) {
-  const router = useRouter();
   const [title, setTitle] = useState(initialTitle);
   const [markdown, setMarkdown] = useState(initialMarkdown);
   const previewTitle = title.trim() || "Untitled note";
   const previewHtml = renderMarkdownToHtml(markdown);
 
-  useEffect(() => {
-    if (enrichment?.status !== "pending") {
-      return;
-    }
-
-    const intervalId = window.setInterval(() => {
-      router.refresh();
-    }, 2000);
-
-    return () => {
-      window.clearInterval(intervalId);
-    };
-  }, [enrichment?.status, router]);
-
   return (
     <div className="note-editor-shell">
+      <EnrichmentPendingRefresh enabled={enrichment?.status === "pending"} />
       <section className="hero-card note-editor-intro">
         <p className="eyebrow">Private note authoring</p>
         <h1>{formTitle}</h1>

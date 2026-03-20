@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pending-refresh";
 import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
 import { listOwnerTags, listOwnerContentByTag } from "@/features/tags/service";
 import { normalizeSingleTagName } from "@/features/tags/normalize";
@@ -19,9 +20,13 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
     listOwnerTags(owner.id),
     listOwnerContentByTag(owner.id, selectedTag)
   ]);
+  const hasPendingResults =
+    filteredContent.notes.some((note) => note.enrichment.status === "pending") ||
+    filteredContent.links.some((link) => link.enrichment.status === "pending");
 
   return (
     <div className="feature-layout">
+      <EnrichmentPendingRefresh enabled={hasPendingResults} />
       <section className="hero-card">
         <p className="eyebrow">Shared tags</p>
         <h1>Filter the private vault by tag.</h1>
