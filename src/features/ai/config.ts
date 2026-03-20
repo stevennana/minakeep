@@ -1,5 +1,7 @@
 import "server-only";
 
+import { getPlaywrightAiTestBaseUrl, getPlaywrightAiTestMode } from "@/features/ai/test-mode";
+
 export const MINA_AI_ENV_KEYS = ["LLM_BASE", "TOKEN", "MODEL"] as const;
 
 export type RequiredAiEnv = (typeof MINA_AI_ENV_KEYS)[number];
@@ -51,7 +53,19 @@ export function getMinaAiConfigStatus(): MinaAiConfigStatus {
   const baseUrl = readOptionalEnv("LLM_BASE");
   const token = readOptionalEnv("TOKEN");
   const model = readOptionalEnv("MODEL");
+  const playwrightAiMode = getPlaywrightAiTestMode();
   const missing = getMissingConfig(baseUrl, token, model);
+
+  if (playwrightAiMode === "timeout") {
+    return {
+      state: "configured",
+      config: {
+        baseUrl: getPlaywrightAiTestBaseUrl(),
+        token: token ?? "playwright-test-token",
+        model: model ?? "playwright-test-model"
+      }
+    };
+  }
 
   if (missing.length === MINA_AI_ENV_KEYS.length) {
     return {

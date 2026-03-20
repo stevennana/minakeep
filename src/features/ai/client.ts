@@ -1,5 +1,6 @@
 import "server-only";
 
+import { getPlaywrightAiTestMode } from "@/features/ai/test-mode";
 import { normalizeTagNames } from "@/features/tags/normalize";
 import { getMinaAiConfigStatus } from "@/features/ai/config";
 import { serverLogger } from "@/lib/logging/server-logger";
@@ -24,12 +25,28 @@ type MinaChatCompletionsResponse = {
 
 export class MinaAiClientError extends Error {
   constructor(
-    readonly code: "disabled" | "invalid-config" | "bad-response" | "invalid-response",
+    readonly code: "disabled" | "invalid-config" | "bad-response" | "invalid-response" | "timeout",
     message: string
   ) {
     super(message);
     this.name = "MinaAiClientError";
   }
+}
+
+export const DEFAULT_MINA_AI_TIMEOUT_MS = 15000;
+
+export function getMinaAiRequestTimeoutMs() {
+  const rawValue = Number.parseInt(process.env.MINA_AI_TIMEOUT_MS ?? "", 10);
+
+  if (Number.isFinite(rawValue) && rawValue > 0) {
+    return rawValue;
+  }
+
+  if (getPlaywrightAiTestMode() === "timeout") {
+    return 1500;
+  }
+
+  return DEFAULT_MINA_AI_TIMEOUT_MS;
 }
 
 function normalizeBaseUrl(baseUrl: string) {
@@ -121,15 +138,36 @@ export function normalizeMinaEnrichmentResponse(payload: unknown): EnrichmentMet
 
 export async function requestMinaEnrichment(messages: MinaChatMessage[]) {
   const request = buildMinaChatCompletionsRequest(messages);
-  const response = await fetch(request.endpoint, request.init);
+  const timeoutMs = getMinaAiRequestTimeoutMs();
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => {
+    controller.abort(new MinaAiClientError("timeout", "The Mina AI endpoint timed out."));
+  }, timeoutMs);
 
-  if (!response.ok) {
-    serverLogger.warn("Mina AI request failed.", {
-      status: response.status,
-      statusText: response.statusText
+  try {
+    const response = await fetch(request.endpoint, {
+      ...request.init,
+      signal: controller.signal
     });
-    throw new MinaAiClientError("bad-response", `The Mina AI endpoint returned HTTP ${response.status}.`);
-  }
 
-  return normalizeMinaEnrichmentResponse(await response.json());
+    if (!response.ok) {
+      serverLogger.warn("Mina AI request failed.", {
+        status: response.status,
+        statusText: response.statusText
+      });
+      throw new MinaAiClientError("bad-response", `The Mina AI endpoint returned HTTP ${response.status}.`);
+    }
+
+    return normalizeMinaEnrichmentResponse(await response.json());
+  } catch (error) {
+    if (controller.signal.aborted) {
+      throw controller.signal.reason instanceof MinaAiClientError
+        ? controller.signal.reason
+        : new MinaAiClientError("timeout", "The Mina AI endpoint timed out.");
+    }
+
+    throw error;
+  } finally {
+    clearTimeout(timeoutId);
+  }
 }

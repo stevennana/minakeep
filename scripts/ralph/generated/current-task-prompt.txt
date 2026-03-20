@@ -46,8 +46,9 @@ Required commands for this task:
 - npm run test:e2e -- --grep @ai-real
 
 Previous known gaps from the last evaluation:
-- Reliable status visibility is incomplete: `src/features/notes/components/note-editor.tsx` only schedules a single `router.refresh()` after 2 seconds while status is `pending`, so if the Mina request finishes later than that, the editor can remain stale and fail to show the eventual `ready` or `failed` state without manual refresh.
-- The shipped UI does not fully match the prompted frontend contract for published note listings: `docs/FRONTEND.md` says the public homepage shows tags, but `src/features/notes/repo.ts` does not fetch them for `listPublished()` and `src/app/page.tsx` does not render them.
+- Exit criterion 2 is not satisfied in substance: timeout-class AI failures do not reliably transition to a visible failed state with retry.
+- The required design doc `docs/design-docs/ai-enrichment-lifecycle.md` says enrichment must remain reliable when the AI call fails or times out, but the current client has no timeout handling to enforce that behavior.
+- There is no automated proof of the configured-endpoint timeout/failure path; the failure E2E in `tests/e2e/home.spec.ts` is skipped when real AI env vars are present.
 
 Rules:
 - Work only on this task.

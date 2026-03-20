@@ -162,3 +162,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=not_done promotion=false The core note-enrichment slice is mostly in place and the reported gates passed, but I would not promote conservatively yet. The required design contract says note enrichment must fail visibly even when the AI call fails or times out; the current implementation issues a bare `fetch` in `src/features/ai/client.ts` with no timeout/abort path, so a hung Mina request can leave a note stuck in `pending` indefinitely with no visible failed state or retry. That means exit criterion 2 is not satisfied in substance for timeout-class failures, even though create/update triggering, metadata surfacing, and the reported `verify`/`@ai-real` success paths look correct. -> state/artifacts/20260321T031031-017-note-ai-enrichment/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T031031-017-note-ai-enrichment/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Task 017-note-ai-enrichment not eligible for promotion.
+- backlog: rendered current=017-note-ai-enrichment
+- health: ooxxoooxoxx
+- cycle: finished
+
+### cycle 2026-03-21T03:18:49+09:00 task=017-note-ai-enrichment
+- artifacts: state/artifacts/20260321T031849-017-note-ai-enrichment
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T031849-017-note-ai-enrichment/worker.jsonl
+- worker-summary: - What changed: Added a real timeout to Mina note-enrichment requests so hung calls now resolve to a visible `failed` state instead of leaving notes stuck in `pending`, while keeping note save non-blocking and retry on the existing editor flow. Added deterministic Playwright coverage for the configured-endpoint timeout path so the failure journey runs even when real AI env vars are present. Updated the task progress log with the concrete changes.
+- evaluator: started
+- evaluator: status=done promotion=true Task 017 appears complete in substance. The current implementation triggers note enrichment automatically on create and update, runs the Mina request after the save response path, records pending/ready/failed state plus generated summary/tags, exposes retry on failure, and surfaces generated note metadata in the editor and owner note lists/search/tag views. The provided deterministic checks show both `npm run verify` and `npm run test:e2e -- --grep @ai-real` passing against the current task slice, and the inspected E2E coverage includes both the real-endpoint success journey and a configured-endpoint timeout/failure journey. -> state/artifacts/20260321T031849-017-note-ai-enrichment/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T031849-017-note-ai-enrichment/npm-run-verify-next-server.log

@@ -2,7 +2,7 @@ import "dotenv/config";
 
 import { expect, test } from "@playwright/test";
 
-import { hasAiRealEnv } from "./ai-real";
+import { setAiPlaywrightTestMode } from "./ai-test-mode";
 
 // These journeys all mutate the same single-owner SQLite state, so serial execution keeps promotion checks deterministic.
 test.describe.configure({ mode: "serial" });
@@ -82,37 +82,43 @@ Paragraph with **bold** text and a [link](https://example.com).`;
   await expect(page.getByTestId("note-markdown-preview").getByRole("heading", { name: `Revised ${uniqueId}` })).toBeVisible();
 });
 
-test("note save still succeeds when AI enrichment is unavailable and exposes a retry path", async ({ page }) => {
-  test.skip(hasAiRealEnv(), "This failure-path check only runs when the real AI env is absent.");
-
+test("note save still succeeds when the configured AI endpoint times out and exposes a retry path", async ({ page }) => {
   const username = process.env.OWNER_USERNAME ?? "owner";
   const password = process.env.OWNER_PASSWORD ?? "password";
   const uniqueId = `${Date.now()}`;
 
-  await page.goto("/login");
-  await page.getByLabel("Username").fill(username);
-  await page.getByLabel("Password").fill(password);
-  await page.getByRole("button", { name: "Sign in" }).click();
+  await setAiPlaywrightTestMode("timeout");
 
-  await expect(page).toHaveURL(/\/app$/);
-  await page.getByRole("link", { name: "New note" }).click();
+  try {
+    await page.goto("/login");
+    await page.getByLabel("Username").fill(username);
+    await page.getByLabel("Password").fill(password);
+    await page.getByRole("button", { name: "Sign in" }).click();
 
-  await page.getByRole("textbox", { name: /^Title$/ }).fill(`Retry note ${uniqueId}`);
-  await page.getByRole("textbox", { name: /^Markdown body$/ }).fill(`Body for retry note ${uniqueId}`);
-  await page.getByRole("button", { name: "Create draft" }).click();
+    await expect(page).toHaveURL(/\/app$/);
+    await page.getByRole("link", { name: "New note" }).click();
 
-  await expect(page).toHaveURL(/\/app\/notes\/.+\/edit\?saved=1$/);
-  const enrichmentPanel = page.getByTestId("note-enrichment-panel");
-  await expect(enrichmentPanel).toContainText("AI failed");
-  await expect(enrichmentPanel).toContainText("Set LLM_BASE, TOKEN, and MODEL before AI enrichment can run.");
-  await expect(page.getByTestId("note-ai-summary")).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "Retry AI enrichment" })).toBeVisible();
+    await page.getByRole("textbox", { name: /^Title$/ }).fill(`Retry note ${uniqueId}`);
+    await page.getByRole("textbox", { name: /^Markdown body$/ }).fill(`Body for retry note ${uniqueId}`);
+    await page.getByRole("button", { name: "Create draft" }).click();
 
-  await page.getByRole("button", { name: "Retry AI enrichment" }).click();
+    await expect(page).toHaveURL(/\/app\/notes\/.+\/edit\?saved=1$/);
+    const enrichmentPanel = page.getByTestId("note-enrichment-panel");
+    await expect(enrichmentPanel).toContainText("AI pending");
+    await expect(enrichmentPanel).toContainText("AI failed", { timeout: 15000 });
+    await expect(enrichmentPanel).toContainText("The Mina AI endpoint timed out.");
+    await expect(page.getByTestId("note-ai-summary")).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Retry AI enrichment" })).toBeVisible();
 
-  await expect(page).toHaveURL(/\/app\/notes\/.+\/edit\?retried=1$/);
-  await expect(page.getByText("Retry requested.")).toBeVisible();
-  await expect(page.getByTestId("note-enrichment-panel")).toContainText("AI failed");
+    await page.getByRole("button", { name: "Retry AI enrichment" }).click();
+
+    await expect(page).toHaveURL(/\/app\/notes\/.+\/edit\?retried=1$/);
+    await expect(page.getByText("Retry requested.")).toBeVisible();
+    await expect(page.getByTestId("note-enrichment-panel")).toContainText("AI failed", { timeout: 15000 });
+    await expect(page.getByTestId("note-enrichment-panel")).toContainText("The Mina AI endpoint timed out.");
+  } finally {
+    await setAiPlaywrightTestMode("passthrough");
+  }
 });
 
 test("owner can publish and unpublish a note across the public routes", async ({ page }) => {
