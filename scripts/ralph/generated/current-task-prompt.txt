@@ -47,7 +47,8 @@ Required commands for this task:
 - npm run verify
 
 Previous known gaps from the last evaluation:
-- none
+- Criterion 1 is not met in substance: the Mina AI integration path is not enforced as server-only, so token/base-url handling remains ambiguous.
+- Credential handling should be hardened so the AI client boundary cannot be imported into client-side code accidentally.
 
 Rules:
 - Work only on this task.

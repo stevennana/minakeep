@@ -117,3 +117,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=not_done promotion=false Not ready for promotion. The shared enrichment-state contract, explicit `@ai-real` promotion rules, and the provided passing `npm run verify` result are in place, but exit criterion 1 is not satisfied in substance because the Mina credential boundary is not enforced as server-only. `src/features/ai/client.ts` reads `LLM_BASE`/`TOKEN`/`MODEL` and builds the bearer-auth request, yet unlike the repo's other server-side boundaries it is not marked `import "server-only"`; `src/features/enrichment/service.ts` is likewise not server-only. That leaves credential handling ambiguous by convention instead of enforced boundary, which the task's evaluator notes explicitly say should block promotion. -> state/artifacts/20260321T022107-016-ai-enrichment-foundation/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T022107-016-ai-enrichment-foundation/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Task 016-ai-enrichment-foundation not eligible for promotion.
+- backlog: rendered current=016-ai-enrichment-foundation
+- health: ooxxooox
+- cycle: finished
+
+### cycle 2026-03-21T02:40:23+09:00 task=016-ai-enrichment-foundation
+- artifacts: state/artifacts/20260321T024023-016-ai-enrichment-foundation
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T024023-016-ai-enrichment-foundation/worker.jsonl
+- worker-summary: Implemented the remaining hardening for task `016-ai-enrichment-foundation`. AI env reads now live behind the new server-only boundary in [config.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/ai/config.ts), with the Mina client in [client.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/ai/client.ts) and enrichment service in [service.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/enrichment/service.ts) using that path. I also tightened the shared real-endpoint helper in [ai-real.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ai-real.ts), clarified the env contract in [.env.example](/Users/stevenna/WebstormProjects/minakeep/.env.example), added the missing partial-config failure test coverage in [enrichment-service.test.ts](/Users/stevenna/WebstormProjects/minakeep/tests/unit/enrichment-service.test.ts), and adjusted the unit-test harness in [package.json](/Users/stevenna/WebstormProjects/minakeep/package.json) so Next’s `server-only` marker resolves correctly under plain Node tests.
+- evaluator: started
+- evaluator: status=done promotion=true Task 016 is complete in substance. The repo now has a dedicated server-only Mina AI config/client boundary, notes and links share one enrichment-state contract in both Prisma and repo/service layers, and the real-endpoint promotion gate is explicit in docs plus the shared `tests/e2e/ai-real.ts` helper and downstream AI task contracts. The provided deterministic `npm run verify` result passed, and I did not find ambiguity in credential handling, failure-state rules, or promotion commands for this foundation slice. -> state/artifacts/20260321T024023-016-ai-enrichment-foundation/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T024023-016-ai-enrichment-foundation/npm-run-verify-next-server.log

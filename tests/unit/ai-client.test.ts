@@ -1,9 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
+import { getMinaAiConfigStatus } from "../../src/features/ai/config";
 import {
   buildMinaChatCompletionsRequest,
-  getMinaAiConfigStatus,
   normalizeMinaEnrichmentResponse
 } from "../../src/features/ai/client";
 

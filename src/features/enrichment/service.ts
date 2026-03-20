@@ -1,4 +1,7 @@
-import { type MinaAiConfigStatus, MinaAiClientError, getMinaAiConfigStatus } from "@/features/ai/client";
+import "server-only";
+
+import { type MinaAiConfigStatus, getMinaAiConfigStatus } from "@/features/ai/config";
+import { MinaAiClientError } from "@/features/ai/client";
 
 type EnrichmentStateWriter<TRecord> = {
   setEnrichmentPending(id: string): Promise<TRecord>;

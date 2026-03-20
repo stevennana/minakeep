@@ -101,3 +101,33 @@ test("requestEnrichment records a pending state when the AI env is configured", 
 
   assert.deepEqual(calls, ["link-1"]);
 });
+
+test("requestEnrichment records which AI env vars are missing when the Mina config is partial", async () => {
+  const calls: string[] = [];
+
+  await withAiEnv(
+    {
+      LLM_BASE: "https://mina.example/v1",
+      TOKEN: "token",
+      MODEL: undefined
+    },
+    async () => {
+      await requestEnrichment(
+        {
+          setEnrichmentPending: async () => {
+            calls.push("pending");
+            return "pending";
+          },
+          setEnrichmentReady: async () => "ready",
+          setEnrichmentFailed: async (_id, error) => {
+            calls.push(error);
+            return "failed";
+          }
+        },
+        "note-2"
+      );
+    }
+  );
+
+  assert.deepEqual(calls, ["Complete the AI enrichment configuration. Missing: MODEL."]);
+});
