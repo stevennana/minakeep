@@ -29,6 +29,7 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
   const owner = await requireOwnerSession();
   const resolvedSearchParams = (await searchParams) ?? {};
   const links = await listOwnerLinks(owner.id);
+  const pendingLinks = links.filter((link) => link.enrichment.status === "pending").length;
   const statusMessage =
     resolvedSearchParams.saved === "1"
       ? "Link saved."
@@ -39,13 +40,27 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
   return (
     <div className="feature-layout">
       <LinkPendingRefresh enabled={links.some((link) => link.enrichment.status === "pending")} />
-      <section className="feature-card">
+      <section className="hero-card">
         <p className="eyebrow">Private links</p>
         <h1>Save links for later retrieval.</h1>
         <p className="lede">
           Manual bookmark capture stays private in v1. Save the URL and title first, then let Minakeep generate the AI
           summary and shared tags after save.
         </p>
+        <div className="summary-row">
+          <div>
+            <strong>Saved links</strong>
+            <span>{links.length} private reference{links.length === 1 ? "" : "s"}</span>
+          </div>
+          <div>
+            <strong>AI queue</strong>
+            <span>{pendingLinks === 0 ? "No pending enrichment" : `${pendingLinks} link${pendingLinks === 1 ? "" : "s"} pending`}</span>
+          </div>
+          <div>
+            <strong>Visibility</strong>
+            <span>Links remain private even when notes can be published</span>
+          </div>
+        </div>
         {statusMessage ? (
           <p className={resolvedSearchParams.error ? "status-note status-note-error" : "status-note"}>{statusMessage}</p>
         ) : null}
@@ -53,7 +68,10 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
 
       <div className="link-manager-grid">
         <form action={createLinkAction} className="panel-card link-form">
-          <strong>Capture a link</strong>
+          <div className="section-heading">
+            <strong>Capture a link</strong>
+            <span className="section-meta">Manual URL and title</span>
+          </div>
           <label className="field-group">
             <span>URL</span>
             <input
@@ -85,7 +103,10 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
         </form>
 
         <section className="panel-card link-list-panel">
-          <strong>Saved links</strong>
+          <div className="section-heading">
+            <strong>Saved links</strong>
+            <span className="section-meta">Generated metadata stays secondary</span>
+          </div>
           {links.length === 0 ? (
             <p>No saved links yet. Capture the first private bookmark from this page.</p>
           ) : (
@@ -93,6 +114,10 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
               {links.map((link) => (
                 <article className="link-list-item" key={link.id}>
                   <div className="link-list-heading">
+                    <div className="note-meta note-meta-leading">
+                      <span>Private link</span>
+                      <span>{getEnrichmentStatusLabel(link.enrichment.status)}</span>
+                    </div>
                     <a className="note-list-link" href={link.url} rel="noopener noreferrer" target="_blank">
                       {link.title}
                     </a>
@@ -124,8 +149,7 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
                   </div>
                   <div className="link-list-footer">
                     <div className="note-meta">
-                      <span>Private link</span>
-                      <span>{getEnrichmentStatusLabel(link.enrichment.status)}</span>
+                      <span>Updated</span>
                       <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(link.updatedAt)}</span>
                     </div>
                   </div>

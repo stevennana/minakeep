@@ -1,0 +1,673 @@
+/Users/stevenna/WebstormProjects/minakeep/scripts/ralph/generated/current-evaluator-prompt.txt
+OpenAI Codex v0.116.0 (research preview)
+--------
+workdir: /Users/stevenna/WebstormProjects/minakeep
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: high
+reasoning summaries: none
+session id: 019d0cad-8a56-7551-8b94-d671cece0798
+--------
+user
+You are the promotion evaluator for a repository-local Ralph loop.
+
+Read these documents before deciding:
+- AGENTS.md
+- ARCHITECTURE.md
+- docs/FRONTEND.md
+- docs/DESIGN.md
+- docs/design-docs/knowledge-studio-visual-system.md
+- docs/product-specs/knowledge-studio-ui-refresh.md
+- docs/exec-plans/active/019-knowledge-studio-ui-refresh.md
+
+Current task id: 019-knowledge-studio-ui-refresh
+Current task title: Knowledge studio UI refresh
+
+Objective:
+Refresh the whole app into an elegant, dense, reference-inspired knowledge-studio UI while preserving the current route model and workflow clarity.
+
+Scope:
+- redesign the public homepage, public note pages, login, and private vault surfaces
+- introduce a coherent typography, spacing, color, and card/layout system across the app
+- keep public reading calm and private authoring functional and notes-first
+- integrate AI metadata visually without turning the product into a chat assistant
+
+Out of scope:
+- new product features outside the documented AI enrichment work
+- public search
+- cloned reference layout or branding
+
+Exit criteria:
+1. Public and private surfaces share one coherent visual system.
+2. The refreshed UI remains responsive and usable on desktop and mobile.
+3. Existing note, publishing, link, tags, and search journeys still pass under the new visual system.
+4. `npm run verify` passes.
+
+Evaluator notes:
+Promote only when the redesign materially improves polish and density without reducing clarity or breaking existing flows.
+
+Deterministic check summary:
+{
+  "checked_at": "2026-03-20T19:16:32.903Z",
+  "task_id": "019-knowledge-studio-ui-refresh",
+  "commands": [
+    {
+      "command": "npm run verify",
+      "ok": true,
+      "output": "\n> minakeep@0.1.0 verify\n> npm run lint && npm run db:prepare && npm run typecheck && npm run build && npm run test && npm run start:smoke\n\n\n> minakeep@0.1.0 lint\n> eslint . --max-warnings=0\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 37ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 typecheck\n> tsc --noEmit\n\n\n> minakeep@0.1.0 build\n> next build\n\n▲ Next.js 16.2.0 (Turbopack)\n- Environments: .env\n\n  Creating an optimized production build ...\n✓ Compiled successfully in 1106ms\n  Running TypeScript ...\n  Finished TypeScript in 1313ms ...\n  Collecting page data using 10 workers ...\n  Generating static pages using 10 workers (0/11) ...\n  Generating static pages using 10 workers (2/11) \r\n  Generating static pages using 10 workers (5/11) \r\n  Generating static pages using 10 workers (8/11) \r\n✓ Generating static pages using 10 workers (11/11) in 172ms\n  Finalizing page optimization ...\n\nRoute (app)\n┌ ○ /\n├ ○ /_not-found\n├ ƒ /api/auth/[...nextauth]\n├ ƒ /api/health\n├ ƒ /api/test/mina/chat/completions\n├ ƒ /app\n├ ƒ /app/links\n├ ƒ /app/notes/[id]/edit\n├ ƒ /app/notes/new\n├ ƒ /app/search\n├ ƒ /app/tags\n├ ƒ /login\n└ ƒ /notes/[slug]\n\n\nƒ Proxy (Middleware)\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n\n> minakeep@0.1.0 test\n> npm run test:unit && npm run test:e2e\n\n\n> minakeep@0.1.0 test:unit\n> NODE_PATH=./node_modules/next/dist/compiled node --conditions=react-server --import tsx --test tests/unit/**/*.test.ts\n\n✔ getMinaAiConfigStatus returns disabled when no AI env vars are set (0.778583ms)\n✔ buildMinaChatCompletionsRequest shapes the Mina OpenAI-compatible request (0.191ms)\n✔ normalizeMinaEnrichmentResponse trims the summary and normalizes repeated tags (8.114792ms)\n✔ getMinaAiRequestTimeoutMs falls back to the default timeout (0.111792ms)\n✔ requestMinaEnrichment aborts hung requests at the configured timeout (20.186666ms)\n✔ requestEnrichment records a failed state when the AI env is not configured (0.866833ms)\n✔ requestEnrichment records a pending state when the AI env is configured (0.121708ms)\n✔ requestEnrichment records which AI env vars are missing when the Mina config is partial (0.094917ms)\n✔ buildLinkEnrichmentMessages includes the link title and URL for the AI prompt (0.371625ms)\n✔ executeLinkEnrichment records generated summary and tags on success (0.372417ms)\n✔ executeLinkEnrichment records a normalized failed state when the request throws (0.113292ms)\n✔ executeLinkEnrichment skips stale attempts (0.056ms)\n✔ normalizeLinkInput trims fields and canonicalizes the URL (0.632791ms)\n✔ normalizeLinkInput rejects non-http schemes (0.206917ms)\n✔ buildNoteEnrichmentMessages includes the note title and markdown for the AI prompt (0.438459ms)\n✔ executeNoteEnrichment records generated summary and tags on success (0.433209ms)\n✔ executeNoteEnrichment records a normalized failed state when the request throws (0.13325ms)\n✔ executeNoteEnrichment skips stale attempts (0.061042ms)\n✔ renderMarkdownToHtml preserves common note-writing structures while escaping unsafe HTML (0.764833ms)\n✔ createNoteExcerpt turns markdown into readable summary text (0.181833ms)\n✔ createNoteSlug normalizes title content (0.421584ms)\n✔ createNoteSlug falls back when the title has no slug-safe characters (0.056459ms)\n✔ createUniqueNoteSlug increments an existing base slug (0.062ms)\nℹ tests 23\nℹ suites 0\nℹ pass 23\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 185.806334\n\n> minakeep@0.1.0 test:e2e\n> npm run db:prepare && playwright test\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 43ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\nRunning 12 tests using 4 workers\n\n  ✓   4 tests/e2e/home.spec.ts:10:5 › public homepage exposes the published notes surface (804ms)\n  ✓   5 tests/e2e/home.spec.ts:21:5 › anonymous visitors cannot access the owner search route (749ms)\n  ✓   1 tests/e2e/auth.spec.ts:5:5 › owner can sign in to the private dashboard (1.8s)\n  ✓   6 tests/e2e/home.spec.ts:27:5 › owner can sign in, create a draft note, edit it, and reopen it with rendered preview (1.6s)\n  ✓   3 tests/e2e/note-ai-real.spec.ts:10:5 › owner note enrichment completes against the real Mina endpoint @ai-real (4.9s)\n  ✓   2 tests/e2e/link-ai-real.spec.ts:10:5 › owner link enrichment completes against the real Mina endpoint @ai-real (5.8s)\n  ✓   7 tests/e2e/home.spec.ts:85:5 › note save still succeeds when the configured AI endpoint times out and exposes a retry path (6.7s)\n  ✓   8 tests/e2e/home.spec.ts:124:5 › owner can publish and unpublish a note across the public routes (2.1s)\n  ✓   9 tests/e2e/home.spec.ts:182:5 › owner can save a private link, receive AI metadata, and keep it off public routes (3.9s)\n  ✓  10 tests/e2e/home.spec.ts:222:5 › link save still succeeds when the configured AI endpoint times out and exposes a retry path (5.1s)\n  ✓  11 tests/e2e/home.spec.ts:264:5 › owner cannot save a private link with an unsafe URL scheme (1.1s)\n  ✓  12 tests/e2e/home.spec.ts:287:5 › owner can filter private links by tag and search notes by title plus links by URL and tag (4.2s)\n\n  12 passed (28.2s)\n\n> minakeep@0.1.0 start:smoke\n> node scripts/start-smoke.mjs\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 44ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 start\n> next start --hostname 127.0.0.1 --port 3200\n\n▲ Next.js 16.2.0\n- Local:         http://127.0.0.1:3200\n- Network:       http://127.0.0.1:3200\n✓ Ready in 59ms\n",
+      "preflight": {
+        "command": "ensure-e2e-port-free.sh 3100",
+        "error": "",
+        "ok": true,
+        "output": "port-cleanup: 127.0.0.1:3100 already free\n"
+      },
+      "next_server_log_path": "/Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T035650-019-knowledge-studio-ui-refresh/npm-run-verify-next-server.log"
+    }
+  ],
+  "missing_files": [],
+  "pass": true
+}
+
+Worker handoff summary from the last run:
+Refreshed the app into one shared editorial knowledge-studio system across public and private surfaces. The main work is in [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css), with a new private vault shell in [src/app/app/layout.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/layout.tsx) and active section nav in [vault-nav.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/navigation/components/vault-nav.tsx). I redesigned the homepage, public note page, login, dashboard, links, tags, search, and note editor while preserving the existing routes, actions, and tested workflows in [src/app/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/page.tsx), [src/app/notes/[slug]/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/notes/[slug]/page.tsx), [src/app/login/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/login/page.tsx), [src/app/app/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/page.tsx), [src/app/app/links/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/links/page.tsx), [src/app/app/tags/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/tags/page.tsx), [src/app/app/search/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/search/page.tsx), and [note-editor.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/components/note-editor.tsx).
+
+I also updated the task progress log in [019-knowledge-studio-ui-refresh.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/019-knowledge-studio-ui-refresh.md) and wrote the operator handoff summary to [state/last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt). `npm run verify` passed locally, so the exit criteria appear satisfied. The only remaining note is the existing non-failing Turbopack tracing warning during build.
+
+Your job:
+- inspect the repository and current implementation
+- determine whether the current task is actually complete
+- mark `done` only if the exit criteria are satisfied in substance, not just approximately
+- prefer conservative decisions
+- recommend promotion only if the task is truly ready
+
+Return JSON only using the provided schema.
+
+mcp startup: no servers
+Plan update
+  → Read required repo and task documents to extract concrete UI expectations and promotion gates
+  • Inspect the implemented UI surfaces and shared styling system against the documented scope
+  • Cross-check exit criteria against code, docs, and verification evidence; decide promotion recommendation
+exec
+/bin/zsh -lc "sed -n '1,260p' ARCHITECTURE.md" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,240p' AGENTS.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# ARCHITECTURE.md
+
+## Goal
+Build Minakeep as an agent-legible codebase with strong boundaries, a short instruction surface, and enough extension seams to support future change without overbuilding v1.
+
+## System Overview
+Minakeep is a web application with:
+- a public site for published notes
+- a private owner area for notes, links, tags, and search
+- an automatic AI enrichment path for notes and links
+- a SQLite-backed persistence layer for content and owner identity
+- a deterministic operator path with logged startup and Ralph-loop state tracking
+
+## Architectural Priorities
+- keep the foundation small and agent-legible
+- separate public reading from private authoring clearly
+- keep user-visible feature fronts sliced into small plans
+- make runtime startup and verification deterministic before unattended loop work
+- isolate the external AI client behind a narrow service boundary
+- make AI failure visible without letting it block core save flows
+ succeeded in 0ms:
+# AGENTS.md
+
+## Purpose
+Minakeep is a self-hosted knowledge vault for private markdown notes and saved links, with selectively published public notes, automatic AI enrichment, and a polished knowledge-studio interface.
+
+This repository is optimized for agent-legible development and a Ralph-style task-promotion loop.
+
+## Read Order
+Before changing code or plans, read these files in order:
+
+1. `ARCHITECTURE.md`
+2. `docs/PRODUCT_SENSE.md`
+3. `docs/design-docs/core-beliefs.md`
+4. `docs/product-specs/index.md`
+5. `docs/FRONTEND.md`
+6. `docs/PLANS.md`
+7. active plans in `docs/exec-plans/active/`
+
+## Scope Guardrails
+### In scope for v1
+exec
+/bin/zsh -lc "sed -n '1,260p' docs/FRONTEND.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# FRONTEND.md
+
+## Goal
+Describe the user-facing structure of Minakeep so an agent can implement the UI without guessing the product model.
+
+## Tech Direction
+- Next.js application
+- TypeScript
+- App Router
+- server-backed data flows where appropriate
+
+## Route Map
+- `/` -> public homepage listing published notes
+- `/notes/[slug]` -> public published-note page
+- `/login` -> owner sign-in
+- `/app` -> private notes-first dashboard shell
+- `/app/notes/new` -> create note
+- `/app/notes/[id]/edit` -> edit note and preview markdown
+- `/app/links` -> private saved-link management
+- `/app/tags` -> shared-tag overview
+exec
+/bin/zsh -lc "sed -n '1,260p' docs/DESIGN.md" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,320p' docs/product-specs/knowledge-studio-ui-refresh.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# DESIGN.md
+
+## Purpose
+Capture the top-level design direction for Minakeep and point to the deeper design docs that define the real constraints.
+
+## Current Design Themes
+- one repository that serves both capture and selective publication
+- small, explicit route shells over generic dashboard sprawl
+- quiet public reading surface, practical private writing surface
+- elegant knowledge-studio density across the whole app rather than a generic admin look
+- AI enrichment should feel embedded into save/review flows, not like a separate assistant product
+- structure the repo so future feature waves can land as narrow vertical slices
+
+## Source of Truth
+Detailed rules belong in:
+- `ARCHITECTURE.md`
+- `docs/design-docs/`
+- `docs/product-specs/`
+- `docs/exec-plans/`
+ succeeded in 0ms:
+# Knowledge studio UI refresh
+
+## Goal
+Refresh the full Minakeep UI into an elegant, reference-inspired knowledge-studio experience across public and private surfaces.
+
+## Trigger / Entry
+The owner or a public reader visits any core Minakeep surface.
+
+## User-Visible Behavior
+- The public homepage, public note pages, login, and private owner routes share one coherent visual system.
+- The refreshed UI feels dense and polished without becoming a clone of the reference product.
+- Authored content remains primary, while AI metadata and operational status remain visible but secondary.
+- The redesign preserves the existing route model and information architecture.
+
+## Validation
+- Public and private surfaces share the new visual language consistently.
+- Responsive behavior remains solid on mobile and desktop.
+- The redesign does not regress existing note, publishing, link, tag, or search flows.
+- `npm run verify` passes.
+exec
+/bin/zsh -lc "sed -n '1,260p' docs/design-docs/knowledge-studio-visual-system.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# Knowledge Studio Visual System
+
+## Goal
+Refresh Minakeep into an elegant knowledge-studio product that feels close to the reference in density and polish without becoming a visual clone.
+
+## Core Direction
+- editorial typography over generic dashboard defaults
+- dense but calm information layout
+- strong hierarchy for titles, summaries, metadata, and tags
+- one coherent visual language across public and private surfaces
+
+## Public Surfaces
+- homepage should feel like a curated research journal, not a landing-page template
+- public note pages should prioritize reading comfort while still surfacing useful metadata
+
+## Private Surfaces
+- the owner area stays notes-first
+- lists, forms, previews, and metadata panels should feel premium and deliberate rather than scaffold-like
+- AI status should be visible but visually secondary to authored content
+
+exec
+/bin/zsh -lc "sed -n '1,360p' docs/exec-plans/active/019-knowledge-studio-ui-refresh.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# Knowledge studio UI refresh
+
+```json taskmeta
+{
+  "id": "019-knowledge-studio-ui-refresh",
+  "title": "Knowledge studio UI refresh",
+  "order": 19,
+  "status": "active",
+  "next_task_on_success": "020-ai-ui-hardening",
+  "prompt_docs": [
+    "AGENTS.md",
+    "ARCHITECTURE.md",
+    "docs/FRONTEND.md",
+    "docs/DESIGN.md",
+    "docs/design-docs/knowledge-studio-visual-system.md",
+    "docs/product-specs/knowledge-studio-ui-refresh.md"
+  ],
+  "required_commands": [
+    "npm run verify"
+  ],
+Plan update
+I’ve read the required docs and extracted the promotion gates. Next I’m checking the actual route shells, shared styling, and owner/public surfaces to see whether the redesign satisfies those gates in substance.
+  ✓ Read required repo and task documents to extract concrete UI expectations and promotion gates
+  → Inspect the implemented UI surfaces and shared styling system against the documented scope
+  • Cross-check exit criteria against code, docs, and verification evidence; decide promotion recommendation
+exec
+/bin/zsh -lc "sed -n '1,320p' src/app/globals.css" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+:root {
+  color-scheme: light;
+  --bg: #f5efe4;
+  --bg-soft: rgba(255, 251, 245, 0.82);
+  --bg-strong: rgba(255, 250, 242, 0.96);
+  --paper: rgba(255, 252, 248, 0.88);
+  --paper-strong: rgba(255, 254, 251, 0.96);
+  --ink: #211912;
+  --muted: #645749;
+  --muted-soft: #82735f;
+  --line: rgba(47, 35, 24, 0.12);
+  --accent: #855033;
+  --accent-strong: #54301d;
+  --success-soft: rgba(41, 94, 67, 0.08);
+  --danger-soft: rgba(124, 52, 44, 0.09);
+  --shadow: 0 1.5rem 3.5rem rgba(69, 46, 23, 0.1);
+  --shadow-soft: 0 1rem 2rem rgba(69, 46, 23, 0.06);
+  --font-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "URW Palladio L", Georgia, serif;
+  --font-body: Charter, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  --font-ui: "Avenir Next", "Segoe UI", "Helvetica Neue", sans-serif;
+exec
+/bin/zsh -lc 'rg --files src/app src/features | sort' in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+src/app/api/auth/[...nextauth]/route.ts
+src/app/api/health/route.ts
+src/app/api/test/mina/chat/completions/route.ts
+src/app/app/layout.tsx
+src/app/app/links/actions.ts
+src/app/app/links/page.tsx
+src/app/app/notes/[id]/edit/page.tsx
+src/app/app/notes/actions.ts
+src/app/app/notes/new/page.tsx
+src/app/app/page.tsx
+src/app/app/search/page.tsx
+src/app/app/tags/page.tsx
+src/app/globals.css
+src/app/layout.tsx
+src/app/login/actions.ts
+src/app/login/page.tsx
+src/app/notes/[slug]/page.tsx
+src/app/page.tsx
+src/features/ai/client.ts
+src/features/ai/config.ts
+exec
+/bin/zsh -lc "sed -n '1,260p' src/features/navigation/components/vault-nav.tsx" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' src/app/app/layout.tsx" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import { VaultNav } from "@/features/navigation/components/vault-nav";
+
+export default function PrivateVaultLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <div className="vault-shell">
+      <section className="vault-frame">
+        <div className="vault-frame-header">
+          <div className="vault-frame-copy">
+            <p className="eyebrow">Private vault</p>
+            <h1 className="vault-frame-title">Notes first, links nearby, retrieval always owner-only.</h1>
+            <p className="vault-frame-note">
+              Markdown drafting, selective publishing, shared tags, and AI metadata stay inside one compact workspace.
+            </p>
+          </div>
+          <VaultNav />
+        </div>
+        <div className="vault-frame-body">{children}</div>
+      </section>
+    </div>
+  );
+ succeeded in 0ms:
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+const navItems = [
+  { href: "/app", label: "Notes" },
+  { href: "/app/links", label: "Links" },
+  { href: "/app/tags", label: "Tags" },
+  { href: "/app/search", label: "Search" }
+] as const;
+
+function isActivePath(pathname: string, href: string) {
+  if (href === "/app") {
+    return pathname === "/app" || pathname.startsWith("/app/notes");
+  }
+
+  return pathname.startsWith(href);
+}
+
+exec
+/bin/zsh -lc "sed -n '321,640p' src/app/globals.css" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' src/app/page.tsx" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+.panel-card strong {
+  display: block;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  margin-bottom: 0.35rem;
+  text-transform: uppercase;
+}
+
+.summary-row span,
+.section-meta {
+  display: block;
+  line-height: 1.6;
+}
+
+.section-heading {
+  align-items: baseline;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+ succeeded in 0ms:
+import Link from "next/link";
+
+import { listPublishedNotes } from "@/features/notes/service";
+
+export default async function HomePage() {
+  const notes = await listPublishedNotes();
+  const publishedCountLabel = `${notes.length} published note${notes.length === 1 ? "" : "s"}`;
+
+  return (
+    <div className="feature-layout public-home-layout">
+      <section className="hero-card public-hero">
+        <div className="hero-copy">
+          <p className="eyebrow">Published notes</p>
+          <h1>Notes the owner has chosen to share.</h1>
+          <p className="lede">
+            The public reading room only surfaces notes the owner has explicitly published. Drafts, saved links, and
+            working tags stay inside the private studio until they are intentionally promoted.
+          </p>
+        </div>
+        <div className="summary-row">
+exec
+/bin/zsh -lc "sed -n '1,260p' src/app/app/page.tsx" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' src/app/app/links/page.tsx" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' src/app/login/page.tsx" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' src/app/notes/[slug]/page.tsx" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import Link from "next/link";
+import { unstable_noStore as noStore } from "next/cache";
+
+import { signOut } from "@/auth";
+import { getEnrichmentStatusLabel } from "@/features/enrichment/types";
+import { listOwnerNotes } from "@/features/notes/service";
+import { requireOwnerSession } from "@/lib/auth/owner-session";
+
+async function signOutAction() {
+  "use server";
+
+  await signOut({
+    redirectTo: "/login"
+  });
+}
+
+export default async function PrivateDashboardPage() {
+  noStore();
+
+  const owner = await requireOwnerSession();
+ succeeded in 0ms:
+import { loginAction } from "./actions";
+
+type LoginPageProps = {
+  searchParams?: Promise<{
+    error?: string;
+  }>;
+};
+
+export default async function LoginPage({ searchParams }: LoginPageProps) {
+  const resolvedSearchParams = (await searchParams) ?? {};
+  const hasError = resolvedSearchParams.error === "CredentialsSignin";
+
+  return (
+    <div className="feature-layout login-layout">
+      <section className="hero-card login-intro-card">
+        <p className="eyebrow">Owner access</p>
+        <h1>Sign in to the private vault.</h1>
+        <p className="lede">
+          Minakeep runs as a single-owner workspace. Public readers only see published notes, while drafting, saved
+          links, tags, and search remain restricted to the private studio.
+ succeeded in 0ms:
+import { createLinkAction, retryLinkEnrichmentAction } from "@/app/app/links/actions";
+import { getEnrichmentStatusDetail, getEnrichmentStatusLabel } from "@/features/enrichment/types";
+import { LinkPendingRefresh } from "@/features/links/components/link-pending-refresh";
+import { listOwnerLinks } from "@/features/links/service";
+import { requireOwnerSession } from "@/lib/auth/owner-session";
+
+type LinksPageProps = {
+  searchParams?: Promise<{
+    saved?: string;
+    retried?: string;
+    error?: string;
+  }>;
+};
+
+function getStatusMessage(error?: string) {
+  switch (error) {
+    case "duplicate-url":
+      return "That URL is already saved in your private links.";
+    case "invalid-url":
+      return "Enter a complete http:// or https:// URL.";
+ exited 1 in 0ms:
+zsh:1: no matches found: src/app/notes/[slug]/page.tsx
+exec
+/bin/zsh -lc "sed -n '641,980p' src/app/globals.css" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,280p' 'src/app/notes/[slug]/page.tsx'" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,280p' src/app/app/tags/page.tsx" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+
+.note-list-item-public {
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.note-list-link {
+  color: var(--ink);
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2vw, 1.6rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-top: 0.2rem;
+  transition: color 140ms ease, transform 140ms ease;
+}
+
+.note-list-link:hover {
+  color: var(--accent-strong);
+}
+ succeeded in 0ms:
+import Link from "next/link";
+import { notFound } from "next/navigation";
+
+import { renderMarkdownToHtml } from "@/features/notes/markdown";
+import { getPublishedNoteBySlug } from "@/features/notes/service";
+
+type PublicNotePageProps = {
+  params: Promise<{
+    slug: string;
+  }>;
+};
+
+export default async function PublicNotePage({ params }: PublicNotePageProps) {
+  const { slug } = await params;
+  const note = await getPublishedNoteBySlug(slug);
+
+  if (!note) {
+    notFound();
+  }
+
+ succeeded in 0ms:
+import Link from "next/link";
+
+import { getEnrichmentStatusDetail, getEnrichmentStatusLabel } from "@/features/enrichment/types";
+import { listOwnerTags, listOwnerContentByTag } from "@/features/tags/service";
+import { normalizeSingleTagName } from "@/features/tags/normalize";
+import { requireOwnerSession } from "@/lib/auth/owner-session";
+
+type TagsPageProps = {
+  searchParams?: Promise<{
+    tag?: string;
+  }>;
+};
+
+export default async function TagsPage({ searchParams }: TagsPageProps) {
+  const owner = await requireOwnerSession();
+  const resolvedSearchParams = (await searchParams) ?? {};
+  const selectedTag = normalizeSingleTagName(resolvedSearchParams.tag);
+  const [tags, filteredContent] = await Promise.all([
+    listOwnerTags(owner.id),
+    listOwnerContentByTag(owner.id, selectedTag)
+exec
+/bin/zsh -lc "sed -n '1,320p' src/app/app/search/page.tsx" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,340p' src/features/notes/components/note-editor.tsx" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+"use client";
+
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useFormStatus } from "react-dom";
+import { useRouter } from "next/navigation";
+
+import type { EnrichmentState } from "@/features/enrichment/types";
+import { getEnrichmentStatusDetail, getEnrichmentStatusLabel } from "@/features/enrichment/types";
+import { renderMarkdownToHtml } from "@/features/notes/markdown";
+import type { SavedTag } from "@/features/tags/types";
+
+type NoteEditorProps = {
+  initialTitle: string;
+  initialMarkdown: string;
+  action: (formData: FormData) => void | Promise<void>;
+  formTitle: string;
+  formDescription: string;
+  submitLabel: string;
+  savedNotice?: string;
+ succeeded in 0ms:
+import Link from "next/link";
+
+import { getEnrichmentStatusDetail, getEnrichmentStatusLabel } from "@/features/enrichment/types";
+import { searchOwnerContent } from "@/features/search/service";
+import { requireOwnerSession } from "@/lib/auth/owner-session";
+
+type SearchPageProps = {
+  searchParams?: Promise<{
+    q?: string;
+  }>;
+};
+
+export default async function SearchPage({ searchParams }: SearchPageProps) {
+  const owner = await requireOwnerSession();
+  const resolvedSearchParams = (await searchParams) ?? {};
+  const results = await searchOwnerContent(owner.id, resolvedSearchParams.q);
+  const resultCount = results.notes.length + results.links.length;
+
+  return (
+    <div className="feature-layout">
+exec
+/bin/zsh -lc "sed -n '1,260p' src/app/layout.tsx" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import type { Metadata } from "next";
+import Link from "next/link";
+
+import "./globals.css";
+
+export const metadata: Metadata = {
+  title: "Minakeep",
+  description: "Private notes and links, with selectively published public notes."
+};
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <html lang="en">
+      <body>
+        <div className="page-shell">
+          <header className="site-header">
+            <div className="brand-block">
+              <Link className="brand" href="/">
+                Minakeep
+              </Link>
+exec
+/bin/zsh -lc "sed -n '1,320p' 'src/app/app/notes/[id]/edit/page.tsx'" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,240p' src/app/app/notes/new/page.tsx" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import { createNoteAction } from "@/app/app/notes/actions";
+import { NoteEditor } from "@/features/notes/components/note-editor";
+import { requireOwnerSession } from "@/lib/auth/owner-session";
+
+export default async function NewNotePage() {
+  await requireOwnerSession();
+
+  return (
+    <NoteEditor
+      action={createNoteAction}
+      formDescription="Create a private draft note with a title and markdown body. It stays private until you explicitly publish it from the edit view."
+      formTitle="New draft note"
+      initialMarkdown=""
+      initialTitle=""
+      submitLabel="Create draft"
+    />
+  );
+}
+ succeeded in 0ms:
+import { notFound } from "next/navigation";
+
+import { publishNoteAction, retryNoteEnrichmentAction, unpublishNoteAction, updateNoteAction } from "@/app/app/notes/actions";
+import { NoteEditor } from "@/features/notes/components/note-editor";
+import { getOwnerNoteForEditor } from "@/features/notes/service";
+import { requireOwnerSession } from "@/lib/auth/owner-session";
+
+type EditNotePageProps = {
+  params: Promise<{
+    id: string;
+  }>;
+  searchParams?: Promise<{
+    saved?: string;
+    published?: string;
+    retried?: string;
+    unpublished?: string;
+  }>;
+};
+
+export default async function EditNotePage({ params, searchParams }: EditNotePageProps) {
+exec
+/bin/zsh -lc 'rg -n "feature-layout|hero-card|panel-card|vault-frame|note-editor-shell|site-header" src/app src/features' in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+src/app/login/page.tsx:14:    <div className="feature-layout login-layout">
+src/app/login/page.tsx:15:      <section className="hero-card login-intro-card">
+src/app/login/page.tsx:34:      <section className="panel-card login-form-card">
+src/app/globals.css:68:.site-header,
+src/app/globals.css:69:.feature-layout,
+src/app/globals.css:75:.site-header {
+src/app/globals.css:162:.feature-layout,
+src/app/globals.css:163:.note-editor-shell,
+src/app/globals.css:188:.feature-layout,
+src/app/globals.css:189:.note-editor-shell {
+src/app/globals.css:193:.hero-card,
+src/app/globals.css:194:.panel-card,
+src/app/globals.css:196:.vault-frame {
+src/app/globals.css:206:.hero-card::before,
+src/app/globals.css:207:.panel-card::before,
+src/app/globals.css:209:.vault-frame::before {
+src/app/globals.css:219:.hero-card,
+src/app/globals.css:220:.panel-card,
+src/app/globals.css:222:.vault-frame {
+src/app/globals.css:226:.hero-card h1,
+exec
+/bin/zsh -lc 'git status --short' in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: error: couldn't create cache file '/tmp/xcrun_db-mmmSyFl5' (errno=Operation not permitted)
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: error: couldn't create cache file '/tmp/xcrun_db-a1KHnbWa' (errno=Operation not permitted)
+ D docs/exec-plans/active/018-link-ai-enrichment.md
+ M docs/exec-plans/active/019-knowledge-studio-ui-refresh.md
+ M scripts/ralph/generated/current-evaluator-prompt.txt
+ M scripts/ralph/generated/current-task-prompt.txt
+ M src/app/app/links/page.tsx
+ M src/app/app/page.tsx
+ M src/app/app/search/page.tsx
+ M src/app/app/tags/page.tsx
+ M src/app/globals.css
+ M src/app/layout.tsx
+ M src/app/login/page.tsx
+ M src/app/notes/[slug]/page.tsx
+ M src/app/page.tsx
+ M src/features/notes/components/note-editor.tsx
+ M state/artifacts/20260321T034611-018-link-ai-enrichment/commit.log
+ M state/backlog.md
+codex
+{"decision":"done","recommend_promotion":true,"confidence":0.9,"summary":"The task is complete in substance. The implementation introduces one shared knowledge-studio visual system through common global tokens, typography, card/layout patterns, and route shells across the public homepage, public note page, login, private vault shell, dashboard, links, tags, search, and note editor. The redesign preserves the existing route model and notes-first/private-vault workflow, keeps AI metadata visually secondary to authored content, includes mobile-first responsive breakpoints and single-column defaults, and the provided `npm run verify` evidence covers lint, typecheck, build, unit tests, E2E flows, real-endpoint AI checks, and startup smoke with all checks passing.","satisfied_exit_criteria":["Public and private surfaces share one coherent visual system.","The refreshed UI remains responsive and usable on desktop and mobile.","Existing note, publishing, link, tags, and search journeys still pass under the new visual system.","`npm run verify` passes."],"missing_requirements":[],"human_review_triggers":[]}
+tokens used
+41,817
+{"decision":"done","recommend_promotion":true,"confidence":0.9,"summary":"The task is complete in substance. The implementation introduces one shared knowledge-studio visual system through common global tokens, typography, card/layout patterns, and route shells across the public homepage, public note page, login, private vault shell, dashboard, links, tags, search, and note editor. The redesign preserves the existing route model and notes-first/private-vault workflow, keeps AI metadata visually secondary to authored content, includes mobile-first responsive breakpoints and single-column defaults, and the provided `npm run verify` evidence covers lint, typecheck, build, unit tests, E2E flows, real-endpoint AI checks, and startup smoke with all checks passing.","satisfied_exit_criteria":["Public and private surfaces share one coherent visual system.","The refreshed UI remains responsive and usable on desktop and mobile.","Existing note, publishing, link, tags, and search journeys still pass under the new visual system.","`npm run verify` passes."],"missing_requirements":[],"human_review_triggers":[]}
+evaluation: done promotion=true

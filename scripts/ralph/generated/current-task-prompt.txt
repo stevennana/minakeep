@@ -2,48 +2,46 @@ Read the following repository documents before making changes:
 - AGENTS.md
 - ARCHITECTURE.md
 - docs/FRONTEND.md
-- docs/design-docs/ai-enrichment-lifecycle.md
-- docs/product-specs/link-ai-enrichment.md
-- docs/exec-plans/active/018-link-ai-enrichment.md
+- docs/DESIGN.md
+- docs/design-docs/knowledge-studio-visual-system.md
+- docs/product-specs/knowledge-studio-ui-refresh.md
+- docs/exec-plans/active/019-knowledge-studio-ui-refresh.md
 
-Current task id: 018-link-ai-enrichment
-Current task title: Link AI enrichment
+Current task id: 019-knowledge-studio-ui-refresh
+Current task title: Knowledge studio UI refresh
 
 Objective:
-After link save, automatically generate AI-owned summary and tags, surface link enrichment status clearly, and allow retry on failure without blocking capture.
+Refresh the whole app into an elegant, dense, reference-inspired knowledge-studio UI while preserving the current route model and workflow clarity.
 
 Scope:
-- trigger link enrichment automatically after save
-- show link enrichment status and generated metadata in the links page and relevant owner retrieval surfaces
-- keep manual link capture focused on URL and title entry
-- expose retry behavior when enrichment fails
+- redesign the public homepage, public note pages, login, and private vault surfaces
+- introduce a coherent typography, spacing, color, and card/layout system across the app
+- keep public reading calm and private authoring functional and notes-first
+- integrate AI metadata visually without turning the product into a chat assistant
 
 Out of scope:
-- note enrichment
-- public link publishing
-- broad visual redesign beyond the minimum UI needed for this slice
+- new product features outside the documented AI enrichment work
+- public search
+- cloned reference layout or branding
 
 Exit criteria:
-1. Saving a link triggers AI enrichment automatically.
-2. AI failure does not block link save and leaves visible failed state with retry.
-3. Generated link summary/tags appear in the documented owner surfaces.
+1. Public and private surfaces share one coherent visual system.
+2. The refreshed UI remains responsive and usable on desktop and mobile.
+3. Existing note, publishing, link, tags, and search journeys still pass under the new visual system.
 4. `npm run verify` passes.
-5. `npm run test:e2e -- --grep @ai-real` passes for a real link-enrichment journey when the AI env vars are configured.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ai-real`
 
 Evaluator notes:
-Promote only when link enrichment works in substance against the real endpoint contract and the save path remains reliable under failure.
+Promote only when the redesign materially improves polish and density without reducing clarity or breaking existing flows.
 
 Required repository artifacts for this task:
-- src/features/links
-- tests/e2e
+- src/app
+- src/features
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ai-real
 
 Previous known gaps from the last evaluation:
 - none

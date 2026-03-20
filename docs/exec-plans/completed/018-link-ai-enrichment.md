@@ -5,7 +5,7 @@
   "id": "018-link-ai-enrichment",
   "title": "Link AI enrichment",
   "order": 18,
-  "status": "active",
+  "status": "completed",
   "next_task_on_success": "019-knowledge-studio-ui-refresh",
   "prompt_docs": [
     "AGENTS.md",
@@ -26,7 +26,8 @@
     "The task drifts into note enrichment or broad visual redesign work.",
     "The link save flow becomes blocked on AI success.",
     "The generated summary/tag behavior is still effectively manual or ambiguous."
-  ]
+  ],
+  "completed_at": "2026-03-20T18:56:20.484Z"
 }
 ```
 
@@ -72,3 +73,4 @@ Promote only when link enrichment works in substance against the real endpoint c
 - 2026-03-21 13:24 KST: Extended `src/features/links` with a dedicated enrichment runner, repo attempt-guarded metadata writes, nullable AI summary storage, and retry support. The links, search, and tags owner surfaces now show link AI status, generated metadata, and failure detail without exposing links publicly.
 - 2026-03-21 13:24 KST: Expanded the existing Playwright AI fixture instead of replacing it by adding a deterministic local `success` mode alongside the existing timeout mode. Added unit coverage for link prompt/state transitions, updated link E2E journeys for auto-enrichment and retry, and added a real-endpoint `@ai-real` link journey.
 - 2026-03-21 03:51 KST: Verified the link slice against lint, typecheck, build, unit tests, and the real-endpoint link E2E path. Fixed the unrelated `/app` owner-dashboard staleness that was blocking `npm run verify` by forcing fresh server data on that mutable dashboard route instead of broadening the link implementation.
+- 2026-03-20T18:56:20.484Z: automatically promoted after deterministic checks and evaluator approval.

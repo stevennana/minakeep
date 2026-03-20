@@ -1,0 +1,24 @@
+[main ec370a7] ralph: 018-link-ai-enrichment 2026-03-21T03:56:20+09:00
+ 50 files changed, 2424 insertions(+), 244 deletions(-)
+ rename docs/exec-plans/{active => completed}/017-note-ai-enrichment.md (95%)
+ create mode 100644 src/features/links/components/link-pending-refresh.tsx
+ create mode 100644 src/features/links/enrichment.ts
+ create mode 100644 state/artifacts/20260321T031849-017-note-ai-enrichment/backlog.log
+ create mode 100644 state/artifacts/20260321T031849-017-note-ai-enrichment/promote.log
+ create mode 100644 state/artifacts/20260321T033154-018-link-ai-enrichment/backlog.log
+ create mode 100644 state/artifacts/20260321T033154-018-link-ai-enrichment/commit.log
+ create mode 100644 state/artifacts/20260321T033154-018-link-ai-enrichment/evaluator.log
+ create mode 100644 state/artifacts/20260321T033154-018-link-ai-enrichment/npm-run-test-e2e-grep-ai-real-next-server.log
+ create mode 100644 state/artifacts/20260321T033154-018-link-ai-enrichment/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260321T033154-018-link-ai-enrichment/promote.log
+ create mode 100644 state/artifacts/20260321T033154-018-link-ai-enrichment/task-prompt.log
+ create mode 100644 state/artifacts/20260321T033154-018-link-ai-enrichment/worker.jsonl
+ create mode 100644 state/artifacts/20260321T034611-018-link-ai-enrichment/commit.log
+ create mode 100644 state/artifacts/20260321T034611-018-link-ai-enrichment/evaluator.log
+ create mode 100644 state/artifacts/20260321T034611-018-link-ai-enrichment/npm-run-test-e2e-grep-ai-real-next-server.log
+ create mode 100644 state/artifacts/20260321T034611-018-link-ai-enrichment/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260321T034611-018-link-ai-enrichment/task-prompt.log
+ create mode 100644 state/artifacts/20260321T034611-018-link-ai-enrichment/worker.jsonl
+ create mode 100644 tests/e2e/link-ai-real.spec.ts
+ create mode 100644 tests/unit/link-enrichment.test.ts
+commit: created

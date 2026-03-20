@@ -96,10 +96,24 @@ export function NoteEditor({
 
   return (
     <div className="note-editor-shell">
-      <section className="panel-card note-editor-intro">
+      <section className="hero-card note-editor-intro">
         <p className="eyebrow">Private note authoring</p>
         <h1>{formTitle}</h1>
         <p className="lede">{formDescription}</p>
+        <div className="summary-row">
+          <div>
+            <strong>Drafting surface</strong>
+            <span>Textarea editing with live markdown preview</span>
+          </div>
+          <div>
+            <strong>Publishing</strong>
+            <span>{publication?.isPublished ? "Currently visible on public routes" : "Private until explicitly published"}</span>
+          </div>
+          <div>
+            <strong>AI metadata</strong>
+            <span>{enrichment ? getEnrichmentStatusLabel(enrichment.status) : "Available after the first save"}</span>
+          </div>
+        </div>
         {publication ? (
           <div className="publication-panel">
             <div className="note-meta">
@@ -129,7 +143,10 @@ export function NoteEditor({
 
       {enrichment ? (
         <section className="panel-card note-generated-panel" data-testid="note-enrichment-panel">
-          <p className="eyebrow">AI note metadata</p>
+          <div className="section-heading">
+            <strong>AI note metadata</strong>
+            <span className="section-meta">Secondary to authored content</span>
+          </div>
           <div className="note-meta">
             <span>{getEnrichmentStatusLabel(enrichment.status)}</span>
             <span>{getEnrichmentStatusDetail(enrichment)}</span>
@@ -166,6 +183,10 @@ export function NoteEditor({
 
       <div className="note-editor-grid">
         <form action={action} className="panel-card note-form">
+          <div className="section-heading">
+            <strong>Draft</strong>
+            <span className="section-meta">Title and markdown body</span>
+          </div>
           <label className="field-group">
             <span>Title</span>
             <input
@@ -200,7 +221,10 @@ Use markdown for headings, lists, links, and code.`}
         </form>
 
         <section aria-labelledby="note-preview-heading" className="panel-card note-preview-panel">
-          <p className="eyebrow">Preview</p>
+          <div className="section-heading">
+            <strong>Preview</strong>
+            <span className="section-meta">Rendered markdown</span>
+          </div>
           <h2 id="note-preview-heading">{previewTitle}</h2>
           <div
             className="markdown-preview"

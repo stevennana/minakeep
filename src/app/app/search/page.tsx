@@ -14,19 +14,37 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const owner = await requireOwnerSession();
   const resolvedSearchParams = (await searchParams) ?? {};
   const results = await searchOwnerContent(owner.id, resolvedSearchParams.q);
+  const resultCount = results.notes.length + results.links.length;
 
   return (
     <div className="feature-layout">
-      <section className="feature-card">
+      <section className="hero-card">
         <p className="eyebrow">Owner search</p>
         <h1>Search private titles, URLs, and tags.</h1>
         <p className="lede">
           This search stays inside the owner area. Public readers do not get a search interface in v1.
         </p>
+        <div className="summary-row">
+          <div>
+            <strong>Scope</strong>
+            <span>Titles, URLs, and shared tag names</span>
+          </div>
+          <div>
+            <strong>Body search</strong>
+            <span>Note bodies and link summaries stay out of scope in v1</span>
+          </div>
+          <div>
+            <strong>Current results</strong>
+            <span>{results.query ? `${resultCount} match${resultCount === 1 ? "" : "es"}` : "Run a query to inspect the vault"}</span>
+          </div>
+        </div>
       </section>
 
       <form action="/app/search" className="panel-card search-form" role="search">
-        <strong>Search the private vault</strong>
+        <div className="section-heading">
+          <strong>Search the private vault</strong>
+          <span className="section-meta">Owner-only retrieval</span>
+        </div>
         <label className="field-group">
           <span>Query</span>
           <input
@@ -48,7 +66,10 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       {results.query ? (
         <div className="retrieval-grid">
           <section className="panel-card">
-            <strong>Matching notes</strong>
+            <div className="section-heading">
+              <strong>Matching notes</strong>
+              <span className="section-meta">{results.notes.length} result{results.notes.length === 1 ? "" : "s"}</span>
+            </div>
             {results.notes.length === 0 ? (
               <p>No private notes matched this query.</p>
             ) : (
@@ -56,6 +77,10 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 {results.notes.map((note) => (
                   <article className="note-list-item" key={note.id}>
                     <div>
+                      <div className="note-meta note-meta-leading">
+                        <span>{note.isPublished ? "Published" : "Draft"}</span>
+                        <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(note.updatedAt)}</span>
+                      </div>
                       <Link className="note-list-link" href={`/app/notes/${note.id}/edit`}>
                         {note.title}
                       </Link>
@@ -73,10 +98,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                         )}
                       </div>
                     </div>
-                    <div className="note-meta">
-                      <span>{note.isPublished ? "Published" : "Draft"}</span>
-                      <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(note.updatedAt)}</span>
-                    </div>
                   </article>
                 ))}
               </div>
@@ -84,19 +105,26 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           </section>
 
           <section className="panel-card">
-            <strong>Matching links</strong>
+            <div className="section-heading">
+              <strong>Matching links</strong>
+              <span className="section-meta">{results.links.length} result{results.links.length === 1 ? "" : "s"}</span>
+            </div>
             {results.links.length === 0 ? (
               <p>No private links matched this query.</p>
             ) : (
               <div className="link-list">
                 {results.links.map((link) => (
                   <article className="link-list-item" key={link.id}>
-                  <div className="link-list-heading">
-                    <a className="note-list-link" href={link.url} rel="noopener noreferrer" target="_blank">
-                      {link.title}
-                    </a>
-                    <p className="link-url">{link.url}</p>
-                  </div>
+                    <div className="link-list-heading">
+                      <div className="note-meta note-meta-leading">
+                        <span>Private link</span>
+                        <span>{getEnrichmentStatusLabel(link.enrichment.status)}</span>
+                      </div>
+                      <a className="note-list-link" href={link.url} rel="noopener noreferrer" target="_blank">
+                        {link.title}
+                      </a>
+                      <p className="link-url">{link.url}</p>
+                    </div>
                     {link.summary ? <p className="link-summary">AI summary: {link.summary}</p> : null}
                     <div className="link-list-footer">
                       <div className="tag-list" aria-label="Link tags">
@@ -111,8 +139,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                         )}
                       </div>
                       <div className="note-meta">
-                        <span>Private link</span>
-                        <span>{getEnrichmentStatusLabel(link.enrichment.status)}</span>
+                        <span>Updated</span>
                         <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(link.updatedAt)}</span>
                       </div>
                     </div>
@@ -125,7 +152,10 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         </div>
       ) : (
         <section className="panel-card">
-          <strong>Search scope</strong>
+          <div className="section-heading">
+            <strong>Search scope</strong>
+            <span className="section-meta">v1 boundaries</span>
+          </div>
           <p>Search matches note titles, link titles, link URLs, and shared tag names. Note bodies and link summaries stay out of scope in v1.</p>
         </section>
       )}
