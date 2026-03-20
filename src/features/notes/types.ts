@@ -4,13 +4,13 @@ import type { SavedTag } from "@/features/tags/types";
 export type NoteDraftInput = {
   title: string;
   markdown: string;
-  tags: string;
 };
 
 export type NoteSummary = {
   id: string;
   title: string;
   excerpt: string;
+  summary: string | null;
   isPublished: boolean;
   enrichment: EnrichmentState;
   tags: SavedTag[];
@@ -28,10 +28,12 @@ export type PublishedNoteSummary = {
   title: string;
   slug: string;
   excerpt: string;
+  summary: string | null;
   publishedAt: Date;
   updatedAt: Date;
 };
 
 export type PublishedNoteRecord = PublishedNoteSummary & {
   markdown: string;
+  tags: SavedTag[];
 };

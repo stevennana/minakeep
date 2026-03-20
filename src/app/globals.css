@@ -283,7 +283,9 @@ a {
 
 .field-note,
 .link-url,
-.link-summary {
+.link-summary,
+.note-generated-summary,
+.note-generated-copy p {
   color: var(--muted);
 }
 
@@ -307,6 +309,26 @@ a {
   line-height: 1.6;
   margin: 0;
   overflow-wrap: anywhere;
+}
+
+.note-generated-panel,
+.note-generated-copy {
+  display: grid;
+  gap: 12px;
+}
+
+.note-generated-panel {
+  margin-top: -6px;
+}
+
+.note-generated-copy strong {
+  margin-bottom: 0;
+}
+
+.note-generated-copy p,
+.note-generated-summary {
+  line-height: 1.6;
+  margin: 0;
 }
 
 .tag-list {

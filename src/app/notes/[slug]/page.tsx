@@ -28,6 +28,18 @@ export default async function PublicNotePage({ params }: PublicNotePageProps) {
           <span>Public</span>
           <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(publishedAt)}</span>
         </div>
+        {note.summary ? <p className="note-generated-summary">AI summary: {note.summary}</p> : null}
+        <div className="tag-list" aria-label="Published note tags">
+          {note.tags.length === 0 ? (
+            <span className="tag-pill tag-pill-muted">No generated tags</span>
+          ) : (
+            note.tags.map((tag) => (
+              <span className="tag-pill" key={tag.id}>
+                {tag.name}
+              </span>
+            ))
+          )}
+        </div>
         <div
           className="markdown-preview public-note-body"
           data-testid="public-note-markdown"

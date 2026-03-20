@@ -59,6 +59,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                         {note.title}
                       </Link>
                       <p>{note.excerpt || "Empty draft"}</p>
+                      {note.summary ? <p className="note-generated-summary">AI summary: {note.summary}</p> : null}
                       <div className="tag-list" aria-label="Note tags">
                         {note.tags.length === 0 ? (
                           <span className="tag-pill tag-pill-muted">Untagged</span>

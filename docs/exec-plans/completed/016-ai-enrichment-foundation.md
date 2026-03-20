@@ -5,7 +5,7 @@
   "id": "016-ai-enrichment-foundation",
   "title": "AI enrichment foundation",
   "order": 16,
-  "status": "active",
+  "status": "completed",
   "next_task_on_success": "017-note-ai-enrichment",
   "prompt_docs": [
     "AGENTS.md",
@@ -27,7 +27,8 @@
     "The task starts implementing note or link-specific UI instead of shared enrichment plumbing.",
     "The AI client leaks shell credentials into client-side code or committed config.",
     "The real-endpoint AI promotion gate is left implied instead of explicit."
-  ]
+  ],
+  "completed_at": "2026-03-20T17:51:26.889Z"
 }
 ```
 
@@ -73,3 +74,4 @@ Do not promote if credential handling, failure-state rules, or promotion-gate co
 - 2026-03-21 02:31 KST: Added one server-side Mina OpenAI-compatible client boundary plus shared enrichment state helpers, then reused the existing note/link repos and services by extending them with retry-friendly enrichment state methods rather than replacing their save flows.
 - 2026-03-21 02:31 KST: Made the real-endpoint contract explicit in `.env.example`, reliability/architecture/design docs, and the shared `tests/e2e/ai-real.ts` helper so later promotable AI tasks can use `@ai-real` without inventing another test gate.
 - 2026-03-21 02:42 KST: Hardened the Mina AI credential path by moving `LLM_BASE`, `TOKEN`, and `MODEL` reads into a dedicated server-only config module, then pointed the enrichment service and unit tests at that boundary so accidental client imports fail earlier.
+- 2026-03-20T17:51:26.889Z: automatically promoted after deterministic checks and evaluator approval.

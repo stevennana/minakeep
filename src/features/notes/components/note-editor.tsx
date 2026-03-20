@@ -1,23 +1,27 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
+import { useRouter } from "next/navigation";
 
 import type { EnrichmentState } from "@/features/enrichment/types";
 import { getEnrichmentStatusDetail, getEnrichmentStatusLabel } from "@/features/enrichment/types";
 import { renderMarkdownToHtml } from "@/features/notes/markdown";
+import type { SavedTag } from "@/features/tags/types";
 
 type NoteEditorProps = {
   initialTitle: string;
   initialMarkdown: string;
-  initialTags: string;
   action: (formData: FormData) => void | Promise<void>;
   formTitle: string;
   formDescription: string;
   submitLabel: string;
   savedNotice?: string;
   enrichment?: EnrichmentState;
+  generatedSummary?: string | null;
+  generatedTags?: SavedTag[];
+  retryAction?: () => void | Promise<void>;
   publication?: {
     isPublished: boolean;
     publicHref: `/notes/${string}`;
@@ -46,23 +50,49 @@ function PublicationButton({ idleLabel, pendingLabel }: { idleLabel: string; pen
   );
 }
 
+function RetryButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <button className="ghost-button" type="submit">
+      {pending ? "Retrying..." : "Retry AI enrichment"}
+    </button>
+  );
+}
+
 export function NoteEditor({
   initialTitle,
   initialMarkdown,
-  initialTags,
   action,
   formTitle,
   formDescription,
   submitLabel,
   savedNotice,
   enrichment,
+  generatedSummary,
+  generatedTags = [],
+  retryAction,
   publication
 }: NoteEditorProps) {
+  const router = useRouter();
   const [title, setTitle] = useState(initialTitle);
   const [markdown, setMarkdown] = useState(initialMarkdown);
-  const [tags, setTags] = useState(initialTags);
   const previewTitle = title.trim() || "Untitled note";
   const previewHtml = renderMarkdownToHtml(markdown);
+
+  useEffect(() => {
+    if (enrichment?.status !== "pending") {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      router.refresh();
+    }, 2000);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [enrichment?.status, enrichment?.updatedAt, router]);
 
   return (
     <div className="note-editor-shell">
@@ -95,13 +125,44 @@ export function NoteEditor({
           </div>
         ) : null}
         {savedNotice ? <p className="status-note">{savedNotice}</p> : null}
-        {enrichment ? (
+      </section>
+
+      {enrichment ? (
+        <section className="panel-card note-generated-panel" data-testid="note-enrichment-panel">
+          <p className="eyebrow">AI note metadata</p>
           <div className="note-meta">
             <span>{getEnrichmentStatusLabel(enrichment.status)}</span>
             <span>{getEnrichmentStatusDetail(enrichment)}</span>
           </div>
-        ) : null}
-      </section>
+          <div className="note-generated-copy">
+            <strong>AI summary</strong>
+            {generatedSummary ? (
+              <p data-testid="note-ai-summary">{generatedSummary}</p>
+            ) : (
+              <p className="field-note">A generated summary will appear here after a successful enrichment run.</p>
+            )}
+          </div>
+          <div className="note-generated-copy">
+            <strong>AI tags</strong>
+            <div className="tag-list" data-testid="note-ai-tags">
+              {generatedTags.length === 0 ? (
+                <span className="tag-pill tag-pill-muted">No generated tags yet</span>
+              ) : (
+                generatedTags.map((tag) => (
+                  <span className="tag-pill" key={tag.id}>
+                    {tag.name}
+                  </span>
+                ))
+              )}
+            </div>
+          </div>
+          {enrichment.status === "failed" && retryAction ? (
+            <form action={retryAction}>
+              <RetryButton />
+            </form>
+          ) : null}
+        </section>
+      ) : null}
 
       <div className="note-editor-grid">
         <form action={action} className="panel-card note-form">
@@ -132,20 +193,6 @@ Use markdown for headings, lists, links, and code.`}
               value={markdown}
             />
           </label>
-
-          <label className="field-group">
-            <span>Tags</span>
-            <input
-              autoComplete="off"
-              className="text-input"
-              name="tags"
-              onChange={(event) => setTags(event.target.value)}
-              placeholder="research, reference"
-              type="text"
-              value={tags}
-            />
-          </label>
-          <p className="field-note">Use commas to share note tags with the rest of the private vault.</p>
 
           <div className="button-row">
             <SaveButton label={submitLabel} />

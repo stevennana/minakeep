@@ -5,7 +5,7 @@
   "id": "017-note-ai-enrichment",
   "title": "Note AI enrichment",
   "order": 17,
-  "status": "queued",
+  "status": "active",
   "next_task_on_success": "018-link-ai-enrichment",
   "prompt_docs": [
     "AGENTS.md",
@@ -68,3 +68,5 @@ Promote only when note enrichment works in substance against the real endpoint c
 
 - Start here. Append timestamped progress notes as work lands.
 - Note when existing note services, editor components, or E2E fixtures were extended instead of replaced.
+- 2026-03-21 02:58:48 KST - Extended the existing note repo/service paths instead of replacing them: added persisted note `summary`, switched note save/retry to queue enrichment through the shared foundation, and kept the save redirect path non-blocking by running the Mina request after the server action response.
+- 2026-03-21 02:58:48 KST - Reworked the existing note editor and owner note lists to surface generated summary/tags plus failed-state retry, and extended the current Playwright/unit suites with task-scoped note enrichment coverage rather than introducing a second test harness.

@@ -2,53 +2,51 @@ Read the following repository documents before making changes:
 - AGENTS.md
 - ARCHITECTURE.md
 - docs/FRONTEND.md
-- docs/RELIABILITY.md
-- docs/SECURITY.md
 - docs/design-docs/ai-enrichment-lifecycle.md
-- docs/exec-plans/active/016-ai-enrichment-foundation.md
+- docs/product-specs/note-ai-enrichment.md
+- docs/exec-plans/active/017-note-ai-enrichment.md
 
-Current task id: 016-ai-enrichment-foundation
-Current task title: AI enrichment foundation
+Current task id: 017-note-ai-enrichment
+Current task title: Note AI enrichment
 
 Objective:
-Introduce the shared Mina-hosted OpenAI-compatible integration layer, enrichment-state model, and promotion-safe real-endpoint test contract needed for the AI wave.
+After note save, automatically generate AI-owned summary and tags, surface note enrichment status clearly, and allow retry on failure without blocking authoring.
 
 Scope:
-- add a dedicated server-side AI client boundary for `LLM_BASE`, `TOKEN`, and `MODEL`
-- define how notes and links record enrichment status such as pending, ready, and failed
-- add retry-friendly service interfaces without yet polishing note- or link-specific UX deeply
-- establish the real-endpoint E2E tagging strategy for promotable AI tasks
+- trigger note enrichment automatically after create and update
+- show note enrichment status and generated metadata in the note editor and relevant owner note surfaces
+- preserve authored title and markdown as the primary note content
+- expose retry behavior when enrichment fails
 
 Out of scope:
-- full note-specific enrichment UX
-- full link-specific enrichment UX
-- broad visual redesign work
-- AI chat or multi-provider support
+- link enrichment
+- broad search expansion beyond the documented note/title/tag behavior
+- full-app visual redesign beyond the minimum UI needed for this slice
 
 Exit criteria:
-1. The codebase has one narrow server-side AI integration path for the Mina-hosted OpenAI-compatible endpoint.
-2. Notes and links have a shared enrichment-state contract that later tasks can use without guessing.
-3. The AI-task promotion rules explicitly require a real-endpoint E2E path when the AI env vars are configured.
+1. Saving a note triggers AI enrichment automatically.
+2. AI failure does not block note save and leaves visible failed state with retry.
+3. Generated note summary/tags appear in the documented note-related owner surfaces.
 4. `npm run verify` passes.
+5. `npm run test:e2e -- --grep @ai-real` passes for a real note-enrichment journey when the AI env vars are configured.
 
 Required checks:
 - `npm run verify`
+- `npm run test:e2e -- --grep @ai-real`
 
 Evaluator notes:
-Promote only when the foundation clearly prepares later note/link AI tasks without already collapsing those feature fronts together.
-Do not promote if credential handling, failure-state rules, or promotion-gate commands are still ambiguous.
+Promote only when note enrichment works in substance against the real endpoint contract and the save path remains reliable under failure.
 
 Required repository artifacts for this task:
-- .env.example
-- src
+- src/features/notes
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
+- npm run test:e2e -- --grep @ai-real
 
 Previous known gaps from the last evaluation:
-- Criterion 1 is not met in substance: the Mina AI integration path is not enforced as server-only, so token/base-url handling remains ambiguous.
-- Credential handling should be hardened so the AI client boundary cannot be imported into client-side code accidentally.
+- none
 
 Rules:
 - Work only on this task.

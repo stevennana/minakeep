@@ -5,7 +5,6 @@ import { notesRepo } from "@/features/notes/repo";
 import { createNoteExcerpt } from "@/features/notes/markdown";
 import type { NoteDraftInput } from "@/features/notes/types";
 import { createUniqueNoteSlug } from "@/features/notes/slug";
-import { normalizeTagNames } from "@/features/tags/normalize";
 
 function normalizeTitle(title: string) {
   const trimmedTitle = title.trim();
@@ -40,19 +39,13 @@ export async function getPublishedNoteBySlug(slug: string) {
 export async function createDraftNote(ownerId: string, input: NoteDraftInput) {
   const title = normalizeTitle(input.title);
   const markdown = input.markdown;
-  const tagNames = normalizeTagNames(input.tags);
   const existingSlugs = await notesRepo.listSlugsForOwner(ownerId);
-  const note = await notesRepo.create(ownerId, {
+  return notesRepo.create(ownerId, {
     title,
     slug: createUniqueNoteSlug(title, existingSlugs),
     markdown,
-    excerpt: createNoteExcerpt(markdown, title),
-    tagNames
+    excerpt: createNoteExcerpt(markdown, title)
   });
-
-  await requestEnrichment(notesRepo, note.id);
-
-  return note;
 }
 
 export async function updateDraftNote(ownerId: string, id: string, input: NoteDraftInput) {
@@ -64,20 +57,14 @@ export async function updateDraftNote(ownerId: string, id: string, input: NoteDr
 
   const title = normalizeTitle(input.title);
   const markdown = input.markdown;
-  const tagNames = normalizeTagNames(input.tags);
   const existingSlugs = await notesRepo.listSlugsForOwner(ownerId);
   const siblingSlugs = existingSlugs.filter((slug) => slug !== existingNote.slug);
-  const note = await notesRepo.update(id, {
+  return notesRepo.update(id, {
     title,
     slug: createUniqueNoteSlug(title, siblingSlugs),
     markdown,
-    excerpt: createNoteExcerpt(markdown, title),
-    tagNames
+    excerpt: createNoteExcerpt(markdown, title)
   });
-
-  await requestEnrichment(notesRepo, note.id);
-
-  return note;
 }
 
 export async function publishNote(ownerId: string, id: string) {
@@ -116,4 +103,8 @@ export async function retryNoteEnrichment(ownerId: string, id: string) {
   }
 
   return retryEnrichment(notesRepo, id);
+}
+
+export async function startNoteEnrichment(id: string) {
+  return requestEnrichment(notesRepo, id);
 }

@@ -24,6 +24,7 @@ model Note {
   slug        String   @unique
   markdown    String
   excerpt     String
+  summary     String?
   enrichmentStatus    String   @default("pending")
   enrichmentError     String?
   enrichmentAttempts  Int      @default(0)

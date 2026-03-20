@@ -11,7 +11,6 @@ export default async function NewNotePage() {
       formDescription="Create a private draft note with a title and markdown body. It stays private until you explicitly publish it from the edit view."
       formTitle="New draft note"
       initialMarkdown=""
-      initialTags=""
       initialTitle=""
       submitLabel="Create draft"
     />

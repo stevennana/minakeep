@@ -1,7 +1,7 @@
 import "server-only";
 
 import type { EnrichmentRecordFields } from "@/features/enrichment/types";
-import { toEnrichmentState } from "@/features/enrichment/types";
+import { normalizeEnrichmentStatus, toEnrichmentState } from "@/features/enrichment/types";
 import { prisma } from "@/lib/prisma";
 
 const noteTagSelect = {
@@ -18,6 +18,7 @@ const noteSummarySelect = {
   id: true,
   title: true,
   excerpt: true,
+  summary: true,
   isPublished: true,
   enrichmentStatus: true,
   enrichmentError: true,
@@ -32,6 +33,18 @@ const noteEditorSelect = {
   ...noteSummarySelect,
   slug: true,
   markdown: true
+};
+
+const notePublishedSelect = {
+  id: true,
+  title: true,
+  slug: true,
+  markdown: true,
+  excerpt: true,
+  summary: true,
+  publishedAt: true,
+  updatedAt: true,
+  tags: noteTagSelect
 };
 
 function mapNoteRecord<TRecord extends EnrichmentRecordFields>(note: TRecord) {
@@ -127,6 +140,7 @@ export const notesRepo = {
         title: true,
         slug: true,
         excerpt: true,
+        summary: true,
         publishedAt: true,
         updatedAt: true
       }
@@ -149,15 +163,7 @@ export const notesRepo = {
         slug,
         isPublished: true
       },
-      select: {
-        id: true,
-        title: true,
-        slug: true,
-        markdown: true,
-        excerpt: true,
-        publishedAt: true,
-        updatedAt: true
-      }
+      select: notePublishedSelect
     });
   },
   async listSlugsForOwner(ownerId: string) {
@@ -172,31 +178,21 @@ export const notesRepo = {
 
     return notes.map((note) => note.slug);
   },
-  async create(ownerId: string, data: { title: string; slug: string; markdown: string; excerpt: string; tagNames: string[] }) {
+  async create(ownerId: string, data: { title: string; slug: string; markdown: string; excerpt: string }) {
     const note = await prisma.note.create({
       data: {
         ownerId,
         title: data.title,
         slug: data.slug,
         markdown: data.markdown,
-        excerpt: data.excerpt,
-        tags: {
-          connectOrCreate: data.tagNames.map((name) => ({
-            where: {
-              name
-            },
-            create: {
-              name
-            }
-          }))
-        }
+        excerpt: data.excerpt
       },
       select: noteEditorSelect
     });
 
     return mapNoteRecord(note);
   },
-  async update(id: string, data: { title: string; slug: string; markdown: string; excerpt: string; tagNames: string[] }) {
+  async update(id: string, data: { title: string; slug: string; markdown: string; excerpt: string }) {
     const note = await prisma.note.update({
       where: {
         id
@@ -205,18 +201,7 @@ export const notesRepo = {
         title: data.title,
         slug: data.slug,
         markdown: data.markdown,
-        excerpt: data.excerpt,
-        tags: {
-          set: [],
-          connectOrCreate: data.tagNames.map((name) => ({
-            where: {
-              name
-            },
-            create: {
-              name
-            }
-          }))
-        }
+        excerpt: data.excerpt
       },
       select: noteEditorSelect
     });
@@ -243,12 +228,16 @@ export const notesRepo = {
         id
       },
       data: {
+        summary: null,
         enrichmentStatus: "pending",
         enrichmentError: null,
         enrichmentAttempts: {
           increment: 1
         },
-        enrichmentUpdatedAt: new Date()
+        enrichmentUpdatedAt: new Date(),
+        tags: {
+          set: []
+        }
       },
       select: noteEditorSelect
     });
@@ -276,16 +265,122 @@ export const notesRepo = {
         id
       },
       data: {
+        summary: null,
         enrichmentStatus: "failed",
         enrichmentError: error,
         enrichmentAttempts: {
           increment: 1
         },
-        enrichmentUpdatedAt: new Date()
+        enrichmentUpdatedAt: new Date(),
+        tags: {
+          set: []
+        }
       },
       select: noteEditorSelect
     });
 
     return mapNoteRecord(note);
+  },
+  async findEnrichmentSourceById(id: string) {
+    const note = await prisma.note.findUnique({
+      where: {
+        id
+      },
+      select: {
+        id: true,
+        title: true,
+        markdown: true,
+        enrichmentStatus: true,
+        enrichmentAttempts: true
+      }
+    });
+
+    if (!note) {
+      return null;
+    }
+
+    return {
+      id: note.id,
+      title: note.title,
+      markdown: note.markdown,
+      enrichment: {
+        status: normalizeEnrichmentStatus(note.enrichmentStatus),
+        attempts: note.enrichmentAttempts
+      }
+    };
+  },
+  async recordGeneratedMetadata(id: string, expectedAttempt: number, data: { summary: string; tagNames: string[] }) {
+    return prisma.$transaction(async (transaction) => {
+      const note = await transaction.note.findUnique({
+        where: {
+          id
+        },
+        select: {
+          enrichmentAttempts: true
+        }
+      });
+
+      if (!note || note.enrichmentAttempts !== expectedAttempt) {
+        return false;
+      }
+
+      await transaction.note.update({
+        where: {
+          id
+        },
+        data: {
+          summary: data.summary,
+          enrichmentStatus: "ready",
+          enrichmentError: null,
+          enrichmentUpdatedAt: new Date(),
+          tags: {
+            set: [],
+            connectOrCreate: data.tagNames.map((name) => ({
+              where: {
+                name
+              },
+              create: {
+                name
+              }
+            }))
+          }
+        }
+      });
+
+      return true;
+    });
+  },
+  async recordGeneratedFailure(id: string, expectedAttempt: number, error: string) {
+    return prisma.$transaction(async (transaction) => {
+      const note = await transaction.note.findUnique({
+        where: {
+          id
+        },
+        select: {
+          enrichmentAttempts: true
+        }
+      });
+
+      if (!note || note.enrichmentAttempts !== expectedAttempt) {
+        return false;
+      }
+
+      await transaction.note.update({
+        where: {
+          id
+        },
+        data: {
+          summary: null,
+          enrichmentStatus: "failed",
+          enrichmentError: error,
+          enrichmentUpdatedAt: new Date(),
+          tags: {
+            set: []
+          }
+        }
+      });
+
+      return true;
+    });
   }
 };

@@ -132,3 +132,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Task 016 is complete in substance. The repo now has a dedicated server-only Mina AI config/client boundary, notes and links share one enrichment-state contract in both Prisma and repo/service layers, and the real-endpoint promotion gate is explicit in docs plus the shared `tests/e2e/ai-real.ts` helper and downstream AI task contracts. The provided deterministic `npm run verify` result passed, and I did not find ambiguity in credential handling, failure-state rules, or promotion commands for this foundation slice. -> state/artifacts/20260321T024023-016-ai-enrichment-foundation/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T024023-016-ai-enrichment-foundation/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 016-ai-enrichment-foundation -> 017-note-ai-enrichment
+- backlog: rendered current=017-note-ai-enrichment
+- health: ooxxoooxo
+- cycle: finished
+
+### cycle 2026-03-21T02:51:57+09:00 task=017-note-ai-enrichment
+- artifacts: state/artifacts/20260321T025157-017-note-ai-enrichment
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T025157-017-note-ai-enrichment/worker.jsonl
+- worker-summary: Implemented task `017-note-ai-enrichment` end-to-end. The main changes are the new non-blocking note enrichment runner in [src/features/notes/enrichment.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/enrichment.ts), persisted note AI summary support in [prisma/schema.prisma](/Users/stevenna/WebstormProjects/minakeep/prisma/schema.prisma) and [src/features/notes/repo.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/repo.ts), and the updated editor/status UI in [src/features/notes/components/note-editor.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/components/note-editor.tsx). Note saves now queue enrichment automatically after create/update, retries are exposed from the editor, and generated summary/tags are surfaced on owner note views and public note surfaces.
+- evaluator: started
+- evaluator: status=not_done promotion=false The required commands passed and note save does queue real enrichment, but the implementation is not promotion-ready in substance: the editor only auto-refreshes once while enrichment is pending, so slower real-endpoint runs can leave the note stuck on `AI pending` instead of reliably surfacing `ready` or `failed`, and the public homepage still omits generated tags despite `docs/FRONTEND.md` specifying them. -> state/artifacts/20260321T025157-017-note-ai-enrichment/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T025157-017-note-ai-enrichment/npm-run-verify-next-server.log

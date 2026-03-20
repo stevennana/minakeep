@@ -1,0 +1,11 @@
+[main 13544cf] ralph: 016-ai-enrichment-foundation 2026-03-21T02:51:26+09:00
+ 25 files changed, 1391 insertions(+), 124 deletions(-)
+ create mode 100644 src/features/ai/config.ts
+ create mode 100644 state/artifacts/20260321T022107-016-ai-enrichment-foundation/backlog.log
+ create mode 100644 state/artifacts/20260321T022107-016-ai-enrichment-foundation/promote.log
+ create mode 100644 state/artifacts/20260321T024023-016-ai-enrichment-foundation/commit.log
+ create mode 100644 state/artifacts/20260321T024023-016-ai-enrichment-foundation/evaluator.log
+ create mode 100644 state/artifacts/20260321T024023-016-ai-enrichment-foundation/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260321T024023-016-ai-enrichment-foundation/task-prompt.log
+ create mode 100644 state/artifacts/20260321T024023-016-ai-enrichment-foundation/worker.jsonl
+commit: created

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import { publishNoteAction, unpublishNoteAction, updateNoteAction } from "@/app/app/notes/actions";
+import { publishNoteAction, retryNoteEnrichmentAction, unpublishNoteAction, updateNoteAction } from "@/app/app/notes/actions";
 import { NoteEditor } from "@/features/notes/components/note-editor";
 import { getOwnerNoteForEditor } from "@/features/notes/service";
 import { requireOwnerSession } from "@/lib/auth/owner-session";
@@ -12,6 +12,7 @@ type EditNotePageProps = {
   searchParams?: Promise<{
     saved?: string;
     published?: string;
+    retried?: string;
     unpublished?: string;
   }>;
 };
@@ -32,8 +33,9 @@ export default async function EditNotePage({ params, searchParams }: EditNotePag
       formDescription="Edit the note, confirm the rendered output, and explicitly choose when it should appear on the public site."
       formTitle="Edit draft note"
       enrichment={note.enrichment}
+      generatedSummary={note.summary}
+      generatedTags={note.tags}
       initialMarkdown={note.markdown}
-      initialTags={note.tags.map((tag) => tag.name).join(", ")}
       initialTitle={note.title}
       publication={{
         isPublished: note.isPublished,
@@ -41,11 +43,14 @@ export default async function EditNotePage({ params, searchParams }: EditNotePag
         publishAction: publishNoteAction.bind(null, note.id),
         unpublishAction: unpublishNoteAction.bind(null, note.id)
       }}
+      retryAction={retryNoteEnrichmentAction.bind(null, note.id)}
       savedNotice={
         resolvedSearchParams.published === "1"
           ? "Note published."
           : resolvedSearchParams.unpublished === "1"
             ? "Note unpublished."
+            : resolvedSearchParams.retried === "1"
+              ? "Retry requested."
             : resolvedSearchParams.saved === "1"
               ? "Draft saved."
               : undefined

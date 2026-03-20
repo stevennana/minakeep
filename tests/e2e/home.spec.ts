@@ -2,6 +2,8 @@ import "dotenv/config";
 
 import { expect, test } from "@playwright/test";
 
+import { hasAiRealEnv } from "./ai-real";
+
 // These journeys all mutate the same single-owner SQLite state, so serial execution keeps promotion checks deterministic.
 test.describe.configure({ mode: "serial" });
 
@@ -69,6 +71,7 @@ Paragraph with **bold** text and a [link](https://example.com).`;
   await page.getByRole("button", { name: "Save draft" }).click();
 
   await expect(page).toHaveURL(/\/app\/notes\/.+\/edit\?saved=1$/);
+  await expect(page.getByTestId("note-enrichment-panel")).toContainText("AI note metadata");
   await page.goto("/app");
   await expect(page.getByRole("link", { name: updatedTitle })).toBeVisible();
 
@@ -77,6 +80,39 @@ Paragraph with **bold** text and a [link](https://example.com).`;
   await expect(page.getByRole("textbox", { name: /^Title$/ })).toHaveValue(updatedTitle);
   await expect(page.getByRole("textbox", { name: /^Markdown body$/ })).toHaveValue(updatedMarkdown);
   await expect(page.getByTestId("note-markdown-preview").getByRole("heading", { name: `Revised ${uniqueId}` })).toBeVisible();
+});
+
+test("note save still succeeds when AI enrichment is unavailable and exposes a retry path", async ({ page }) => {
+  test.skip(hasAiRealEnv(), "This failure-path check only runs when the real AI env is absent.");
+
+  const username = process.env.OWNER_USERNAME ?? "owner";
+  const password = process.env.OWNER_PASSWORD ?? "password";
+  const uniqueId = `${Date.now()}`;
+
+  await page.goto("/login");
+  await page.getByLabel("Username").fill(username);
+  await page.getByLabel("Password").fill(password);
+  await page.getByRole("button", { name: "Sign in" }).click();
+
+  await expect(page).toHaveURL(/\/app$/);
+  await page.getByRole("link", { name: "New note" }).click();
+
+  await page.getByRole("textbox", { name: /^Title$/ }).fill(`Retry note ${uniqueId}`);
+  await page.getByRole("textbox", { name: /^Markdown body$/ }).fill(`Body for retry note ${uniqueId}`);
+  await page.getByRole("button", { name: "Create draft" }).click();
+
+  await expect(page).toHaveURL(/\/app\/notes\/.+\/edit\?saved=1$/);
+  const enrichmentPanel = page.getByTestId("note-enrichment-panel");
+  await expect(enrichmentPanel).toContainText("AI failed");
+  await expect(enrichmentPanel).toContainText("Set LLM_BASE, TOKEN, and MODEL before AI enrichment can run.");
+  await expect(page.getByTestId("note-ai-summary")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Retry AI enrichment" })).toBeVisible();
+
+  await page.getByRole("button", { name: "Retry AI enrichment" }).click();
+
+  await expect(page).toHaveURL(/\/app\/notes\/.+\/edit\?retried=1$/);
+  await expect(page.getByText("Retry requested.")).toBeVisible();
+  await expect(page.getByTestId("note-enrichment-panel")).toContainText("AI failed");
 });
 
 test("owner can publish and unpublish a note across the public routes", async ({ page }) => {
@@ -197,7 +233,7 @@ test("owner cannot save a private link with an unsafe URL scheme", async ({ page
   await expect(page.getByText(summary)).toHaveCount(0);
 });
 
-test("owner can filter private content by tag and search by title, URL, and tag", async ({ page }) => {
+test("owner can filter private links by tag and search notes by title plus links by URL and tag", async ({ page }) => {
   const username = process.env.OWNER_USERNAME ?? "owner";
   const password = process.env.OWNER_PASSWORD ?? "password";
   const uniqueId = `${Date.now()}`;
@@ -209,9 +245,7 @@ Private note for shared-tag retrieval.`;
   const linkSummary = `Saved link for owner search ${uniqueId}`;
   const linkUrlNeedle = `url-needle-${uniqueId}`;
   const linkUrl = `https://example.com/${linkUrlNeedle}`;
-  const noteOnlyTag = `note-only-${uniqueId}`;
   const linkOnlyTag = `link-only-${uniqueId}`;
-  const sharedTag = `shared-${uniqueId}`;
   const searchTag = `search-tag-${uniqueId}`;
 
   await page.goto("/login");
@@ -225,7 +259,6 @@ Private note for shared-tag retrieval.`;
 
   await page.getByRole("textbox", { name: /^Title$/ }).fill(noteTitle);
   await page.getByRole("textbox", { name: /^Markdown body$/ }).fill(noteMarkdown);
-  await page.getByRole("textbox", { name: /^Tags$/ }).fill(`${noteOnlyTag}, ${sharedTag}, ${searchTag}`);
   await page.getByRole("button", { name: "Create draft" }).click();
 
   await expect(page).toHaveURL(/\/app\/notes\/.+\/edit\?saved=1$/);
@@ -236,21 +269,17 @@ Private note for shared-tag retrieval.`;
   await page.getByRole("textbox", { name: /^URL$/ }).fill(linkUrl);
   await page.getByRole("textbox", { name: /^Title$/ }).fill(linkTitle);
   await page.getByRole("textbox", { name: /^Summary$/ }).fill(linkSummary);
-  await page.getByRole("textbox", { name: /^Tags$/ }).fill(`${linkOnlyTag}, ${sharedTag}, ${searchTag}`);
+  await page.getByRole("textbox", { name: /^Tags$/ }).fill(`${linkOnlyTag}, ${searchTag}`);
   await page.getByRole("button", { name: "Save link" }).click();
 
   await expect(page).toHaveURL(/\/app\/links\?saved=1$/);
   await expect(page.getByText("Link saved.")).toBeVisible();
 
-  await page.goto(`/app/tags?tag=${encodeURIComponent(noteOnlyTag)}`);
-  await expect(page.getByRole("link", { name: noteTitle })).toBeVisible();
-  await expect(page.getByRole("link", { name: linkTitle })).toHaveCount(0);
-
   await page.goto(`/app/tags?tag=${encodeURIComponent(linkOnlyTag)}`);
   await expect(page.getByRole("link", { name: linkTitle })).toBeVisible();
   await expect(page.getByRole("link", { name: noteTitle })).toHaveCount(0);
 
-  await page.goto(`/app/tags?tag=${encodeURIComponent(sharedTag)}`);
+  await page.goto("/app/tags");
   await expect(page.getByRole("link", { name: noteTitle })).toBeVisible();
   await expect(page.getByRole("link", { name: linkTitle })).toBeVisible();
 
@@ -263,6 +292,6 @@ Private note for shared-tag retrieval.`;
   await expect(page.getByRole("link", { name: noteTitle })).toHaveCount(0);
 
   await page.goto(`/app/search?q=${encodeURIComponent(searchTag)}`);
-  await expect(page.getByRole("link", { name: noteTitle })).toBeVisible();
   await expect(page.getByRole("link", { name: linkTitle })).toBeVisible();
+  await expect(page.getByRole("link", { name: noteTitle })).toHaveCount(0);
 });

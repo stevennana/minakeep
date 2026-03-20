@@ -28,7 +28,7 @@ export default async function HomePage() {
                   <Link className="note-list-link" href={`/notes/${note.slug}`}>
                     {note.title}
                   </Link>
-                  <p>{note.excerpt || "Published note"}</p>
+                  <p>{note.summary || note.excerpt || "Published note"}</p>
                 </div>
                 <div className="note-meta">
                   <span>Published</span>
