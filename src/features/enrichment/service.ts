@@ -2,6 +2,7 @@ import "server-only";
 
 import { type MinaAiConfigStatus, getMinaAiConfigStatus } from "@/features/ai/config";
 import { MinaAiClientError } from "@/features/ai/client";
+import type { EnrichmentState } from "@/features/enrichment/types";
 
 type EnrichmentStateWriter<TRecord> = {
   setEnrichmentPending(id: string): Promise<TRecord>;
@@ -11,11 +12,11 @@ type EnrichmentStateWriter<TRecord> = {
 
 function getConfigurationFailureMessage(configStatus: MinaAiConfigStatus) {
   if (configStatus.state === "disabled") {
-    return "Set LLM_BASE, TOKEN, and MODEL before AI enrichment can run.";
+    return "AI enrichment is disabled until LLM_BASE, TOKEN, and MODEL are set. Save succeeded without generated metadata.";
   }
 
   if (configStatus.state === "invalid") {
-    return `Complete the AI enrichment configuration. Missing: ${configStatus.missing.join(", ")}.`;
+    return `AI enrichment is not fully configured. Missing: ${configStatus.missing.join(", ")}. Save succeeded without generated metadata.`;
   }
 
   return "AI enrichment failed.";
@@ -43,7 +44,15 @@ export async function requestEnrichment<TRecord>(writer: EnrichmentStateWriter<T
   return writer.setEnrichmentFailed(id, getConfigurationFailureMessage(configStatus));
 }
 
-export async function retryEnrichment<TRecord>(writer: EnrichmentStateWriter<TRecord>, id: string) {
+export async function retryEnrichment<TRecord extends { enrichment: Pick<EnrichmentState, "status"> }>(
+  writer: EnrichmentStateWriter<TRecord>,
+  id: string,
+  record: TRecord
+) {
+  if (record.enrichment.status !== "failed") {
+    return record;
+  }
+
   return requestEnrichment(writer, id);
 }
 

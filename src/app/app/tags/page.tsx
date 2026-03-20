@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { getEnrichmentStatusDetail, getEnrichmentStatusLabel } from "@/features/enrichment/types";
+import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
 import { listOwnerTags, listOwnerContentByTag } from "@/features/tags/service";
 import { normalizeSingleTagName } from "@/features/tags/normalize";
 import { requireOwnerSession } from "@/lib/auth/owner-session";
@@ -83,21 +83,22 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
             <p>{selectedTag ? "No private notes match this tag yet." : "No private notes yet."}</p>
           ) : (
             <div className="note-list">
-              {filteredContent.notes.map((note) => (
-                <article className="note-list-item" key={note.id}>
-                  <div>
-                    <div className="note-meta note-meta-leading">
-                      <span>{note.isPublished ? "Published" : "Draft"}</span>
-                      <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(note.updatedAt)}</span>
-                    </div>
-                    <Link className="note-list-link" href={`/app/notes/${note.id}/edit`}>
-                      {note.title}
-                    </Link>
-                    <p>{note.excerpt || "Empty draft"}</p>
-                    {note.summary ? <p className="note-generated-summary">AI summary: {note.summary}</p> : null}
-                    <div className="tag-list" aria-label="Note tags">
-                      {note.tags.length === 0 ? (
-                        <span className="tag-pill tag-pill-muted">Untagged</span>
+                {filteredContent.notes.map((note) => (
+                  <article className="note-list-item" key={note.id}>
+                    <div>
+                      <div className="note-meta note-meta-leading">
+                        <span>{note.isPublished ? "Published" : "Draft"}</span>
+                        <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(note.updatedAt)}</span>
+                      </div>
+                      <Link className="note-list-link" href={`/app/notes/${note.id}/edit`}>
+                        {note.title}
+                      </Link>
+                      <p>{note.excerpt || "Empty draft"}</p>
+                      {note.summary ? <p className="note-generated-summary">AI summary: {note.summary}</p> : null}
+                      <EnrichmentStatusBlock state={note.enrichment} />
+                      <div className="tag-list" aria-label="Note tags">
+                        {note.tags.length === 0 ? (
+                          <span className="tag-pill tag-pill-muted">Untagged</span>
                       ) : (
                         note.tags.map((tag) => (
                           <span className="tag-pill" key={tag.id}>
@@ -122,22 +123,22 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
             <p>{selectedTag ? "No private links match this tag yet." : "No private links yet."}</p>
           ) : (
             <div className="link-list">
-              {filteredContent.links.map((link) => (
-                <article className="link-list-item" key={link.id}>
-                  <div className="link-list-heading">
-                    <div className="note-meta note-meta-leading">
-                      <span>Private link</span>
-                      <span>{getEnrichmentStatusLabel(link.enrichment.status)}</span>
+                {filteredContent.links.map((link) => (
+                  <article className="link-list-item" key={link.id}>
+                    <div className="link-list-heading">
+                      <div className="note-meta note-meta-leading">
+                        <span>Private link</span>
+                      </div>
+                      <a className="note-list-link" href={link.url} rel="noopener noreferrer" target="_blank">
+                        {link.title}
+                      </a>
+                      <p className="link-url">{link.url}</p>
                     </div>
-                    <a className="note-list-link" href={link.url} rel="noopener noreferrer" target="_blank">
-                      {link.title}
-                    </a>
-                    <p className="link-url">{link.url}</p>
-                  </div>
-                  {link.summary ? <p className="link-summary">AI summary: {link.summary}</p> : null}
-                  <div className="link-list-footer">
-                    <div className="tag-list" aria-label="Link tags">
-                      {link.tags.length === 0 ? (
+                    {link.summary ? <p className="link-summary">AI summary: {link.summary}</p> : null}
+                    <EnrichmentStatusBlock state={link.enrichment} />
+                    <div className="link-list-footer">
+                      <div className="tag-list" aria-label="Link tags">
+                        {link.tags.length === 0 ? (
                         <span className="tag-pill tag-pill-muted">No generated tags yet</span>
                       ) : (
                         link.tags.map((tag) => (
@@ -149,13 +150,12 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
                     </div>
                     <div className="note-meta">
                       <span>Updated</span>
-                      <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(link.updatedAt)}</span>
+                        <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(link.updatedAt)}</span>
+                      </div>
                     </div>
-                  </div>
-                  {link.enrichment.status === "failed" ? <p className="field-note">{getEnrichmentStatusDetail(link.enrichment)}</p> : null}
-                </article>
-              ))}
-            </div>
+                  </article>
+                ))}
+              </div>
           )}
         </section>
       </div>

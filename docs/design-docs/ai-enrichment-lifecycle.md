@@ -25,7 +25,9 @@ Define how Minakeep generates, stores, surfaces, and retries AI-generated summar
 - the UI must record visible enrichment status such as `pending`, `ready`, or `failed`
 - notes and links store shared enrichment fields for status, error, attempt count, and last state update so later slices do not need to invent their own contract
 - failed enrichment must have a retry path
+- retry is only a recovery path for records already in the visible failed state; pending work should refresh in place instead of exposing duplicate retry controls
 - failure state must not look like silent success
+- disabled or partial AI env config must surface a visible failure that explains the configuration gap without exposing secret values
 
 ## Verification Rules
 - unit tests must cover request shaping, response normalization, and state transitions

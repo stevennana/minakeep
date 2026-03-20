@@ -11,6 +11,7 @@ The owner or a public reader visits any core Minakeep surface.
 - The refreshed UI feels dense and polished without becoming a clone of the reference product.
 - Authored content remains primary, while AI metadata and operational status remain visible but secondary.
 - The redesign preserves the existing route model and information architecture.
+- Owner note and link cards keep one consistent AI-status treatment across the dashboard, editor, links, search, and tags routes.
 
 ## Validation
 - Public and private surfaces share the new visual language consistently.

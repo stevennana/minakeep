@@ -17,6 +17,7 @@ Refresh Minakeep into an elegant knowledge-studio product that feels close to th
 - the owner area stays notes-first
 - lists, forms, previews, and metadata panels should feel premium and deliberate rather than scaffold-like
 - AI status should be visible but visually secondary to authored content
+- AI status treatment should stay consistent across dashboard cards, the note editor, links, tags, and search rather than changing its hierarchy route by route
 
 ## Anti-Goals
 - do not reproduce the reference layout one-for-one

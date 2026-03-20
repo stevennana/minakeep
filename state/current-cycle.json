@@ -1,8 +1,8 @@
 {
-  "task_id": "019-knowledge-studio-ui-refresh",
-  "started_at": "2026-03-21T03:56:50+09:00",
-  "artifact_dir": "state/artifacts/20260321T035650-019-knowledge-studio-ui-refresh",
+  "task_id": "020-ai-ui-hardening",
+  "started_at": "2026-03-21T04:31:34+09:00",
+  "artifact_dir": "state/artifacts/20260321T043134-020-ai-ui-hardening",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-03-20T19:18:11.916Z"
+  "updated_at": "2026-03-20T19:42:33.157Z"
 }

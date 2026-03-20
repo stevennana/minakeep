@@ -679,6 +679,15 @@ textarea {
   color: var(--muted-soft);
 }
 
+.enrichment-status-block {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.enrichment-status-block .note-meta-leading {
+  margin-bottom: 0;
+}
+
 .note-meta {
   color: var(--muted-soft);
   font-size: 0.73rem;

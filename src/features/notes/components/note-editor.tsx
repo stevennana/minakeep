@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { useRouter } from "next/navigation";
 
+import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
 import type { EnrichmentState } from "@/features/enrichment/types";
-import { getEnrichmentStatusDetail, getEnrichmentStatusLabel } from "@/features/enrichment/types";
+import { getEnrichmentStatusLabel } from "@/features/enrichment/types";
 import { renderMarkdownToHtml } from "@/features/notes/markdown";
 import type { SavedTag } from "@/features/tags/types";
 
@@ -147,10 +148,7 @@ export function NoteEditor({
             <strong>AI note metadata</strong>
             <span className="section-meta">Secondary to authored content</span>
           </div>
-          <div className="note-meta">
-            <span>{getEnrichmentStatusLabel(enrichment.status)}</span>
-            <span>{getEnrichmentStatusDetail(enrichment)}</span>
-          </div>
+          <EnrichmentStatusBlock state={enrichment} />
           <div className="note-generated-copy">
             <strong>AI summary</strong>
             {generatedSummary ? (

@@ -44,14 +44,18 @@ export function getEnrichmentStatusLabel(status: EnrichmentStatus) {
   }
 }
 
+export function getEnrichmentAttemptLabel(attempts: number) {
+  return `Attempt ${attempts}`;
+}
+
 export function getEnrichmentStatusDetail(state: EnrichmentState) {
   if (state.status === "failed") {
     return state.error ?? "AI enrichment failed.";
   }
 
   if (state.status === "ready") {
-    return "Generated metadata is ready for later note and link surfaces.";
+    return "Generated metadata is ready across the relevant Minakeep surfaces.";
   }
 
-  return "A save has queued enrichment for the configured Mina endpoint.";
+  return "The save succeeded and Minakeep is refreshing this view while the configured Mina endpoint responds.";
 }

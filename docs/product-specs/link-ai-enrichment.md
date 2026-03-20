@@ -11,6 +11,7 @@ The owner saves a link from the private links page.
 - The links view and other owner-facing surfaces show whether enrichment is pending, ready, or failed.
 - When enrichment succeeds, the generated summary and tags become visible across relevant owner surfaces.
 - If enrichment fails, the link still saves and the owner can retry enrichment.
+- Retry is exposed from the failed state only, while pending link enrichment refreshes the owner view automatically.
 
 ## Validation
 - A saved link can complete a real-endpoint enrichment flow when `LLM_BASE`, `TOKEN`, and `MODEL` are configured.

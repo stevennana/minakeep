@@ -222,3 +222,33 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true The task is complete in substance. The implementation introduces one shared knowledge-studio visual system through common global tokens, typography, card/layout patterns, and route shells across the public homepage, public note page, login, private vault shell, dashboard, links, tags, search, and note editor. The redesign preserves the existing route model and notes-first/private-vault workflow, keeps AI metadata visually secondary to authored content, includes mobile-first responsive breakpoints and single-column defaults, and the provided `npm run verify` evidence covers lint, typecheck, build, unit tests, E2E flows, real-endpoint AI checks, and startup smoke with all checks passing. -> state/artifacts/20260321T035650-019-knowledge-studio-ui-refresh/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T035650-019-knowledge-studio-ui-refresh/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 019-knowledge-studio-ui-refresh -> 020-ai-ui-hardening
+- backlog: rendered current=020-ai-ui-hardening
+- health: ooxxoooxoxxoxoo
+- cycle: finished
+
+### cycle 2026-03-21T04:18:42+09:00 task=020-ai-ui-hardening
+- artifacts: state/artifacts/20260321T041842-020-ai-ui-hardening
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T041842-020-ai-ui-hardening/worker.jsonl
+- worker-summary: AI hardening is in place. Server-side retry now only re-queues records already in a visible failed state, and owner-facing note/link status is rendered through one shared block so the editor, dashboard, links, search, and tags routes stop drifting. The core changes are in [service.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/enrichment/service.ts), [types.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/enrichment/types.ts), and [status-block.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/enrichment/components/status-block.tsx).
+- evaluator: started
+- evaluator: status=not_done promotion=false Deterministic checks failed; task is not ready for promotion. -> state/artifacts/20260321T041842-020-ai-ui-hardening/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T041842-020-ai-ui-hardening/npm-run-verify-next-server.log
+- commit: commit: skipped (deterministic checks not passing)
+- promote: Task 020-ai-ui-hardening not eligible for promotion.
+- backlog: rendered current=020-ai-ui-hardening
+- health: ooxxoooxoxxoxoox
+- cycle: finished
+
+### cycle 2026-03-21T04:31:34+09:00 task=020-ai-ui-hardening
+- artifacts: state/artifacts/20260321T043134-020-ai-ui-hardening
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T043134-020-ai-ui-hardening/worker.jsonl
+- worker-summary: The hardening slice is in a promotable state on the current tree. I verified the existing AI/UI changes, appended the passing gate result to [020-ai-ui-hardening.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/020-ai-ui-hardening.md), and wrote the operator handoff summary into [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
+- evaluator: started
+- evaluator: status=not_done promotion=false The hard gates pass, but I would not promote yet. `docs/RELIABILITY.md:38` says pending owner views auto-refresh while enrichment runs, yet the only refresh implementations are in [src/features/notes/components/note-editor.tsx](file:///Users/stevenna/WebstormProjects/minakeep/src/features/notes/components/note-editor.tsx) lines 84-96 and [src/features/links/components/link-pending-refresh.tsx](file:///Users/stevenna/WebstormProjects/minakeep/src/features/links/components/link-pending-refresh.tsx) lines 9-21. Other owner surfaces that show pending AI state, including [src/app/app/page.tsx](file:///Users/stevenna/WebstormProjects/minakeep/src/app/app/page.tsx), [src/app/app/search/page.tsx](file:///Users/stevenna/WebstormProjects/minakeep/src/app/app/search/page.tsx), and [src/app/app/tags/page.tsx](file:///Users/stevenna/WebstormProjects/minakeep/src/app/app/tags/page.tsx), do not implement any polling/refresh path. Because this task explicitly requires the reliability docs to match shipped AI/UI behavior, exit criterion 4 is not fully satisfied in substance. -> state/artifacts/20260321T043134-020-ai-ui-hardening/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T043134-020-ai-ui-hardening/npm-run-verify-next-server.log

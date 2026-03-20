@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { getEnrichmentStatusDetail, getEnrichmentStatusLabel } from "@/features/enrichment/types";
+import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
 import { searchOwnerContent } from "@/features/search/service";
 import { requireOwnerSession } from "@/lib/auth/owner-session";
 
@@ -86,6 +86,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                       </Link>
                       <p>{note.excerpt || "Empty draft"}</p>
                       {note.summary ? <p className="note-generated-summary">AI summary: {note.summary}</p> : null}
+                      <EnrichmentStatusBlock state={note.enrichment} />
                       <div className="tag-list" aria-label="Note tags">
                         {note.tags.length === 0 ? (
                           <span className="tag-pill tag-pill-muted">Untagged</span>
@@ -118,7 +119,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                     <div className="link-list-heading">
                       <div className="note-meta note-meta-leading">
                         <span>Private link</span>
-                        <span>{getEnrichmentStatusLabel(link.enrichment.status)}</span>
                       </div>
                       <a className="note-list-link" href={link.url} rel="noopener noreferrer" target="_blank">
                         {link.title}
@@ -126,6 +126,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                       <p className="link-url">{link.url}</p>
                     </div>
                     {link.summary ? <p className="link-summary">AI summary: {link.summary}</p> : null}
+                    <EnrichmentStatusBlock state={link.enrichment} />
                     <div className="link-list-footer">
                       <div className="tag-list" aria-label="Link tags">
                         {link.tags.length === 0 ? (
@@ -143,7 +144,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                         <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(link.updatedAt)}</span>
                       </div>
                     </div>
-                    {link.enrichment.status === "failed" ? <p className="field-note">{getEnrichmentStatusDetail(link.enrichment)}</p> : null}
                   </article>
                 ))}
               </div>

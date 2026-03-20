@@ -1,47 +1,50 @@
 Read the following repository documents before making changes:
 - AGENTS.md
 - ARCHITECTURE.md
-- docs/FRONTEND.md
-- docs/DESIGN.md
-- docs/design-docs/knowledge-studio-visual-system.md
-- docs/product-specs/knowledge-studio-ui-refresh.md
-- docs/exec-plans/active/019-knowledge-studio-ui-refresh.md
+- docs/QUALITY_SCORE.md
+- docs/RELIABILITY.md
+- docs/SECURITY.md
+- docs/exec-plans/active/020-ai-ui-hardening.md
 
-Current task id: 019-knowledge-studio-ui-refresh
-Current task title: Knowledge studio UI refresh
+Current task id: 020-ai-ui-hardening
+Current task title: AI and UI hardening
 
 Objective:
-Refresh the whole app into an elegant, dense, reference-inspired knowledge-studio UI while preserving the current route model and workflow clarity.
+Stabilize the AI enrichment wave and the knowledge-studio UI so the repo is ready for the next tranche after this expansion.
 
 Scope:
-- redesign the public homepage, public note pages, login, and private vault surfaces
-- introduce a coherent typography, spacing, color, and card/layout system across the app
-- keep public reading calm and private authoring functional and notes-first
-- integrate AI metadata visually without turning the product into a chat assistant
+- tighten AI failure handling, retry behavior, and external-env documentation
+- reconcile reliability, security, and quality docs with the shipped AI/UI behavior
+- close obvious visual inconsistencies left by the redesign
+- keep Ralph operator guidance aligned with the new promotion gates
 
 Out of scope:
-- new product features outside the documented AI enrichment work
-- public search
-- cloned reference layout or branding
+- new major product features
+- AI chat
+- unrelated infrastructure expansion
 
 Exit criteria:
-1. Public and private surfaces share one coherent visual system.
-2. The refreshed UI remains responsive and usable on desktop and mobile.
-3. Existing note, publishing, link, tags, and search journeys still pass under the new visual system.
-4. `npm run verify` passes.
+1. `npm run verify` passes.
+2. `npm run test:e2e -- --grep @ai-real` passes when the AI env vars are configured.
+3. `npm run start:smoke` passes.
+4. Reliability, security, and quality docs match the shipped AI/UI behavior.
+5. Remaining debt is explicit.
 
 Required checks:
 - `npm run verify`
+- `npm run test:e2e -- --grep @ai-real`
+- `npm run start:smoke`
 
 Evaluator notes:
-Promote only when the redesign materially improves polish and density without reducing clarity or breaking existing flows.
+Promote only when the repo is operationally ready for the next post-AI wave rather than merely visually or narratively complete.
 
 Required repository artifacts for this task:
-- src/app
-- src/features
+- scripts/ralph/README.md
 
 Required commands for this task:
 - npm run verify
+- npm run test:e2e -- --grep @ai-real
+- npm run start:smoke
 
 Previous known gaps from the last evaluation:
 - none

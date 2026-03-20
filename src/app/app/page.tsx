@@ -2,7 +2,7 @@ import Link from "next/link";
 import { unstable_noStore as noStore } from "next/cache";
 
 import { signOut } from "@/auth";
-import { getEnrichmentStatusLabel } from "@/features/enrichment/types";
+import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
 import { listOwnerNotes } from "@/features/notes/service";
 import { requireOwnerSession } from "@/lib/auth/owner-session";
 
@@ -72,13 +72,13 @@ export default async function PrivateDashboardPage() {
                   <div>
                     <div className="note-meta note-meta-leading">
                       <span>{note.isPublished ? "Published" : "Draft"}</span>
-                      <span>{getEnrichmentStatusLabel(note.enrichment.status)}</span>
                     </div>
                     <Link className="note-list-link" href={`/app/notes/${note.id}/edit`}>
                       {note.title}
                     </Link>
                     <p>{note.excerpt || "Empty draft"}</p>
                     {note.summary ? <p className="note-generated-summary">AI summary: {note.summary}</p> : null}
+                    <EnrichmentStatusBlock state={note.enrichment} />
                     <div className="tag-list" aria-label="Note tags">
                       {note.tags.length === 0 ? (
                         <span className="tag-pill tag-pill-muted">No generated tags</span>

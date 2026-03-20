@@ -11,6 +11,7 @@ The owner creates or updates a note from the private note editor.
 - The note editor and owner-facing lists show whether enrichment is pending, ready, or failed.
 - When enrichment succeeds, the generated summary and tags become visible across relevant owner surfaces.
 - If enrichment fails, the note still saves and the owner can retry enrichment.
+- Retry is exposed from the failed state only, while pending note enrichment refreshes the owner view automatically.
 
 ## Validation
 - A saved note can complete a real-endpoint enrichment flow when `LLM_BASE`, `TOKEN`, and `MODEL` are configured.

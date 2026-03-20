@@ -14,18 +14,18 @@ Quality scores should reflect both implemented behavior and how convincingly the
 ## Product Domain Scores
 | Area | Score | Notes |
 |---|---|---|
-| Product clarity | B | The next wave is now defined around AI enrichment plus a full-app visual refresh, but the repo docs need that change propagated consistently. |
-| Feature slicing | B+ | The completed first tranche is well-sliced; the next tranche must keep AI foundation, note AI, link AI, design refresh, and hardening separate. |
-| UX focus | B | The current product is functional, but the planned knowledge-studio redesign raises the quality bar materially. |
+| Product clarity | A- | The shipped slice is now clearly defined around private capture, selective note publishing, AI-owned metadata, and explicit promotion gates; remaining operational caveats are documented instead of implied. |
+| Feature slicing | A- | AI foundation, note enrichment, link enrichment, redesign, and hardening stayed separated into promotable slices with explicit contracts. |
+| UX focus | B+ | The knowledge-studio redesign is coherent, and the hardening pass aligns AI status treatment across editor, dashboard, search, tags, and links surfaces. |
 
 ## Architecture Layer Scores
 | Area | Score | Notes |
 |---|---|---|
 | Repo structure | A- | Docs-first structure, feature folders, and Ralph loop wiring remain legible after the first tranche landed. |
-| Runtime determinism | B+ | Core runtime is stable, but external AI now introduces a new promotion-critical dependency that must be verified explicitly. |
-| Boundary clarity | B | Notes, links, tags/search, owner auth, and operations are clear; AI integration now needs its own service boundary to stay clean. |
+| Runtime determinism | A- | `verify`, startup smoke, and the explicit `@ai-real` gate make normal and AI-specific promotion checks concrete, while leaving external endpoint availability clearly outside the local determinism contract. |
+| Boundary clarity | B+ | Notes, links, tags/search, owner auth, operations, and the Mina AI boundary are explicit; retry rules and failure copy stay centralized instead of drifting across routes. |
 
 ## Immediate Quality Priorities
-- keep the AI endpoint contract and real-endpoint E2E requirement explicit
+- keep the Mina endpoint contract, server-only env handling, and real-endpoint E2E requirement explicit
 - preserve deterministic runtime prep and production-style startup proof as hard promotion gates
-- use the design refresh to improve polish without reducing route clarity or information density
+- keep remaining AI retry debt explicit until v1 has a true queued backoff model

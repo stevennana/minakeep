@@ -1,5 +1,5 @@
 import { createLinkAction, retryLinkEnrichmentAction } from "@/app/app/links/actions";
-import { getEnrichmentStatusDetail, getEnrichmentStatusLabel } from "@/features/enrichment/types";
+import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
 import { LinkPendingRefresh } from "@/features/links/components/link-pending-refresh";
 import { listOwnerLinks } from "@/features/links/service";
 import { requireOwnerSession } from "@/lib/auth/owner-session";
@@ -116,13 +116,13 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
                   <div className="link-list-heading">
                     <div className="note-meta note-meta-leading">
                       <span>Private link</span>
-                      <span>{getEnrichmentStatusLabel(link.enrichment.status)}</span>
                     </div>
                     <a className="note-list-link" href={link.url} rel="noopener noreferrer" target="_blank">
                       {link.title}
                     </a>
                     <p className="link-url">{link.url}</p>
                   </div>
+                  <EnrichmentStatusBlock state={link.enrichment} />
                   <div className="note-generated-copy">
                     <strong>AI summary</strong>
                     {link.summary ? (
@@ -153,7 +153,6 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
                       <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(link.updatedAt)}</span>
                     </div>
                   </div>
-                  <p className="field-note">{getEnrichmentStatusDetail(link.enrichment)}</p>
                   {link.enrichment.status === "failed" ? (
                     <form action={retryLinkEnrichmentAction.bind(null, link.id)}>
                       <button className="ghost-button" type="submit">

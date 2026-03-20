@@ -12,12 +12,14 @@ Define the security posture for Minakeep's current shipped slice.
 - accept saved-link URLs only for `http` and `https`
 - keep AI provider tokens and base URLs server-only
 - do not send private note or link content to unconfigured or fallback endpoints silently
+- visible AI failure copy may name missing env keys, but it must never echo configured secret values
 
 ## Secrets and Config
 - keep `AUTH_SECRET`, `DATABASE_URL`, `OWNER_USERNAME`, and `OWNER_PASSWORD` in environment configuration only
 - keep `LLM_BASE`, `TOKEN`, and `MODEL` in shell or local environment only
 - never commit seeded credentials or secret values
 - document required environment variables in `.env.example` and runtime docs
+- if AI config is partial, surface only which keys are missing and keep save behavior local and deterministic
 
 ## Public Surfaces
 - `/` and `/notes/[slug]` are public
@@ -33,3 +35,4 @@ Define the security posture for Minakeep's current shipped slice.
 - owner auth and route protection stay covered by automated checks before promotion
 - AI integration must prove that tokens stay server-side and that failure paths do not leak raw endpoint credentials or full private payloads
 - missing or incomplete AI env config must record a visible failed enrichment state instead of silently falling back to another endpoint
+- server logs may record HTTP status or high-level failure class for the Mina endpoint, but not request bodies, tokens, or full private note/link payloads

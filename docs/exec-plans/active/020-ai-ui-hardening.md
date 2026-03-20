@@ -5,7 +5,7 @@
   "id": "020-ai-ui-hardening",
   "title": "AI and UI hardening",
   "order": 20,
-  "status": "queued",
+  "status": "active",
   "next_task_on_success": null,
   "prompt_docs": [
     "AGENTS.md",
@@ -69,3 +69,6 @@ Promote only when the repo is operationally ready for the next post-AI wave rath
 
 - Start here. Append timestamped progress notes as work lands.
 - Note any external-endpoint blockers separately from normal product bugs.
+- 2026-03-21 04:24 KST: Hardened the AI retry path so retry is a no-op unless a note or link is already in the visible failed state, then standardized owner-side AI status presentation across the editor, dashboard, links, search, and tags routes.
+- 2026-03-21 04:24 KST: Reconciled operator and policy docs with shipped behavior by documenting the separate `@ai-real` promotion gate, the server-only env contract, explicit external-env blocker wording, and the remaining manual-retry/backoff debt.
+- 2026-03-21 04:36 KST: Confirmed the task gates on the current tree with configured AI env vars: `npm run verify`, `npm run test:e2e -- --grep @ai-real`, and `npm run start:smoke` all passed locally. Remaining non-blocking debt stays explicit in the hardening docs as manual/immediate AI retry with no queued backoff.

@@ -39,7 +39,7 @@ export async function retryLinkEnrichment(ownerId: string, id: string) {
     return null;
   }
 
-  return retryEnrichment(linksRepo, id);
+  return retryEnrichment(linksRepo, id, link);
 }
 
 export async function startLinkEnrichment(id: string) {

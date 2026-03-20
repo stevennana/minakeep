@@ -17,6 +17,7 @@ Define the reliability expectations and failure-handling rules for Minakeep.
 - Ralph status and backlog rendering must work without hand-editing state files
 - AI tasks must require a real-endpoint E2E check when `LLM_BASE`, `TOKEN`, and `MODEL` are present
 - the real-endpoint Playwright path is tagged `@ai-real`, and promotable AI tasks must pass `npm run test:e2e -- --grep @ai-real` when those env vars are configured
+- `npm run verify` does not replace the separate `@ai-real` run for promotable AI work
 
 ## Runtime Startup Contract
 If the app depends on persistent runtime state, document how runtime preparation happens and how a production-style startup smoke proves the `start` path actually works.
@@ -34,6 +35,7 @@ When tests cover subtle or business-critical behavior, capture why those tests e
 If a user-visible behavior depends on an outside resource such as AI chat or a third-party service, require end-to-end coverage before promotion.
 For the AI enrichment wave, E2E must prove: note save with generated metadata, link save with generated metadata, and save-with-visible-failure when the endpoint fails or times out.
 The shared helper under `tests/e2e/ai-real.ts` is the contract point for checking whether those env vars are present before running real-endpoint journeys.
+Pending owner views should auto-refresh while enrichment is running, and retry should be a visible action only from a failed state rather than a second control path for already-pending work.
 
 ## Known Gaps
 - there is no external redundancy or multi-node failover in v1
@@ -41,6 +43,8 @@ The shared helper under `tests/e2e/ai-real.ts` is the contract point for checkin
 - E2E verification stays serial because the single-owner flows share one mutable SQLite runtime state
 - `start:logged` is intended for operator inspection, not for Ralph automation
 - external AI reliability will depend on the Mina-hosted endpoint and the quality of visible retry/failure handling
+- AI retries are still operator-triggered and immediate; v1 has no deferred queue, backoff, or attempt history beyond the current visible status
 
 ## Environment-Specific Verification Blockers
 If the direct operator path passes but the current sandboxed or wrapped runner still fails, record that separately from normal product bugs and escalate it explicitly instead of hiding it inside generic “not done” wording.
+Do the same when `@ai-real` cannot run because `LLM_BASE`, `TOKEN`, and `MODEL` are missing or the Mina endpoint is unavailable: record that as an external-env blocker, not as a silent product regression.

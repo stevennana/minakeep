@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { requestEnrichment } from "../../src/features/enrichment/service";
+import { requestEnrichment, retryEnrichment } from "../../src/features/enrichment/service";
 
 function withAiEnv(values: Partial<Record<"LLM_BASE" | "TOKEN" | "MODEL", string | undefined>>, callback: () => Promise<void>) {
   const original = {
@@ -69,7 +69,9 @@ test("requestEnrichment records a failed state when the AI env is not configured
     );
   });
 
-  assert.deepEqual(calls, ["Set LLM_BASE, TOKEN, and MODEL before AI enrichment can run."]);
+  assert.deepEqual(calls, [
+    "AI enrichment is disabled until LLM_BASE, TOKEN, and MODEL are set. Save succeeded without generated metadata."
+  ]);
 });
 
 test("requestEnrichment records a pending state when the AI env is configured", async () => {
@@ -129,5 +131,63 @@ test("requestEnrichment records which AI env vars are missing when the Mina conf
     }
   );
 
-  assert.deepEqual(calls, ["Complete the AI enrichment configuration. Missing: MODEL."]);
+  assert.deepEqual(calls, [
+    "AI enrichment is not fully configured. Missing: MODEL. Save succeeded without generated metadata."
+  ]);
+});
+
+test("retryEnrichment only requeues records that are already failed", async () => {
+  type RetryRecord = {
+    enrichment: {
+      status: "pending" | "ready" | "failed";
+    };
+  };
+
+  const calls: string[] = [];
+  const writer = {
+    setEnrichmentPending: async (id: string): Promise<RetryRecord> => {
+      calls.push(id);
+      return {
+        enrichment: {
+          status: "pending" as const
+        }
+      };
+    },
+    setEnrichmentReady: async (): Promise<RetryRecord> => ({
+      enrichment: {
+        status: "ready" as const
+      }
+    }),
+    setEnrichmentFailed: async (): Promise<RetryRecord> => ({
+      enrichment: {
+        status: "failed" as const
+      }
+    })
+  };
+
+  await withAiEnv(
+    {
+      LLM_BASE: "https://mina.example/v1",
+      TOKEN: "token",
+      MODEL: "model"
+    },
+    async () => {
+      const readyRecord = {
+        enrichment: {
+          status: "ready" as const
+        }
+      };
+
+      const readyResult = await retryEnrichment(writer, "note-3", readyRecord);
+      assert.equal(readyResult, readyRecord);
+
+      await retryEnrichment(writer, "note-4", {
+        enrichment: {
+          status: "failed" as const
+        }
+      });
+    }
+  );
+
+  assert.deepEqual(calls, ["note-4"]);
 });

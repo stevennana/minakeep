@@ -5,7 +5,7 @@
   "id": "019-knowledge-studio-ui-refresh",
   "title": "Knowledge studio UI refresh",
   "order": 19,
-  "status": "active",
+  "status": "completed",
   "next_task_on_success": "020-ai-ui-hardening",
   "prompt_docs": [
     "AGENTS.md",
@@ -26,7 +26,8 @@
     "The redesign turns into a reference clone instead of a Minakeep-specific adaptation.",
     "The visual refresh regresses route clarity or responsive behavior.",
     "AI metadata visually overwhelms authored content."
-  ]
+  ],
+  "completed_at": "2026-03-20T19:18:12.066Z"
 }
 ```
 
@@ -68,3 +69,4 @@ Promote only when the redesign materially improves polish and density without re
 - Note which current surfaces were preserved structurally and which were substantially redesigned.
 - 2026-03-21 13:18 KST: Read the required architecture, frontend, design, spec, and active-plan docs plus the repo-level product docs from `AGENTS.md`. Confirmed the route model should stay intact and that the redesign should focus on one shared visual system rather than new features.
 - 2026-03-21 13:34 KST: Preserved the existing route structure and tested actions, then substantially redesigned the homepage, public note page, login, private `/app` shell, dashboard, links, tags, search, and note-editor surfaces around one editorial knowledge-studio system with shared cards, typography, metadata treatment, and responsive spacing.
+- 2026-03-20T19:18:12.066Z: automatically promoted after deterministic checks and evaluator approval.

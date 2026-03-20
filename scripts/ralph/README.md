@@ -96,6 +96,17 @@ ls logs/
 tail -f logs/server-*.log
 ```
 
+### Run the AI promotion gate
+
+```bash
+export LLM_BASE="https://mina-host.example/v1"
+export TOKEN="replace-with-a-mina-api-token"
+export MODEL="replace-with-a-mina-model-id"
+npm run test:e2e -- --grep @ai-real
+```
+
+`npm run verify` is still required, but it does not replace the separate `@ai-real` run for promotable AI work.
+
 ## Operator guidance
 
 - Keep tasks small and vertically sliced.
@@ -107,5 +118,6 @@ tail -f logs/server-*.log
 - Port cleanup is executed automatically only by the evaluator path for `npm run verify`, `npm run test:e2e`, or other Playwright-bearing commands. Manual local runs do not get that cleanup for free.
 - `scripts/playwright-web-server.mjs` mirrors Playwright's Next.js server output to `MINAKEEP_NEXT_SERVER_LOG` when the evaluator provides that path.
 - `ensure-e2e-port-free.sh` is intentionally aggressive and may terminate unrelated processes bound to `127.0.0.1:3100`.
+- If `npm run test:e2e -- --grep @ai-real` cannot run because `LLM_BASE`, `TOKEN`, and `MODEL` are missing or the Mina endpoint is unavailable, record that as an external-env blocker instead of folding it into generic product failure wording.
 - If the evaluator repeatedly returns `not_done`, tighten the active task doc instead of making the prompt larger.
 - If a task is semantically done but not promotable, fix the contract or the deterministic checks; do not manually skip ahead silently.

@@ -102,7 +102,7 @@ export async function retryNoteEnrichment(ownerId: string, id: string) {
     return null;
   }
 
-  return retryEnrichment(notesRepo, id);
+  return retryEnrichment(notesRepo, id, note);
 }
 
 export async function startNoteEnrichment(id: string) {
