@@ -142,7 +142,8 @@ export const notesRepo = {
         excerpt: true,
         summary: true,
         publishedAt: true,
-        updatedAt: true
+        updatedAt: true,
+        tags: noteTagSelect
       }
     });
   },

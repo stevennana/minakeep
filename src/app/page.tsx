@@ -29,6 +29,17 @@ export default async function HomePage() {
                     {note.title}
                   </Link>
                   <p>{note.summary || note.excerpt || "Published note"}</p>
+                  <div className="tag-list" aria-label="Published note tags">
+                    {note.tags.length === 0 ? (
+                      <span className="tag-pill tag-pill-muted">No generated tags</span>
+                    ) : (
+                      note.tags.map((tag) => (
+                        <span className="tag-pill" key={tag.id}>
+                          {tag.name}
+                        </span>
+                      ))
+                    )}
+                  </div>
                 </div>
                 <div className="note-meta">
                   <span>Published</span>

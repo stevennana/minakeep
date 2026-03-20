@@ -31,6 +31,7 @@ export type PublishedNoteSummary = {
   summary: string | null;
   publishedAt: Date;
   updatedAt: Date;
+  tags: SavedTag[];
 };
 
 export type PublishedNoteRecord = PublishedNoteSummary & {

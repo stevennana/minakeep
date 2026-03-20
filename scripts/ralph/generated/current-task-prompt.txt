@@ -46,7 +46,8 @@ Required commands for this task:
 - npm run test:e2e -- --grep @ai-real
 
 Previous known gaps from the last evaluation:
-- none
+- Reliable status visibility is incomplete: `src/features/notes/components/note-editor.tsx` only schedules a single `router.refresh()` after 2 seconds while status is `pending`, so if the Mina request finishes later than that, the editor can remain stale and fail to show the eventual `ready` or `failed` state without manual refresh.
+- The shipped UI does not fully match the prompted frontend contract for published note listings: `docs/FRONTEND.md` says the public homepage shows tags, but `src/features/notes/repo.ts` does not fetch them for `listPublished()` and `src/app/page.tsx` does not render them.
 
 Rules:
 - Work only on this task.

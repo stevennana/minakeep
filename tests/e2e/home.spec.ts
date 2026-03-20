@@ -149,7 +149,9 @@ This note should appear on the public site when published.`;
   await expect(page.getByRole("link", { name: "View public note" })).toBeVisible();
 
   await page.goto("/");
-  await expect(page.getByRole("link", { name: title })).toBeVisible();
+  const publicNoteEntry = page.locator(".note-list-item").filter({ has: page.getByRole("link", { name: title }) });
+  await expect(publicNoteEntry.getByRole("link", { name: title })).toBeVisible();
+  await expect(publicNoteEntry.getByLabel("Published note tags")).toBeVisible();
 
   await page.getByRole("link", { name: title }).click();
   await expect(page).toHaveURL(new RegExp(`/notes/${slug}$`));

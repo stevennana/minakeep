@@ -1,8 +1,8 @@
 {
   "task_id": "017-note-ai-enrichment",
-  "started_at": "2026-03-21T02:51:57+09:00",
-  "artifact_dir": "state/artifacts/20260321T025157-017-note-ai-enrichment",
+  "started_at": "2026-03-21T03:10:31+09:00",
+  "artifact_dir": "state/artifacts/20260321T031031-017-note-ai-enrichment",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-03-20T18:10:01.030Z"
+  "updated_at": "2026-03-20T18:18:19.315Z"
 }

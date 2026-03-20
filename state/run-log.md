@@ -147,3 +147,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=not_done promotion=false The required commands passed and note save does queue real enrichment, but the implementation is not promotion-ready in substance: the editor only auto-refreshes once while enrichment is pending, so slower real-endpoint runs can leave the note stuck on `AI pending` instead of reliably surfacing `ready` or `failed`, and the public homepage still omits generated tags despite `docs/FRONTEND.md` specifying them. -> state/artifacts/20260321T025157-017-note-ai-enrichment/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T025157-017-note-ai-enrichment/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Task 017-note-ai-enrichment not eligible for promotion.
+- backlog: rendered current=017-note-ai-enrichment
+- health: ooxxoooxox
+- cycle: finished
+
+### cycle 2026-03-21T03:10:31+09:00 task=017-note-ai-enrichment
+- artifacts: state/artifacts/20260321T031031-017-note-ai-enrichment
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T031031-017-note-ai-enrichment/worker.jsonl
+- worker-summary: Implemented the remaining task-017 fixes in [note-editor.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/components/note-editor.tsx#L83), [repo.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/repo.ts#L125), and [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/page.tsx#L24). The editor now keeps refreshing while enrichment is still `pending`, so late Mina responses surface `ready` or `failed` without a manual reload, and the public homepage now fetches and renders published-note tags. I also tightened the publish-route E2E coverage in [home.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/home.spec.ts#L151) and appended the task log in [017-note-ai-enrichment.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/017-note-ai-enrichment.md).
+- evaluator: started
+- evaluator: status=not_done promotion=false The core note-enrichment slice is mostly in place and the reported gates passed, but I would not promote conservatively yet. The required design contract says note enrichment must fail visibly even when the AI call fails or times out; the current implementation issues a bare `fetch` in `src/features/ai/client.ts` with no timeout/abort path, so a hung Mina request can leave a note stuck in `pending` indefinitely with no visible failed state or retry. That means exit criterion 2 is not satisfied in substance for timeout-class failures, even though create/update triggering, metadata surfacing, and the reported `verify`/`@ai-real` success paths look correct. -> state/artifacts/20260321T031031-017-note-ai-enrichment/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T031031-017-note-ai-enrichment/npm-run-verify-next-server.log

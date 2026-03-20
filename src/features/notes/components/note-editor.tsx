@@ -85,14 +85,14 @@ export function NoteEditor({
       return;
     }
 
-    const timeoutId = window.setTimeout(() => {
+    const intervalId = window.setInterval(() => {
       router.refresh();
     }, 2000);
 
     return () => {
-      window.clearTimeout(timeoutId);
+      window.clearInterval(intervalId);
     };
-  }, [enrichment?.status, enrichment?.updatedAt, router]);
+  }, [enrichment?.status, router]);
 
   return (
     <div className="note-editor-shell">
