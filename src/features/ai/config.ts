@@ -56,7 +56,7 @@ export function getMinaAiConfigStatus(): MinaAiConfigStatus {
   const playwrightAiMode = getPlaywrightAiTestMode();
   const missing = getMissingConfig(baseUrl, token, model);
 
-  if (playwrightAiMode === "timeout") {
+  if (playwrightAiMode === "success" || playwrightAiMode === "timeout") {
     return {
       state: "configured",
       config: {

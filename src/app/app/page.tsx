@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { unstable_noStore as noStore } from "next/cache";
 
 import { signOut } from "@/auth";
 import { getEnrichmentStatusLabel } from "@/features/enrichment/types";
@@ -14,6 +15,8 @@ async function signOutAction() {
 }
 
 export default async function PrivateDashboardPage() {
+  noStore();
+
   const owner = await requireOwnerSession();
   const notes = await listOwnerNotes(owner.id);
 

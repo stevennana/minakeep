@@ -179,47 +179,92 @@ This note should appear on the public site when published.`;
   await expect(page.getByText("This page could not be found.")).toBeVisible();
 });
 
-test("owner can save and review a private tagged link without exposing it on public routes", async ({ page }) => {
+test("owner can save a private link, receive AI metadata, and keep it off public routes", async ({ page }) => {
   const username = process.env.OWNER_USERNAME ?? "owner";
   const password = process.env.OWNER_PASSWORD ?? "password";
   const uniqueId = `${Date.now()}`;
   const title = `Reference link ${uniqueId}`;
-  const summary = `Summary for saved link ${uniqueId}`;
   const url = `https://example.com/reference-${uniqueId}`;
 
-  await page.goto("/login");
-  await page.getByLabel("Username").fill(username);
-  await page.getByLabel("Password").fill(password);
-  await page.getByRole("button", { name: "Sign in" }).click();
+  await setAiPlaywrightTestMode("success");
 
-  await expect(page).toHaveURL(/\/app$/);
-  await page.getByRole("link", { name: "Links" }).click();
+  try {
+    await page.goto("/login");
+    await page.getByLabel("Username").fill(username);
+    await page.getByLabel("Password").fill(password);
+    await page.getByRole("button", { name: "Sign in" }).click();
 
-  await expect(page).toHaveURL(/\/app\/links$/);
-  await page.getByRole("textbox", { name: /^URL$/ }).fill(url);
-  await page.getByRole("textbox", { name: /^Title$/ }).fill(title);
-  await page.getByRole("textbox", { name: /^Summary$/ }).fill(summary);
-  await page.getByRole("textbox", { name: /^Tags$/ }).fill("research, reading");
-  await page.getByRole("button", { name: "Save link" }).click();
+    await expect(page).toHaveURL(/\/app$/);
+    await page.getByRole("link", { name: "Links" }).click();
 
-  await expect(page).toHaveURL(/\/app\/links\?saved=1$/);
-  await expect(page.getByText("Link saved.")).toBeVisible();
-  const savedLinkEntry = page.locator("article").filter({ has: page.getByRole("link", { name: title }) });
-  await expect(savedLinkEntry.getByRole("link", { name: title })).toHaveAttribute("href", url);
-  await expect(savedLinkEntry.getByText(summary)).toBeVisible();
-  await expect(savedLinkEntry.getByText("research", { exact: true })).toBeVisible();
-  await expect(savedLinkEntry.getByText("reading", { exact: true })).toBeVisible();
+    await expect(page).toHaveURL(/\/app\/links$/);
+    await page.getByRole("textbox", { name: /^URL$/ }).fill(url);
+    await page.getByRole("textbox", { name: /^Title$/ }).fill(title);
+    await page.getByRole("button", { name: "Save link" }).click();
 
-  await page.goto("/");
-  await expect(page.getByRole("link", { name: title })).toHaveCount(0);
-  await expect(page.getByText(summary)).toHaveCount(0);
+    await expect(page).toHaveURL(/\/app\/links\?saved=1$/);
+    await expect(page.getByText("Link saved.")).toBeVisible();
+    const savedLinkEntry = page.locator("article").filter({ has: page.getByRole("link", { name: title }) });
+    await expect(savedLinkEntry.getByRole("link", { name: title })).toHaveAttribute("href", url);
+    await expect(savedLinkEntry).toContainText("AI pending");
+    await expect(savedLinkEntry).toContainText("AI ready", { timeout: 15000 });
+    await expect(savedLinkEntry.getByTestId("link-ai-summary")).toContainText("AI summary for");
+    await expect(savedLinkEntry.getByTestId("link-ai-tags").locator(".tag-pill")).not.toHaveCount(0);
+
+    await page.goto("/");
+    await expect(page.getByRole("link", { name: title })).toHaveCount(0);
+    await expect(page.getByText("AI summary for")).toHaveCount(0);
+  } finally {
+    await setAiPlaywrightTestMode("passthrough");
+  }
+});
+
+test("link save still succeeds when the configured AI endpoint times out and exposes a retry path", async ({ page }) => {
+  const username = process.env.OWNER_USERNAME ?? "owner";
+  const password = process.env.OWNER_PASSWORD ?? "password";
+  const uniqueId = `${Date.now()}`;
+  const title = `Retry link ${uniqueId}`;
+  const url = `https://example.com/retry-link-${uniqueId}`;
+
+  await setAiPlaywrightTestMode("timeout");
+
+  try {
+    await page.goto("/login");
+    await page.getByLabel("Username").fill(username);
+    await page.getByLabel("Password").fill(password);
+    await page.getByRole("button", { name: "Sign in" }).click();
+
+    await expect(page).toHaveURL(/\/app$/);
+    await page.getByRole("link", { name: "Links" }).click();
+
+    await expect(page).toHaveURL(/\/app\/links$/);
+    await page.getByRole("textbox", { name: /^URL$/ }).fill(url);
+    await page.getByRole("textbox", { name: /^Title$/ }).fill(title);
+    await page.getByRole("button", { name: "Save link" }).click();
+
+    await expect(page).toHaveURL(/\/app\/links\?saved=1$/);
+    const savedLinkEntry = page.locator("article").filter({ has: page.getByRole("link", { name: title }) });
+    await expect(savedLinkEntry).toContainText("AI pending");
+    await expect(savedLinkEntry).toContainText("AI failed", { timeout: 15000 });
+    await expect(savedLinkEntry).toContainText("The Mina AI endpoint timed out.");
+    await expect(savedLinkEntry.getByTestId("link-ai-summary")).toHaveCount(0);
+    await expect(savedLinkEntry.getByRole("button", { name: "Retry AI enrichment" })).toBeVisible();
+
+    await savedLinkEntry.getByRole("button", { name: "Retry AI enrichment" }).click();
+
+    await expect(page).toHaveURL(/\/app\/links\?retried=1$/);
+    await expect(page.getByText("Retry requested.")).toBeVisible();
+    await expect(savedLinkEntry).toContainText("AI failed", { timeout: 15000 });
+    await expect(savedLinkEntry).toContainText("The Mina AI endpoint timed out.");
+  } finally {
+    await setAiPlaywrightTestMode("passthrough");
+  }
 });
 
 test("owner cannot save a private link with an unsafe URL scheme", async ({ page }) => {
   const username = process.env.OWNER_USERNAME ?? "owner";
   const password = process.env.OWNER_PASSWORD ?? "password";
   const title = `Unsafe link ${Date.now()}`;
-  const summary = "This should be rejected.";
 
   await page.goto("/login");
   await page.getByLabel("Username").fill(username);
@@ -232,13 +277,11 @@ test("owner cannot save a private link with an unsafe URL scheme", async ({ page
   await expect(page).toHaveURL(/\/app\/links$/);
   await page.getByLabel("URL").fill("ftp://example.com/private-reference");
   await page.getByLabel("Title").fill(title);
-  await page.getByLabel("Summary").fill(summary);
   await page.getByRole("button", { name: "Save link" }).click();
 
   await expect(page).toHaveURL(/\/app\/links\?error=invalid-url$/);
   await expect(page.getByText("Enter a complete http:// or https:// URL.")).toBeVisible();
   await expect(page.getByRole("link", { name: title })).toHaveCount(0);
-  await expect(page.getByText(summary)).toHaveCount(0);
 });
 
 test("owner can filter private links by tag and search notes by title plus links by URL and tag", async ({ page }) => {
@@ -250,11 +293,8 @@ test("owner can filter private links by tag and search notes by title plus links
 
 Private note for shared-tag retrieval.`;
   const linkTitle = `Filtered link ${uniqueId}`;
-  const linkSummary = `Saved link for owner search ${uniqueId}`;
   const linkUrlNeedle = `url-needle-${uniqueId}`;
   const linkUrl = `https://example.com/${linkUrlNeedle}`;
-  const linkOnlyTag = `link-only-${uniqueId}`;
-  const searchTag = `search-tag-${uniqueId}`;
 
   await page.goto("/login");
   await page.getByLabel("Username").fill(username);
@@ -272,34 +312,43 @@ Private note for shared-tag retrieval.`;
   await expect(page).toHaveURL(/\/app\/notes\/.+\/edit\?saved=1$/);
   await expect(page.getByText("Draft saved.")).toBeVisible();
 
-  await page.goto("/app/links");
-  await expect(page).toHaveURL(/\/app\/links$/);
-  await page.getByRole("textbox", { name: /^URL$/ }).fill(linkUrl);
-  await page.getByRole("textbox", { name: /^Title$/ }).fill(linkTitle);
-  await page.getByRole("textbox", { name: /^Summary$/ }).fill(linkSummary);
-  await page.getByRole("textbox", { name: /^Tags$/ }).fill(`${linkOnlyTag}, ${searchTag}`);
-  await page.getByRole("button", { name: "Save link" }).click();
+  await setAiPlaywrightTestMode("success");
 
-  await expect(page).toHaveURL(/\/app\/links\?saved=1$/);
-  await expect(page.getByText("Link saved.")).toBeVisible();
+  try {
+    await page.goto("/app/links");
+    await expect(page).toHaveURL(/\/app\/links$/);
+    await page.getByRole("textbox", { name: /^URL$/ }).fill(linkUrl);
+    await page.getByRole("textbox", { name: /^Title$/ }).fill(linkTitle);
+    await page.getByRole("button", { name: "Save link" }).click();
 
-  await page.goto(`/app/tags?tag=${encodeURIComponent(linkOnlyTag)}`);
-  await expect(page.getByRole("link", { name: linkTitle })).toBeVisible();
-  await expect(page.getByRole("link", { name: noteTitle })).toHaveCount(0);
+    await expect(page).toHaveURL(/\/app\/links\?saved=1$/);
+    await expect(page.getByText("Link saved.")).toBeVisible();
 
-  await page.goto("/app/tags");
-  await expect(page.getByRole("link", { name: noteTitle })).toBeVisible();
-  await expect(page.getByRole("link", { name: linkTitle })).toBeVisible();
+    const savedLinkEntry = page.locator("article").filter({ has: page.getByRole("link", { name: linkTitle }) });
+    await expect(savedLinkEntry).toContainText("AI ready", { timeout: 15000 });
+    const generatedTag = await savedLinkEntry.locator('[data-testid="link-ai-tags"] .tag-pill').first().textContent();
+    const tagQuery = generatedTag?.trim();
 
-  await page.goto(`/app/search?q=${encodeURIComponent(noteTitle)}`);
-  await expect(page.getByRole("link", { name: noteTitle })).toBeVisible();
-  await expect(page.getByRole("link", { name: linkTitle })).toHaveCount(0);
+    await page.goto(`/app/tags?tag=${encodeURIComponent(tagQuery ?? "")}`);
+    await expect(page.getByRole("link", { name: linkTitle })).toBeVisible();
+    await expect(page.getByRole("link", { name: noteTitle })).toHaveCount(0);
 
-  await page.goto(`/app/search?q=${encodeURIComponent(linkUrlNeedle)}`);
-  await expect(page.getByRole("link", { name: linkTitle })).toBeVisible();
-  await expect(page.getByRole("link", { name: noteTitle })).toHaveCount(0);
+    await page.goto("/app/tags");
+    await expect(page.getByRole("link", { name: noteTitle })).toBeVisible();
+    await expect(page.getByRole("link", { name: linkTitle })).toBeVisible();
 
-  await page.goto(`/app/search?q=${encodeURIComponent(searchTag)}`);
-  await expect(page.getByRole("link", { name: linkTitle })).toBeVisible();
-  await expect(page.getByRole("link", { name: noteTitle })).toHaveCount(0);
+    await page.goto(`/app/search?q=${encodeURIComponent(noteTitle)}`);
+    await expect(page.getByRole("link", { name: noteTitle })).toBeVisible();
+    await expect(page.getByRole("link", { name: linkTitle })).toHaveCount(0);
+
+    await page.goto(`/app/search?q=${encodeURIComponent(linkUrlNeedle)}`);
+    await expect(page.getByRole("link", { name: linkTitle })).toBeVisible();
+    await expect(page.getByRole("link", { name: noteTitle })).toHaveCount(0);
+
+    await page.goto(`/app/search?q=${encodeURIComponent(tagQuery ?? "")}`);
+    await expect(page.getByRole("link", { name: linkTitle })).toBeVisible();
+    await expect(page.getByRole("link", { name: noteTitle })).toHaveCount(0);
+  } finally {
+    await setAiPlaywrightTestMode("passthrough");
+  }
 });

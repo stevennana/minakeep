@@ -7,7 +7,7 @@ import path from "node:path";
 export const PLAYWRIGHT_AI_TEST_MODE_FILE =
   process.env.PLAYWRIGHT_AI_TEST_MODE_FILE ?? path.join(tmpdir(), "minakeep-playwright-ai-mode.json");
 
-export type PlaywrightAiTestMode = "passthrough" | "timeout";
+export type PlaywrightAiTestMode = "passthrough" | "success" | "timeout";
 
 type StoredPlaywrightAiTestMode = {
   mode?: string;
@@ -25,7 +25,15 @@ export function getPlaywrightAiTestMode(): PlaywrightAiTestMode {
   try {
     const storedMode = JSON.parse(readFileSync(PLAYWRIGHT_AI_TEST_MODE_FILE, "utf8")) as StoredPlaywrightAiTestMode;
 
-    return storedMode.mode === "timeout" ? "timeout" : "passthrough";
+    if (storedMode.mode === "timeout") {
+      return "timeout";
+    }
+
+    if (storedMode.mode === "success") {
+      return "success";
+    }
+
+    return "passthrough";
   } catch {
     return "passthrough";
   }

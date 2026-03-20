@@ -177,3 +177,33 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Task 017 appears complete in substance. The current implementation triggers note enrichment automatically on create and update, runs the Mina request after the save response path, records pending/ready/failed state plus generated summary/tags, exposes retry on failure, and surfaces generated note metadata in the editor and owner note lists/search/tag views. The provided deterministic checks show both `npm run verify` and `npm run test:e2e -- --grep @ai-real` passing against the current task slice, and the inspected E2E coverage includes both the real-endpoint success journey and a configured-endpoint timeout/failure journey. -> state/artifacts/20260321T031849-017-note-ai-enrichment/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T031849-017-note-ai-enrichment/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 017-note-ai-enrichment -> 018-link-ai-enrichment
+- backlog: rendered current=018-link-ai-enrichment
+- health: ooxxoooxoxxo
+- cycle: finished
+
+### cycle 2026-03-21T03:31:54+09:00 task=018-link-ai-enrichment
+- artifacts: state/artifacts/20260321T033154-018-link-ai-enrichment
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T033154-018-link-ai-enrichment/worker.jsonl
+- worker-summary: Implemented the link AI enrichment slice in [actions.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/app/links/actions.ts), [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/links/page.tsx), [enrichment.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/links/enrichment.ts), and [repo.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/links/repo.ts). Link capture now saves only URL and title, queues background AI enrichment after save, persists nullable AI summary/tags with `pending`/`ready`/`failed` state, and exposes retry on failure. I also surfaced link AI status on [search/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/search/page.tsx) and [tags/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/tags/page.tsx), extended the Playwright AI stub with deterministic success mode in [route.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/api/test/mina/chat/completions/route.ts), added coverage in [link-enrichment.test.ts](/Users/stevenna/WebstormProjects/minakeep/tests/unit/link-enrichment.test.ts) and [link-ai-real.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/link-ai-real.spec.ts), and updated the task log in [018-link-ai-enrichment.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/018-link-ai-enrichment.md).
+- evaluator: started
+- evaluator: status=not_done promotion=false Deterministic checks failed; task is not ready for promotion. -> state/artifacts/20260321T033154-018-link-ai-enrichment/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T033154-018-link-ai-enrichment/npm-run-verify-next-server.log
+- commit: commit: skipped (deterministic checks not passing)
+- promote: Task 018-link-ai-enrichment not eligible for promotion.
+- backlog: rendered current=018-link-ai-enrichment
+- health: ooxxoooxoxxox
+- cycle: finished
+
+### cycle 2026-03-21T03:46:11+09:00 task=018-link-ai-enrichment
+- artifacts: state/artifacts/20260321T034611-018-link-ai-enrichment
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T034611-018-link-ai-enrichment/worker.jsonl
+- worker-summary: Link AI enrichment is in place and the task gate is green. The link flow now saves only URL/title, queues enrichment after save, persists AI-owned summary/tags with visible `pending`/`ready`/`failed` state, and exposes retry on failure through the existing links slice in [actions.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/app/links/actions.ts), [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/links/page.tsx), [enrichment.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/links/enrichment.ts), and [repo.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/links/repo.ts). The generated metadata/status is also surfaced on the owner retrieval pages in [search/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/search/page.tsx) and [tags/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/tags/page.tsx).
+- evaluator: started
+- evaluator: status=done promotion=true The link AI enrichment slice appears complete in substance. The current implementation auto-queues enrichment after link save, preserves the save path when AI work fails, exposes visible pending/ready/failed state plus retry on the links page, and surfaces generated link summary/tags on the documented owner retrieval surfaces. The required gate commands are recorded as passing, including the real-endpoint `@ai-real` journey. -> state/artifacts/20260321T034611-018-link-ai-enrichment/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T034611-018-link-ai-enrichment/npm-run-verify-next-server.log

@@ -5,7 +5,7 @@
   "id": "017-note-ai-enrichment",
   "title": "Note AI enrichment",
   "order": 17,
-  "status": "active",
+  "status": "completed",
   "next_task_on_success": "018-link-ai-enrichment",
   "prompt_docs": [
     "AGENTS.md",
@@ -26,7 +26,8 @@
     "The task mixes link enrichment or broad visual redesign work into the note slice.",
     "The note save flow becomes blocked on AI success.",
     "The real-endpoint E2E path is skipped or replaced by mock-only confidence."
-  ]
+  ],
+  "completed_at": "2026-03-20T18:31:24.371Z"
 }
 ```
 
@@ -73,3 +74,4 @@ Promote only when note enrichment works in substance against the real endpoint c
 - 2026-03-21 04:07:00 KST - Closed the evaluator gaps with minimal follow-up changes: the note editor now keeps refreshing while status stays `pending`, and the existing published-note homepage path now fetches and renders generated tags instead of omitting them.
 - 2026-03-21 03:26:01 KST - Hardened the existing Mina client path against timeout-class failures by aborting hung enrichment requests, recording a visible failed state instead of leaving notes stuck in `pending`, and keeping the retry path on the same note editor surface.
 - 2026-03-21 03:26:01 KST - Extended the current Playwright harness instead of adding a second E2E stack: added a Playwright-only configured-endpoint timeout stub so the owner note failure journey is exercised even when real AI env vars are present, while keeping the separate `@ai-real` success path unchanged.
+- 2026-03-20T18:31:24.371Z: automatically promoted after deterministic checks and evaluator approval.

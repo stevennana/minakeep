@@ -42,7 +42,7 @@ model Link {
   owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   url       String
   title     String
-  summary   String
+  summary   String?
   enrichmentStatus    String   @default("pending")
   enrichmentError     String?
   enrichmentAttempts  Int      @default(0)

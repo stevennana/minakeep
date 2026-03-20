@@ -4,15 +4,13 @@ import type { SavedTag } from "@/features/tags/types";
 export type LinkDraftInput = {
   url: string;
   title: string;
-  summary: string;
-  tags: string;
 };
 
 export type SavedLinkSummary = {
   id: string;
   url: string;
   title: string;
-  summary: string;
+  summary: string | null;
   enrichment: EnrichmentState;
   tags: SavedTag[];
   createdAt: Date;

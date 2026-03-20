@@ -5,7 +5,7 @@ import path from "node:path";
 export const PLAYWRIGHT_AI_TEST_MODE_FILE =
   process.env.PLAYWRIGHT_AI_TEST_MODE_FILE ?? path.join(tmpdir(), "minakeep-playwright-ai-mode.json");
 
-export async function setAiPlaywrightTestMode(mode: "passthrough" | "timeout") {
+export async function setAiPlaywrightTestMode(mode: "passthrough" | "success" | "timeout") {
   if (mode === "passthrough") {
     await rm(PLAYWRIGHT_AI_TEST_MODE_FILE, { force: true });
     return;

@@ -1,7 +1,7 @@
 import "server-only";
 
 import type { EnrichmentRecordFields } from "@/features/enrichment/types";
-import { toEnrichmentState } from "@/features/enrichment/types";
+import { normalizeEnrichmentStatus, toEnrichmentState } from "@/features/enrichment/types";
 import { prisma } from "@/lib/prisma";
 
 const linkTagSelect = {
@@ -119,23 +119,12 @@ export const linksRepo = {
 
     return links.map(mapLinkRecord);
   },
-  async create(ownerId: string, data: { url: string; title: string; summary: string; tagNames: string[] }) {
+  async create(ownerId: string, data: { url: string; title: string }) {
     const link = await prisma.link.create({
       data: {
         ownerId,
         url: data.url,
-        title: data.title,
-        summary: data.summary,
-        tags: {
-          connectOrCreate: data.tagNames.map((name) => ({
-            where: {
-              name
-            },
-            create: {
-              name
-            }
-          }))
-        }
+        title: data.title
       },
       select: linkSummarySelect
     });
@@ -148,12 +137,16 @@ export const linksRepo = {
         id
       },
       data: {
+        summary: null,
         enrichmentStatus: "pending",
         enrichmentError: null,
         enrichmentAttempts: {
           increment: 1
         },
-        enrichmentUpdatedAt: new Date()
+        enrichmentUpdatedAt: new Date(),
+        tags: {
+          set: []
+        }
       },
       select: linkSummarySelect
     });
@@ -181,16 +174,122 @@ export const linksRepo = {
         id
       },
       data: {
+        summary: null,
         enrichmentStatus: "failed",
         enrichmentError: error,
         enrichmentAttempts: {
           increment: 1
         },
-        enrichmentUpdatedAt: new Date()
+        enrichmentUpdatedAt: new Date(),
+        tags: {
+          set: []
+        }
       },
       select: linkSummarySelect
     });
 
     return mapLinkRecord(link);
+  },
+  async findEnrichmentSourceById(id: string) {
+    const link = await prisma.link.findUnique({
+      where: {
+        id
+      },
+      select: {
+        id: true,
+        url: true,
+        title: true,
+        enrichmentStatus: true,
+        enrichmentAttempts: true
+      }
+    });
+
+    if (!link) {
+      return null;
+    }
+
+    return {
+      id: link.id,
+      url: link.url,
+      title: link.title,
+      enrichment: {
+        status: normalizeEnrichmentStatus(link.enrichmentStatus),
+        attempts: link.enrichmentAttempts
+      }
+    };
+  },
+  async recordGeneratedMetadata(id: string, expectedAttempt: number, data: { summary: string; tagNames: string[] }) {
+    return prisma.$transaction(async (transaction) => {
+      const link = await transaction.link.findUnique({
+        where: {
+          id
+        },
+        select: {
+          enrichmentAttempts: true
+        }
+      });
+
+      if (!link || link.enrichmentAttempts !== expectedAttempt) {
+        return false;
+      }
+
+      await transaction.link.update({
+        where: {
+          id
+        },
+        data: {
+          summary: data.summary,
+          enrichmentStatus: "ready",
+          enrichmentError: null,
+          enrichmentUpdatedAt: new Date(),
+          tags: {
+            set: [],
+            connectOrCreate: data.tagNames.map((name) => ({
+              where: {
+                name
+              },
+              create: {
+                name
+              }
+            }))
+          }
+        }
+      });
+
+      return true;
+    });
+  },
+  async recordGeneratedFailure(id: string, expectedAttempt: number, error: string) {
+    return prisma.$transaction(async (transaction) => {
+      const link = await transaction.link.findUnique({
+        where: {
+          id
+        },
+        select: {
+          enrichmentAttempts: true
+        }
+      });
+
+      if (!link || link.enrichmentAttempts !== expectedAttempt) {
+        return false;
+      }
+
+      await transaction.link.update({
+        where: {
+          id
+        },
+        data: {
+          summary: null,
+          enrichmentStatus: "failed",
+          enrichmentError: error,
+          enrichmentUpdatedAt: new Date(),
+          tags: {
+            set: []
+          }
+        }
+      });
+
+      return true;
+    });
   }
 };

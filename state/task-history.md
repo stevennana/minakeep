@@ -7,3 +7,4 @@
 - 2026-03-20T09:02:23.669Z: promoted 014-tag-filtering-and-owner-search -> 015-hardening-and-maintenance
 - 2026-03-20T09:12:34.962Z: promoted 015-hardening-and-maintenance -> NONE
 - 2026-03-20T17:51:26.889Z: promoted 016-ai-enrichment-foundation -> 017-note-ai-enrichment
+- 2026-03-20T18:31:24.371Z: promoted 017-note-ai-enrichment -> 018-link-ai-enrichment

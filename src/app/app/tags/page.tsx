@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { getEnrichmentStatusDetail, getEnrichmentStatusLabel } from "@/features/enrichment/types";
 import { listOwnerTags, listOwnerContentByTag } from "@/features/tags/service";
 import { normalizeSingleTagName } from "@/features/tags/normalize";
 import { requireOwnerSession } from "@/lib/auth/owner-session";
@@ -106,11 +107,11 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
                     </a>
                     <p className="link-url">{link.url}</p>
                   </div>
-                  <p className="link-summary">{link.summary}</p>
+                  {link.summary ? <p className="link-summary">AI summary: {link.summary}</p> : null}
                   <div className="link-list-footer">
                     <div className="tag-list" aria-label="Link tags">
                       {link.tags.length === 0 ? (
-                        <span className="tag-pill tag-pill-muted">Untagged</span>
+                        <span className="tag-pill tag-pill-muted">No generated tags yet</span>
                       ) : (
                         link.tags.map((tag) => (
                           <span className="tag-pill" key={tag.id}>
@@ -121,9 +122,11 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
                     </div>
                     <div className="note-meta">
                       <span>Private link</span>
+                      <span>{getEnrichmentStatusLabel(link.enrichment.status)}</span>
                       <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(link.updatedAt)}</span>
                     </div>
                   </div>
+                  {link.enrichment.status === "failed" ? <p className="field-note">{getEnrichmentStatusDetail(link.enrichment)}</p> : null}
                 </article>
               ))}
             </div>

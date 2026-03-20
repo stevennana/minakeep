@@ -1,11 +1,13 @@
-import { createLinkAction } from "@/app/app/links/actions";
+import { createLinkAction, retryLinkEnrichmentAction } from "@/app/app/links/actions";
 import { getEnrichmentStatusDetail, getEnrichmentStatusLabel } from "@/features/enrichment/types";
+import { LinkPendingRefresh } from "@/features/links/components/link-pending-refresh";
 import { listOwnerLinks } from "@/features/links/service";
 import { requireOwnerSession } from "@/lib/auth/owner-session";
 
 type LinksPageProps = {
   searchParams?: Promise<{
     saved?: string;
+    retried?: string;
     error?: string;
   }>;
 };
@@ -18,8 +20,6 @@ function getStatusMessage(error?: string) {
       return "Enter a complete http:// or https:// URL.";
     case "missing-title":
       return "Enter a title for the saved link.";
-    case "missing-summary":
-      return "Enter a summary for the saved link.";
     default:
       return undefined;
   }
@@ -30,16 +30,21 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
   const resolvedSearchParams = (await searchParams) ?? {};
   const links = await listOwnerLinks(owner.id);
   const statusMessage =
-    resolvedSearchParams.saved === "1" ? "Link saved." : getStatusMessage(resolvedSearchParams.error);
+    resolvedSearchParams.saved === "1"
+      ? "Link saved."
+      : resolvedSearchParams.retried === "1"
+        ? "Retry requested."
+        : getStatusMessage(resolvedSearchParams.error);
 
   return (
     <div className="feature-layout">
+      <LinkPendingRefresh enabled={links.some((link) => link.enrichment.status === "pending")} />
       <section className="feature-card">
         <p className="eyebrow">Private links</p>
         <h1>Save links for later retrieval.</h1>
         <p className="lede">
-          Manual bookmark capture stays private in v1. Each saved link keeps its URL, title, summary, and shared tags
-          inside the owner area only.
+          Manual bookmark capture stays private in v1. Save the URL and title first, then let Minakeep generate the AI
+          summary and shared tags after save.
         </p>
         {statusMessage ? (
           <p className={resolvedSearchParams.error ? "status-note status-note-error" : "status-note"}>{statusMessage}</p>
@@ -71,26 +76,7 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
               type="text"
             />
           </label>
-          <label className="field-group">
-            <span>Summary</span>
-            <textarea
-              className="note-textarea summary-textarea"
-              name="summary"
-              placeholder="Why this link matters and what you expect to find there later."
-              required
-            />
-          </label>
-          <label className="field-group">
-            <span>Tags</span>
-            <input
-              autoComplete="off"
-              className="text-input"
-              name="tags"
-              placeholder="research, reference"
-              type="text"
-            />
-          </label>
-          <p className="field-note">Use commas to share tags with the rest of the private vault.</p>
+          <p className="field-note">AI summary and shared tags are generated automatically after save.</p>
           <div className="button-row">
             <button className="primary-button" type="submit">
               Save link
@@ -112,11 +98,21 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
                     </a>
                     <p className="link-url">{link.url}</p>
                   </div>
-                  <p className="link-summary">{link.summary}</p>
-                  <div className="link-list-footer">
-                    <div className="tag-list" aria-label="Tags">
+                  <div className="note-generated-copy">
+                    <strong>AI summary</strong>
+                    {link.summary ? (
+                      <p className="link-summary" data-testid="link-ai-summary">
+                        {link.summary}
+                      </p>
+                    ) : (
+                      <p className="field-note">A generated summary will appear here after a successful enrichment run.</p>
+                    )}
+                  </div>
+                  <div className="note-generated-copy">
+                    <strong>AI tags</strong>
+                    <div className="tag-list" aria-label="Link tags" data-testid="link-ai-tags">
                       {link.tags.length === 0 ? (
-                        <span className="tag-pill tag-pill-muted">Untagged</span>
+                        <span className="tag-pill tag-pill-muted">No generated tags yet</span>
                       ) : (
                         link.tags.map((tag) => (
                           <span className="tag-pill" key={tag.id}>
@@ -125,13 +121,22 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
                         ))
                       )}
                     </div>
+                  </div>
+                  <div className="link-list-footer">
                     <div className="note-meta">
                       <span>Private link</span>
                       <span>{getEnrichmentStatusLabel(link.enrichment.status)}</span>
                       <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(link.updatedAt)}</span>
                     </div>
                   </div>
-                  {link.enrichment.status === "failed" ? <p className="field-note">{getEnrichmentStatusDetail(link.enrichment)}</p> : null}
+                  <p className="field-note">{getEnrichmentStatusDetail(link.enrichment)}</p>
+                  {link.enrichment.status === "failed" ? (
+                    <form action={retryLinkEnrichmentAction.bind(null, link.id)}>
+                      <button className="ghost-button" type="submit">
+                        Retry AI enrichment
+                      </button>
+                    </form>
+                  ) : null}
                 </article>
               ))}
             </div>

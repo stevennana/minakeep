@@ -22,11 +22,7 @@ export async function createSavedLink(ownerId: string, input: LinkDraftInput) {
   const normalizedInput = normalizeLinkInput(input);
 
   try {
-    const link = await linksRepo.create(ownerId, normalizedInput);
-
-    await requestEnrichment(linksRepo, link.id);
-
-    return link;
+    return await linksRepo.create(ownerId, normalizedInput);
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
       throw new DuplicateLinkUrlError();
@@ -44,4 +40,8 @@ export async function retryLinkEnrichment(ownerId: string, id: string) {
   }
 
   return retryEnrichment(linksRepo, id);
+}
+
+export async function startLinkEnrichment(id: string) {
+  return requestEnrichment(linksRepo, id);
 }
