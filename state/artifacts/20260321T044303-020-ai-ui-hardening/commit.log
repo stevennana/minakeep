@@ -1,0 +1,12 @@
+[main 13f3bd8] ralph: 020-ai-ui-hardening 2026-03-21T04:56:17+09:00
+ 26 files changed, 2096 insertions(+), 63 deletions(-)
+ rename src/features/{links/components/link-pending-refresh.tsx => enrichment/components/pending-refresh.tsx} (57%)
+ create mode 100644 state/artifacts/20260321T043134-020-ai-ui-hardening/backlog.log
+ create mode 100644 state/artifacts/20260321T043134-020-ai-ui-hardening/promote.log
+ create mode 100644 state/artifacts/20260321T044303-020-ai-ui-hardening/commit.log
+ create mode 100644 state/artifacts/20260321T044303-020-ai-ui-hardening/evaluator.log
+ create mode 100644 state/artifacts/20260321T044303-020-ai-ui-hardening/npm-run-test-e2e-grep-ai-real-next-server.log
+ create mode 100644 state/artifacts/20260321T044303-020-ai-ui-hardening/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260321T044303-020-ai-ui-hardening/task-prompt.log
+ create mode 100644 state/artifacts/20260321T044303-020-ai-ui-hardening/worker.jsonl
+commit: created

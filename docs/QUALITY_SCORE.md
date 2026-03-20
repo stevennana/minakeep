@@ -22,7 +22,7 @@ Quality scores should reflect both implemented behavior and how convincingly the
 | Area | Score | Notes |
 |---|---|---|
 | Repo structure | A- | Docs-first structure, feature folders, and Ralph loop wiring remain legible after the first tranche landed. |
-| Runtime determinism | A- | `verify`, startup smoke, and the explicit `@ai-real` gate make normal and AI-specific promotion checks concrete, while leaving external endpoint availability clearly outside the local determinism contract. |
+| Runtime determinism | A- | `verify`, startup smoke, the explicit `@ai-real` gate, and a single-worker Playwright harness make normal and AI-specific promotion checks concrete, while leaving external endpoint availability clearly outside the local determinism contract. |
 | Boundary clarity | B+ | Notes, links, tags/search, owner auth, operations, and the Mina AI boundary are explicit; retry rules and failure copy stay centralized instead of drifting across routes. |
 
 ## Immediate Quality Priorities

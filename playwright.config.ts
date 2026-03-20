@@ -2,7 +2,9 @@ import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
   testDir: "./tests/e2e",
-  fullyParallel: true,
+  // The E2E suite shares one mutable SQLite runtime state, so one worker keeps promotion checks deterministic.
+  fullyParallel: false,
+  workers: 1,
   retries: 0,
   reporter: "list",
   use: {

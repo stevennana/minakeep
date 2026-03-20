@@ -267,3 +267,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=not_done promotion=false Deterministic gates passed and remaining AI retry debt is explicit, but exit criterion 4 is not satisfied: reliability/operator documentation still says E2E verification is serial while the shipped Playwright harness runs with `fullyParallel: true` and the recorded verify run used 4 workers. That mismatch is substantive for an operational-readiness task because it weakens the stated determinism contract around shared SQLite state. -> state/artifacts/20260321T044303-020-ai-ui-hardening/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T044303-020-ai-ui-hardening/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Task 020-ai-ui-hardening not eligible for promotion.
+- backlog: rendered current=020-ai-ui-hardening
+- health: ooxxoooxoxxoxooxxx
+- cycle: finished
+
+### cycle 2026-03-21T04:56:47+09:00 task=020-ai-ui-hardening
+- artifacts: state/artifacts/20260321T045647-020-ai-ui-hardening
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T045647-020-ai-ui-hardening/worker.jsonl
+- worker-summary: Serialized the Playwright promotion harness in [playwright.config.ts](/Users/stevenna/WebstormProjects/minakeep/playwright.config.ts) so E2E now runs with one worker against the shared SQLite runtime, which brings the implementation back in line with [docs/RELIABILITY.md](/Users/stevenna/WebstormProjects/minakeep/docs/RELIABILITY.md) and [scripts/ralph/README.md](/Users/stevenna/WebstormProjects/minakeep/scripts/ralph/README.md). I also tightened the remaining owner-surface UI drift in [src/app/app/search/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/search/page.tsx) and [src/app/app/tags/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/tags/page.tsx) so AI metadata is presented consistently, and updated [docs/QUALITY_SCORE.md](/Users/stevenna/WebstormProjects/minakeep/docs/QUALITY_SCORE.md), [docs/SECURITY.md](/Users/stevenna/WebstormProjects/minakeep/docs/SECURITY.md), and the task log in [docs/exec-plans/active/020-ai-ui-hardening.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/020-ai-ui-hardening.md).
+- evaluator: started
+- evaluator: status=done promotion=true Inspected the required docs, the AI enrichment/runtime code, the owner-facing UI routes, the Playwright/Ralph harness, and the relevant tests. The task is complete in substance: the provided deterministic checks satisfy the command gates, AI failure handling is implemented and visible without blocking saves, retry is constrained to failed records, pending-state refresh is wired across the documented owner surfaces, the reliability/security/quality/operator docs match the shipped behavior, and the remaining AI retry/backoff debt is explicitly documented. -> state/artifacts/20260321T045647-020-ai-ui-hardening/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T045647-020-ai-ui-hardening/npm-run-verify-next-server.log

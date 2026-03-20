@@ -94,7 +94,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                       <EnrichmentStatusBlock state={note.enrichment} />
                       <div className="tag-list" aria-label="Note tags">
                         {note.tags.length === 0 ? (
-                          <span className="tag-pill tag-pill-muted">Untagged</span>
+                          <span className="tag-pill tag-pill-muted">No generated tags</span>
                         ) : (
                           note.tags.map((tag) => (
                             <span className="tag-pill" key={tag.id}>
@@ -130,9 +130,17 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                       </a>
                       <p className="link-url">{link.url}</p>
                     </div>
-                    {link.summary ? <p className="link-summary">AI summary: {link.summary}</p> : null}
                     <EnrichmentStatusBlock state={link.enrichment} />
-                    <div className="link-list-footer">
+                    <div className="note-generated-copy">
+                      <strong>AI summary</strong>
+                      {link.summary ? (
+                        <p className="link-summary">AI summary: {link.summary}</p>
+                      ) : (
+                        <p className="field-note">A generated summary will appear here after a successful enrichment run.</p>
+                      )}
+                    </div>
+                    <div className="note-generated-copy">
+                      <strong>AI tags</strong>
                       <div className="tag-list" aria-label="Link tags">
                         {link.tags.length === 0 ? (
                           <span className="tag-pill tag-pill-muted">No generated tags yet</span>
@@ -144,6 +152,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                           ))
                         )}
                       </div>
+                    </div>
+                    <div className="link-list-footer">
                       <div className="note-meta">
                         <span>Updated</span>
                         <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(link.updatedAt)}</span>

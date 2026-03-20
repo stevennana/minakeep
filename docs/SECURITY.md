@@ -20,6 +20,7 @@ Define the security posture for Minakeep's current shipped slice.
 - never commit seeded credentials or secret values
 - document required environment variables in `.env.example` and runtime docs
 - if AI config is partial, surface only which keys are missing and keep save behavior local and deterministic
+- the real-endpoint `@ai-real` gate must use those same local-only AI env vars and must not introduce a fallback or client-side copy of them
 
 ## Public Surfaces
 - `/` and `/notes/[slug]` are public
@@ -36,3 +37,4 @@ Define the security posture for Minakeep's current shipped slice.
 - AI integration must prove that tokens stay server-side and that failure paths do not leak raw endpoint credentials or full private payloads
 - missing or incomplete AI env config must record a visible failed enrichment state instead of silently falling back to another endpoint
 - server logs may record HTTP status or high-level failure class for the Mina endpoint, but not request bodies, tokens, or full private note/link payloads
+- real-endpoint AI verification must fail or skip based on missing `LLM_BASE`, `TOKEN`, and `MODEL`, not by substituting committed defaults

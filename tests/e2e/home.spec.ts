@@ -26,7 +26,7 @@ test("anonymous visitors cannot access the owner search route", async ({ page })
 
 test("owner can sign in, create a draft note, edit it, and reopen it with rendered preview", async ({ page }) => {
   const username = process.env.OWNER_USERNAME ?? "owner";
-      const password = process.env.OWNER_PASSWORD ?? "password";
+  const password = process.env.OWNER_PASSWORD ?? "password";
   const uniqueId = `${Date.now()}`;
   const initialTitle = `Draft note ${uniqueId}`;
   const updatedTitle = `Updated draft note ${uniqueId}`;

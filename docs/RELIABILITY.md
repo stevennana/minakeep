@@ -36,11 +36,12 @@ If a user-visible behavior depends on an outside resource such as AI chat or a t
 For the AI enrichment wave, E2E must prove: note save with generated metadata, link save with generated metadata, and save-with-visible-failure when the endpoint fails or times out.
 The shared helper under `tests/e2e/ai-real.ts` is the contract point for checking whether those env vars are present before running real-endpoint journeys.
 Owner surfaces that render pending enrichment state should auto-refresh while enrichment is running, including the private dashboard, links, search, tags, and note editor routes. Retry should be a visible action only from a failed state rather than a second control path for already-pending work.
+Because the Playwright suite shares one mutable SQLite runtime state, the harness runs with one worker for promotion checks instead of relying on cross-worker coordination.
 
 ## Known Gaps
 - there is no external redundancy or multi-node failover in v1
 - startup and test commands assume local Node and Playwright browser availability
-- E2E verification stays serial because the single-owner flows share one mutable SQLite runtime state
+- E2E verification is intentionally single-worker because the single-owner flows share one mutable SQLite runtime state
 - `start:logged` is intended for operator inspection, not for Ralph automation
 - external AI reliability will depend on the Mina-hosted endpoint and the quality of visible retry/failure handling
 - AI retries are still operator-triggered and immediate; v1 has no deferred queue, backoff, or attempt history beyond the current visible status

@@ -1,0 +1,1204 @@
+/Users/stevenna/WebstormProjects/minakeep/scripts/ralph/generated/current-evaluator-prompt.txt
+OpenAI Codex v0.116.0 (research preview)
+--------
+workdir: /Users/stevenna/WebstormProjects/minakeep
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: high
+reasoning summaries: none
+session id: 019d0cda-59a0-7962-84d2-7bafcb7a0cd5
+--------
+user
+You are the promotion evaluator for a repository-local Ralph loop.
+
+Read these documents before deciding:
+- AGENTS.md
+- ARCHITECTURE.md
+- docs/QUALITY_SCORE.md
+- docs/RELIABILITY.md
+- docs/SECURITY.md
+- docs/exec-plans/active/020-ai-ui-hardening.md
+
+Current task id: 020-ai-ui-hardening
+Current task title: AI and UI hardening
+
+Objective:
+Stabilize the AI enrichment wave and the knowledge-studio UI so the repo is ready for the next tranche after this expansion.
+
+Scope:
+- tighten AI failure handling, retry behavior, and external-env documentation
+- reconcile reliability, security, and quality docs with the shipped AI/UI behavior
+- close obvious visual inconsistencies left by the redesign
+- keep Ralph operator guidance aligned with the new promotion gates
+
+Out of scope:
+- new major product features
+- AI chat
+- unrelated infrastructure expansion
+
+Exit criteria:
+1. `npm run verify` passes.
+2. `npm run test:e2e -- --grep @ai-real` passes when the AI env vars are configured.
+3. `npm run start:smoke` passes.
+4. Reliability, security, and quality docs match the shipped AI/UI behavior.
+5. Remaining debt is explicit.
+
+Evaluator notes:
+Promote only when the repo is operationally ready for the next post-AI wave rather than merely visually or narratively complete.
+
+Deterministic check summary:
+{
+  "checked_at": "2026-03-20T20:05:29.561Z",
+  "task_id": "020-ai-ui-hardening",
+  "commands": [
+    {
+      "command": "npm run verify",
+      "ok": true,
+      "output": "\n> minakeep@0.1.0 verify\n> npm run lint && npm run db:prepare && npm run typecheck && npm run build && npm run test && npm run start:smoke\n\n\n> minakeep@0.1.0 lint\n> eslint . --max-warnings=0\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 45ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 typecheck\n> tsc --noEmit\n\n\n> minakeep@0.1.0 build\n> next build\n\n▲ Next.js 16.2.0 (Turbopack)\n- Environments: .env\n\n  Creating an optimized production build ...\n✓ Compiled successfully in 1184ms\n  Running TypeScript ...\n  Finished TypeScript in 1361ms ...\n  Collecting page data using 10 workers ...\n  Generating static pages using 10 workers (0/11) ...\n  Generating static pages using 10 workers (2/11) \r\n  Generating static pages using 10 workers (5/11) \r\n  Generating static pages using 10 workers (8/11) \r\n✓ Generating static pages using 10 workers (11/11) in 172ms\n  Finalizing page optimization ...\n\nRoute (app)\n┌ ○ /\n├ ○ /_not-found\n├ ƒ /api/auth/[...nextauth]\n├ ƒ /api/health\n├ ƒ /api/test/mina/chat/completions\n├ ƒ /app\n├ ƒ /app/links\n├ ƒ /app/notes/[id]/edit\n├ ƒ /app/notes/new\n├ ƒ /app/search\n├ ƒ /app/tags\n├ ƒ /login\n└ ƒ /notes/[slug]\n\n\nƒ Proxy (Middleware)\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n\n> minakeep@0.1.0 test\n> npm run test:unit && npm run test:e2e\n\n\n> minakeep@0.1.0 test:unit\n> NODE_PATH=./node_modules/next/dist/compiled node --conditions=react-server --import tsx --test tests/unit/**/*.test.ts\n\n✔ getMinaAiConfigStatus returns disabled when no AI env vars are set (0.754958ms)\n✔ buildMinaChatCompletionsRequest shapes the Mina OpenAI-compatible request (0.225292ms)\n✔ normalizeMinaEnrichmentResponse trims the summary and normalizes repeated tags (7.632167ms)\n✔ getMinaAiRequestTimeoutMs falls back to the default timeout (0.120208ms)\n✔ requestMinaEnrichment aborts hung requests at the configured timeout (23.254917ms)\n✔ requestEnrichment records a failed state when the AI env is not configured (0.797125ms)\n✔ requestEnrichment records a pending state when the AI env is configured (0.112667ms)\n✔ requestEnrichment records which AI env vars are missing when the Mina config is partial (0.094167ms)\n✔ retryEnrichment only requeues records that are already failed (0.123292ms)\n✔ buildLinkEnrichmentMessages includes the link title and URL for the AI prompt (0.450583ms)\n✔ executeLinkEnrichment records generated summary and tags on success (0.437833ms)\n✔ executeLinkEnrichment records a normalized failed state when the request throws (0.140375ms)\n✔ executeLinkEnrichment skips stale attempts (0.061208ms)\n✔ normalizeLinkInput trims fields and canonicalizes the URL (0.652666ms)\n✔ normalizeLinkInput rejects non-http schemes (0.204083ms)\n✔ buildNoteEnrichmentMessages includes the note title and markdown for the AI prompt (0.407542ms)\n✔ executeNoteEnrichment records generated summary and tags on success (0.421417ms)\n✔ executeNoteEnrichment records a normalized failed state when the request throws (0.135625ms)\n✔ executeNoteEnrichment skips stale attempts (0.065875ms)\n✔ renderMarkdownToHtml preserves common note-writing structures while escaping unsafe HTML (0.762833ms)\n✔ createNoteExcerpt turns markdown into readable summary text (0.191417ms)\n✔ createNoteSlug normalizes title content (1.238292ms)\n✔ createNoteSlug falls back when the title has no slug-safe characters (0.195916ms)\n✔ createUniqueNoteSlug increments an existing base slug (0.18475ms)\nℹ tests 24\nℹ suites 0\nℹ pass 24\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 187.869291\n\n> minakeep@0.1.0 test:e2e\n> npm run db:prepare && playwright test\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 38ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\nRunning 12 tests using 1 worker\n\n  ✓   1 tests/e2e/auth.spec.ts:5:5 › owner can sign in to the private dashboard (1.5s)\n  ✓   2 tests/e2e/home.spec.ts:10:5 › public homepage exposes the published notes surface (207ms)\n  ✓   3 tests/e2e/home.spec.ts:21:5 › anonymous visitors cannot access the owner search route (157ms)\n  ✓   4 tests/e2e/home.spec.ts:27:5 › owner can sign in, create a draft note, edit it, and reopen it with rendered preview (1.8s)\n  ✓   5 tests/e2e/home.spec.ts:85:5 › note save still succeeds when the configured AI endpoint times out and exposes a retry path (6.7s)\n  ✓   6 tests/e2e/home.spec.ts:124:5 › owner can publish and unpublish a note across the public routes (2.2s)\n  ✓   7 tests/e2e/home.spec.ts:182:5 › owner can save a private link, receive AI metadata, and keep it off public routes (4.4s)\n  ✓   8 tests/e2e/home.spec.ts:222:5 › link save still succeeds when the configured AI endpoint times out and exposes a retry path (7.7s)\n  ✓   9 tests/e2e/home.spec.ts:264:5 › owner cannot save a private link with an unsafe URL scheme (1.3s)\n  ✓  10 tests/e2e/home.spec.ts:287:5 › owner can filter private links by tag and search notes by title plus links by URL and tag (5.8s)\n  ✓  11 tests/e2e/link-ai-real.spec.ts:10:5 › owner link enrichment completes against the real Mina endpoint @ai-real (4.8s)\n  ✓  12 tests/e2e/note-ai-real.spec.ts:10:5 › owner note enrichment completes against the real Mina endpoint @ai-real (4.2s)\n\n  12 passed (42.5s)\n\n> minakeep@0.1.0 start:smoke\n> node scripts/start-smoke.mjs\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 40ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 start\n> next start --hostname 127.0.0.1 --port 3200\n\n▲ Next.js 16.2.0\n- Local:         http://127.0.0.1:3200\n- Network:       http://127.0.0.1:3200\n✓ Ready in 70ms\n",
+      "preflight": {
+        "command": "ensure-e2e-port-free.sh 3100",
+        "error": "",
+        "ok": true,
+        "output": "port-cleanup: 127.0.0.1:3100 already free\n"
+      },
+      "next_server_log_path": "/Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T045647-020-ai-ui-hardening/npm-run-verify-next-server.log"
+    },
+    {
+      "command": "npm run test:e2e -- --grep @ai-real",
+      "ok": true,
+      "output": "\n> minakeep@0.1.0 test:e2e\n> npm run db:prepare && playwright test --grep @ai-real\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 43ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\nRunning 2 tests using 1 worker\n\n  ✓  1 tests/e2e/link-ai-real.spec.ts:10:5 › owner link enrichment completes against the real Mina endpoint @ai-real (5.7s)\n  ✓  2 tests/e2e/note-ai-real.spec.ts:10:5 › owner note enrichment completes against the real Mina endpoint @ai-real (4.4s)\n\n  2 passed (11.6s)\n",
+      "preflight": {
+        "command": "ensure-e2e-port-free.sh 3100",
+        "error": "",
+        "ok": true,
+        "output": "port-cleanup: 127.0.0.1:3100 already free\n"
+      },
+      "next_server_log_path": "/Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T045647-020-ai-ui-hardening/npm-run-test-e2e-grep-ai-real-next-server.log"
+    },
+    {
+      "command": "npm run start:smoke",
+      "ok": true,
+      "output": "\n> minakeep@0.1.0 start:smoke\n> node scripts/start-smoke.mjs\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 39ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 start\n> next start --hostname 127.0.0.1 --port 3200\n\n▲ Next.js 16.2.0\n- Local:         http://127.0.0.1:3200\n- Network:       http://127.0.0.1:3200\n✓ Ready in 69ms\n"
+    }
+  ],
+  "missing_files": [],
+  "pass": true
+}
+
+Worker handoff summary from the last run:
+Serialized the Playwright promotion harness in [playwright.config.ts](/Users/stevenna/WebstormProjects/minakeep/playwright.config.ts) so E2E now runs with one worker against the shared SQLite runtime, which brings the implementation back in line with [docs/RELIABILITY.md](/Users/stevenna/WebstormProjects/minakeep/docs/RELIABILITY.md) and [scripts/ralph/README.md](/Users/stevenna/WebstormProjects/minakeep/scripts/ralph/README.md). I also tightened the remaining owner-surface UI drift in [src/app/app/search/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/search/page.tsx) and [src/app/app/tags/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/tags/page.tsx) so AI metadata is presented consistently, and updated [docs/QUALITY_SCORE.md](/Users/stevenna/WebstormProjects/minakeep/docs/QUALITY_SCORE.md), [docs/SECURITY.md](/Users/stevenna/WebstormProjects/minakeep/docs/SECURITY.md), and the task log in [docs/exec-plans/active/020-ai-ui-hardening.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/020-ai-ui-hardening.md).
+
+`npm run verify`, `npm run test:e2e -- --grep @ai-real`, and `npm run start:smoke` all passed locally. Exit criteria appear satisfied on the current tree. Remaining explicit debt is unchanged: AI retry is still manual/immediate, with no queued backoff or richer attempt history. The operator handoff summary is written to [state/last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
+
+Your job:
+- inspect the repository and current implementation
+- determine whether the current task is actually complete
+- mark `done` only if the exit criteria are satisfied in substance, not just approximately
+- prefer conservative decisions
+- recommend promotion only if the task is truly ready
+
+Return JSON only using the provided schema.
+
+mcp startup: no servers
+Plan update
+  → Read required evaluator docs and task plan context
+  • Inspect relevant implementation and tests for AI/UI hardening scope
+  • Assess exit criteria substantively and produce promotion decision JSON
+exec
+/bin/zsh -lc "sed -n '1,260p' ARCHITECTURE.md" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,240p' AGENTS.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# AGENTS.md
+
+## Purpose
+Minakeep is a self-hosted knowledge vault for private markdown notes and saved links, with selectively published public notes, automatic AI enrichment, and a polished knowledge-studio interface.
+
+This repository is optimized for agent-legible development and a Ralph-style task-promotion loop.
+
+## Read Order
+Before changing code or plans, read these files in order:
+
+1. `ARCHITECTURE.md`
+2. `docs/PRODUCT_SENSE.md`
+3. `docs/design-docs/core-beliefs.md`
+4. `docs/product-specs/index.md`
+5. `docs/FRONTEND.md`
+6. `docs/PLANS.md`
+7. active plans in `docs/exec-plans/active/`
+
+## Scope Guardrails
+### In scope for v1
+ succeeded in 0ms:
+# ARCHITECTURE.md
+
+## Goal
+Build Minakeep as an agent-legible codebase with strong boundaries, a short instruction surface, and enough extension seams to support future change without overbuilding v1.
+
+## System Overview
+Minakeep is a web application with:
+- a public site for published notes
+- a private owner area for notes, links, tags, and search
+- an automatic AI enrichment path for notes and links
+- a SQLite-backed persistence layer for content and owner identity
+- a deterministic operator path with logged startup and Ralph-loop state tracking
+
+## Architectural Priorities
+- keep the foundation small and agent-legible
+- separate public reading from private authoring clearly
+- keep user-visible feature fronts sliced into small plans
+- make runtime startup and verification deterministic before unattended loop work
+- isolate the external AI client behind a narrow service boundary
+- make AI failure visible without letting it block core save flows
+exec
+/bin/zsh -lc "sed -n '1,260p' docs/SECURITY.md" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,320p' docs/exec-plans/active/020-ai-ui-hardening.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# SECURITY.md
+
+## Purpose
+Define the security posture for Minakeep's current shipped slice.
+
+## Core Security Rules
+- keep `/app` routes private to the owner account
+- expose only published notes on public routes
+- do not log secrets, passwords, session tokens, or full private note/link payloads
+- validate owner credentials on the server only
+- store only the owner password hash in SQLite
+- accept saved-link URLs only for `http` and `https`
+- keep AI provider tokens and base URLs server-only
+- do not send private note or link content to unconfigured or fallback endpoints silently
+- visible AI failure copy may name missing env keys, but it must never echo configured secret values
+
+## Secrets and Config
+- keep `AUTH_SECRET`, `DATABASE_URL`, `OWNER_USERNAME`, and `OWNER_PASSWORD` in environment configuration only
+- keep `LLM_BASE`, `TOKEN`, and `MODEL` in shell or local environment only
+- never commit seeded credentials or secret values
+ succeeded in 0ms:
+# AI and UI hardening
+
+```json taskmeta
+{
+  "id": "020-ai-ui-hardening",
+  "title": "AI and UI hardening",
+  "order": 20,
+  "status": "active",
+  "next_task_on_success": null,
+  "prompt_docs": [
+    "AGENTS.md",
+    "ARCHITECTURE.md",
+    "docs/QUALITY_SCORE.md",
+    "docs/RELIABILITY.md",
+    "docs/SECURITY.md"
+  ],
+  "required_commands": [
+    "npm run verify",
+    "npm run test:e2e -- --grep @ai-real",
+    "npm run start:smoke"
+exec
+/bin/zsh -lc "sed -n '1,260p' docs/QUALITY_SCORE.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# QUALITY_SCORE.md
+
+## Purpose
+Track the current quality level of product domains and architectural layers so agent work can target the weakest areas first.
+Quality scores should reflect both implemented behavior and how convincingly the test strategy proves it.
+
+## Rubric
+- **0** nonexistent
+- **1** sketched only
+- **2** scaffoldable and specified
+- **3** functional and reasonably verified
+- **4** strong, legible, and difficult to accidentally regress
+
+## Product Domain Scores
+| Area | Score | Notes |
+|---|---|---|
+| Product clarity | A- | The shipped slice is now clearly defined around private capture, selective note publishing, AI-owned metadata, and explicit promotion gates; remaining operational caveats are documented instead of implied. |
+| Feature slicing | A- | AI foundation, note enrichment, link enrichment, redesign, and hardening stayed separated into promotable slices with explicit contracts. |
+| UX focus | B+ | The knowledge-studio redesign is coherent, and the hardening pass aligns AI status treatment plus pending-state auto-refresh across the editor, dashboard, search, tags, and links surfaces. |
+
+exec
+/bin/zsh -lc "sed -n '1,260p' docs/RELIABILITY.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# RELIABILITY.md
+
+## Purpose
+Define the reliability expectations and failure-handling rules for Minakeep.
+
+## Core Reliability Rules
+- every task must name deterministic checks explicitly
+- stateful runtime prep must be explicit rather than hidden inside build or test scripts
+- operational artifacts under `state/` and `logs/` should be stable and inspectable
+- AI enrichment failures must not block note or link persistence
+- external AI verification must be explicit instead of assumed from unit tests alone
+
+## Verification
+- `npm run db:prepare` prepares SQLite state and owner seed deterministically
+- `npm run start:smoke` boots the production-style server and probes a health endpoint
+- `npm run verify` includes startup proof alongside code-level checks
+- Ralph status and backlog rendering must work without hand-editing state files
+- AI tasks must require a real-endpoint E2E check when `LLM_BASE`, `TOKEN`, and `MODEL` are present
+- the real-endpoint Playwright path is tagged `@ai-real`, and promotable AI tasks must pass `npm run test:e2e -- --grep @ai-real` when those env vars are configured
+- `npm run verify` does not replace the separate `@ai-real` run for promotable AI work
+exec
+/bin/zsh -lc "printf '%s
+' 'Inspecting the shipped AI/runtime paths and the owner surfaces that changed so the decision is based on implementation, not only the recorded command output.'" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+Inspecting the shipped AI/runtime paths and the owner surfaces that changed so the decision is based on implementation, not only the recorded command output.
+exec
+/bin/zsh -lc "sed -n '1,260p' playwright.config.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "rg --files src | rg 'app/(app|notes)|components|lib'" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import { defineConfig } from "@playwright/test";
+
+export default defineConfig({
+  testDir: "./tests/e2e",
+  // The E2E suite shares one mutable SQLite runtime state, so one worker keeps promotion checks deterministic.
+  fullyParallel: false,
+  workers: 1,
+  retries: 0,
+  reporter: "list",
+  use: {
+    baseURL: "http://127.0.0.1:3100",
+    trace: "on-first-retry"
+  },
+  webServer: {
+    command: "node scripts/playwright-web-server.mjs",
+    url: "http://127.0.0.1:3100/api/health",
+    reuseExistingServer: !process.env.CI,
+    timeout: 120000
+  }
+});
+ succeeded in 0ms:
+src/lib/logging/server-logger.ts
+src/lib/auth/owner-session.ts
+src/lib/auth/password.ts
+src/lib/config/env.ts
+src/lib/prisma.ts
+src/components/feature-placeholder.tsx
+src/features/enrichment/components/status-block.tsx
+src/features/enrichment/components/pending-refresh.tsx
+src/features/notes/components/note-editor.tsx
+src/features/navigation/components/vault-nav.tsx
+src/app/notes/[slug]/page.tsx
+src/app/app/page.tsx
+src/app/app/layout.tsx
+src/app/app/links/page.tsx
+src/app/app/links/actions.ts
+src/app/app/tags/page.tsx
+src/app/app/notes/actions.ts
+src/app/app/search/page.tsx
+src/app/app/notes/new/page.tsx
+src/app/app/notes/[id]/edit/page.tsx
+exec
+/bin/zsh -lc 'rg -n "retryEnrichment|requestEnrichment|execute(Link|Note)Enrichment|getMinaAiConfigStatus|requestMinaEnrichment|buildMinaChatCompletionsRequest|normalizeMinaEnrichmentResponse" src tests' in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+tests/unit/enrichment-service.test.ts:4:import { requestEnrichment, retryEnrichment } from "../../src/features/enrichment/service";
+tests/unit/enrichment-service.test.ts:52:test("requestEnrichment records a failed state when the AI env is not configured", async () => {
+tests/unit/enrichment-service.test.ts:56:    await requestEnrichment(
+tests/unit/enrichment-service.test.ts:77:test("requestEnrichment records a pending state when the AI env is configured", async () => {
+tests/unit/enrichment-service.test.ts:87:      await requestEnrichment(
+tests/unit/enrichment-service.test.ts:107:test("requestEnrichment records which AI env vars are missing when the Mina config is partial", async () => {
+tests/unit/enrichment-service.test.ts:117:      await requestEnrichment(
+tests/unit/enrichment-service.test.ts:139:test("retryEnrichment only requeues records that are already failed", async () => {
+tests/unit/enrichment-service.test.ts:181:      const readyResult = await retryEnrichment(writer, "note-3", readyRecord);
+tests/unit/enrichment-service.test.ts:184:      await retryEnrichment(writer, "note-4", {
+src/features/enrichment/service.ts:3:import { type MinaAiConfigStatus, getMinaAiConfigStatus } from "@/features/ai/config";
+src/features/enrichment/service.ts:37:export async function requestEnrichment<TRecord>(writer: EnrichmentStateWriter<TRecord>, id: string) {
+src/features/enrichment/service.ts:38:  const configStatus = getMinaAiConfigStatus();
+src/features/enrichment/service.ts:47:export async function retryEnrichment<TRecord extends { enrichment: Pick<EnrichmentState, "status"> }>(
+src/features/enrichment/service.ts:56:  return requestEnrichment(writer, id);
+tests/unit/link-enrichment.test.ts:4:import { buildLinkEnrichmentMessages, executeLinkEnrichment } from "../../src/features/links/enrichment";
+tests/unit/link-enrichment.test.ts:19:test("executeLinkEnrichment records generated summary and tags on success", async () => {
+tests/unit/link-enrichment.test.ts:22:  const result = await executeLinkEnrichment(
+tests/unit/link-enrichment.test.ts:71:test("executeLinkEnrichment records a normalized failed state when the request throws", async () => {
+tests/unit/link-enrichment.test.ts:74:  const result = await executeLinkEnrichment(
+exec
+/bin/zsh -lc "sed -n '1,260p' scripts/ralph/README.md" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,240p' .env.example" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# Minakeep Ralph Loop v2
+
+This package upgrades the repository from a **repair loop** to a **task-promotion loop**.
+
+## What changed
+
+The first version of the loop could repeatedly work on one prompt, but it could not
+reliably decide when to advance. This version adds:
+
+- machine-readable task contracts in `docs/exec-plans/active/*.md`
+- deterministic checks
+- a read-only evaluator pass with structured JSON output
+- automatic promotion to the next task when the current task is truly complete
+
+## Why this matches the OpenAI harness pattern
+
+OpenAI’s harness engineering article describes a system where:
+- humans specify intent
+- repository docs act as the system of record
+- agents iterate until reviewers are satisfied
+ succeeded in 0ms:
+DATABASE_URL="file:./dev.db"
+AUTH_SECRET="replace-with-a-long-random-secret"
+AUTH_TRUST_HOST="true"
+OWNER_USERNAME="owner"
+OWNER_PASSWORD="replace-with-a-long-password"
+# Mina-hosted OpenAI-compatible endpoint for AI enrichment and `@ai-real` Playwright runs.
+# Keep these values local only. Missing or partial config records a visible failed enrichment state instead of falling back silently.
+LLM_BASE="https://mina-host.example/v1"
+TOKEN="replace-with-a-mina-api-token"
+MODEL="replace-with-a-mina-model-id"
+LOG_LEVEL="info"
+PORT="3000"
+exec
+/bin/zsh -lc "sed -n '1,220p' src/features/ai/config.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' src/features/ai/client.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "server-only";
+
+import { getPlaywrightAiTestBaseUrl, getPlaywrightAiTestMode } from "@/features/ai/test-mode";
+
+export const MINA_AI_ENV_KEYS = ["LLM_BASE", "TOKEN", "MODEL"] as const;
+
+export type RequiredAiEnv = (typeof MINA_AI_ENV_KEYS)[number];
+
+type MinaAiConfig = {
+  baseUrl: string;
+  token: string;
+  model: string;
+};
+
+export type MinaAiConfigStatus =
+  | {
+      state: "configured";
+      config: MinaAiConfig;
+    }
+  | {
+ succeeded in 0ms:
+import "server-only";
+
+import { getPlaywrightAiTestMode } from "@/features/ai/test-mode";
+import { normalizeTagNames } from "@/features/tags/normalize";
+import { getMinaAiConfigStatus } from "@/features/ai/config";
+import { serverLogger } from "@/lib/logging/server-logger";
+
+export type MinaChatMessage = {
+  role: "system" | "user";
+  content: string;
+};
+
+export type EnrichmentMetadata = {
+  summary: string;
+  tags: string[];
+};
+
+type MinaChatCompletionsResponse = {
+  choices?: Array<{
+    message?: {
+exec
+/bin/zsh -lc "sed -n '1,260p' src/features/enrichment/components/status-block.tsx" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,220p' src/features/enrichment/service.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import type { EnrichmentState } from "@/features/enrichment/types";
+import {
+  getEnrichmentAttemptLabel,
+  getEnrichmentStatusDetail,
+  getEnrichmentStatusLabel
+} from "@/features/enrichment/types";
+
+type EnrichmentStatusBlockProps = {
+  state: EnrichmentState;
+  detailClassName?: string;
+};
+
+export function EnrichmentStatusBlock({
+  state,
+  detailClassName = "field-note"
+}: EnrichmentStatusBlockProps) {
+  return (
+    <div className="enrichment-status-block">
+      <div className="note-meta note-meta-leading">
+        <span>{getEnrichmentStatusLabel(state.status)}</span>
+ succeeded in 0ms:
+import "server-only";
+
+import { type MinaAiConfigStatus, getMinaAiConfigStatus } from "@/features/ai/config";
+import { MinaAiClientError } from "@/features/ai/client";
+import type { EnrichmentState } from "@/features/enrichment/types";
+
+type EnrichmentStateWriter<TRecord> = {
+  setEnrichmentPending(id: string): Promise<TRecord>;
+  setEnrichmentReady(id: string): Promise<TRecord>;
+  setEnrichmentFailed(id: string, error: string): Promise<TRecord>;
+};
+
+function getConfigurationFailureMessage(configStatus: MinaAiConfigStatus) {
+  if (configStatus.state === "disabled") {
+    return "AI enrichment is disabled until LLM_BASE, TOKEN, and MODEL are set. Save succeeded without generated metadata.";
+  }
+
+  if (configStatus.state === "invalid") {
+    return `AI enrichment is not fully configured. Missing: ${configStatus.missing.join(", ")}. Save succeeded without generated metadata.`;
+  }
+exec
+/bin/zsh -lc "sed -n '1,260p' src/lib/logging/server-logger.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,240p' src/features/enrichment/components/pending-refresh.tsx" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+const LEVELS = ["trace", "debug", "info", "warn", "error"] as const;
+
+type LogLevel = (typeof LEVELS)[number];
+
+function resolveLevel(level: string): LogLevel {
+  if (LEVELS.includes(level as LogLevel)) {
+    return level as LogLevel;
+  }
+  return "info";
+}
+
+function shouldLog(current: LogLevel, target: LogLevel) {
+  return LEVELS.indexOf(target) >= LEVELS.indexOf(current);
+}
+
+function write(level: LogLevel, message: string, metadata?: Record<string, unknown>) {
+  const currentLevel = resolveLevel(process.env.LOG_LEVEL ?? "info");
+
+  if (!shouldLog(currentLevel, level)) {
+    return;
+ succeeded in 0ms:
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+type EnrichmentPendingRefreshProps = {
+  enabled: boolean;
+  intervalMs?: number;
+};
+
+export function EnrichmentPendingRefresh({
+  enabled,
+  intervalMs = 2000
+}: EnrichmentPendingRefreshProps) {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!enabled) {
+      return;
+    }
+exec
+/bin/zsh -lc "sed -n '1,320p' src/app/app/search/page.tsx" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import Link from "next/link";
+
+import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pending-refresh";
+import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
+import { searchOwnerContent } from "@/features/search/service";
+import { requireOwnerSession } from "@/lib/auth/owner-session";
+
+type SearchPageProps = {
+  searchParams?: Promise<{
+    q?: string;
+  }>;
+};
+
+export default async function SearchPage({ searchParams }: SearchPageProps) {
+  const owner = await requireOwnerSession();
+  const resolvedSearchParams = (await searchParams) ?? {};
+  const results = await searchOwnerContent(owner.id, resolvedSearchParams.q);
+  const resultCount = results.notes.length + results.links.length;
+  const hasPendingResults =
+    results.notes.some((note) => note.enrichment.status === "pending") ||
+exec
+/bin/zsh -lc "sed -n '1,260p' src/app/app/page.tsx" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,320p' src/app/app/links/page.tsx" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import Link from "next/link";
+import { unstable_noStore as noStore } from "next/cache";
+
+import { signOut } from "@/auth";
+import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pending-refresh";
+import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
+import { listOwnerNotes } from "@/features/notes/service";
+import { requireOwnerSession } from "@/lib/auth/owner-session";
+
+async function signOutAction() {
+  "use server";
+
+  await signOut({
+    redirectTo: "/login"
+  });
+}
+
+export default async function PrivateDashboardPage() {
+  noStore();
+
+ succeeded in 0ms:
+import { createLinkAction, retryLinkEnrichmentAction } from "@/app/app/links/actions";
+import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pending-refresh";
+import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
+import { listOwnerLinks } from "@/features/links/service";
+import { requireOwnerSession } from "@/lib/auth/owner-session";
+
+type LinksPageProps = {
+  searchParams?: Promise<{
+    saved?: string;
+    retried?: string;
+    error?: string;
+  }>;
+};
+
+function getStatusMessage(error?: string) {
+  switch (error) {
+    case "duplicate-url":
+      return "That URL is already saved in your private links.";
+    case "invalid-url":
+      return "Enter a complete http:// or https:// URL.";
+exec
+/bin/zsh -lc "sed -n '1,320p' src/app/app/tags/page.tsx" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,360p' src/features/notes/components/note-editor.tsx" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import Link from "next/link";
+
+import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pending-refresh";
+import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
+import { listOwnerTags, listOwnerContentByTag } from "@/features/tags/service";
+import { normalizeSingleTagName } from "@/features/tags/normalize";
+import { requireOwnerSession } from "@/lib/auth/owner-session";
+
+type TagsPageProps = {
+  searchParams?: Promise<{
+    tag?: string;
+  }>;
+};
+
+export default async function TagsPage({ searchParams }: TagsPageProps) {
+  const owner = await requireOwnerSession();
+  const resolvedSearchParams = (await searchParams) ?? {};
+  const selectedTag = normalizeSingleTagName(resolvedSearchParams.tag);
+  const [tags, filteredContent] = await Promise.all([
+    listOwnerTags(owner.id),
+ succeeded in 0ms:
+"use client";
+
+import Link from "next/link";
+import { useState } from "react";
+import { useFormStatus } from "react-dom";
+
+import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pending-refresh";
+import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
+import type { EnrichmentState } from "@/features/enrichment/types";
+import { getEnrichmentStatusLabel } from "@/features/enrichment/types";
+import { renderMarkdownToHtml } from "@/features/notes/markdown";
+import type { SavedTag } from "@/features/tags/types";
+
+type NoteEditorProps = {
+  initialTitle: string;
+  initialMarkdown: string;
+  action: (formData: FormData) => void | Promise<void>;
+  formTitle: string;
+  formDescription: string;
+  submitLabel: string;
+exec
+/bin/zsh -lc "sed -n '1,320p' src/app/app/notes/actions.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+"use server";
+
+import { notFound, redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
+import { after } from "next/server";
+
+import { runNoteEnrichment } from "@/features/notes/enrichment";
+import {
+  createDraftNote,
+  publishNote,
+  retryNoteEnrichment,
+  startNoteEnrichment,
+  unpublishNote,
+  updateDraftNote
+} from "@/features/notes/service";
+import { requireOwnerSession } from "@/lib/auth/owner-session";
+
+function getNoteInput(formData: FormData) {
+  return {
+    title: String(formData.get("title") ?? ""),
+exec
+/bin/zsh -lc "sed -n '1,260p' src/app/app/links/actions.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+"use server";
+
+import { notFound, redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
+import { after } from "next/server";
+
+import { runLinkEnrichment } from "@/features/links/enrichment";
+import { LinkValidationError } from "@/features/links/normalize";
+import { DuplicateLinkUrlError, createSavedLink, retryLinkEnrichment, startLinkEnrichment } from "@/features/links/service";
+import { requireOwnerSession } from "@/lib/auth/owner-session";
+
+function getLinkInput(formData: FormData) {
+  return {
+    url: String(formData.get("url") ?? ""),
+    title: String(formData.get("title") ?? "")
+  };
+}
+
+function revalidateLinkPaths() {
+  revalidatePath("/app/links");
+exec
+/bin/zsh -lc "sed -n '1,260p' src/features/links/service.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '261,420p' tests/e2e/home.spec.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,280p' src/features/notes/service.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "server-only";
+
+import { Prisma } from "@prisma/client";
+
+import { requestEnrichment, retryEnrichment } from "@/features/enrichment/service";
+import { normalizeLinkInput } from "@/features/links/normalize";
+import { linksRepo } from "@/features/links/repo";
+import type { LinkDraftInput } from "@/features/links/types";
+
+export class DuplicateLinkUrlError extends Error {
+  constructor() {
+    super("duplicate-link-url");
+    this.name = "DuplicateLinkUrlError";
+  }
+}
+
+export async function listOwnerLinks(ownerId: string) {
+  return linksRepo.listForOwner(ownerId);
+}
+
+ succeeded in 0ms:
+  }
+});
+
+test("owner cannot save a private link with an unsafe URL scheme", async ({ page }) => {
+  const username = process.env.OWNER_USERNAME ?? "owner";
+  const password = process.env.OWNER_PASSWORD ?? "password";
+  const title = `Unsafe link ${Date.now()}`;
+
+  await page.goto("/login");
+  await page.getByLabel("Username").fill(username);
+  await page.getByLabel("Password").fill(password);
+  await page.getByRole("button", { name: "Sign in" }).click();
+
+  await expect(page).toHaveURL(/\/app$/);
+  await page.getByRole("link", { name: "Links" }).click();
+
+  await expect(page).toHaveURL(/\/app\/links$/);
+  await page.getByLabel("URL").fill("ftp://example.com/private-reference");
+  await page.getByLabel("Title").fill(title);
+  await page.getByRole("button", { name: "Save link" }).click();
+ succeeded in 0ms:
+import "server-only";
+
+import { requestEnrichment, retryEnrichment } from "@/features/enrichment/service";
+import { notesRepo } from "@/features/notes/repo";
+import { createNoteExcerpt } from "@/features/notes/markdown";
+import type { NoteDraftInput } from "@/features/notes/types";
+import { createUniqueNoteSlug } from "@/features/notes/slug";
+
+function normalizeTitle(title: string) {
+  const trimmedTitle = title.trim();
+
+  return trimmedTitle || "Untitled note";
+}
+
+export async function listOwnerNotes(ownerId: string) {
+  return notesRepo.listForOwner(ownerId);
+}
+
+export async function listPublishedNotes() {
+  const notes = await notesRepo.listPublished();
+exec
+/bin/zsh -lc "sed -n '1,260p' tests/e2e/home.spec.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "dotenv/config";
+
+import { expect, test } from "@playwright/test";
+
+import { setAiPlaywrightTestMode } from "./ai-test-mode";
+
+// These journeys all mutate the same single-owner SQLite state, so serial execution keeps promotion checks deterministic.
+test.describe.configure({ mode: "serial" });
+
+test("public homepage exposes the published notes surface", async ({ page }) => {
+  await page.goto("/");
+
+  const emptyState = page.getByText("No published notes yet.");
+  const publishedNoteEntry = page.locator(".note-list-item").first();
+
+  await expect(page.getByRole("heading", { name: "Notes the owner has chosen to share." })).toBeVisible();
+  await expect(page.getByRole("navigation").getByRole("link", { name: "Owner login" })).toBeVisible();
+  await expect(emptyState.or(publishedNoteEntry)).toBeVisible();
+});
+
+exec
+/bin/zsh -lc "sed -n '1,220p' tests/e2e/link-ai-real.spec.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "dotenv/config";
+
+import { expect, test } from "@playwright/test";
+
+import { AI_REAL_ENV_MESSAGE, AI_REAL_TEST_TAG, hasAiRealEnv } from "./ai-real";
+
+test.describe.configure({ mode: "serial" });
+test.skip(!hasAiRealEnv(), AI_REAL_ENV_MESSAGE);
+
+test(`owner link enrichment completes against the real Mina endpoint ${AI_REAL_TEST_TAG}`, async ({ page }) => {
+  const username = process.env.OWNER_USERNAME ?? "owner";
+  const password = process.env.OWNER_PASSWORD ?? "password";
+  const uniqueId = `${Date.now()}`;
+  const title = `AI enriched link ${uniqueId}`;
+  const url = `https://example.com/ai-enriched-link-${uniqueId}`;
+
+  await page.goto("/login");
+  await page.getByLabel("Username").fill(username);
+  await page.getByLabel("Password").fill(password);
+  await page.getByRole("button", { name: "Sign in" }).click();
+exec
+/bin/zsh -lc "sed -n '1,260p' tests/e2e/ai-real.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "dotenv/config";
+
+export const AI_REAL_TEST_TAG = "@ai-real";
+export const AI_REAL_ENV_KEYS = ["LLM_BASE", "TOKEN", "MODEL"] as const;
+export const AI_REAL_ENV_MESSAGE = `Requires ${AI_REAL_ENV_KEYS.join(", ")}.`;
+
+export function getAiRealEnvStatus() {
+  const missing = AI_REAL_ENV_KEYS.filter((name) => !process.env[name]?.trim());
+
+  return {
+    configured: missing.length === 0,
+    missing
+  };
+}
+
+export function hasAiRealEnv() {
+  return getAiRealEnvStatus().configured;
+}
+exec
+/bin/zsh -lc "sed -n '1,260p' src/lib/auth/owner-session.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' src/app/app/notes/new/page.tsx" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' src/app/app/notes/[id]/edit/page.tsx" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,220p' tests/e2e/note-ai-real.spec.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import { createNoteAction } from "@/app/app/notes/actions";
+import { NoteEditor } from "@/features/notes/components/note-editor";
+import { requireOwnerSession } from "@/lib/auth/owner-session";
+
+export default async function NewNotePage() {
+  await requireOwnerSession();
+
+  return (
+    <NoteEditor
+      action={createNoteAction}
+      formDescription="Create a private draft note with a title and markdown body. It stays private until you explicitly publish it from the edit view."
+      formTitle="New draft note"
+      initialMarkdown=""
+      initialTitle=""
+      submitLabel="Create draft"
+    />
+  );
+}
+ succeeded in 0ms:
+import "server-only";
+
+import { redirect } from "next/navigation";
+
+import { auth } from "@/auth";
+
+export async function requireOwnerSession() {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    redirect("/login");
+  }
+
+  return {
+    id: session.user.id,
+    name: session.user.name ?? "owner"
+  };
+}
+ succeeded in 0ms:
+import "dotenv/config";
+
+import { expect, test } from "@playwright/test";
+
+import { AI_REAL_ENV_MESSAGE, AI_REAL_TEST_TAG, hasAiRealEnv } from "./ai-real";
+
+test.describe.configure({ mode: "serial" });
+test.skip(!hasAiRealEnv(), AI_REAL_ENV_MESSAGE);
+
+test(`owner note enrichment completes against the real Mina endpoint ${AI_REAL_TEST_TAG}`, async ({ page }) => {
+  const username = process.env.OWNER_USERNAME ?? "owner";
+  const password = process.env.OWNER_PASSWORD ?? "password";
+  const uniqueId = `${Date.now()}`;
+  const title = `AI enriched note ${uniqueId}`;
+  const markdown = `# Shipping note ${uniqueId}
+
+This note discusses reliable save flows, status visibility, and retry handling for AI-owned metadata.`;
+
+  await page.goto("/login");
+  await page.getByLabel("Username").fill(username);
+ exited 1 in 0ms:
+zsh:1: no matches found: src/app/app/notes/[id]/edit/page.tsx
+exec
+/bin/zsh -lc "sed -n '1,320p' 'src/app/app/notes/[id]/edit/page.tsx'" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import { notFound } from "next/navigation";
+
+import { publishNoteAction, retryNoteEnrichmentAction, unpublishNoteAction, updateNoteAction } from "@/app/app/notes/actions";
+import { NoteEditor } from "@/features/notes/components/note-editor";
+import { getOwnerNoteForEditor } from "@/features/notes/service";
+import { requireOwnerSession } from "@/lib/auth/owner-session";
+
+type EditNotePageProps = {
+  params: Promise<{
+    id: string;
+  }>;
+  searchParams?: Promise<{
+    saved?: string;
+    published?: string;
+    retried?: string;
+    unpublished?: string;
+  }>;
+};
+
+export default async function EditNotePage({ params, searchParams }: EditNotePageProps) {
+exec
+/bin/zsh -lc "sed -n '1,240p' src/features/links/normalize.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' src/features/links/enrichment.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import type { LinkDraftInput } from "@/features/links/types";
+
+const SAFE_LINK_PROTOCOLS = new Set(["http:", "https:"]);
+
+export class LinkValidationError extends Error {
+  constructor(readonly code: "invalid-url" | "missing-title") {
+    super(code);
+    this.name = "LinkValidationError";
+  }
+}
+
+export function normalizeLinkUrl(url: string) {
+  const trimmedUrl = url.trim();
+
+  if (!trimmedUrl) {
+    throw new LinkValidationError("invalid-url");
+  }
+
+  try {
+    const parsedUrl = new URL(trimmedUrl);
+ succeeded in 0ms:
+import "server-only";
+
+import type { EnrichmentMetadata, MinaChatMessage } from "@/features/ai/client";
+import { requestMinaEnrichment } from "@/features/ai/client";
+import { normalizeEnrichmentFailure } from "@/features/enrichment/service";
+import type { EnrichmentState } from "@/features/enrichment/types";
+
+type LinkEnrichmentSource = {
+  id: string;
+  url: string;
+  title: string;
+  enrichment: Pick<EnrichmentState, "status" | "attempts">;
+};
+
+type LinkEnrichmentDependencies = {
+  findSourceById(id: string): Promise<LinkEnrichmentSource | null>;
+  requestMetadata(messages: MinaChatMessage[]): Promise<EnrichmentMetadata>;
+  recordSuccess(id: string, expectedAttempt: number, data: EnrichmentMetadata): Promise<boolean>;
+  recordFailure(id: string, expectedAttempt: number, error: string): Promise<boolean>;
+};
+exec
+/bin/zsh -lc "sed -n '1,280p' src/features/enrichment/types.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+export const ENRICHMENT_STATUSES = ["pending", "ready", "failed"] as const;
+
+export type EnrichmentStatus = (typeof ENRICHMENT_STATUSES)[number];
+
+export type EnrichmentState = {
+  status: EnrichmentStatus;
+  error: string | null;
+  attempts: number;
+  updatedAt: Date | null;
+};
+
+export type EnrichmentRecordFields = {
+  enrichmentStatus: string;
+  enrichmentError: string | null;
+  enrichmentAttempts: number;
+  enrichmentUpdatedAt: Date | null;
+};
+
+export function normalizeEnrichmentStatus(status: string): EnrichmentStatus {
+  if (ENRICHMENT_STATUSES.includes(status as EnrichmentStatus)) {
+exec
+/bin/zsh -lc "sed -n '1,260p' src/features/notes/enrichment.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "server-only";
+
+import type { EnrichmentMetadata, MinaChatMessage } from "@/features/ai/client";
+import { requestMinaEnrichment } from "@/features/ai/client";
+import { normalizeEnrichmentFailure } from "@/features/enrichment/service";
+import type { EnrichmentState } from "@/features/enrichment/types";
+
+type NoteEnrichmentSource = {
+  id: string;
+  title: string;
+  markdown: string;
+  enrichment: Pick<EnrichmentState, "status" | "attempts">;
+};
+
+type NoteEnrichmentDependencies = {
+  findSourceById(id: string): Promise<NoteEnrichmentSource | null>;
+  requestMetadata(messages: MinaChatMessage[]): Promise<EnrichmentMetadata>;
+  recordSuccess(id: string, expectedAttempt: number, data: EnrichmentMetadata): Promise<boolean>;
+  recordFailure(id: string, expectedAttempt: number, error: string): Promise<boolean>;
+};
+exec
+/bin/zsh -lc "sed -n '1,320p' scripts/ralph/evaluate-task.mjs" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import path from "node:path";
+import { execSync, spawnSync } from "node:child_process";
+import {
+  GENERATED_DIR,
+  STATE_DIR,
+  ensureDir,
+  findTaskDoc,
+  readCurrentTaskId,
+  readText,
+  safeJsonParse,
+  timestamp,
+  writeText,
+  fileExists,
+} from "./lib/task-utils.mjs";
+
+function slugifyCommand(command) {
+  return command
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+exec
+/bin/zsh -lc "sed -n '1,260p' scripts/start-smoke.mjs" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' scripts/playwright-web-server.mjs" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import { existsSync } from "node:fs";
+import { spawn } from "node:child_process";
+
+const port = process.env.SMOKE_PORT ?? "3200";
+const host = "127.0.0.1";
+const npmBin = process.platform === "win32" ? "npm.cmd" : "npm";
+
+function run(command, args) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(command, args, {
+      cwd: process.cwd(),
+      stdio: "inherit",
+      env: process.env
+    });
+
+    child.on("exit", (code) => {
+      if (code === 0) {
+        resolve();
+        return;
+      }
+ succeeded in 0ms:
+import { spawn } from "node:child_process";
+import { createWriteStream, mkdirSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import path from "node:path";
+
+const npmBin = process.platform === "win32" ? "npm.cmd" : "npm";
+const host = process.env.PLAYWRIGHT_WEB_SERVER_HOST ?? "127.0.0.1";
+const port = process.env.PLAYWRIGHT_WEB_SERVER_PORT ?? "3100";
+const logPath = process.env.MINAKEEP_NEXT_SERVER_LOG;
+const aiTestModeFile = process.env.PLAYWRIGHT_AI_TEST_MODE_FILE ?? path.join(tmpdir(), "minakeep-playwright-ai-mode.json");
+
+const logStream = (() => {
+  if (!logPath) {
+    return null;
+  }
+
+  mkdirSync(path.dirname(logPath), { recursive: true });
+  return createWriteStream(logPath, { flags: "a" });
+})();
+
+exec
+/bin/zsh -lc "sed -n '1,200p' src/app/api/health/route.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import { NextResponse } from "next/server";
+
+import { serverLogger } from "@/lib/logging/server-logger";
+
+export function GET() {
+  serverLogger.debug("health check ok");
+
+  return NextResponse.json({
+    status: "ok",
+    timestamp: new Date().toISOString()
+  });
+}
+exec
+/bin/zsh -lc 'cat package.json' in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+{
+  "name": "minakeep",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "db:prepare": "node scripts/db-prepare.mjs",
+    "test:unit": "NODE_PATH=./node_modules/next/dist/compiled node --conditions=react-server --import tsx --test tests/unit/**/*.test.ts",
+    "test:e2e": "npm run db:prepare && playwright test",
+    "test": "npm run test:unit && npm run test:e2e",
+    "start:smoke": "node scripts/start-smoke.mjs",
+    "start:logged": "node scripts/start-logged.mjs",
+    "verify": "npm run lint && npm run db:prepare && npm run typecheck && npm run build && npm run test && npm run start:smoke",
+    "postinstall": "prisma generate"
+  },
+  "prisma": {
+exec
+/bin/zsh -lc 'rg -n "start:logged|LOG_LEVEL|server-.*log" -S .' in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+./src/lib/logging/server-logger.ts:17:  const currentLevel = resolveLevel(process.env.LOG_LEVEL ?? "info");
+./src/lib/config/env.ts:16:  logLevel: process.env.LOG_LEVEL ?? "info"
+./src/features/ai/client.ts:6:import { serverLogger } from "@/lib/logging/server-logger";
+./src/app/api/health/route.ts:3:import { serverLogger } from "@/lib/logging/server-logger";
+./package.json:16:    "start:logged": "node scripts/start-logged.mjs",
+./AGENTS.md:60:For manual server inspection, prefer `npm run start:logged` and set `LOG_LEVEL` intentionally instead of relying only on ephemeral terminal output.
+./ARCHITECTURE.md:76:- `npm run start:logged` gives operators a persistent server log path under `logs/`
+./scripts/ralph/run-once.sh:286:    append_log "- next-server-log: ${NEXT_SERVER_LOG_PATH}"
+./scripts/start-logged.mjs:8:const logFile = path.join(logsDir, `server-${timestamp}.log`);
+./scripts/start-logged.mjs:55:console.log(`LOG_LEVEL=${process.env.LOG_LEVEL ?? "info"}`);
+./state/run-log.md:11:- evaluator: status=done promotion=true Task 011 is complete in substance. The repository implements owner-only access for `/app` routes via Auth.js middleware and server-side session checks, supports draft note creation and editing backed by Prisma/SQLite, renders a live markdown preview with shared rendering logic covered by unit tests, keeps drafts private by default through `isPublished` defaulting to `false`, and the required `npm run verify` gate passed in the provided deterministic check. -> state/artifacts/20260320T165727-011-note-authoring/evaluator.log
+./state/run-log.md:12:- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260320T165727-011-note-authoring/npm-run-verify-next-server.log
+./state/run-log.md:27:- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260320T171025-012-public-note-publishing/npm-run-verify-next-server.log
+./state/run-log.md:42:- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260320T172643-013-link-capture/npm-run-verify-next-server.log
+./state/run-log.md:57:- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260320T173459-013-link-capture/npm-run-verify-next-server.log
+./state/run-log.md:72:- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260320T174147-013-link-capture/npm-run-verify-next-server.log
+./state/run-log.md:87:- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260320T174812-014-tag-filtering-and-owner-search/npm-run-verify-next-server.log
+./state/run-log.md:101:- evaluator: status=done promotion=true Inspected the required docs plus the relevant implementation and task artifacts. The required gates passed in substance, the production-style startup path is prepared by `db:prepare` and proven by `start:smoke`, the Playwright server-log drift is closed via the wrapper wired through `playwright.config.ts`, and the reliability/security docs now match the shipped auth, logging, public/private route, health-check, and saved-link validation behavior. Remaining debt is explicit in the documented known gaps. -> state/artifacts/20260320T180253-015-hardening-and-maintenance/evaluator.log
+./state/run-log.md:102:- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260320T180253-015-hardening-and-maintenance/npm-run-verify-next-server.log
+./state/run-log.md:118:- evaluator: status=not_done promotion=false Not ready for promotion. The shared enrichment-state contract, explicit `@ai-real` promotion rules, and the provided passing `npm run verify` result are in place, but exit criterion 1 is not satisfied in substance because the Mina credential boundary is not enforced as server-only. `src/features/ai/client.ts` reads `LLM_BASE`/`TOKEN`/`MODEL` and builds the bearer-auth request, yet unlike the repo's other server-side boundaries it is not marked `import "server-only"`; `src/features/enrichment/service.ts` is likewise not server-only. That leaves credential handling ambiguous by convention instead of enforced boundary, which the task's evaluator notes explicitly say should block promotion. -> state/artifacts/20260321T022107-016-ai-enrichment-foundation/evaluator.log
+exec
+/bin/zsh -lc "sed -n '1,220p' scripts/start-logged.mjs" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import { mkdirSync, createWriteStream, existsSync } from "node:fs";
+import path from "node:path";
+import { spawn } from "node:child_process";
+
+const npmBin = process.platform === "win32" ? "npm.cmd" : "npm";
+const logsDir = path.resolve("logs");
+const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+const logFile = path.join(logsDir, `server-${timestamp}.log`);
+const port = process.env.PORT ?? "3000";
+
+mkdirSync(logsDir, { recursive: true });
+
+const prepare = spawn(npmBin, ["run", "db:prepare"], {
+  cwd: process.cwd(),
+  stdio: "inherit",
+  env: process.env
+});
+
+const prepareCode = await new Promise((resolve) => {
+  prepare.on("exit", (code) => resolve(code ?? 1));
+exec
+/bin/zsh -lc "sed -n '1,260p' tests/unit/enrichment-service.test.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import test from "node:test";
+import assert from "node:assert/strict";
+
+import { requestEnrichment, retryEnrichment } from "../../src/features/enrichment/service";
+
+function withAiEnv(values: Partial<Record<"LLM_BASE" | "TOKEN" | "MODEL", string | undefined>>, callback: () => Promise<void>) {
+  const original = {
+    LLM_BASE: process.env.LLM_BASE,
+    TOKEN: process.env.TOKEN,
+    MODEL: process.env.MODEL
+  };
+
+  if (values.LLM_BASE === undefined) {
+    delete process.env.LLM_BASE;
+  } else {
+    process.env.LLM_BASE = values.LLM_BASE;
+  }
+
+  if (values.TOKEN === undefined) {
+    delete process.env.TOKEN;
+Plan update
+Read the evaluator docs, inspected the AI enrichment/runtime implementation, owner surfaces, harness scripts, and representative tests. I have enough evidence to assess the exit criteria substantively.
+  ✓ Read required evaluator docs and task plan context
+  ✓ Inspect relevant implementation and tests for AI/UI hardening scope
+  → Assess exit criteria substantively and produce promotion decision JSON
+exec
+/bin/zsh -lc "sed -n '1,340p' src/features/notes/repo.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "server-only";
+
+import type { EnrichmentRecordFields } from "@/features/enrichment/types";
+import { normalizeEnrichmentStatus, toEnrichmentState } from "@/features/enrichment/types";
+import { prisma } from "@/lib/prisma";
+
+const noteTagSelect = {
+  orderBy: {
+    name: "asc" as const
+  },
+  select: {
+    id: true,
+    name: true
+  }
+};
+
+const noteSummarySelect = {
+  id: true,
+  title: true,
+  excerpt: true,
+exec
+/bin/zsh -lc "sed -n '1,340p' src/features/links/repo.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "server-only";
+
+import type { EnrichmentRecordFields } from "@/features/enrichment/types";
+import { normalizeEnrichmentStatus, toEnrichmentState } from "@/features/enrichment/types";
+import { prisma } from "@/lib/prisma";
+
+const linkTagSelect = {
+  orderBy: {
+    name: "asc" as const
+  },
+  select: {
+    id: true,
+    name: true
+  }
+};
+
+const linkSummarySelect = {
+  id: true,
+  url: true,
+  title: true,
+exec
+/bin/zsh -lc "sed -n '341,520p' src/features/notes/repo.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+                name
+              },
+              create: {
+                name
+              }
+            }))
+          }
+        }
+      });
+
+      return true;
+    });
+  },
+  async recordGeneratedFailure(id: string, expectedAttempt: number, error: string) {
+    return prisma.$transaction(async (transaction) => {
+      const note = await transaction.note.findUnique({
+        where: {
+          id
+        },
+        select: {
+exec
+/bin/zsh -lc "sed -n '1,220p' src/features/ai/test-mode.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "server-only";
+
+import { readFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import path from "node:path";
+
+export const PLAYWRIGHT_AI_TEST_MODE_FILE =
+  process.env.PLAYWRIGHT_AI_TEST_MODE_FILE ?? path.join(tmpdir(), "minakeep-playwright-ai-mode.json");
+
+export type PlaywrightAiTestMode = "passthrough" | "success" | "timeout";
+
+type StoredPlaywrightAiTestMode = {
+  mode?: string;
+};
+
+function isPlaywrightTestServer() {
+  return process.env.PLAYWRIGHT_TEST === "1";
+}
+
+export function getPlaywrightAiTestMode(): PlaywrightAiTestMode {
+codex
+{"decision":"done","recommend_promotion":true,"confidence":0.91,"summary":"Inspected the required docs, the AI enrichment/runtime code, the owner-facing UI routes, the Playwright/Ralph harness, and the relevant tests. The task is complete in substance: the provided deterministic checks satisfy the command gates, AI failure handling is implemented and visible without blocking saves, retry is constrained to failed records, pending-state refresh is wired across the documented owner surfaces, the reliability/security/quality/operator docs match the shipped behavior, and the remaining AI retry/backoff debt is explicitly documented.","satisfied_exit_criteria":["`npm run verify` passed in the provided deterministic check, including lint, db prep, typecheck, build, unit tests, E2E, and startup smoke.","`npm run test:e2e -- --grep @ai-real` passed in the provided deterministic check, and the real-endpoint Playwright coverage plus env-gated helper are present in the repo.","`npm run start:smoke` passed in the provided deterministic check, and the startup smoke script proves the production-style boot path against prepared SQLite state.","Reliability, security, and quality docs match the shipped AI/UI behavior: one-worker Playwright for shared SQLite state, separate `@ai-real` promotion gate, server-only AI config boundary, visible non-blocking AI failure states, owner-only/private route boundaries, safe link protocol validation, and operator logging guidance.","Remaining debt is explicit: the docs and active task log call out that AI retry is still manual/immediate with no deferred queue, backoff, or richer attempt history."],"missing_requirements":[],"human_review_triggers":[]}
+tokens used
+68,949
+{"decision":"done","recommend_promotion":true,"confidence":0.91,"summary":"Inspected the required docs, the AI enrichment/runtime code, the owner-facing UI routes, the Playwright/Ralph harness, and the relevant tests. The task is complete in substance: the provided deterministic checks satisfy the command gates, AI failure handling is implemented and visible without blocking saves, retry is constrained to failed records, pending-state refresh is wired across the documented owner surfaces, the reliability/security/quality/operator docs match the shipped behavior, and the remaining AI retry/backoff debt is explicitly documented.","satisfied_exit_criteria":["`npm run verify` passed in the provided deterministic check, including lint, db prep, typecheck, build, unit tests, E2E, and startup smoke.","`npm run test:e2e -- --grep @ai-real` passed in the provided deterministic check, and the real-endpoint Playwright coverage plus env-gated helper are present in the repo.","`npm run start:smoke` passed in the provided deterministic check, and the startup smoke script proves the production-style boot path against prepared SQLite state.","Reliability, security, and quality docs match the shipped AI/UI behavior: one-worker Playwright for shared SQLite state, separate `@ai-real` promotion gate, server-only AI config boundary, visible non-blocking AI failure states, owner-only/private route boundaries, safe link protocol validation, and operator logging guidance.","Remaining debt is explicit: the docs and active task log call out that AI retry is still manual/immediate with no deferred queue, backoff, or richer attempt history."],"missing_requirements":[],"human_review_triggers":[]}
+evaluation: done promotion=true

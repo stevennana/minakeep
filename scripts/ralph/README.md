@@ -118,6 +118,7 @@ npm run test:e2e -- --grep @ai-real
 - Port cleanup is executed automatically only by the evaluator path for `npm run verify`, `npm run test:e2e`, or other Playwright-bearing commands. Manual local runs do not get that cleanup for free.
 - `scripts/playwright-web-server.mjs` mirrors Playwright's Next.js server output to `MINAKEEP_NEXT_SERVER_LOG` when the evaluator provides that path.
 - `ensure-e2e-port-free.sh` is intentionally aggressive and may terminate unrelated processes bound to `127.0.0.1:3100`.
+- Playwright-backed promotion checks run with one worker because the suite shares one mutable SQLite runtime state; if that assumption changes, update the docs and harness together.
 - If `npm run test:e2e -- --grep @ai-real` cannot run because `LLM_BASE`, `TOKEN`, and `MODEL` are missing or the Mina endpoint is unavailable, record that as an external-env blocker instead of folding it into generic product failure wording.
 - If the evaluator repeatedly returns `not_done`, tighten the active task doc instead of making the prompt larger.
 - If a task is semantically done but not promotable, fix the contract or the deterministic checks; do not manually skip ahead silently.
