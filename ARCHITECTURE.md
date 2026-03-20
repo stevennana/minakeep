@@ -1,0 +1,72 @@
+# ARCHITECTURE.md
+
+## Goal
+Build Minakeep as an agent-legible codebase with strong boundaries, a short instruction surface, and enough extension seams to support future change without overbuilding v1.
+
+## System Overview
+Minakeep is a web application with:
+- a public site for published notes
+- a private owner area for notes, links, tags, and search
+- a SQLite-backed persistence layer for content and owner identity
+- a deterministic operator path with logged startup and Ralph-loop state tracking
+
+## Architectural Priorities
+- keep the foundation small and agent-legible
+- separate public reading from private authoring clearly
+- keep user-visible feature fronts sliced into small plans
+- make runtime startup and verification deterministic before unattended loop work
+
+## Layered Domain Model
+Use a strict forward-only dependency shape inside each domain:
+
+`Types -> Config -> Repo -> Service -> Runtime -> UI`
+
+### Why this matters
+The repository is intended to work well with long-running agent loops. Strict boundaries reduce accidental coupling and make failure analysis easier.
+
+## Primary Domains
+### Owner access
+Single-owner authentication, route protection, and owner-session checks.
+
+### Notes
+Markdown note drafts, publishing state, slugs, and public rendering.
+
+### Links
+Manual bookmark capture with URL, title, summary, and shared tags.
+
+### Tags and search
+Shared tagging plus owner-only filtering and search over titles, URLs, and tags.
+
+### Operations
+Prisma runtime prep, startup smoke, operator logging, and Ralph loop state.
+
+## Frontend / Backend Shape
+### Frontend
+- public routes stay read-only and minimal
+- the private `/app` area is notes-first, with dedicated routes for links, tags, and search
+- server components should be the default for route shells and static surfaces
+- interactive owner forms should stay localized to small client components
+
+### Server
+- Auth.js handles owner sign-in
+- route handlers expose health and future server-backed workflows
+- Prisma access stays behind narrow server-side helpers
+- server logging stays explicit and avoids secrets or full sensitive payloads
+
+## Persistence Strategy
+- SQLite is the v1 source of truth
+- Prisma schema defines owner, note, link, and shared tag tables up front
+- `db:prepare` must generate the client, sync schema, and seed the owner account
+- future migrations should extend the existing schema instead of replacing it ad hoc
+
+## Verification Shape
+- `npm run verify` is the promotion gate for normal task completion
+- `npm run verify` must include lint, typecheck, build, unit tests, E2E tests, and startup smoke
+- `npm run start:logged` gives operators a persistent server log path under `logs/`
+- if the app cannot boot against prepared runtime state, the harness is not ready
+
+## Long-Running Agent Readiness
+- docs are the system of record
+- plans are executable, not aspirational
+- domain boundaries are explicit
+- repeated issues should be upgraded into tests or static checks

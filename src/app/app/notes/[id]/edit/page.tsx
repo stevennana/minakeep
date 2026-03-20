@@ -1,0 +1,38 @@
+import { notFound } from "next/navigation";
+
+import { updateNoteAction } from "@/app/app/notes/actions";
+import { NoteEditor } from "@/features/notes/components/note-editor";
+import { getOwnerNoteForEditor } from "@/features/notes/service";
+import { requireOwnerSession } from "@/lib/auth/owner-session";
+
+type EditNotePageProps = {
+  params: Promise<{
+    id: string;
+  }>;
+  searchParams?: Promise<{
+    saved?: string;
+  }>;
+};
+
+export default async function EditNotePage({ params, searchParams }: EditNotePageProps) {
+  const owner = await requireOwnerSession();
+  const { id } = await params;
+  const resolvedSearchParams = (await searchParams) ?? {};
+  const note = await getOwnerNoteForEditor(owner.id, id);
+
+  if (!note) {
+    notFound();
+  }
+
+  return (
+    <NoteEditor
+      action={updateNoteAction.bind(null, note.id)}
+      formDescription="Edit the private draft and confirm the rendered output beside the markdown source."
+      formTitle="Edit draft note"
+      initialMarkdown={note.markdown}
+      initialTitle={note.title}
+      savedNotice={resolvedSearchParams.saved === "1" ? "Draft saved." : undefined}
+      submitLabel="Save draft"
+    />
+  );
+}

@@ -1,0 +1,58 @@
+Read the following repository documents before making changes:
+- AGENTS.md
+- ARCHITECTURE.md
+- docs/FRONTEND.md
+- docs/product-specs/note-authoring.md
+- docs/exec-plans/active/011-note-authoring.md
+
+Current task id: 011-note-authoring
+Current task title: Note authoring
+
+Objective:
+Let the owner sign in, create draft markdown notes, edit them, and preview the rendered result inside the private Minakeep area.
+
+Scope:
+- The owner can create a draft note with a title and markdown body.
+- The owner can edit an existing draft note.
+- The private note editor shows markdown preview alongside editing.
+- Draft notes remain private by default.
+
+Out of scope:
+- unrelated feature fronts
+- future product expansion beyond this feature
+
+Exit criteria:
+1. Owner sign-in succeeds and protected note routes are reachable only after authentication.
+2. A created draft note persists and can be reopened for editing.
+3. Markdown preview reflects saved content accurately enough for normal note writing.
+4. `npm run verify` passes.
+
+Required checks:
+- npm run verify
+
+Evaluator notes:
+Promote only when the note authoring behavior works end-to-end in substance.
+
+Required repository artifacts for this task:
+- none
+
+Required commands for this task:
+- npm run verify
+
+Previous known gaps from the last evaluation:
+- none
+
+Rules:
+- Work only on this task.
+- Do not broaden scope.
+- Keep the existing package manager.
+- Preserve repository abstractions.
+- Keep changes deterministic and minimal.
+- Update this task doc's progress log with concrete notes.
+- Keep the repository in a state where the required commands can pass.
+- If the task is not done, leave the next task untouched.
+
+At the end of the run, write a concise operator handoff summary into state/last-result.txt via your final response:
+- what changed
+- whether the exit criteria appear satisfied
+- what remains if the task is still incomplete
