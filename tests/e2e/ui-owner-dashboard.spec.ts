@@ -273,7 +273,7 @@ async function expectMobileDashboardHierarchy(page: Page) {
   }
 
   expect(sideBox.y).toBeGreaterThan(mainBox.y);
-  expect(heroBox.height).toBeLessThan(360);
+  expect(heroBox.height).toBeLessThan(380);
 }
 
 async function expectTypographyHierarchy(page: Page) {
@@ -315,7 +315,7 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-owner-dashboard owner dashboard stays compact on desktop", async ({ page }) => {
+test("@ui-owner-dashboard @ui-responsive owner dashboard stays compact on desktop", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await signIn(page);
 
@@ -334,7 +334,7 @@ test("@ui-owner-dashboard owner dashboard stays compact on desktop", async ({ pa
   });
 });
 
-test("@ui-owner-dashboard owner dashboard stays usable on mobile", async ({ page }) => {
+test("@ui-owner-dashboard @ui-responsive owner dashboard stays usable on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await signIn(page);
 

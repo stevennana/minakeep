@@ -392,7 +392,7 @@ test("@ui-owner-secondary links surface stays compact on desktop", async ({ page
   });
 });
 
-test("@ui-owner-secondary links surface stays usable on mobile", async ({ page }) => {
+test("@ui-owner-secondary @ui-responsive links surface stays usable on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await signIn(page);
   await page.goto("/app/links");
@@ -430,7 +430,7 @@ test("@ui-owner-secondary tags surface keeps retrieval anchors on desktop", asyn
   });
 });
 
-test("@ui-owner-secondary tags surface stays scannable on mobile", async ({ page }) => {
+test("@ui-owner-secondary @ui-responsive tags surface stays scannable on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await signIn(page);
   await page.goto("/app/tags?tag=studio-systems");
@@ -468,7 +468,7 @@ test("@ui-owner-secondary search surface keeps results structured on desktop", a
   });
 });
 
-test("@ui-owner-secondary search surface stays stacked on mobile", async ({ page }) => {
+test("@ui-owner-secondary @ui-responsive search surface stays stacked on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await signIn(page);
   await page.goto("/app/search?q=rhythm");

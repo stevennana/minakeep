@@ -5,7 +5,7 @@
   "id": "028-secondary-owner-surface-pass",
   "title": "Secondary owner surface pass",
   "order": 28,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "029-mobile-responsive-polish",
   "prompt_docs": [
@@ -25,7 +25,8 @@
     "src/app/app/search/page.tsx",
     "tests/e2e"
   ],
-  "human_review_triggers": []
+  "human_review_triggers": [],
+  "completed_at": "2026-03-21T04:03:11.152Z"
 }
 ```
 
@@ -67,3 +68,4 @@ Promote when the deterministic UI checks pass and the secondary owner routes no 
 - 2026-03-21 13:00 KST: Reworked `/app/links`, `/app/tags`, and `/app/search` into the tighter owner-system language using compact intro blocks, denser panels, dashboard-style note rows, and slimmer link/tag/search layouts without changing route logic.
 - 2026-03-21 13:00 KST: Added deterministic `@ui-owner-secondary` Playwright coverage with seeded owner content, desktop/mobile screenshots, hierarchy checks, overflow guards, and accessibility assertions.
 - 2026-03-21 13:00 KST: Verified `npm run test:e2e -- --grep @ui-owner-secondary` and `npm run verify` both pass on the final implementation.
+- 2026-03-21T04:03:11.152Z: automatically promoted after deterministic checks and evaluator approval.

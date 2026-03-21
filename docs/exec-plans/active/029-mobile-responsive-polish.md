@@ -5,7 +5,7 @@
   "id": "029-mobile-responsive-polish",
   "title": "Mobile responsive polish",
   "order": 29,
-  "status": "queued",
+  "status": "active",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "030-ui-hardening-and-regression",
   "prompt_docs": [
@@ -62,3 +62,5 @@ Promote when the deterministic UI checks pass and mobile quality is clearly pres
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-21 13:11:49 KST: Tightened shared mobile-first layout behavior in `src/app/globals.css` by stacking support grids and tag filters on narrow widths, making action rows fill available width on phones, switching stacked note metadata rails from left dividers to top dividers, and reducing mobile note-card bulk before tablet/desktop breakpoints restore denser layouts.
+- 2026-03-21 13:11:49 KST: Added `@ui-responsive` coverage to the existing deterministic Playwright UI specs for the homepage, public note page, private shell, owner dashboard, and owner secondary mobile surfaces; refreshed the affected mobile screenshot baselines so `npm run test:e2e -- --grep @ui-responsive` now exercises the task contract directly.

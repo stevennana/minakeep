@@ -132,7 +132,7 @@ test("@ui-system login surface stays readable on mobile", async ({ page }) => {
   });
 });
 
-test("@ui-system @ui-owner-shell private shell keeps hierarchy on desktop", async ({ page }) => {
+test("@ui-system @ui-owner-shell @ui-responsive private shell keeps hierarchy on desktop", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await signIn(page);
 
@@ -153,7 +153,7 @@ test("@ui-system @ui-owner-shell private shell keeps hierarchy on desktop", asyn
   });
 });
 
-test("@ui-system @ui-owner-shell private shell collapses cleanly on mobile", async ({ page }) => {
+test("@ui-system @ui-owner-shell @ui-responsive private shell collapses cleanly on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await signIn(page);
 

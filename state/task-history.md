@@ -18,3 +18,4 @@
 - 2026-03-21T03:12:55.784Z: manually promoted 025-owner-shell-density-reset -> 026-owner-dashboard-density | reason=operator manual promotion
 - 2026-03-21T03:27:30.360Z: promoted 026-owner-dashboard-density -> 027-editor-and-form-density
 - 2026-03-21T03:43:04.542Z: promoted 027-editor-and-form-density -> 028-secondary-owner-surface-pass
+- 2026-03-21T04:03:11.152Z: promoted 028-secondary-owner-surface-pass -> 029-mobile-responsive-polish

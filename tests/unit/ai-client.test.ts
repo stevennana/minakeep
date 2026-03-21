@@ -146,6 +146,27 @@ test("normalizeMinaEnrichmentResponse trims the summary and normalizes repeated 
   });
 });
 
+test("normalizeMinaEnrichmentResponse accepts JSON wrapped in a fenced code block", () => {
+  const enrichment = normalizeMinaEnrichmentResponse({
+    choices: [
+      {
+        message: {
+          content: `Here is the normalized payload:
+
+\`\`\`json
+{"summary":" Wrapped response. ","tags":["Links","links","Archive"]}
+\`\`\``
+        }
+      }
+    ]
+  });
+
+  assert.deepEqual(enrichment, {
+    summary: "Wrapped response.",
+    tags: ["archive", "links"]
+  });
+});
+
 test("getMinaAiRequestTimeoutMs falls back to the default timeout", () => {
   const originalTimeout = process.env.MINA_AI_TIMEOUT_MS;
   delete process.env.MINA_AI_TIMEOUT_MS;

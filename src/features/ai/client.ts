@@ -70,6 +70,32 @@ function readMessageContent(content: MinaChatCompletionsResponse["choices"]) {
   return "";
 }
 
+function parseEmbeddedJson(rawContent: string) {
+  const candidates = [rawContent.trim()];
+  const fencedMatch = rawContent.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
+
+  if (fencedMatch?.[1]) {
+    candidates.push(fencedMatch[1].trim());
+  }
+
+  const firstBrace = rawContent.indexOf("{");
+  const lastBrace = rawContent.lastIndexOf("}");
+
+  if (firstBrace >= 0 && lastBrace > firstBrace) {
+    candidates.push(rawContent.slice(firstBrace, lastBrace + 1).trim());
+  }
+
+  for (const candidate of candidates) {
+    try {
+      return JSON.parse(candidate);
+    } catch {
+      continue;
+    }
+  }
+
+  throw new MinaAiClientError("invalid-response", "The Mina AI endpoint returned non-JSON enrichment content.");
+}
+
 export function buildMinaChatCompletionsRequest(messages: MinaChatMessage[]) {
   const configStatus = getMinaAiConfigStatus();
 
@@ -110,13 +136,7 @@ export function normalizeMinaEnrichmentResponse(payload: unknown): EnrichmentMet
     throw new MinaAiClientError("bad-response", "The Mina AI endpoint returned no completion content.");
   }
 
-  let parsed: unknown;
-
-  try {
-    parsed = JSON.parse(rawContent);
-  } catch {
-    throw new MinaAiClientError("invalid-response", "The Mina AI endpoint returned non-JSON enrichment content.");
-  }
+  const parsed = parseEmbeddedJson(rawContent);
 
   const summary = typeof (parsed as { summary?: unknown }).summary === "string" ? (parsed as { summary: string }).summary.trim() : "";
   const rawTags = Array.isArray((parsed as { tags?: unknown }).tags) ? (parsed as { tags: unknown[] }).tags : null;

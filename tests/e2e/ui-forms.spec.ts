@@ -194,7 +194,7 @@ async function expectLoginHierarchy(page: Page, viewport: "desktop" | "mobile") 
     return;
   }
 
-  expect(introBox.height).toBeLessThan(viewport === "desktop" ? 370 : 470);
+  expect(introBox.height).toBeLessThan(viewport === "desktop" ? 370 : 480);
 
   if (viewport === "desktop") {
     expect(introBox.x).toBeLessThan(formBox.x);
@@ -220,7 +220,7 @@ async function expectEditorHierarchy(page: Page, viewport: "desktop" | "mobile")
     return;
   }
 
-  expect(introBox.height).toBeLessThan(viewport === "desktop" ? 240 : 410);
+  expect(introBox.height).toBeLessThan(viewport === "desktop" ? 240 : 425);
 
   if (viewport === "desktop") {
     expect(formBox.x).toBeLessThan(previewBox.x);

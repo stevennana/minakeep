@@ -1,49 +1,47 @@
 Read the following repository documents before making changes:
 - AGENTS.md
 - docs/FRONTEND.md
-- docs/product-specs/owner-workspace-density.md
 - docs/product-specs/responsive-ui-behavior.md
+- docs/design-docs/responsive-ui-rules.md
 - docs/references/ui-verification-contract.md
-- docs/exec-plans/active/028-secondary-owner-surface-pass.md
+- docs/exec-plans/active/029-mobile-responsive-polish.md
 
-Current task id: 028-secondary-owner-surface-pass
-Current task title: Secondary owner surface pass
+Current task id: 029-mobile-responsive-polish
+Current task title: Mobile responsive polish
 
 Objective:
-Bring links, tags, and search into the same tighter owner-system rhythm as the redesigned dashboard and editor.
+Finish the mobile-first responsive pass so the denser desktop redesign still feels easy to read and use on smaller screens.
 
 Scope:
-- align secondary owner surfaces with the new design system
-- reduce oversized cards and spacing
-- keep scanning and retrieval clear
+- improve mobile collapse behavior across public and private surfaces
+- preserve thumb-friendly controls and readable note previews
+- keep responsive behavior consistent through shared layout primitives
 
 Out of scope:
-- homepage work
-- public note page work
-- final mobile-specific polish beyond what these surfaces immediately need
+- new product behavior
+- broad desktop visual experimentation unrelated to responsive behavior
 
 Exit criteria:
-1. Links, tags, and search feel like part of the same owner workspace family.
-2. Desktop density improves without reducing retrieval clarity.
-3. `npm run test:e2e -- --grep @ui-owner-secondary` passes with desktop/mobile screenshots, visible retrieval anchors, and accessibility checks.
-4. `npm run verify` passes.
+1. Homepage note scanning stays easy on mobile.
+2. Owner navigation and primary actions remain usable on mobile widths.
+3. Responsive behavior feels intentional across the redesigned surfaces.
+4. `npm run test:e2e -- --grep @ui-responsive` passes with `390x844` mobile coverage, screenshots, and accessibility checks.
+5. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-owner-secondary`
+- `npm run test:e2e -- --grep @ui-responsive`
 
 Evaluator notes:
-Promote when the deterministic UI checks pass and the secondary owner routes no longer feel like oversized leftovers from the old UI.
+Promote when the deterministic UI checks pass and mobile quality is clearly preserved rather than inferred from desktop success.
 
 Required repository artifacts for this task:
-- src/app/app/links/page.tsx
-- src/app/app/tags/page.tsx
-- src/app/app/search/page.tsx
+- src/app/globals.css
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-owner-secondary
+- npm run test:e2e -- --grep @ui-responsive
 
 Previous known gaps from the last evaluation:
 - none

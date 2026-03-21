@@ -413,3 +413,18 @@ Worker stalled. Stopping loop for RCA.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T124334-028-secondary-owner-surface-pass/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T124334-028-secondary-owner-surface-pass/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 028-secondary-owner-surface-pass -> 029-mobile-responsive-polish
+- backlog: rendered current=029-mobile-responsive-polish
+- health: ooxxoooxoxxoxooxxxooooox!ooo
+- cycle: finished
+
+### cycle 2026-03-21T13:03:41+09:00 task=029-mobile-responsive-polish
+- artifacts: state/artifacts/20260321T130341-029-mobile-responsive-polish
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T130341-029-mobile-responsive-polish/worker.jsonl
+- worker-summary: Updated the responsive pass in [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css) so mobile layouts collapse more intentionally: phone-width action rows are easier to tap, shared support/detail grids and tag filters stack before wider breakpoints, stacked note metadata rails switch from left borders to top dividers, and homepage note cards lose excess vertical bulk on narrow screens. I also tagged the existing deterministic UI coverage with `@ui-responsive` in [ui-home-shell.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-home-shell.spec.ts), [ui-owner-dashboard.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-owner-dashboard.spec.ts), [ui-owner-secondary.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-owner-secondary.spec.ts), [ui-public-note.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-public-note.spec.ts), and [ui-system.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-system.spec.ts), then refreshed the affected mobile baselines.
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T130341-029-mobile-responsive-polish/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T130341-029-mobile-responsive-polish/npm-run-verify-next-server.log
