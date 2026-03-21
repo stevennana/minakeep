@@ -9,3 +9,4 @@ Track recurring cleanup and deferred concerns that should not remain implicit.
 - The shared UI primitives still emit some legacy compatibility class names alongside the `ui-*` hooks, so the visual system is centralized but not yet fully de-aliased.
 - UI hardening is regression-proof at the route level through screenshot coverage, but the design system still lacks smaller primitive-level presentation contracts outside the Playwright suite.
 - Some mixed-public copy remains note-centric on note-detail return paths and nearby labels; the compact homepage shell is aligned after the public-home density pass, but a later low-risk UI copy pass should finish that wording cleanup without broadening the route contract.
+- The source-first note editor now has deterministic transform and mode-sync coverage, but split view still lacks source-to-preview scroll sync for longer notes, so long-form review can drift until a later focused editor pass addresses it.

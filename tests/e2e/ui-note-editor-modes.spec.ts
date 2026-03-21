@@ -266,6 +266,11 @@ test("@ui-note-editor-modes desktop mode switching keeps markdown and preview st
   await expect(page.getByText("Draft saved.")).toBeVisible();
   await expect(page.getByTestId("note-markdown-input")).toHaveValue(/Returns from preview mode/);
   await expect(page.getByTestId("note-markdown-preview")).toContainText("Returns from preview mode");
+
+  await page.reload();
+  await expect(splitButton).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByTestId("note-markdown-input")).toHaveValue(/Returns from preview mode/);
+  await expect(page.getByTestId("note-markdown-preview")).toContainText("Returns from preview mode");
 });
 
 test("@ui-note-editor-modes desktop split mode reads as one workbench", async ({ page }) => {

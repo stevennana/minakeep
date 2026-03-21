@@ -5,7 +5,7 @@
   "id": "048-note-editor-mobile-workflow",
   "title": "Note editor mobile workflow",
   "order": 48,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "049-note-editor-hardening",
   "prompt_docs": [
@@ -29,7 +29,8 @@
     "Phone widths still attempt a cramped desktop-style split view.",
     "Primary note actions are hard to reach on touch screens.",
     "Mobile preview or edit toggles hide essential authoring context."
-  ]
+  ],
+  "completed_at": "2026-03-21T09:23:14.790Z"
 }
 ```
 
@@ -72,3 +73,4 @@ Promote only when the richer editor remains practical on phones and does not reg
 - 2026-03-21 18:19 KST: Reworked the note editor into a phone-first `Edit` / `Preview` workflow while preserving desktop `Source / Split / Preview`, increased touch-target sizing for toolbar and mode controls, and reclaimed mobile width by removing the gutter on phone layouts.
 - 2026-03-21 18:19 KST: Added dedicated `@ui-note-editor-mobile` Playwright coverage for phone workflow, touch-target sizing, desktop split-mode preservation, and refreshed the affected editor UI snapshots after updating existing note-editor regressions.
 - 2026-03-21 18:20 KST: `npm run test:e2e -- --grep @ui-note-editor-mobile` passed, and the full `npm run verify` gate passed after the mobile editor workflow changes.
+- 2026-03-21T09:23:14.790Z: automatically promoted after deterministic checks and evaluator approval.

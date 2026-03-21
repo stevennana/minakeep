@@ -36,3 +36,4 @@
 - 2026-03-21T08:34:35.233Z: promoted 045-markdown-editor-foundation -> 046-note-editor-toolbar-and-shortcuts
 - 2026-03-21T08:47:49.511Z: promoted 046-note-editor-toolbar-and-shortcuts -> 047-note-editor-view-modes
 - 2026-03-21T09:11:25.495Z: promoted 047-note-editor-view-modes -> 048-note-editor-mobile-workflow
+- 2026-03-21T09:23:14.790Z: promoted 048-note-editor-mobile-workflow -> 049-note-editor-hardening

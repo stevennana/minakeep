@@ -734,3 +734,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T181155-048-note-editor-mobile-workflow/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T181155-048-note-editor-mobile-workflow/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 048-note-editor-mobile-workflow -> 049-note-editor-hardening
+- backlog: rendered current=049-note-editor-hardening
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxoo
+- cycle: finished
+
+### cycle 2026-03-21T18:23:44+09:00 task=049-note-editor-hardening
+- artifacts: state/artifacts/20260321T182344-049-note-editor-hardening
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T182344-049-note-editor-hardening/worker.jsonl
+- worker-summary: Updated the note-editor hardening slice across docs and deterministic coverage. [note-authoring.md](/Users/stevenna/WebstormProjects/minakeep/docs/product-specs/note-authoring.md), [markdown-editor-workbench.md](/Users/stevenna/WebstormProjects/minakeep/docs/product-specs/markdown-editor-workbench.md), and [markdown-editor-workbench.md](/Users/stevenna/WebstormProjects/minakeep/docs/design-docs/markdown-editor-workbench.md) now match the shipped source-first workbench: desktop opens in `Split`, mobile uses `Edit` / `Preview`, and the current textarea-backed highlighted source surface remains markdown-native. I extracted the editor’s markdown transform and viewport-sync logic into [editor-markdown.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/editor-markdown.ts), wired [note-editor.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/components/note-editor.tsx) to use it, added direct fidelity coverage in [note-editor-markdown.test.ts](/Users/stevenna/WebstormProjects/minakeep/tests/unit/note-editor-markdown.test.ts), and tightened the persisted mode-switch regression in [ui-note-editor-modes.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-note-editor-modes.spec.ts).
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T182344-049-note-editor-hardening/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T182344-049-note-editor-hardening/npm-run-verify-next-server.log

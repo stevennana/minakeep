@@ -9,7 +9,8 @@ Upgrade note authoring from a plain textarea into a compact markdown workbench w
 
 ## Preferred Implementation Direction
 - use a source-first editor surface with syntax-aware behavior
-- prefer a CodeMirror-based editing core over a full rich-text document model
+- keep the shipped textarea-backed highlighted source surface unless a later change solves a concrete fidelity or reliability problem
+- any future editor-core swap must preserve the same markdown-string persistence contract and direct markdown transforms
 - keep the existing markdown renderer and preview contract as the display source for preview and public note output
 
 ## Desktop Interaction Rules

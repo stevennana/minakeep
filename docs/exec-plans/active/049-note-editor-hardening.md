@@ -66,3 +66,5 @@ Promote only when the richer editor wave is documented, protected, and still cle
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-21 18:29:29 KST: Aligned the note-authoring and markdown-workbench docs with the shipped source-first editor behavior, including desktop split-by-default, mobile `Edit` / `Preview`, and the textarea-backed highlighted source surface.
+- 2026-03-21 18:29:29 KST: Extracted the note editor's markdown transform and viewport-mode sync logic into a pure notes helper, added deterministic unit coverage for reversible markdown actions, indentation, list/quote continuation, and viewport mode syncing, and tracked the remaining split-view scroll-sync debt explicitly in the tech-debt tracker.
