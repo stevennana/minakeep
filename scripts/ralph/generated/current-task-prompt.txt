@@ -1,46 +1,47 @@
 Read the following repository documents before making changes:
 - AGENTS.md
 - docs/FRONTEND.md
-- docs/product-specs/public-note-reading.md
+- docs/product-specs/owner-workspace-density.md
+- docs/design-docs/owner-workspace-density.md
 - docs/references/ui-verification-contract.md
-- docs/exec-plans/active/024-public-note-reading-polish.md
+- docs/exec-plans/active/026-owner-dashboard-density.md
 
-Current task id: 024-public-note-reading-polish
-Current task title: Public note reading polish
+Current task id: 026-owner-dashboard-density
+Current task title: Owner dashboard density
 
 Objective:
-Tighten the public note page into a calmer, more compact reading experience.
+Tighten the owner dashboard so it feels compact and professional without becoming visually cramped.
 
 Scope:
-- reduce oversized note-page framing
-- improve reading width and typography hierarchy
-- quiet supporting metadata and AI summary/tag treatment
+- reduce heading scale and padding
+- make note-list density more practical on desktop
+- keep AI metadata visible but visually secondary
 
 Out of scope:
-- homepage redesign
-- owner workspace redesign
-- broad theme-system refactors not needed for the note page
+- note editor and login forms
+- links/tags/search redesign
+- homepage work
 
 Exit criteria:
-1. Public note pages feel more reading-first than dashboard-like.
-2. Metadata remains visible without competing with the authored note body.
-3. `npm run test:e2e -- --grep @ui-public-note` passes with desktop/mobile screenshots, visible reading hierarchy, and accessibility checks.
+1. The dashboard shows more useful note content without feeling cluttered.
+2. Typography and spacing feel more human-scaled than the current implementation.
+3. `npm run test:e2e -- --grep @ui-owner-dashboard` passes with desktop/mobile screenshots, visible hierarchy, and accessibility checks.
 4. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-public-note`
+- `npm run test:e2e -- --grep @ui-owner-dashboard`
 
 Evaluator notes:
-Promote when the deterministic UI checks pass and the public note page is materially calmer and easier to read than before.
+Promote when the deterministic UI checks pass and the dashboard reads like a compact tool rather than an oversized card wall.
 
 Required repository artifacts for this task:
-- src/app/notes/[slug]/page.tsx
+- src/app/app/page.tsx
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-public-note
+- npm run test:e2e -- --grep @ui-owner-dashboard
 
 Previous known gaps from the last evaluation:
 - none

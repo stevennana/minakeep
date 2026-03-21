@@ -1,8 +1,8 @@
 {
-  "task_id": "024-public-note-reading-polish",
-  "started_at": "2026-03-21T11:02:11+09:00",
-  "artifact_dir": "state/artifacts/20260321T110211-024-public-note-reading-polish",
+  "task_id": "026-owner-dashboard-density",
+  "started_at": "2026-03-21T12:13:29+09:00",
+  "artifact_dir": "state/artifacts/20260321T121329-026-owner-dashboard-density",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-03-21T02:14:07.728Z"
+  "updated_at": "2026-03-21T03:27:30.172Z"
 }

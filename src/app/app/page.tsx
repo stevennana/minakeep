@@ -23,61 +23,83 @@ export default async function PrivateDashboardPage() {
   const notes = await listOwnerNotes(owner.id);
   const publishedNotes = notes.filter((note) => note.isPublished).length;
   const pendingNotes = notes.filter((note) => note.enrichment.status === "pending").length;
+  const dateFormatter = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
 
   return (
     <div className="feature-layout">
       <EnrichmentPendingRefresh enabled={notes.some((note) => note.enrichment.status === "pending")} />
-      <Surface tone="hero">
-        <p className="eyebrow">Private dashboard</p>
-        <h1>{owner.name}&rsquo;s notes</h1>
-        <p className="lede">
-          Notes stay private by default. Create a new note, reopen existing drafts, and publish only the notes that
-          should appear on the public homepage and note pages.
-        </p>
-        <div className="summary-row">
-          <div>
-            <strong>Total notes</strong>
-            <span>{notes.length} in the vault</span>
+      <Surface className="dashboard-hero" tone="hero">
+        <div className="dashboard-hero-head">
+          <div className="dashboard-hero-copy">
+            <p className="eyebrow">Private dashboard</p>
+            <h1 className="dashboard-hero-title">{owner.name}&rsquo;s notes</h1>
+            <p className="lede dashboard-hero-lede">
+              Reopen drafts quickly, keep published notes in rotation, and review generated metadata without turning
+              the dashboard into a card wall.
+            </p>
           </div>
-          <div>
-            <strong>Published</strong>
-            <span>{publishedNotes} public-facing note{publishedNotes === 1 ? "" : "s"}</span>
-          </div>
-          <div>
-            <strong>AI queue</strong>
-            <span>{pendingNotes === 0 ? "No pending note enrichment" : `${pendingNotes} note${pendingNotes === 1 ? "" : "s"} pending`}</span>
+          <div className="button-row dashboard-hero-actions">
+            <ButtonLink href="/app/notes/new">New note</ButtonLink>
+            <form action={signOutAction}>
+              <Button type="submit" variant="ghost">
+                Sign out
+              </Button>
+            </form>
           </div>
         </div>
-        <div className="button-row">
-          <ButtonLink href="/app/notes/new">New note</ButtonLink>
-          <form action={signOutAction}>
-            <Button type="submit" variant="ghost">
-              Sign out
-            </Button>
-          </form>
+        <div className="summary-row dashboard-summary-row" aria-label="Dashboard overview">
+          <div className="dashboard-stat">
+            <span className="dashboard-stat-value">{notes.length}</span>
+            <strong>Total notes</strong>
+            <span>Private and published notes combined</span>
+          </div>
+          <div className="dashboard-stat">
+            <span className="dashboard-stat-value">{publishedNotes}</span>
+            <strong>Published</strong>
+            <span>Visible on public routes</span>
+          </div>
+          <div className="dashboard-stat">
+            <span className="dashboard-stat-value">{pendingNotes}</span>
+            <strong>AI queue</strong>
+            <span>
+              {pendingNotes === 0 ? "No note enrichment is waiting" : `${pendingNotes} note${pendingNotes === 1 ? "" : "s"} waiting`}
+            </span>
+          </div>
         </div>
       </Surface>
 
-      <div className="dashboard-grid">
-        <Surface tone="panel">
+      <div className="dashboard-grid owner-dashboard-grid" data-testid="owner-dashboard-grid">
+        <Surface className="owner-dashboard-main" tone="panel">
           <SectionHeading meta="Drafts and published notes" title="Notes" />
           {notes.length === 0 ? (
             <p>No drafts yet. Create the first note to start the private vault.</p>
           ) : (
-            <div className="note-list">
+            <div className="note-list owner-dashboard-note-list" data-testid="owner-dashboard-note-list">
               {notes.map((note) => (
-                <article className="note-list-item" key={note.id}>
-                  <div>
-                    <MetadataRow leading>
+                <article className="note-list-item dashboard-note-item" key={note.id}>
+                  <div className="dashboard-note-primary">
+                    <MetadataRow className="dashboard-note-state" leading>
                       <span>{note.isPublished ? "Published" : "Draft"}</span>
+                      <span>{dateFormatter.format(note.updatedAt)}</span>
                     </MetadataRow>
-                    <Link className="note-list-link" href={`/app/notes/${note.id}/edit`}>
+                    <Link className="note-list-link dashboard-note-link" href={`/app/notes/${note.id}/edit`}>
                       {note.title}
                     </Link>
-                    <p>{note.excerpt || "Empty draft"}</p>
-                    {note.summary ? <p className="note-generated-summary">AI summary: {note.summary}</p> : null}
-                    <EnrichmentStatusBlock state={note.enrichment} />
-                    <TagList aria-label="Note tags">
+                    <p className="dashboard-note-excerpt">{note.excerpt || "Empty draft"}</p>
+                  </div>
+                  <div className="dashboard-note-secondary">
+                    <div className="dashboard-note-ai">
+                      <strong>AI summary:</strong>
+                      {note.summary ? (
+                        <p className="note-generated-summary dashboard-note-ai-summary">{note.summary}</p>
+                      ) : (
+                        <p className="field-note dashboard-note-ai-empty">
+                          A generated summary will appear here after a successful enrichment run.
+                        </p>
+                      )}
+                    </div>
+                    <EnrichmentStatusBlock detailClassName="dashboard-note-ai-detail" state={note.enrichment} />
+                    <TagList aria-label="Note tags" className="dashboard-note-tags">
                       {note.tags.length === 0 ? (
                         <TagChip muted>No generated tags</TagChip>
                       ) : (
@@ -89,19 +111,15 @@ export default async function PrivateDashboardPage() {
                       )}
                     </TagList>
                   </div>
-                  <MetadataRow>
-                    <span>Updated</span>
-                    <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(note.updatedAt)}</span>
-                  </MetadataRow>
                 </article>
               ))}
             </div>
           )}
         </Surface>
 
-        <Surface as="aside" className="dashboard-side-panel" tone="panel">
+        <Surface as="aside" className="dashboard-side-panel owner-dashboard-side-panel" tone="panel">
           <SectionHeading meta="Owner-only tools" title="Workspace routes" />
-          <div className="route-grid">
+          <div className="route-grid dashboard-route-grid">
             <Link className="route-tile" href="/app/links">
               <strong>Reference shelf</strong>
               <span>Capture URLs and review generated summaries and tags.</span>

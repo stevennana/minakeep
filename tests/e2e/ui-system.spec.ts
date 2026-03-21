@@ -132,12 +132,13 @@ test("@ui-system login surface stays readable on mobile", async ({ page }) => {
   });
 });
 
-test("@ui-system private shell keeps hierarchy on desktop", async ({ page }) => {
+test("@ui-system @ui-owner-shell private shell keeps hierarchy on desktop", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await signIn(page);
 
   await expect(page.getByRole("navigation", { name: "Private vault sections" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: /notes first, links nearby, retrieval always owner-only\./i })).toBeVisible();
+  await expect(page.locator(".vault-frame-title")).toHaveText("Private vault");
+  await expect(page.getByText("Sections")).toBeVisible();
   await expect(page.getByRole("link", { name: "New note" })).toBeVisible();
   await expect(page.getByText("Workspace routes")).toBeVisible();
   await expectAccessibleStructure(page);
@@ -152,11 +153,13 @@ test("@ui-system private shell keeps hierarchy on desktop", async ({ page }) => 
   });
 });
 
-test("@ui-system private shell collapses cleanly on mobile", async ({ page }) => {
+test("@ui-system @ui-owner-shell private shell collapses cleanly on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await signIn(page);
 
   await expect(page.getByRole("navigation", { name: "Private vault sections" })).toBeVisible();
+  await expect(page.locator(".vault-frame-title")).toHaveText("Private vault");
+  await expect(page.getByText("Sections")).toBeVisible();
   await expect(page.getByRole("link", { name: "New note" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible();
   await expectAccessibleStructure(page);

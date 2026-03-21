@@ -5,17 +5,22 @@ export default function PrivateVaultLayout({ children }: Readonly<{ children: Re
   return (
     <div className="vault-shell">
       <Surface className="vault-frame" tone="shell">
-        <div className="vault-frame-header">
-          <div className="vault-frame-copy">
-            <p className="eyebrow">Private vault</p>
-            <h1 className="vault-frame-title">Notes first, links nearby, retrieval always owner-only.</h1>
-            <p className="vault-frame-note">
-              Markdown drafting, selective publishing, shared tags, and AI metadata stay inside one compact workspace.
-            </p>
+        <div className="vault-shell-grid">
+          <div className="vault-frame-header">
+            <div className="vault-frame-copy">
+              <p className="eyebrow">Owner workspace</p>
+              <p className="vault-frame-title">Private vault</p>
+              <p className="vault-frame-note">
+                Notes, links, shared tags, and search stay grouped inside one tighter owner-only shell.
+              </p>
+            </div>
+            <div className="vault-nav-block">
+              <p className="vault-nav-label">Sections</p>
+              <VaultNav />
+            </div>
           </div>
-          <VaultNav />
+          <div className="vault-frame-body">{children}</div>
         </div>
-        <div className="vault-frame-body">{children}</div>
       </Surface>
     </div>
   );

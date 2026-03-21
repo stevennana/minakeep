@@ -125,6 +125,10 @@ function runShellCommand(command) {
   }
 }
 
+function usesDeterministicOnlyPromotion(taskMeta) {
+  return String(taskMeta?.promotion_mode ?? "").trim().toLowerCase() === "deterministic_only";
+}
+
 ensureDir(STATE_DIR);
 ensureDir(GENERATED_DIR);
 
@@ -182,6 +186,22 @@ if (!deterministic.pass) {
       ...missingFiles.map((file) => `Missing required file: ${file}`),
       ...commandResults.filter((r) => !r.ok).map((r) => `Failed required command: ${r.command}`),
     ],
+  };
+  writeText(path.join(STATE_DIR, "evaluation.json"), JSON.stringify(finalResult, null, 2));
+  console.log(`evaluation: ${finalResult.status} promotion=${finalResult.promotion_eligible}`);
+  process.exit(0);
+}
+
+if (usesDeterministicOnlyPromotion(task.meta)) {
+  const finalResult = {
+    checked_at: timestamp(),
+    task_id: task.id,
+    status: "done",
+    promotion_eligible: true,
+    deterministic,
+    llm: null,
+    summary: "Deterministic checks passed; task is eligible for automatic promotion.",
+    missing_requirements: [],
   };
   writeText(path.join(STATE_DIR, "evaluation.json"), JSON.stringify(finalResult, null, 2));
   console.log(`evaluation: ${finalResult.status} promotion=${finalResult.promotion_eligible}`);

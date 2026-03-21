@@ -1,0 +1,10 @@
+{
+  "task_id": "025-owner-shell-density-reset",
+  "cycle_started_at": "2026-03-21T11:25:04+09:00",
+  "artifact_dir": "state/artifacts/20260321T112504-025-owner-shell-density-reset",
+  "worker_pid": 12905,
+  "last_worker_heartbeat_at": "2026-03-21T11:27:34+09:00",
+  "stall_detected_at": "2026-03-21T11:42:35+09:00",
+  "stall_timeout_seconds": 900,
+  "worker_log_path": "state/artifacts/20260321T112504-025-owner-shell-density-reset/worker.jsonl"
+}

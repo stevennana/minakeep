@@ -14,3 +14,5 @@
 - 2026-03-21T01:35:22.465Z: promoted 021-ui-design-system-foundation -> 022-public-home-shell-reset
 - 2026-03-21T01:48:11.390Z: promoted 022-public-home-shell-reset -> 023-public-home-dynamic-grid
 - 2026-03-21T02:01:41.458Z: promoted 023-public-home-dynamic-grid -> 024-public-note-reading-polish
+- 2026-03-21T02:14:07.880Z: promoted 024-public-note-reading-polish -> 025-owner-shell-density-reset
+- 2026-03-21T03:12:55.784Z: manually promoted 025-owner-shell-density-reset -> 026-owner-dashboard-density | reason=operator manual promotion
