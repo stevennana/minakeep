@@ -27,6 +27,8 @@ export type PublishedPublicLink = PublishedPublicContentBase & {
 
 export type PublishedPublicContent = PublishedPublicNote | PublishedPublicLink;
 
+const SAFE_PUBLIC_LINK_PROTOCOLS = new Set(["http:", "https:"]);
+
 export function toPublishedPublicNote(note: PublishedNoteSummary): PublishedPublicNote {
   return {
     id: note.id,
@@ -52,6 +54,20 @@ export function toPublishedPublicLink(link: PublishedLinkSummary): PublishedPubl
     tags: link.tags,
     url: link.url
   };
+}
+
+export function isSafePublicLinkUrl(url: string) {
+  try {
+    const parsedUrl = new URL(url);
+
+    return SAFE_PUBLIC_LINK_PROTOCOLS.has(parsedUrl.protocol);
+  } catch {
+    return false;
+  }
+}
+
+export function filterSafePublishedContent(items: PublishedPublicContent[]) {
+  return items.filter((item) => item.kind !== "link" || isSafePublicLinkUrl(item.url));
 }
 
 export function comparePublishedContent(a: PublishedPublicContent, b: PublishedPublicContent) {

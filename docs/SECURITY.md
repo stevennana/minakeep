@@ -13,6 +13,7 @@ Define the security posture for Minakeep's current shipped slice.
 - keep AI provider tokens and base URLs server-only
 - do not send private note or link content to unconfigured or fallback endpoints silently
 - visible AI failure copy may name missing env keys, but it must never echo configured secret values
+- public routes must fail closed on malformed or unsafe published-link URLs, even if stale SQLite data exists
 
 ## Secrets and Config
 - keep `AUTH_SECRET`, `DATABASE_URL`, `OWNER_USERNAME`, and `OWNER_PASSWORD` in environment configuration only
@@ -41,3 +42,4 @@ Define the security posture for Minakeep's current shipped slice.
 - missing or incomplete AI env config must record a visible failed enrichment state instead of silently falling back to another endpoint
 - server logs may record HTTP status or high-level failure class for the Mina endpoint, but not request bodies, tokens, or full private note/link payloads
 - real-endpoint AI verification must fail or skip based on missing `LLM_BASE`, `TOKEN`, and `MODEL`, not by substituting committed defaults
+- the shared public-content boundary must revalidate published-link URLs before public rendering so seeded `javascript:` or malformed URLs stay hidden

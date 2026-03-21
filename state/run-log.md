@@ -580,3 +580,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Task 039 is complete in substance. The current implementation exposes a single mixed public model: `/` loads published notes and links through a shared public-content service, sorts them together, filters homepage results by title only, hides unpublished records from public routes, and suppresses unsafe public link URLs. Owner publish/unpublish actions revalidate the public and private routes that depend on this state, published notes resolve on `/notes/[slug]` only while published, and published links open the saved external URL in a new tab. The audited unit/E2E coverage matches the task scope, and the recorded `npm run verify` pass satisfies the required gate. -> state/artifacts/20260321T154439-039-public-publishing-regression-pass/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T154439-039-public-publishing-regression-pass/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 039-public-publishing-regression-pass -> 040-public-wave-hardening
+- backlog: rendered current=040-public-wave-hardening
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooo
+- cycle: finished
+
+### cycle 2026-03-21T15:52:23+09:00 task=040-public-wave-hardening
+- artifacts: state/artifacts/20260321T155223-040-public-wave-hardening
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T155223-040-public-wave-hardening/worker.jsonl
+- worker-summary: Task 040 now hardens the mixed public boundary instead of relying on homepage-only filtering. I moved the unsafe published-link guard into the shared public-content layer in [service.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/public-content/service.ts) and [types.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/public-content/types.ts), simplified the homepage consumer in [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/page.tsx), added a focused unit contract in [public-content.test.ts](/Users/stevenna/WebstormProjects/minakeep/tests/unit/public-content.test.ts), and updated the task log in [040-public-wave-hardening.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/040-public-wave-hardening.md). I also reconciled the mixed public model in [ARCHITECTURE.md](/Users/stevenna/WebstormProjects/minakeep/ARCHITECTURE.md), [QUALITY_SCORE.md](/Users/stevenna/WebstormProjects/minakeep/docs/QUALITY_SCORE.md), [RELIABILITY.md](/Users/stevenna/WebstormProjects/minakeep/docs/RELIABILITY.md), and [SECURITY.md](/Users/stevenna/WebstormProjects/minakeep/docs/SECURITY.md).
+- evaluator: started
+- evaluator: status=done promotion=true Task 040 is substantively complete. The required checks passed, the mixed public boundary now fail-closes unsafe or malformed published links in the shared `public-content` layer, the public search/showroom behavior is covered by unit and E2E tests, the repo docs and operator guidance are aligned with the shipped mixed public model, and the remaining note-centric copy debt is explicitly recorded. -> state/artifacts/20260321T155223-040-public-wave-hardening/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T155223-040-public-wave-hardening/npm-run-verify-next-server.log

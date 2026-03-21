@@ -27,3 +27,4 @@
 - 2026-03-21T06:23:25.707Z: promoted 036-public-link-new-tab-behavior -> 037-ui-hierarchy-softening
 - 2026-03-21T06:35:32.590Z: promoted 037-ui-hierarchy-softening -> 038-public-showroom-responsive-polish
 - 2026-03-21T06:44:09.168Z: promoted 038-public-showroom-responsive-polish -> 039-public-publishing-regression-pass
+- 2026-03-21T06:51:53.767Z: promoted 039-public-publishing-regression-pass -> 040-public-wave-hardening

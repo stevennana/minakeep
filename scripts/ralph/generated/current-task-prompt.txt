@@ -1,43 +1,45 @@
 Read the following repository documents before making changes:
 - AGENTS.md
-- docs/FRONTEND.md
-- docs/product-specs/public-note-publishing.md
-- docs/product-specs/public-link-publishing.md
-- docs/product-specs/public-showroom-search.md
-- docs/exec-plans/active/039-public-publishing-regression-pass.md
+- docs/QUALITY_SCORE.md
+- docs/RELIABILITY.md
+- docs/SECURITY.md
+- docs/exec-plans/active/040-public-wave-hardening.md
 
-Current task id: 039-public-publishing-regression-pass
-Current task title: Public publishing regression pass
+Current task id: 040-public-wave-hardening
+Current task title: Public wave hardening
 
 Objective:
-Verify note publishing, link publishing, public mixed feed behavior, and public title search together as one coherent public model.
+Stabilize the mixed public publishing/search wave and keep the docs, reliability, and security posture aligned.
 
 Scope:
-- note publishing regression checks
-- link publishing regression checks
-- mixed public showroom behavior
-- public title-search regression checks
+- close obvious public-wave inconsistencies
+- reconcile docs and operator guidance with the new public model
+- keep remaining debt explicit
 
 Out of scope:
-- further visual redesign beyond bug-fix level polish
-- owner workflow redesign unrelated to public publishing/search
+- new feature fronts
+- new public content types
+- new search modes
 
 Exit criteria:
-1. Existing note publishing still works.
-2. Link publishing, public search, and public navigation all behave coherently together.
-3. `npm run verify` passes.
+1. `npm run verify` passes.
+2. `npm run start:smoke` passes.
+3. Docs, reliability, and security guidance match the shipped public wave.
+4. Remaining debt is explicit.
 
 Required checks:
 - `npm run verify`
+- `npm run start:smoke`
 
 Evaluator notes:
-Promote only when the new public model works as one coherent system instead of a stack of independent tweaks.
+Promote only when the mixed public publishing/search wave is stable enough for the next tranche.
 
 Required repository artifacts for this task:
-- tests/e2e
+- scripts/ralph/README.md
 
 Required commands for this task:
 - npm run verify
+- npm run start:smoke
 
 Previous known gaps from the last evaluation:
 - none

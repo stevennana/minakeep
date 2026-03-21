@@ -1,0 +1,11 @@
+[main e1ca63b] ralph: 039-public-publishing-regression-pass 2026-03-21T15:51:53+09:00
+ 21 files changed, 1344 insertions(+), 92 deletions(-)
+ rename docs/exec-plans/{active => completed}/038-public-showroom-responsive-polish.md (92%)
+ create mode 100644 state/artifacts/20260321T153602-038-public-showroom-responsive-polish/backlog.log
+ create mode 100644 state/artifacts/20260321T153602-038-public-showroom-responsive-polish/promote.log
+ create mode 100644 state/artifacts/20260321T154439-039-public-publishing-regression-pass/commit.log
+ create mode 100644 state/artifacts/20260321T154439-039-public-publishing-regression-pass/evaluator.log
+ create mode 100644 state/artifacts/20260321T154439-039-public-publishing-regression-pass/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260321T154439-039-public-publishing-regression-pass/task-prompt.log
+ create mode 100644 state/artifacts/20260321T154439-039-public-publishing-regression-pass/worker.jsonl
+commit: created

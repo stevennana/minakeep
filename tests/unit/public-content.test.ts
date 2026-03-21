@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { sortPublishedContent, toPublishedPublicLink, toPublishedPublicNote } from "../../src/features/public-content/types";
+import { filterSafePublishedContent, sortPublishedContent, toPublishedPublicLink, toPublishedPublicNote } from "../../src/features/public-content/types";
 
 test("toPublishedPublicNote and toPublishedPublicLink preserve the shared public boundary fields", () => {
   const publishedAt = new Date("2026-03-20T10:00:00.000Z");
@@ -122,5 +122,56 @@ test("sortPublishedContent orders mixed published items by published time, then 
   assert.deepEqual(
     sorted.map((item) => item.id),
     ["note-newest", "link-mid", "note-a", "link-b"]
+  );
+});
+
+test("filterSafePublishedContent drops unsafe or malformed published links while keeping notes and safe links", () => {
+  const filtered = filterSafePublishedContent([
+    {
+      id: "note-safe",
+      kind: "note",
+      title: "Safe note",
+      summary: null,
+      publishedAt: new Date("2026-03-21T09:00:00.000Z"),
+      updatedAt: new Date("2026-03-21T09:00:00.000Z"),
+      tags: [],
+      slug: "safe-note",
+      excerpt: "Safe excerpt"
+    },
+    {
+      id: "link-safe",
+      kind: "link",
+      title: "Safe link",
+      summary: null,
+      publishedAt: new Date("2026-03-21T08:00:00.000Z"),
+      updatedAt: new Date("2026-03-21T08:00:00.000Z"),
+      tags: [],
+      url: "https://example.com/safe-link"
+    },
+    {
+      id: "link-unsafe",
+      kind: "link",
+      title: "Unsafe link",
+      summary: null,
+      publishedAt: new Date("2026-03-21T07:00:00.000Z"),
+      updatedAt: new Date("2026-03-21T07:00:00.000Z"),
+      tags: [],
+      url: "javascript:alert('xss')"
+    },
+    {
+      id: "link-malformed",
+      kind: "link",
+      title: "Malformed link",
+      summary: null,
+      publishedAt: new Date("2026-03-21T06:00:00.000Z"),
+      updatedAt: new Date("2026-03-21T06:00:00.000Z"),
+      tags: [],
+      url: "not a url"
+    }
+  ]);
+
+  assert.deepEqual(
+    filtered.map((item) => item.id),
+    ["note-safe", "link-safe"]
   );
 });

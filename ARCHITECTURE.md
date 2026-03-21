@@ -5,7 +5,7 @@ Build Minakeep as an agent-legible codebase with strong boundaries, a short inst
 
 ## System Overview
 Minakeep is a web application with:
-- a public site for published notes
+- a public site for published notes and published links
 - a private owner area for notes, links, tags, and search
 - an automatic AI enrichment path for notes and links
 - a SQLite-backed persistence layer for content and owner identity

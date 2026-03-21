@@ -5,7 +5,7 @@
   "id": "039-public-publishing-regression-pass",
   "title": "Public publishing regression pass",
   "order": 39,
-  "status": "active",
+  "status": "completed",
   "next_task_on_success": "040-public-wave-hardening",
   "prompt_docs": [
     "AGENTS.md",
@@ -23,7 +23,8 @@
   "human_review_triggers": [
     "The mixed publishing model regresses existing note publishing behavior.",
     "Public search or public link behavior leaks unpublished content."
-  ]
+  ],
+  "completed_at": "2026-03-21T06:51:53.767Z"
 }
 ```
 
@@ -61,3 +62,4 @@ Promote only when the new public model works as one coherent system instead of a
 
 - Start here. Append timestamped progress notes as work lands.
 - 2026-03-21 15:48:12 KST: Reviewed the task docs plus the repo-required architecture/product/frontend docs, audited the mixed public publishing implementation and E2E coverage under `tests/e2e`, and ran `npm run verify` successfully. The regression suite confirmed note publishing, link publishing, mixed public showroom behavior, public title-only search, and related navigation as one coherent public model without requiring code changes in this task.
+- 2026-03-21T06:51:53.767Z: automatically promoted after deterministic checks and evaluator approval.

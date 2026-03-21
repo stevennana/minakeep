@@ -1,0 +1,792 @@
+/Users/stevenna/WebstormProjects/minakeep/scripts/ralph/generated/current-evaluator-prompt.txt
+OpenAI Codex v0.116.0 (research preview)
+--------
+workdir: /Users/stevenna/WebstormProjects/minakeep
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: high
+reasoning summaries: none
+session id: 019d0f31-13a4-7b11-8987-e76ff00e02be
+--------
+user
+You are the promotion evaluator for a repository-local Ralph loop.
+
+Read these documents before deciding:
+- AGENTS.md
+- docs/QUALITY_SCORE.md
+- docs/RELIABILITY.md
+- docs/SECURITY.md
+- docs/exec-plans/active/040-public-wave-hardening.md
+
+Current task id: 040-public-wave-hardening
+Current task title: Public wave hardening
+
+Objective:
+Stabilize the mixed public publishing/search wave and keep the docs, reliability, and security posture aligned.
+
+Scope:
+- close obvious public-wave inconsistencies
+- reconcile docs and operator guidance with the new public model
+- keep remaining debt explicit
+
+Out of scope:
+- new feature fronts
+- new public content types
+- new search modes
+
+Exit criteria:
+1. `npm run verify` passes.
+2. `npm run start:smoke` passes.
+3. Docs, reliability, and security guidance match the shipped public wave.
+4. Remaining debt is explicit.
+
+Evaluator notes:
+Promote only when the mixed public publishing/search wave is stable enough for the next tranche.
+
+Deterministic check summary:
+{
+  "checked_at": "2026-03-21T06:59:27.703Z",
+  "task_id": "040-public-wave-hardening",
+  "commands": [
+    {
+      "command": "npm run verify",
+      "ok": true,
+      "output": "\n> minakeep@0.1.0 verify\n> npm run lint && npm run db:prepare && npm run typecheck && npm run build && npm run test && npm run start:smoke\n\n\n> minakeep@0.1.0 lint\n> eslint . --max-warnings=0\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 36ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 typecheck\n> tsc --noEmit\n\n\n> minakeep@0.1.0 build\n> next build\n\n▲ Next.js 16.2.0 (Turbopack)\n- Environments: .env\n\n  Creating an optimized production build ...\n✓ Compiled successfully in 1123ms\n  Running TypeScript ...\n  Finished TypeScript in 1498ms ...\n  Collecting page data using 10 workers ...\n  Generating static pages using 10 workers (0/11) ...\n  Generating static pages using 10 workers (2/11) \r\n  Generating static pages using 10 workers (5/11) \r\n  Generating static pages using 10 workers (8/11) \r\n✓ Generating static pages using 10 workers (11/11) in 178ms\n  Finalizing page optimization ...\n\nRoute (app)\n┌ ○ /\n├ ○ /_not-found\n├ ƒ /api/auth/[...nextauth]\n├ ƒ /api/health\n├ ƒ /api/test/mina/chat/completions\n├ ƒ /app\n├ ƒ /app/links\n├ ƒ /app/notes/[id]/edit\n├ ƒ /app/notes/new\n├ ƒ /app/search\n├ ƒ /app/tags\n├ ƒ /login\n└ ƒ /notes/[slug]\n\n\nƒ Proxy (Middleware)\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n\n> minakeep@0.1.0 test\n> npm run test:unit && npm run test:e2e\n\n\n> minakeep@0.1.0 test:unit\n> NODE_PATH=./node_modules/next/dist/compiled node --conditions=react-server --import tsx --test tests/unit/**/*.test.ts\n\n✔ getMinaAiConfigStatus returns disabled when no AI env vars are set (0.755ms)\n✔ buildMinaChatCompletionsRequest shapes the Mina OpenAI-compatible request (0.894959ms)\n✔ normalizeMinaEnrichmentResponse trims the summary and normalizes repeated tags (8.188375ms)\n✔ normalizeMinaEnrichmentResponse accepts JSON wrapped in a fenced code block (0.195083ms)\n✔ getMinaAiRequestTimeoutMs falls back to the default timeout (0.082333ms)\n✔ requestMinaEnrichment aborts hung requests at the configured timeout (21.886458ms)\n✔ requestEnrichment records a failed state when the AI env is not configured (0.781917ms)\n✔ requestEnrichment records a pending state when the AI env is configured (0.109542ms)\n✔ requestEnrichment records which AI env vars are missing when the Mina config is partial (0.093667ms)\n✔ retryEnrichment only requeues records that are already failed (0.120667ms)\n✔ buildLinkEnrichmentMessages includes the link title and URL for the AI prompt (0.460375ms)\n✔ executeLinkEnrichment records generated summary and tags on success (0.4445ms)\n✔ executeLinkEnrichment records a normalized failed state when the request throws (0.579041ms)\n✔ executeLinkEnrichment skips stale attempts (0.350125ms)\n✔ normalizeLinkInput trims fields and canonicalizes the URL (1.446834ms)\n✔ normalizeLinkInput rejects non-http schemes (0.493459ms)\n✔ buildNoteEnrichmentMessages includes the note title and markdown for the AI prompt (0.428584ms)\n✔ executeNoteEnrichment records generated summary and tags on success (0.44725ms)\n✔ executeNoteEnrichment records a normalized failed state when the request throws (0.139208ms)\n✔ executeNoteEnrichment skips stale attempts (0.061875ms)\n✔ renderMarkdownToHtml preserves common note-writing structures while escaping unsafe HTML (0.829125ms)\n✔ createNoteExcerpt turns markdown into readable summary text (0.184666ms)\n✔ createNoteSlug normalizes title content (0.455792ms)\n✔ createNoteSlug falls back when the title has no slug-safe characters (0.058042ms)\n✔ createUniqueNoteSlug increments an existing base slug (0.062666ms)\n✔ toPublishedPublicNote and toPublishedPublicLink preserve the shared public boundary fields (0.712708ms)\n✔ sortPublishedContent orders mixed published items by published time, then updated time, then title (6.85275ms)\n✔ filterSafePublishedContent drops unsafe or malformed published links while keeping notes and safe links (0.120709ms)\nℹ tests 28\nℹ suites 0\nℹ pass 28\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 208.786792\n\n> minakeep@0.1.0 test:e2e\n> npm run db:prepare && playwright test\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 38ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\nRunning 38 tests using 1 worker\n\n  ✓   1 tests/e2e/auth.spec.ts:5:5 › owner can sign in to the private dashboard (897ms)\n  ✓   2 tests/e2e/home.spec.ts:11:5 › public homepage exposes the mixed published content surface (190ms)\n  ✓   3 tests/e2e/home.spec.ts:26:5 › anonymous visitors cannot access the owner search route (162ms)\n  ✓   4 tests/e2e/home.spec.ts:32:5 › owner can sign in, create a draft note, edit it, and reopen it with rendered preview (1.2s)\n  ✓   5 tests/e2e/home.spec.ts:90:5 › note save still succeeds when the configured AI endpoint times out and exposes a retry path (6.4s)\n  ✓   6 tests/e2e/home.spec.ts:129:5 › owner can publish and unpublish a note across the public routes (1.6s)\n  ✓   7 tests/e2e/home.spec.ts:187:5 › owner can save a private link, receive AI metadata, and keep it off public routes (3.5s)\n  ✓   8 tests/e2e/home.spec.ts:227:5 › owner can publish and unpublish a link across the public homepage (4.0s)\n  ✓   9 tests/e2e/home.spec.ts:300:5 › link save still succeeds when the configured AI endpoint times out and exposes a retry path (6.5s)\n  ✓  10 tests/e2e/home.spec.ts:342:5 › owner cannot save a private link with an unsafe URL scheme (570ms)\n  ✓  11 tests/e2e/home.spec.ts:365:5 › owner can filter private links by tag and search notes by title plus links by URL and tag (4.2s)\n  ✓  12 tests/e2e/link-ai-real.spec.ts:10:5 › owner link enrichment completes against the real Mina endpoint @ai-real (3.7s)\n  ✓  13 tests/e2e/note-ai-real.spec.ts:10:5 › owner note enrichment completes against the real Mina endpoint @ai-real (3.6s)\n  ✓  14 tests/e2e/public-home-search.spec.ts:197:5 › public homepage live search filters mixed published content by title only (264ms)\n  ✓  15 tests/e2e/ui-forms.spec.ts:246:5 › @ui-regression @ui-forms login form stays compact on desktop (258ms)\n  ✓  16 tests/e2e/ui-forms.spec.ts:263:5 › @ui-regression @ui-forms login form stays compact on mobile (224ms)\n  ✓  17 tests/e2e/ui-forms.spec.ts:279:5 › @ui-regression @ui-forms note editor keeps hierarchy on desktop (543ms)\n  ✓  18 tests/e2e/ui-forms.spec.ts:298:5 › @ui-regression @ui-forms note editor keeps hierarchy on mobile (504ms)\n  ✓  19 tests/e2e/ui-home-grid.spec.ts:249:5 › @ui-regression @ui-home-grid homepage showroom uses a varied desktop grid (352ms)\n  ✓  20 tests/e2e/ui-home-grid.spec.ts:269:5 › @ui-regression @ui-home-grid homepage showroom collapses cleanly on mobile (289ms)\n  ✓  21 tests/e2e/ui-home-shell.spec.ts:240:5 › @ui-regression @ui-home-shell @ui-public-home-shell @ui-public-type @ui-responsive homepage reads note-first on desktop (332ms)\n  ✓  22 tests/e2e/ui-home-shell.spec.ts:263:5 › @ui-regression @ui-home-shell @ui-public-home-shell @ui-public-type @ui-responsive homepage stays note-first on mobile (254ms)\n  ✓  23 tests/e2e/ui-owner-dashboard.spec.ts:318:5 › @ui-regression @ui-owner-dashboard @ui-responsive owner dashboard stays compact on desktop (516ms)\n  ✓  24 tests/e2e/ui-owner-dashboard.spec.ts:337:5 › @ui-regression @ui-owner-dashboard @ui-responsive owner dashboard stays usable on mobile (413ms)\n  ✓  25 tests/e2e/ui-owner-secondary.spec.ts:383:5 › @ui-regression @ui-owner-secondary links surface stays compact on desktop (435ms)\n  ✓  26 tests/e2e/ui-owner-secondary.spec.ts:401:5 › @ui-regression @ui-owner-secondary @ui-responsive links surface stays usable on mobile (413ms)\n  ✓  27 tests/e2e/ui-owner-secondary.spec.ts:416:5 › @ui-regression @ui-owner-secondary tags surface keeps retrieval anchors on desktop (521ms)\n  ✓  28 tests/e2e/ui-owner-secondary.spec.ts:436:5 › @ui-regression @ui-owner-secondary @ui-responsive tags surface stays scannable on mobile (490ms)\n  ✓  29 tests/e2e/ui-owner-secondary.spec.ts:455:5 › @ui-regression @ui-owner-secondary search surface keeps results structured on desktop (544ms)\n  ✓  30 tests/e2e/ui-owner-secondary.spec.ts:474:5 › @ui-regression @ui-owner-secondary @ui-responsive search surface stays stacked on mobile (493ms)\n  ✓  31 tests/e2e/ui-public-note.spec.ts:232:5 › @ui-regression @ui-public-note @ui-public-type @ui-responsive public note page keeps a calm desktop reading hierarchy (259ms)\n  ✓  32 tests/e2e/ui-public-note.spec.ts:251:5 › @ui-regression @ui-public-note @ui-public-type @ui-responsive public note page stays compact on mobile (226ms)\n  ✓  33 tests/e2e/ui-public-showroom.spec.ts:268:5 › @ui-regression @ui-public-showroom mixed public showroom stays clean on desktop (325ms)\n  ✓  34 tests/e2e/ui-public-showroom.spec.ts:293:5 › @ui-regression @ui-public-showroom mixed public showroom and search stay usable on mobile (265ms)\n  ✓  35 tests/e2e/ui-system.spec.ts:168:5 › @ui-regression @ui-system public chrome holds together on desktop (256ms)\n  ✓  36 tests/e2e/ui-system.spec.ts:190:5 › @ui-regression @ui-system login surface stays readable on mobile (219ms)\n  ✓  37 tests/e2e/ui-system.spec.ts:205:5 › @ui-regression @ui-system @ui-owner-shell @ui-responsive private shell keeps hierarchy on desktop (408ms)\n  ✓  38 tests/e2e/ui-system.spec.ts:226:5 › @ui-regression @ui-system @ui-owner-shell @ui-responsive private shell collapses cleanly on mobile (360ms)\n\n  38 passed (47.9s)\n\n> minakeep@0.1.0 start:smoke\n> node scripts/start-smoke.mjs\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 38ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 start\n> next start --hostname 127.0.0.1 --port 3200\n\n▲ Next.js 16.2.0\n- Local:         http://127.0.0.1:3200\n- Network:       http://127.0.0.1:3200\n✓ Ready in 70ms\n",
+      "preflight": {
+        "command": "ensure-e2e-port-free.sh 3100",
+        "error": "",
+        "ok": true,
+        "output": "port-cleanup: 127.0.0.1:3100 already free\n"
+      },
+      "next_server_log_path": "/Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T155223-040-public-wave-hardening/npm-run-verify-next-server.log"
+    },
+    {
+      "command": "npm run start:smoke",
+      "ok": true,
+      "output": "\n> minakeep@0.1.0 start:smoke\n> node scripts/start-smoke.mjs\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 43ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 start\n> next start --hostname 127.0.0.1 --port 3200\n\n▲ Next.js 16.2.0\n- Local:         http://127.0.0.1:3200\n- Network:       http://127.0.0.1:3200\n✓ Ready in 56ms\n"
+    }
+  ],
+  "missing_files": [],
+  "pass": true
+}
+
+Worker handoff summary from the last run:
+Task 040 now hardens the mixed public boundary instead of relying on homepage-only filtering. I moved the unsafe published-link guard into the shared public-content layer in [service.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/public-content/service.ts) and [types.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/public-content/types.ts), simplified the homepage consumer in [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/page.tsx), added a focused unit contract in [public-content.test.ts](/Users/stevenna/WebstormProjects/minakeep/tests/unit/public-content.test.ts), and updated the task log in [040-public-wave-hardening.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/040-public-wave-hardening.md). I also reconciled the mixed public model in [ARCHITECTURE.md](/Users/stevenna/WebstormProjects/minakeep/ARCHITECTURE.md), [QUALITY_SCORE.md](/Users/stevenna/WebstormProjects/minakeep/docs/QUALITY_SCORE.md), [RELIABILITY.md](/Users/stevenna/WebstormProjects/minakeep/docs/RELIABILITY.md), and [SECURITY.md](/Users/stevenna/WebstormProjects/minakeep/docs/SECURITY.md).
+
+`npm run verify` passed, and `npm run start:smoke` passed again as a clean standalone rerun, so the exit criteria appear satisfied. Remaining debt is explicit in [tech-debt-tracker.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/tech-debt-tracker.md): some note-detail-adjacent public copy is still note-centric even though `/` is now a mixed showroom. The operator handoff summary is written to [state/last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
+
+Your job:
+- inspect the repository and current implementation
+- determine whether the current task is actually complete
+- mark `done` only if the exit criteria are satisfied in substance, not just approximately
+- prefer conservative decisions
+- recommend promotion only if the task is truly ready
+
+Return JSON only using the provided schema.
+
+mcp startup: no servers
+Plan update
+  → Read required evaluator docs and capture the stated task contract
+  • Inspect the shipped public-wave implementation and targeted tests
+  • Decide promotion readiness against the exit criteria and return the JSON verdict
+exec
+/bin/zsh -lc "sed -n '1,260p' docs/RELIABILITY.md" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,240p' docs/QUALITY_SCORE.md" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' docs/SECURITY.md" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,220p' AGENTS.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# QUALITY_SCORE.md
+
+## Purpose
+Track the current quality level of product domains and architectural layers so agent work can target the weakest areas first.
+Quality scores should reflect both implemented behavior and how convincingly the test strategy proves it.
+
+## Rubric
+- **0** nonexistent
+- **1** sketched only
+- **2** scaffoldable and specified
+- **3** functional and reasonably verified
+- **4** strong, legible, and difficult to accidentally regress
+
+## Product Domain Scores
+| Area | Score | Notes |
+|---|---|---|
+| Product clarity | A- | The public/private knowledge-studio shape is stable, and the mixed public wave now documents both the showroom contract and the fail-closed handling for invalid published-link data alongside the full-suite `@ui-regression` gate. |
+| Feature slicing | B+ | The redesign was corrected through smaller route/system tasks, and the final hardening pass now validates the whole surface deterministically. |
+| UX focus | B+ | The public and owner surfaces now read as one coherent, cooler, denser system; remaining work is cleanup and regression resistance rather than a new direction. |
+
+ succeeded in 0ms:
+# RELIABILITY.md
+
+## Purpose
+Define the reliability expectations and failure-handling rules for Minakeep.
+
+## Core Reliability Rules
+- every task must name deterministic checks explicitly
+- stateful runtime prep must be explicit rather than hidden inside build or test scripts
+- operational artifacts under `state/` and `logs/` should be stable and inspectable
+- AI enrichment failures must not block note or link persistence
+- external AI verification must be explicit instead of assumed from unit tests alone
+- public rendering should fail closed when persisted public data is malformed or unsafe
+
+## Verification
+- `npm run db:prepare` prepares SQLite state and owner seed deterministically
+- `npm run start:smoke` boots the production-style server and probes a health endpoint
+- `npm run verify` includes startup proof alongside code-level checks
+- Ralph status and backlog rendering must work without hand-editing state files
+- AI tasks must require a real-endpoint E2E check when `LLM_BASE`, `TOKEN`, and `MODEL` are present
+- the real-endpoint Playwright path is tagged `@ai-real`, and promotable AI tasks must pass `npm run test:e2e -- --grep @ai-real` when those env vars are configured
+ succeeded in 0ms:
+# SECURITY.md
+
+## Purpose
+Define the security posture for Minakeep's current shipped slice.
+
+## Core Security Rules
+- keep `/app` routes private to the owner account
+- expose only explicitly published notes and explicitly published links on public routes
+- do not log secrets, passwords, session tokens, or full private note/link payloads
+- validate owner credentials on the server only
+- store only the owner password hash in SQLite
+- accept saved-link URLs only for `http` and `https`
+- keep AI provider tokens and base URLs server-only
+- do not send private note or link content to unconfigured or fallback endpoints silently
+- visible AI failure copy may name missing env keys, but it must never echo configured secret values
+- public routes must fail closed on malformed or unsafe published-link URLs, even if stale SQLite data exists
+
+## Secrets and Config
+- keep `AUTH_SECRET`, `DATABASE_URL`, `OWNER_USERNAME`, and `OWNER_PASSWORD` in environment configuration only
+- keep `LLM_BASE`, `TOKEN`, and `MODEL` in shell or local environment only
+ succeeded in 0ms:
+# AGENTS.md
+
+## Purpose
+Minakeep is a self-hosted knowledge vault for private markdown notes and saved links, with selectively published public notes and links, automatic AI enrichment, and a polished knowledge-studio interface.
+
+This repository is optimized for agent-legible development and a Ralph-style task-promotion loop.
+
+## Read Order
+Before changing code or plans, read these files in order:
+
+1. `ARCHITECTURE.md`
+2. `docs/PRODUCT_SENSE.md`
+3. `docs/design-docs/core-beliefs.md`
+4. `docs/product-specs/index.md`
+5. `docs/FRONTEND.md`
+6. `docs/PLANS.md`
+7. active plans in `docs/exec-plans/active/`
+
+## Scope Guardrails
+### In scope for v1
+exec
+/bin/zsh -lc "sed -n '1,260p' docs/exec-plans/active/040-public-wave-hardening.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# Public wave hardening
+
+```json taskmeta
+{
+  "id": "040-public-wave-hardening",
+  "title": "Public wave hardening",
+  "order": 40,
+  "status": "active",
+  "next_task_on_success": null,
+  "prompt_docs": [
+    "AGENTS.md",
+    "docs/QUALITY_SCORE.md",
+    "docs/RELIABILITY.md",
+    "docs/SECURITY.md"
+  ],
+  "required_commands": [
+    "npm run verify",
+    "npm run start:smoke"
+  ],
+  "required_files": [
+Plan update
+  ✓ Read required evaluator docs and capture the stated task contract
+  → Inspect the shipped public-wave implementation and targeted tests
+  • Decide promotion readiness against the exit criteria and return the JSON verdict
+exec
+/bin/zsh -lc "sed -n '1,240p' tests/unit/public-content.test.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' ARCHITECTURE.md" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' src/features/public-content/types.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,220p' src/app/page.tsx" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' src/features/public-content/service.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import { PublicShowroom, type PublicShowroomItem } from "@/features/public-content/components/public-showroom";
+import { listPublishedContent } from "@/features/public-content/service";
+
+const publishedDateFormatter = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
+
+export default async function HomePage() {
+  const items = await listPublishedContent();
+  const publishedLinks = items.filter((item) => item.kind === "link").length;
+  const hasPublishedLinks = publishedLinks > 0;
+  const showroomItems: PublicShowroomItem[] = items.map((item) => ({
+    ...item,
+    publishedAtLabel: publishedDateFormatter.format(item.publishedAt)
+  }));
+
+  return (
+    <div className="feature-layout public-home-layout" data-testid="public-home-layout">
+      <PublicShowroom hasPublishedLinks={hasPublishedLinks} items={showroomItems} />
+    </div>
+  );
+}
+ succeeded in 0ms:
+import type { PublishedLinkSummary } from "@/features/links/types";
+import type { PublishedNoteSummary } from "@/features/notes/types";
+import type { SavedTag } from "@/features/tags/types";
+
+export type PublicContentKind = "note" | "link";
+
+type PublishedPublicContentBase = {
+  id: string;
+  kind: PublicContentKind;
+  title: string;
+  summary: string | null;
+  publishedAt: Date;
+  updatedAt: Date;
+  tags: SavedTag[];
+};
+
+export type PublishedPublicNote = PublishedPublicContentBase & {
+  kind: "note";
+  excerpt: string;
+  slug: string;
+ succeeded in 0ms:
+# ARCHITECTURE.md
+
+## Goal
+Build Minakeep as an agent-legible codebase with strong boundaries, a short instruction surface, and enough extension seams to support future change without overbuilding v1.
+
+## System Overview
+Minakeep is a web application with:
+- a public site for published notes and published links
+- a private owner area for notes, links, tags, and search
+- an automatic AI enrichment path for notes and links
+- a SQLite-backed persistence layer for content and owner identity
+- a deterministic operator path with logged startup and Ralph-loop state tracking
+
+## Architectural Priorities
+- keep the foundation small and agent-legible
+- separate public reading from private authoring clearly
+- keep user-visible feature fronts sliced into small plans
+- make runtime startup and verification deterministic before unattended loop work
+- isolate the external AI client behind a narrow service boundary
+- make AI failure visible without letting it block core save flows
+ succeeded in 0ms:
+import test from "node:test";
+import assert from "node:assert/strict";
+
+import { filterSafePublishedContent, sortPublishedContent, toPublishedPublicLink, toPublishedPublicNote } from "../../src/features/public-content/types";
+
+test("toPublishedPublicNote and toPublishedPublicLink preserve the shared public boundary fields", () => {
+  const publishedAt = new Date("2026-03-20T10:00:00.000Z");
+  const updatedAt = new Date("2026-03-20T11:00:00.000Z");
+
+  const note = toPublishedPublicNote({
+    id: "note-1",
+    title: "Published note",
+    slug: "published-note",
+    excerpt: "Note excerpt",
+    summary: "Note summary",
+    publishedAt,
+    updatedAt,
+    tags: [{ id: "tag-1", name: "notes" }]
+  });
+
+ succeeded in 0ms:
+import "server-only";
+
+import { listPublishedLinks } from "@/features/links/service";
+import { listPublishedNotes } from "@/features/notes/service";
+import { filterSafePublishedContent, sortPublishedContent, toPublishedPublicLink, toPublishedPublicNote } from "@/features/public-content/types";
+
+export async function listPublishedContent() {
+  const [notes, links] = await Promise.all([listPublishedNotes(), listPublishedLinks()]);
+
+  return sortPublishedContent(filterSafePublishedContent([...notes.map(toPublishedPublicNote), ...links.map(toPublishedPublicLink)]));
+}
+exec
+/bin/zsh -lc "sed -n '1,220p' docs/exec-plans/tech-debt-tracker.md" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' scripts/ralph/README.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# Tech Debt Tracker
+
+## Purpose
+Track recurring cleanup and deferred concerns that should not remain implicit.
+
+## Current Debt
+
+- AI enrichment retries are still immediate owner actions with no queued backoff or per-attempt audit trail beyond the current visible status fields.
+- The shared UI primitives still emit some legacy compatibility class names alongside the `ui-*` hooks, so the visual system is centralized but not yet fully de-aliased.
+- UI hardening is regression-proof at the route level through screenshot coverage, but the design system still lacks smaller primitive-level presentation contracts outside the Playwright suite.
+- Some mixed-public copy remains note-centric on note-detail return paths and nearby labels; a later low-risk UI copy pass should align that wording with the showroom model without broadening the route contract.
+ succeeded in 0ms:
+# Minakeep Ralph Loop v2
+
+This package upgrades the repository from a **repair loop** to a **task-promotion loop**.
+
+## What changed
+
+The first version of the loop could repeatedly work on one prompt, but it could not
+reliably decide when to advance. This version adds:
+
+- machine-readable task contracts in `docs/exec-plans/active/*.md`
+- deterministic checks
+- a read-only evaluator pass with structured JSON output for normal tasks
+- deterministic-only promotion for tasks whose quality is fully proven by required commands
+- automatic promotion to the next task when the current task is truly complete
+
+## Why this matches the OpenAI harness pattern
+
+OpenAI’s harness engineering article describes a system where:
+- humans specify intent
+- repository docs act as the system of record
+exec
+/bin/zsh -lc "sed -n '1,280p' src/features/public-content/components/public-showroom.tsx" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+"use client";
+
+import Link from "next/link";
+import { useState } from "react";
+
+import { FormField, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
+
+type ShowroomTag = {
+  id: string;
+  name: string;
+};
+
+type ShowroomBaseItem = {
+  id: string;
+  kind: "note" | "link";
+  title: string;
+  summary: string | null;
+  publishedAtLabel: string;
+  tags: ShowroomTag[];
+};
+exec
+/bin/zsh -lc "sed -n '1,260p' src/features/notes/service.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "server-only";
+
+import { requestEnrichment, retryEnrichment } from "@/features/enrichment/service";
+import { notesRepo } from "@/features/notes/repo";
+import { createNoteExcerpt } from "@/features/notes/markdown";
+import type { NoteDraftInput } from "@/features/notes/types";
+import { createUniqueNoteSlug } from "@/features/notes/slug";
+
+function normalizeTitle(title: string) {
+  const trimmedTitle = title.trim();
+
+  return trimmedTitle || "Untitled note";
+}
+
+export async function listOwnerNotes(ownerId: string) {
+  return notesRepo.listForOwner(ownerId);
+}
+
+export async function listPublishedNotes() {
+  const notes = await notesRepo.listPublished();
+exec
+/bin/zsh -lc "sed -n '1,260p' tests/e2e/public-home-search.spec.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "dotenv/config";
+
+import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaClient } from "@prisma/client";
+import { expect, test } from "@playwright/test";
+
+const databaseUrl = process.env.DATABASE_URL;
+
+if (!databaseUrl) {
+  throw new Error("DATABASE_URL must be set before running public home search tests.");
+}
+
+const prisma = new PrismaClient({
+  adapter: new PrismaBetterSqlite3({
+    url: databaseUrl
+  })
+});
+
+const seededPublishedNotes = [
+  {
+exec
+/bin/zsh -lc "sed -n '1,260p' src/features/links/service.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "server-only";
+
+import { Prisma } from "@prisma/client";
+
+import { requestEnrichment, retryEnrichment } from "@/features/enrichment/service";
+import { normalizeLinkInput } from "@/features/links/normalize";
+import { linksRepo } from "@/features/links/repo";
+import type { LinkDraftInput } from "@/features/links/types";
+
+export class DuplicateLinkUrlError extends Error {
+  constructor() {
+    super("duplicate-link-url");
+    this.name = "DuplicateLinkUrlError";
+  }
+}
+
+export async function listOwnerLinks(ownerId: string) {
+  return linksRepo.listForOwner(ownerId);
+}
+
+exec
+/bin/zsh -lc 'git status --short' in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: error: couldn't create cache file '/tmp/xcrun_db-JNeQ62K1' (errno=Operation not permitted)
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: error: couldn't create cache file '/tmp/xcrun_db-1EE2XltK' (errno=Operation not permitted)
+ M ARCHITECTURE.md
+ M docs/QUALITY_SCORE.md
+ M docs/RELIABILITY.md
+ M docs/SECURITY.md
+ D docs/exec-plans/active/039-public-publishing-regression-pass.md
+ M docs/exec-plans/active/040-public-wave-hardening.md
+ M docs/exec-plans/tech-debt-tracker.md
+ M scripts/ralph/generated/current-evaluator-prompt.txt
+ M scripts/ralph/generated/current-task-prompt.txt
+ M src/app/page.tsx
+ M src/features/public-content/service.ts
+ M src/features/public-content/types.ts
+ M state/artifacts/20260321T154439-039-public-publishing-regression-pass/commit.log
+ M state/backlog.md
+ M state/current-cycle.json
+ M state/current-task.txt
+exec
+/bin/zsh -lc "rg -n \"listPublishedContent|filterSafePublishedContent|isSafePublicLinkUrl|public-content\" src tests -g '"'!node_modules'"'" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+src/features/public-content/service.ts:5:import { filterSafePublishedContent, sortPublishedContent, toPublishedPublicLink, toPublishedPublicNote } from "@/features/public-content/types";
+src/features/public-content/service.ts:7:export async function listPublishedContent() {
+src/features/public-content/service.ts:10:  return sortPublishedContent(filterSafePublishedContent([...notes.map(toPublishedPublicNote), ...links.map(toPublishedPublicLink)]));
+src/features/public-content/components/public-showroom.tsx:89:      className={`note-preview-card note-preview-card-${variant} public-content-card public-content-card-${item.kind}`}
+src/features/public-content/types.ts:59:export function isSafePublicLinkUrl(url: string) {
+src/features/public-content/types.ts:69:export function filterSafePublishedContent(items: PublishedPublicContent[]) {
+src/features/public-content/types.ts:70:  return items.filter((item) => item.kind !== "link" || isSafePublicLinkUrl(item.url));
+src/app/page.tsx:1:import { PublicShowroom, type PublicShowroomItem } from "@/features/public-content/components/public-showroom";
+src/app/page.tsx:2:import { listPublishedContent } from "@/features/public-content/service";
+src/app/page.tsx:7:  const items = await listPublishedContent();
+tests/unit/public-content.test.ts:4:import { filterSafePublishedContent, sortPublishedContent, toPublishedPublicLink, toPublishedPublicNote } from "../../src/features/public-content/types";
+tests/unit/public-content.test.ts:128:test("filterSafePublishedContent drops unsafe or malformed published links while keeping notes and safe links", () => {
+tests/unit/public-content.test.ts:129:  const filtered = filterSafePublishedContent([
+src/app/globals.css:1379:.public-content-card-link {
+src/app/globals.css:1386:.public-content-card-link::before {
+exec
+/bin/zsh -lc "rg -n \"public showroom|published notes and links|title-only|public search|mixed public|published links\" docs src/ tests/e2e -g '"'!node_modules'"'" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+docs/SECURITY.md:8:- expose only explicitly published notes and explicitly published links on public routes
+docs/SECURITY.md:27:- `/` is public and may show published notes plus published links
+docs/SECURITY.md:37:- unpublished notes and unpublished links never render on public routes
+src/features/public-content/components/public-showroom.tsx:184:                placeholder={hasPublishedLinks ? "Filter published notes and links by title" : "Filter published notes by title"}
+src/features/public-content/components/public-showroom.tsx:204:                  ? "Published notes and published links lead the public surface. Drafts, private links, tags, and AI workflow stay inside the private studio until the owner chooses to publish them."
+tests/e2e/public-home-search.spec.ts:69:  excerpt: "This title should never appear in the public showroom.",
+tests/e2e/public-home-search.spec.ts:70:  summary: "Unpublished content must stay out of public search results."
+docs/DESIGN.md:8:- notes-first public showroom instead of a hero-led landing page
+tests/e2e/ui-public-showroom.spec.ts:13:  throw new Error("DATABASE_URL must be set before running public showroom UI tests.");
+tests/e2e/ui-public-showroom.spec.ts:28:    summary: "Longer note previews should still read cleanly beside published links on the public homepage.",
+tests/e2e/ui-public-showroom.spec.ts:36:    excerpt: "A shorter published note that should survive a title-only filter.",
+tests/e2e/ui-public-showroom.spec.ts:54:    summary: "A published link that should remain visible when the title-only filter matches.",
+tests/e2e/ui-public-showroom.spec.ts:69:    throw new Error(`Owner account '${username}' must exist before public showroom UI tests run.`);
+tests/e2e/ui-public-showroom.spec.ts:268:test("@ui-regression @ui-public-showroom mixed public showroom stays clean on desktop", async ({ page }) => {
+tests/e2e/ui-public-showroom.spec.ts:293:test("@ui-regression @ui-public-showroom mixed public showroom and search stay usable on mobile", async ({ page }) => {
+docs/FRONTEND.md:14:- `/` -> public showroom of published notes and published links
+docs/FRONTEND.md:26:Acts as a mixed public showroom first. It should emphasize a dynamic grid of published note and published link previews, remove the old owner-entrance side section, and place one unified title-only search bar in the public surface.
+docs/FRONTEND.md:32:Appear in the public showroom alongside note cards, with title, summary, and tags, and open the external destination in a new tab.
+docs/FRONTEND.md:49:- use one unified title-only public search bar without a type selector
+docs/FRONTEND.md:57:- public search is homepage-only and title-only
+exec
+/bin/zsh -lc "sed -n '1,220p' docs/product-specs/public-home-showroom.md" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,220p' docs/product-specs/public-showroom-search.md" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,220p' docs/FRONTEND.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# Public home showroom
+
+## Goal
+Turn the public homepage into a mixed showroom of published notes and published links with dynamic grid rhythm, lighter chrome, and cleaner framing.
+
+## Trigger / Entry
+An anonymous visitor opens `/`.
+
+## User-Visible Behavior
+- The homepage is led by a mixed showroom of published notes and published links, not by a dominant marketing hero.
+- The old “Owner entrance / Private origin” section is removed.
+- Note and link previews appear in a grid arrangement with varied heights rather than rigid equal rows.
+- The layout stays easy to scan quickly.
+- Metadata remains compact and secondary to titles and previews.
+
+## Validation
+- Mixed public content dominates the first-screen experience.
+- The old owner-entrance side section is gone.
+- The homepage grid feels dynamic without becoming visually chaotic.
+- Mobile layouts still scan cleanly.
+ succeeded in 0ms:
+# Public showroom search
+
+## Goal
+Let anonymous visitors filter the public showroom of published notes and published links through one unified title-only search bar.
+
+## Trigger / Entry
+An anonymous visitor types into the public homepage search bar.
+
+## User-Visible Behavior
+- One public search bar appears on the homepage.
+- The search bar filters published notes and published links together.
+- Search matches titles only.
+- There is no type selector and no separate public results route in this wave.
+- Search updates the homepage showroom in place.
+
+## Validation
+- Title matches for published notes and published links appear in one filtered homepage feed.
+- Non-matching public content is removed from the current view as the query changes.
+- The search does not expose unpublished content.
+- `npm run verify` passes.
+ succeeded in 0ms:
+# FRONTEND.md
+
+## Goal
+Describe the user-facing structure of Minakeep so an agent can implement the UI without guessing the product model.
+
+## Tech Direction
+- Next.js application
+- TypeScript
+- App Router
+- server-backed data flows where appropriate
+- reusable presentational components layered above existing route and feature logic
+
+## Route Map
+- `/` -> public showroom of published notes and published links
+- `/notes/[slug]` -> public published-note reading page
+- `/login` -> owner sign-in
+- `/app` -> private notes-first dashboard shell
+- `/app/notes/new` -> create note
+- `/app/notes/[id]/edit` -> edit note and preview markdown
+- `/app/links` -> private saved-link management with publish controls
+exec
+/bin/zsh -lc "sed -n '1,220p' docs/product-specs/public-link-publishing.md" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,220p' docs/product-specs/public-note-publishing.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# Public note publishing
+
+## Goal
+Let the owner publish or unpublish a note and expose published notes on the mixed public homepage and note pages.
+
+## Trigger / Entry
+The owner opens a note in the private area and chooses to publish it.
+
+## User-Visible Behavior
+- The owner can publish or unpublish a note explicitly.
+- Published notes appear on the public homepage alongside published links when any links are also published.
+- Each published note is reachable by a public slug-based route.
+- Public note listings may show AI-generated summary when available without replacing the authored note body.
+- Unpublished notes are never exposed on public routes.
+
+## Validation
+- Publishing a note makes it visible on the public homepage.
+- Anonymous readers can open a published note page by slug.
+- Unpublishing removes the note from public routes.
+- `npm run verify` passes.
+ succeeded in 0ms:
+# Public link publishing
+
+## Goal
+Let the owner publish or unpublish links and expose published links on the public homepage alongside published notes.
+
+## Trigger / Entry
+The owner opens the private links area and chooses to publish or unpublish a saved link.
+
+## User-Visible Behavior
+- The owner can publish or unpublish a link explicitly from the links manager.
+- Published links appear in the public showroom alongside published notes.
+- Public link cards show title, summary, and tags.
+- Clicking a published link card opens the saved external URL in a new tab.
+- Unpublished links never appear on public routes.
+
+## Validation
+- Publishing a link makes it visible on the public homepage.
+- Unpublishing removes the link from the public homepage.
+- Public link cards open the external destination in a new tab instead of replacing the current page.
+- `npm run verify` passes.
+exec
+/bin/zsh -lc "sed -n '1,260p' tests/e2e/home.spec.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "dotenv/config";
+
+import type { Route } from "@playwright/test";
+import { expect, test } from "@playwright/test";
+
+import { setAiPlaywrightTestMode } from "./ai-test-mode";
+
+// These journeys all mutate the same single-owner SQLite state, so serial execution keeps promotion checks deterministic.
+test.describe.configure({ mode: "serial" });
+
+test("public homepage exposes the mixed published content surface", async ({ page }) => {
+  await page.goto("/");
+
+  const emptyState = page.getByText("No published notes or links yet.");
+  const publishedNoteEntry = page.locator(".note-preview-card").first();
+
+  await expect(
+    page
+      .getByRole("heading", { name: "Notes the owner has chosen to share." })
+      .or(page.getByRole("heading", { name: "Notes and links the owner has chosen to share." }))
+exec
+/bin/zsh -lc "sed -n '260,460p' tests/e2e/home.spec.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+    await expect(savedLinkEntry).toContainText("AI ready", { timeout: 15000 });
+    await savedLinkEntry.getByRole("button", { name: "Publish link" }).click();
+
+    await expect(page).toHaveURL(/\/app\/links\?published=1$/);
+    await expect(page.getByText("Link published.")).toBeVisible();
+    await expect(savedLinkEntry).toContainText("Public showroom");
+    await expect(savedLinkEntry.getByRole("button", { name: "Unpublish link" })).toBeVisible();
+
+    await page.goto("/");
+    const publicLinkEntry = page.locator("[data-card-kind='link']").filter({ has: page.getByRole("link", { name: title }) });
+    const publicLink = publicLinkEntry.getByRole("link", { name: title });
+    await expect(publicLink).toBeVisible();
+    await expect(publicLink).toHaveAttribute("href", url);
+    await expect(publicLink).toHaveAttribute("target", "_blank");
+    await expect(publicLink).toHaveAttribute("rel", /noopener/);
+    await expect(publicLinkEntry).toContainText("Opens in new tab");
+
+    await page.context().route(url, popupRoute);
+    const popupPromise = page.waitForEvent("popup");
+    await publicLink.click();
+exec
+/bin/zsh -lc "sed -n '1,220p' docs/product-specs/index.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# Product Specs Index
+
+## Purpose
+This directory contains user-facing behavior specs.
+If a UI or API behavior is visible to users, it should be defined here before implementation drifts.
+
+## Current Spec Set
+| Spec | Status | Scope |
+|---|---|---|
+| `note-authoring.md` | confirmed | Private note drafting, preview, and note-side AI metadata visibility |
+| `public-note-publishing.md` | confirmed | Public note visibility and note pages |
+| `link-capture.md` | confirmed | Private bookmark capture with AI-owned summary/tag metadata |
+| `tag-filtering-and-owner-search.md` | confirmed | Shared tags and basic private retrieval |
+| `note-ai-enrichment.md` | confirmed | Automatic AI summary/tag generation for notes |
+| `link-ai-enrichment.md` | confirmed | Automatic AI summary/tag generation for links |
+| `knowledge-studio-ui-refresh.md` | completed | Previous broad visual redesign tranche |
+| `public-home-showroom.md` | confirmed | Mixed public showroom of published notes and links |
+| `public-note-reading.md` | confirmed | Public note reading polish and metadata hierarchy |
+| `owner-workspace-density.md` | confirmed | Tighter professional owner layout for desktop and mobile |
+| `responsive-ui-behavior.md` | confirmed | Cross-surface responsive collapse and mobile scanning behavior |
+exec
+/bin/zsh -lc "sed -n '1,240p' package.json" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+{
+  "name": "minakeep",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "db:prepare": "node scripts/db-prepare.mjs",
+    "test:unit": "NODE_PATH=./node_modules/next/dist/compiled node --conditions=react-server --import tsx --test tests/unit/**/*.test.ts",
+    "test:e2e": "npm run db:prepare && playwright test",
+    "test": "npm run test:unit && npm run test:e2e",
+    "start:smoke": "node scripts/start-smoke.mjs",
+    "start:logged": "node scripts/start-logged.mjs",
+    "verify": "npm run lint && npm run db:prepare && npm run typecheck && npm run build && npm run test && npm run start:smoke",
+    "postinstall": "prisma generate"
+  },
+  "prisma": {
+exec
+/bin/zsh -lc "rg -n \"published notes only|public notes only|notes-only|owner entrance|Private origin|published notes lead|mixed public\" docs src -g '"'!node_modules'"'" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+docs/FRONTEND.md:26:Acts as a mixed public showroom first. It should emphasize a dynamic grid of published note and published link previews, remove the old owner-entrance side section, and place one unified title-only search bar in the public surface.
+docs/FRONTEND.md:48:- the public homepage no longer needs a separate “Owner entrance” or “Private origin” section
+docs/product-specs/public-note-publishing.md:4:Let the owner publish or unpublish a note and expose published notes on the mixed public homepage and note pages.
+docs/product-specs/public-home-showroom.md:11:- The old “Owner entrance / Private origin” section is removed.
+docs/PRODUCT_SENSE.md:42:- mixed public content can become confusing if note and link cards are not differentiated clearly
+docs/RELIABILITY.md:39:For the mixed public wave, checks should also prove that stale or manually seeded invalid published-link URLs stay hidden from public routes instead of being rendered optimistically.
+docs/exec-plans/active/index.md:8:1. `031-public-publishing-foundation.md` -> extend the public model from notes-only to mixed published notes and links with explicit publishing boundaries
+docs/exec-plans/active/040-public-wave-hardening.md:32:Stabilize the mixed public publishing/search wave and keep the docs, reliability, and security posture aligned.
+docs/exec-plans/active/040-public-wave-hardening.md:60:Promote only when the mixed public publishing/search wave is stable enough for the next tranche.
+docs/exec-plans/active/040-public-wave-hardening.md:65:- 2026-03-21 16:12 KST: Audited the mixed public publishing/search slice against the required repo docs, product specs, and E2E coverage. Found docs drift in architecture/security-reliability framing and a public-boundary hardening gap where unsafe published-link filtering lived only in `src/app/page.tsx`.
+docs/exec-plans/active/040-public-wave-hardening.md:66:- 2026-03-21 16:12 KST: Moved unsafe published-link filtering into the shared `public-content` boundary, added a focused unit contract for malformed and `javascript:` URLs, updated architecture/quality/reliability/security docs to match the shipped mixed public model, and recorded the remaining note-centric public-copy debt in `docs/exec-plans/tech-debt-tracker.md`.
+docs/exec-plans/completed/033-public-mixed-showroom-feed.md:37:- mixed public feed on `/`
+docs/exec-plans/completed/033-public-mixed-showroom-feed.md:59:Promote only when the homepage is a coherent mixed showroom rather than a notes-only archive with links bolted on.
+docs/exec-plans/completed/034-public-showroom-shell-cleanup.md:32:Remove the public “Owner entrance / Private origin” side section and simplify the homepage shell around the mixed showroom.
+docs/exec-plans/completed/034-public-showroom-shell-cleanup.md:65:- 2026-03-21 15:00 KST: Read the task contract, public-home spec, frontend guidance, and UI verification contract; confirmed the homepage still shipped both the `Private origin` rail and the `Owner entrance` side panel.
+docs/exec-plans/completed/031-public-publishing-foundation.md:35:Extend the product and persistence contract from notes-only public publishing to mixed published notes and published links.
+docs/exec-plans/completed/031-public-publishing-foundation.md:71:- 2026-03-21 14:52 KST - Updated E2E/UI coverage and generated schema docs to reflect the mixed public publishing boundary; full verification pending on this run.
+docs/exec-plans/completed/031-public-publishing-foundation.md:72:- 2026-03-21 15:02 KST - `npm run verify` passed after adding the owner link publish controls, mixed public homepage boundary, and deterministic UI/E2E coverage for the new notes-plus-links public contract.
+docs/exec-plans/completed/031-public-publishing-foundation.md:73:- 2026-03-21 14:38 KST - Reconciled the remaining repo drift after confirming the mixed publishing boundary was already shipped in `src` and `tests/e2e`: updated stale notes-only docs, retired queued tasks `032` and `033` as separately executable work, and pointed the active queue to `034`.
+docs/exec-plans/completed/022-public-home-shell-reset.md:66:- 2026-03-21 10:40 KST: Reworked `src/app/page.tsx` so the published-note collection leads the home shell, with the intro reduced to a smaller supporting card and the owner entrance kept in a secondary rail.
+exec
+/bin/zsh -lc "rg -n \"unsafe|malformed|fail closed|fail-closed|javascript:\" docs src tests -g '"'!node_modules'"'" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+docs/SECURITY.md:16:- public routes must fail closed on malformed or unsafe published-link URLs, even if stale SQLite data exists
+docs/SECURITY.md:38:- unsafe saved-link URL schemes are rejected before persistence
+docs/SECURITY.md:45:- the shared public-content boundary must revalidate published-link URLs before public rendering so seeded `javascript:` or malformed URLs stay hidden
+tests/e2e/home.spec.ts:342:test("owner cannot save a private link with an unsafe URL scheme", async ({ page }) => {
+docs/RELIABILITY.md:12:- public rendering should fail closed when persisted public data is malformed or unsafe
+docs/exec-plans/active/040-public-wave-hardening.md:65:- 2026-03-21 16:12 KST: Audited the mixed public publishing/search slice against the required repo docs, product specs, and E2E coverage. Found docs drift in architecture/security-reliability framing and a public-boundary hardening gap where unsafe published-link filtering lived only in `src/app/page.tsx`.
+docs/exec-plans/active/040-public-wave-hardening.md:66:- 2026-03-21 16:12 KST: Moved unsafe published-link filtering into the shared `public-content` boundary, added a focused unit contract for malformed and `javascript:` URLs, updated architecture/quality/reliability/security docs to match the shipped mixed public model, and recorded the remaining note-centric public-copy debt in `docs/exec-plans/tech-debt-tracker.md`.
+docs/exec-plans/completed/036-public-link-new-tab-behavior.md:66:- 2026-03-21 15:17:06 +0900: Added a visible `Opens in new tab` affordance to published link cards and extended Playwright coverage to verify popup behavior plus public suppression of unsafe published URLs.
+tests/e2e/public-home-search.spec.ts:59:  url: "javascript:alert('xss')",
+tests/e2e/public-home-search.spec.ts:62:  tags: ["unsafe"]
+docs/exec-plans/completed/013-link-capture.md:67:- 2026-03-20 17:42 KST: Tightened saved-link URL validation to allow only `http` and `https`, updated the private links error copy accordingly, and added unit plus E2E coverage that rejects `javascript:` URLs before they can appear as live private links.
+docs/QUALITY_SCORE.md:17:| Product clarity | A- | The public/private knowledge-studio shape is stable, and the mixed public wave now documents both the showroom contract and the fail-closed handling for invalid published-link data alongside the full-suite `@ui-regression` gate. |
+docs/QUALITY_SCORE.md:26:| Boundary clarity | A- | Logic boundaries are good, compact surface styling lives in the shared `Surface` primitive, and the mixed public feed now owns unsafe-link filtering in the shared `public-content` boundary instead of only in the homepage route. |
+tests/unit/note-markdown.test.ts:6:test("renderMarkdownToHtml preserves common note-writing structures while escaping unsafe HTML", () => {
+tests/unit/link-normalize.test.ts:23:        url: "javascript:alert(1)",
+tests/unit/public-content.test.ts:128:test("filterSafePublishedContent drops unsafe or malformed published links while keeping notes and safe links", () => {
+tests/unit/public-content.test.ts:152:      id: "link-unsafe",
+tests/unit/public-content.test.ts:159:      url: "javascript:alert('xss')"
+tests/unit/public-content.test.ts:162:      id: "link-malformed",
+exec
+/bin/zsh -lc "sed -n '1,220p' docs/exec-plans/completed/036-public-link-new-tab-behavior.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# Public link new-tab behavior
+
+```json taskmeta
+{
+  "id": "036-public-link-new-tab-behavior",
+  "title": "Public link new-tab behavior",
+  "order": 36,
+  "status": "completed",
+  "next_task_on_success": "037-ui-hierarchy-softening",
+  "prompt_docs": [
+    "AGENTS.md",
+    "docs/FRONTEND.md",
+    "docs/product-specs/public-link-publishing.md",
+    "docs/SECURITY.md"
+  ],
+  "required_commands": [
+    "npm run verify"
+  ],
+  "required_files": [
+    "src/app/page.tsx",
+exec
+/bin/zsh -lc "rg -n \"listPublishedLinks\\(|listPublishedNotes\\(\" src -g '"'!node_modules'"'" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+src/features/public-content/service.ts:8:  const [notes, links] = await Promise.all([listPublishedNotes(), listPublishedLinks()]);
+src/features/links/service.ts:21:export async function listPublishedLinks() {
+src/features/notes/service.ts:19:export async function listPublishedNotes() {
+exec
+/bin/zsh -lc "sed -n '1,260p' state/deterministic-checks.json" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+{
+  "checked_at": "2026-03-21T06:59:27.703Z",
+  "task_id": "040-public-wave-hardening",
+  "commands": [
+    {
+      "command": "npm run verify",
+      "ok": true,
+      "output": "\n> minakeep@0.1.0 verify\n> npm run lint && npm run db:prepare && npm run typecheck && npm run build && npm run test && npm run start:smoke\n\n\n> minakeep@0.1.0 lint\n> eslint . --max-warnings=0\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 36ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 typecheck\n> tsc --noEmit\n\n\n> minakeep@0.1.0 build\n> next build\n\n▲ Next.js 16.2.0 (Turbopack)\n- Environments: .env\n\n  Creating an optimized production build ...\n✓ Compiled successfully in 1123ms\n  Running TypeScript ...\n  Finished TypeScript in 1498ms ...\n  Collecting page data using 10 workers ...\n  Generating static pages using 10 workers (0/11) ...\n  Generating static pages using 10 workers (2/11) \r\n  Generating static pages using 10 workers (5/11) \r\n  Generating static pages using 10 workers (8/11) \r\n✓ Generating static pages using 10 workers (11/11) in 178ms\n  Finalizing page optimization ...\n\nRoute (app)\n┌ ○ /\n├ ○ /_not-found\n├ ƒ /api/auth/[...nextauth]\n├ ƒ /api/health\n├ ƒ /api/test/mina/chat/completions\n├ ƒ /app\n├ ƒ /app/links\n├ ƒ /app/notes/[id]/edit\n├ ƒ /app/notes/new\n├ ƒ /app/search\n├ ƒ /app/tags\n├ ƒ /login\n└ ƒ /notes/[slug]\n\n\nƒ Proxy (Middleware)\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n\n> minakeep@0.1.0 test\n> npm run test:unit && npm run test:e2e\n\n\n> minakeep@0.1.0 test:unit\n> NODE_PATH=./node_modules/next/dist/compiled node --conditions=react-server --import tsx --test tests/unit/**/*.test.ts\n\n✔ getMinaAiConfigStatus returns disabled when no AI env vars are set (0.755ms)\n✔ buildMinaChatCompletionsRequest shapes the Mina OpenAI-compatible request (0.894959ms)\n✔ normalizeMinaEnrichmentResponse trims the summary and normalizes repeated tags (8.188375ms)\n✔ normalizeMinaEnrichmentResponse accepts JSON wrapped in a fenced code block (0.195083ms)\n✔ getMinaAiRequestTimeoutMs falls back to the default timeout (0.082333ms)\n✔ requestMinaEnrichment aborts hung requests at the configured timeout (21.886458ms)\n✔ requestEnrichment records a failed state when the AI env is not configured (0.781917ms)\n✔ requestEnrichment records a pending state when the AI env is configured (0.109542ms)\n✔ requestEnrichment records which AI env vars are missing when the Mina config is partial (0.093667ms)\n✔ retryEnrichment only requeues records that are already failed (0.120667ms)\n✔ buildLinkEnrichmentMessages includes the link title and URL for the AI prompt (0.460375ms)\n✔ executeLinkEnrichment records generated summary and tags on success (0.4445ms)\n✔ executeLinkEnrichment records a normalized failed state when the request throws (0.579041ms)\n✔ executeLinkEnrichment skips stale attempts (0.350125ms)\n✔ normalizeLinkInput trims fields and canonicalizes the URL (1.446834ms)\n✔ normalizeLinkInput rejects non-http schemes (0.493459ms)\n✔ buildNoteEnrichmentMessages includes the note title and markdown for the AI prompt (0.428584ms)\n✔ executeNoteEnrichment records generated summary and tags on success (0.44725ms)\n✔ executeNoteEnrichment records a normalized failed state when the request throws (0.139208ms)\n✔ executeNoteEnrichment skips stale attempts (0.061875ms)\n✔ renderMarkdownToHtml preserves common note-writing structures while escaping unsafe HTML (0.829125ms)\n✔ createNoteExcerpt turns markdown into readable summary text (0.184666ms)\n✔ createNoteSlug normalizes title content (0.455792ms)\n✔ createNoteSlug falls back when the title has no slug-safe characters (0.058042ms)\n✔ createUniqueNoteSlug increments an existing base slug (0.062666ms)\n✔ toPublishedPublicNote and toPublishedPublicLink preserve the shared public boundary fields (0.712708ms)\n✔ sortPublishedContent orders mixed published items by published time, then updated time, then title (6.85275ms)\n✔ filterSafePublishedContent drops unsafe or malformed published links while keeping notes and safe links (0.120709ms)\nℹ tests 28\nℹ suites 0\nℹ pass 28\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 208.786792\n\n> minakeep@0.1.0 test:e2e\n> npm run db:prepare && playwright test\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 38ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\nRunning 38 tests using 1 worker\n\n  ✓   1 tests/e2e/auth.spec.ts:5:5 › owner can sign in to the private dashboard (897ms)\n  ✓   2 tests/e2e/home.spec.ts:11:5 › public homepage exposes the mixed published content surface (190ms)\n  ✓   3 tests/e2e/home.spec.ts:26:5 › anonymous visitors cannot access the owner search route (162ms)\n  ✓   4 tests/e2e/home.spec.ts:32:5 › owner can sign in, create a draft note, edit it, and reopen it with rendered preview (1.2s)\n  ✓   5 tests/e2e/home.spec.ts:90:5 › note save still succeeds when the configured AI endpoint times out and exposes a retry path (6.4s)\n  ✓   6 tests/e2e/home.spec.ts:129:5 › owner can publish and unpublish a note across the public routes (1.6s)\n  ✓   7 tests/e2e/home.spec.ts:187:5 › owner can save a private link, receive AI metadata, and keep it off public routes (3.5s)\n  ✓   8 tests/e2e/home.spec.ts:227:5 › owner can publish and unpublish a link across the public homepage (4.0s)\n  ✓   9 tests/e2e/home.spec.ts:300:5 › link save still succeeds when the configured AI endpoint times out and exposes a retry path (6.5s)\n  ✓  10 tests/e2e/home.spec.ts:342:5 › owner cannot save a private link with an unsafe URL scheme (570ms)\n  ✓  11 tests/e2e/home.spec.ts:365:5 › owner can filter private links by tag and search notes by title plus links by URL and tag (4.2s)\n  ✓  12 tests/e2e/link-ai-real.spec.ts:10:5 › owner link enrichment completes against the real Mina endpoint @ai-real (3.7s)\n  ✓  13 tests/e2e/note-ai-real.spec.ts:10:5 › owner note enrichment completes against the real Mina endpoint @ai-real (3.6s)\n  ✓  14 tests/e2e/public-home-search.spec.ts:197:5 › public homepage live search filters mixed published content by title only (264ms)\n  ✓  15 tests/e2e/ui-forms.spec.ts:246:5 › @ui-regression @ui-forms login form stays compact on desktop (258ms)\n  ✓  16 tests/e2e/ui-forms.spec.ts:263:5 › @ui-regression @ui-forms login form stays compact on mobile (224ms)\n  ✓  17 tests/e2e/ui-forms.spec.ts:279:5 › @ui-regression @ui-forms note editor keeps hierarchy on desktop (543ms)\n  ✓  18 tests/e2e/ui-forms.spec.ts:298:5 › @ui-regression @ui-forms note editor keeps hierarchy on mobile (504ms)\n  ✓  19 tests/e2e/ui-home-grid.spec.ts:249:5 › @ui-regression @ui-home-grid homepage showroom uses a varied desktop grid (352ms)\n  ✓  20 tests/e2e/ui-home-grid.spec.ts:269:5 › @ui-regression @ui-home-grid homepage showroom collapses cleanly on mobile (289ms)\n  ✓  21 tests/e2e/ui-home-shell.spec.ts:240:5 › @ui-regression @ui-home-shell @ui-public-home-shell @ui-public-type @ui-responsive homepage reads note-first on desktop (332ms)\n  ✓  22 tests/e2e/ui-home-shell.spec.ts:263:5 › @ui-regression @ui-home-shell @ui-public-home-shell @ui-public-type @ui-responsive homepage stays note-first on mobile (254ms)\n  ✓  23 tests/e2e/ui-owner-dashboard.spec.ts:318:5 › @ui-regression @ui-owner-dashboard @ui-responsive owner dashboard stays compact on desktop (516ms)\n  ✓  24 tests/e2e/ui-owner-dashboard.spec.ts:337:5 › @ui-regression @ui-owner-dashboard @ui-responsive owner dashboard stays usable on mobile (413ms)\n  ✓  25 tests/e2e/ui-owner-secondary.spec.ts:383:5 › @ui-regression @ui-owner-secondary links surface stays compact on desktop (435ms)\n  ✓  26 tests/e2e/ui-owner-secondary.spec.ts:401:5 › @ui-regression @ui-owner-secondary @ui-responsive links surface stays usable on mobile (413ms)\n  ✓  27 tests/e2e/ui-owner-secondary.spec.ts:416:5 › @ui-regression @ui-owner-secondary tags surface keeps retrieval anchors on desktop (521ms)\n  ✓  28 tests/e2e/ui-owner-secondary.spec.ts:436:5 › @ui-regression @ui-owner-secondary @ui-responsive tags surface stays scannable on mobile (490ms)\n  ✓  29 tests/e2e/ui-owner-secondary.spec.ts:455:5 › @ui-regression @ui-owner-secondary search surface keeps results structured on desktop (544ms)\n  ✓  30 tests/e2e/ui-owner-secondary.spec.ts:474:5 › @ui-regression @ui-owner-secondary @ui-responsive search surface stays stacked on mobile (493ms)\n  ✓  31 tests/e2e/ui-public-note.spec.ts:232:5 › @ui-regression @ui-public-note @ui-public-type @ui-responsive public note page keeps a calm desktop reading hierarchy (259ms)\n  ✓  32 tests/e2e/ui-public-note.spec.ts:251:5 › @ui-regression @ui-public-note @ui-public-type @ui-responsive public note page stays compact on mobile (226ms)\n  ✓  33 tests/e2e/ui-public-showroom.spec.ts:268:5 › @ui-regression @ui-public-showroom mixed public showroom stays clean on desktop (325ms)\n  ✓  34 tests/e2e/ui-public-showroom.spec.ts:293:5 › @ui-regression @ui-public-showroom mixed public showroom and search stay usable on mobile (265ms)\n  ✓  35 tests/e2e/ui-system.spec.ts:168:5 › @ui-regression @ui-system public chrome holds together on desktop (256ms)\n  ✓  36 tests/e2e/ui-system.spec.ts:190:5 › @ui-regression @ui-system login surface stays readable on mobile (219ms)\n  ✓  37 tests/e2e/ui-system.spec.ts:205:5 › @ui-regression @ui-system @ui-owner-shell @ui-responsive private shell keeps hierarchy on desktop (408ms)\n  ✓  38 tests/e2e/ui-system.spec.ts:226:5 › @ui-regression @ui-system @ui-owner-shell @ui-responsive private shell collapses cleanly on mobile (360ms)\n\n  38 passed (47.9s)\n\n> minakeep@0.1.0 start:smoke\n> node scripts/start-smoke.mjs\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 38ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 start\n> next start --hostname 127.0.0.1 --port 3200\n\n▲ Next.js 16.2.0\n- Local:         http://127.0.0.1:3200\n- Network:       http://127.0.0.1:3200\n✓ Ready in 70ms\n",
+      "preflight": {
+        "command": "ensure-e2e-port-free.sh 3100",
+        "error": "",
+        "ok": true,
+        "output": "port-cleanup: 127.0.0.1:3100 already free\n"
+      },
+      "next_server_log_path": "/Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T155223-040-public-wave-hardening/npm-run-verify-next-server.log"
+    },
+    {
+      "command": "npm run start:smoke",
+      "ok": true,
+      "output": "\n> minakeep@0.1.0 start:smoke\n> node scripts/start-smoke.mjs\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 43ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 start\n> next start --hostname 127.0.0.1 --port 3200\n\n▲ Next.js 16.2.0\n- Local:         http://127.0.0.1:3200\n- Network:       http://127.0.0.1:3200\n✓ Ready in 56ms\n"
+Plan update
+  ✓ Read required evaluator docs and capture the stated task contract
+  ✓ Inspect the shipped public-wave implementation and targeted tests
+  → Decide promotion readiness against the exit criteria and return the JSON verdict
+codex
+{"decision":"done","recommend_promotion":true,"confidence":0.94,"summary":"Task 040 is substantively complete. The required checks passed, the mixed public boundary now fail-closes unsafe or malformed published links in the shared `public-content` layer, the public search/showroom behavior is covered by unit and E2E tests, the repo docs and operator guidance are aligned with the shipped mixed public model, and the remaining note-centric copy debt is explicitly recorded.","satisfied_exit_criteria":["`npm run verify` passed in `state/deterministic-checks.json`, including lint, typecheck, build, unit tests, E2E, and embedded startup smoke.","`npm run start:smoke` also passed as a separate rerun in `state/deterministic-checks.json`.","Docs and guidance align with the shipped public wave: `ARCHITECTURE.md`, `docs/FRONTEND.md`, `docs/product-specs/public-home-showroom.md`, `docs/product-specs/public-showroom-search.md`, `docs/QUALITY_SCORE.md`, `docs/RELIABILITY.md`, `docs/SECURITY.md`, and the active task doc all describe the mixed public showroom, title-only homepage search, and fail-closed public-link handling consistently.","The implementation matches that guidance: `src/features/public-content/service.ts` routes public data through the shared boundary, `src/features/public-content/types.ts` revalidates published link URLs, `src/app/page.tsx` consumes the hardened boundary, `tests/unit/public-content.test.ts` protects the malformed/unsafe URL contract, and `tests/e2e/public-home-search.spec.ts` proves unsafe seeded published links stay hidden from `/`.","Remaining debt is explicit in `docs/exec-plans/tech-debt-tracker.md`, including the note-centric mixed-public copy follow-up."],"missing_requirements":[],"human_review_triggers":[]}
+tokens used
+107,293
+{"decision":"done","recommend_promotion":true,"confidence":0.94,"summary":"Task 040 is substantively complete. The required checks passed, the mixed public boundary now fail-closes unsafe or malformed published links in the shared `public-content` layer, the public search/showroom behavior is covered by unit and E2E tests, the repo docs and operator guidance are aligned with the shipped mixed public model, and the remaining note-centric copy debt is explicitly recorded.","satisfied_exit_criteria":["`npm run verify` passed in `state/deterministic-checks.json`, including lint, typecheck, build, unit tests, E2E, and embedded startup smoke.","`npm run start:smoke` also passed as a separate rerun in `state/deterministic-checks.json`.","Docs and guidance align with the shipped public wave: `ARCHITECTURE.md`, `docs/FRONTEND.md`, `docs/product-specs/public-home-showroom.md`, `docs/product-specs/public-showroom-search.md`, `docs/QUALITY_SCORE.md`, `docs/RELIABILITY.md`, `docs/SECURITY.md`, and the active task doc all describe the mixed public showroom, title-only homepage search, and fail-closed public-link handling consistently.","The implementation matches that guidance: `src/features/public-content/service.ts` routes public data through the shared boundary, `src/features/public-content/types.ts` revalidates published link URLs, `src/app/page.tsx` consumes the hardened boundary, `tests/unit/public-content.test.ts` protects the malformed/unsafe URL contract, and `tests/e2e/public-home-search.spec.ts` proves unsafe seeded published links stay hidden from `/`.","Remaining debt is explicit in `docs/exec-plans/tech-debt-tracker.md`, including the note-centric mixed-public copy follow-up."],"missing_requirements":[],"human_review_triggers":[]}
+evaluation: done promotion=true

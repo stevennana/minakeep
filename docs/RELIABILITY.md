@@ -9,6 +9,7 @@ Define the reliability expectations and failure-handling rules for Minakeep.
 - operational artifacts under `state/` and `logs/` should be stable and inspectable
 - AI enrichment failures must not block note or link persistence
 - external AI verification must be explicit instead of assumed from unit tests alone
+- public rendering should fail closed when persisted public data is malformed or unsafe
 
 ## Verification
 - `npm run db:prepare` prepares SQLite state and owner seed deterministically
@@ -35,6 +36,7 @@ Document which behaviors are protected by unit tests, which flows require end-to
 When tests cover subtle or business-critical behavior, capture why those tests exist so future loops do not weaken them casually.
 If a user-visible behavior depends on an outside resource such as AI chat or a third-party service, require end-to-end coverage before promotion.
 For the AI enrichment wave, E2E must prove: note save with generated metadata, link save with generated metadata, and save-with-visible-failure when the endpoint fails or times out.
+For the mixed public wave, checks should also prove that stale or manually seeded invalid published-link URLs stay hidden from public routes instead of being rendered optimistically.
 For the UI redesign wave, the tagged `@ui-*` Playwright coverage must prove both `1440x900` desktop and `390x844` mobile behavior, stable screenshots, visible hierarchy anchors/actions, and automated accessibility scanning.
 The shared helper under `tests/e2e/ai-real.ts` is the contract point for checking whether those env vars are present before running real-endpoint journeys.
 Owner surfaces that render pending enrichment state should auto-refresh while enrichment is running, including the private dashboard, links, search, tags, and note editor routes. Retry should be a visible action only from a failed state rather than a second control path for already-pending work.
