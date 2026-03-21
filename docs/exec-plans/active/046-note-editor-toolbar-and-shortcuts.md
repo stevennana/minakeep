@@ -68,3 +68,5 @@ Promote only when the toolbar improves speed without bloating the note editor or
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-21 17:42:20 KST: Added compact markdown toolbar controls to the source-first note editor for H2, bold, italic, inline code, bullet list, numbered list, quote, code block, and link, while keeping markdown text as the only saved body format.
+- 2026-03-21 17:42:20 KST: Added keyboard shortcut handling for `Ctrl/Cmd+B`, `Ctrl/Cmd+I`, `Ctrl/Cmd+K`, and `Ctrl/Cmd+Alt+2`, preserved existing `Tab` indentation and `Enter` list continuation behavior, and added `@ui-note-editor-toolbar` Playwright coverage with desktop/mobile screenshots.

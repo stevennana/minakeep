@@ -21,7 +21,9 @@ Upgrade note authoring from a plain textarea into a compact markdown workbench w
 ## Toolbar Rules
 - toolbar stays compact, not word-processor heavy
 - prioritize headings, bold, italic, lists, quote, code, and link actions
+- the first toolbar wave should stay to one compact row of source transforms: `H2`, bold, italic, inline code, bullet list, numbered list, quote, code block, and link
 - keyboard shortcuts remain first-class for experienced users
+- common shortcut coverage should focus on low-surprise markdown conventions such as bold, italic, link insertion, heading insertion, tab indentation, and enter-based list continuation
 - toolbar actions should insert or transform markdown directly and predictably
 
 ## Mobile Rules

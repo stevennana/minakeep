@@ -10,9 +10,11 @@ The owner opens `/app/notes/new` or `/app/notes/[id]/edit`.
 - The note editor keeps markdown text as the source of truth.
 - The editing surface provides syntax-aware authoring rather than a plain textarea feel.
 - A compact formatting toolbar helps with headings, emphasis, lists, quotes, code, and links.
+- The compact toolbar exposes direct helpers for `H2`, bold, italic, inline code, bullet list, numbered list, quote, code block, and link insertion.
 - Desktop supports `Source`, `Split`, and `Preview` modes.
 - Mobile uses a simpler `Edit` / `Preview` toggle instead of a cramped side-by-side layout.
 - Keyboard shortcuts and insert helpers speed up common markdown actions without forcing toolbar-only usage.
+- `Tab` still indents, `Shift+Tab` outdents, `Enter` continues lists or blockquotes, and `Ctrl/Cmd+B`, `Ctrl/Cmd+I`, `Ctrl/Cmd+K`, and `Ctrl/Cmd+Alt+2` trigger common inline or heading transforms.
 - The rendered preview continues to reflect the same markdown rendering rules used elsewhere in Minakeep.
 
 ## Validation

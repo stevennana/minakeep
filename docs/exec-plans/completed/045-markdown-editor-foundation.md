@@ -5,7 +5,7 @@
   "id": "045-markdown-editor-foundation",
   "title": "Markdown editor foundation",
   "order": 45,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "046-note-editor-toolbar-and-shortcuts",
   "prompt_docs": [
@@ -29,7 +29,8 @@
     "The editor still behaves like a plain textarea without a workbench upgrade.",
     "The implementation introduces a second non-markdown document model.",
     "The new editing core breaks basic note saving or preview rendering."
-  ]
+  ],
+  "completed_at": "2026-03-21T08:34:35.233Z"
 }
 ```
 
@@ -72,3 +73,4 @@ Promote only when the richer editor foundation is clearly in place without chang
 - 2026-03-21 17:31:14 KST: Replaced the plain note textarea with a source-first markdown workbench surface in `src/features/notes/components/note-editor.tsx`, keeping the existing form action contract and markdown preview renderer intact.
 - 2026-03-21 17:31:14 KST: Added syntax-aware editing affordances for indenting and list or blockquote continuation, plus workbench chrome, highlighting, line numbers, and responsive styling in `src/app/globals.css`.
 - 2026-03-21 17:31:14 KST: Added scoped Playwright coverage for `@ui-note-editor-foundation` and refreshed the affected editor screenshot baselines after the new workbench layout landed.
+- 2026-03-21T08:34:35.233Z: automatically promoted after deterministic checks and evaluator approval.

@@ -674,3 +674,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T171853-045-markdown-editor-foundation/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T171853-045-markdown-editor-foundation/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 045-markdown-editor-foundation -> 046-note-editor-toolbar-and-shortcuts
+- backlog: rendered current=046-note-editor-toolbar-and-shortcuts
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooo
+- cycle: finished
+
+### cycle 2026-03-21T17:35:05+09:00 task=046-note-editor-toolbar-and-shortcuts
+- artifacts: state/artifacts/20260321T173505-046-note-editor-toolbar-and-shortcuts
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T173505-046-note-editor-toolbar-and-shortcuts/worker.jsonl
+- worker-summary: Implemented the compact note-editor toolbar in [note-editor.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/components/note-editor.tsx) and [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css). The editor stays source-first, but now supports deterministic markdown helpers for `H2`, bold, italic, inline code, bullet list, numbered list, quote, code block, and link, plus shortcuts for `Ctrl/Cmd+B`, `Ctrl/Cmd+I`, `Ctrl/Cmd+K`, and `Ctrl/Cmd+Alt+2` while preserving existing `Tab` indentation and `Enter` list continuation behavior.
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T173505-046-note-editor-toolbar-and-shortcuts/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T173505-046-note-editor-toolbar-and-shortcuts/npm-run-verify-next-server.log

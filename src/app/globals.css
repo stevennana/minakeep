@@ -984,8 +984,10 @@ textarea {
 }
 
 .note-editor-toolbar,
+.note-editor-toolbar-header,
 .note-editor-statusbar,
-.note-editor-toolbar-copy {
+.note-editor-toolbar-copy,
+.note-editor-toolbar-controls {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
@@ -994,8 +996,12 @@ textarea {
 
 .note-editor-toolbar {
   border-bottom: 1px solid rgba(100, 116, 139, 0.14);
+  gap: 0.85rem;
+  padding: 0.9rem 1rem 0.95rem;
+}
+
+.note-editor-toolbar-header {
   justify-content: space-between;
-  padding: 0.9rem 1rem 0.85rem;
 }
 
 .note-editor-toolbar-copy {
@@ -1020,6 +1026,44 @@ textarea {
   font-size: 0.76rem;
   justify-content: flex-end;
   letter-spacing: 0.02em;
+}
+
+.note-editor-toolbar-controls {
+  gap: 0.45rem;
+}
+
+.note-editor-tool {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(100, 116, 139, 0.16);
+  border-radius: var(--radius-pill);
+  color: var(--ink);
+  cursor: pointer;
+  display: inline-flex;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  justify-content: center;
+  min-height: 2.6rem;
+  min-width: 2.6rem;
+  padding: 0.55rem 0.7rem;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease,
+    transform 140ms ease,
+    box-shadow 140ms ease;
+}
+
+.note-editor-tool:hover {
+  background: rgba(255, 255, 255, 0.94);
+  border-color: rgba(50, 72, 99, 0.2);
+  color: var(--accent-strong);
+}
+
+.note-editor-tool:focus-visible {
+  outline: 2px solid rgba(50, 72, 99, 0.28);
+  outline-offset: 2px;
 }
 
 .note-editor-statusbar span {
@@ -2093,6 +2137,10 @@ textarea {
 
   .note-editor-grid {
     grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  }
+
+  .note-editor-toolbar-controls {
+    justify-content: flex-start;
   }
 
   .note-list-item {

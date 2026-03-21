@@ -5,46 +5,45 @@ Read the following repository documents before making changes:
 - docs/design-docs/markdown-editor-workbench.md
 - docs/references/markdown-editor-patterns.md
 - docs/references/ui-verification-contract.md
-- docs/exec-plans/active/045-markdown-editor-foundation.md
+- docs/exec-plans/active/046-note-editor-toolbar-and-shortcuts.md
 
-Current task id: 045-markdown-editor-foundation
-Current task title: Markdown editor foundation
+Current task id: 046-note-editor-toolbar-and-shortcuts
+Current task title: Note editor toolbar and shortcuts
 
 Objective:
-Establish a source-first markdown editor foundation that feels materially better than a plain textarea while preserving markdown as the saved note body.
+Add compact authoring aids that make common markdown operations faster without turning the note editor into a heavy rich-text UI.
 
 Scope:
-- source-first editor-surface upgrade for note authoring
-- syntax-aware editing behavior
-- compatibility with existing note save and preview flows
+- compact formatting toolbar
+- markdown insertion or transformation helpers
+- keyboard-shortcut friendly behavior
 
 Out of scope:
-- toolbar richness beyond the minimum needed to prove the editor foundation
-- advanced mobile mode design
-- collaboration features or rich-text storage
+- split/preview mode orchestration
+- mobile-specific workflow polish beyond baseline usability
+- image upload or attachment support
 
 Exit criteria:
-1. The note editor no longer feels like a plain textarea.
-2. Note content still saves as markdown text and renders correctly in preview.
-3. Existing note create/edit flows remain intact.
-4. `npm run test:e2e -- --grep @ui-note-editor-foundation` passes.
+1. Owners can apply common markdown structures quickly through compact controls.
+2. Toolbar actions produce predictable markdown output.
+3. Experienced keyboard-first editing still feels natural.
+4. `npm run test:e2e -- --grep @ui-note-editor-toolbar` passes.
 5. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-note-editor-foundation`
+- `npm run test:e2e -- --grep @ui-note-editor-toolbar`
 
 Evaluator notes:
-Promote only when the richer editor foundation is clearly in place without changing the note data model.
+Promote only when the toolbar improves speed without bloating the note editor or compromising source transparency.
 
 Required repository artifacts for this task:
 - src/features/notes/components/note-editor.tsx
-- src/app/globals.css
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-note-editor-foundation
+- npm run test:e2e -- --grep @ui-note-editor-toolbar
 
 Previous known gaps from the last evaluation:
 - none

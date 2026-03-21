@@ -33,3 +33,4 @@
 - 2026-03-21T07:36:41.829Z: promoted 042-public-showroom-first-screen-priority -> 043-public-home-density-regression-pass
 - 2026-03-21T07:42:49.273Z: promoted 043-public-home-density-regression-pass -> 044-public-home-wave-hardening
 - 2026-03-21T07:49:52.076Z: promoted 044-public-home-wave-hardening -> NONE
+- 2026-03-21T08:34:35.233Z: promoted 045-markdown-editor-foundation -> 046-note-editor-toolbar-and-shortcuts
