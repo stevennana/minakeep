@@ -126,6 +126,21 @@ async function setEditorSelection(page: Page, start: number, end: number) {
   );
 }
 
+async function getEditorSelection(page: Page) {
+  return page.evaluate(() => {
+    const textarea = document.querySelector<HTMLTextAreaElement>("[data-testid='note-markdown-input']");
+
+    if (!textarea) {
+      throw new Error("Expected note markdown textarea to exist.");
+    }
+
+    return {
+      end: textarea.selectionEnd,
+      start: textarea.selectionStart
+    };
+  });
+}
+
 async function expectNoHorizontalOverflow(page: Page) {
   const hasOverflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
 
@@ -216,6 +231,19 @@ test("@ui-note-editor-toolbar toolbar actions and shortcuts transform markdown p
   await expect(toolbar).toBeVisible();
   await expect(toolbar.getByRole("button", { name: "Heading markdown" })).toBeVisible();
   await expect(toolbar.getByRole("button", { name: "Link markdown" })).toBeVisible();
+  await expect(page.locator(".note-editor-highlight")).toHaveCount(0);
+
+  const editorStyles = await editor.evaluate((element) => {
+    const styles = getComputedStyle(element);
+
+    return {
+      color: styles.color,
+      textFill: styles.getPropertyValue("-webkit-text-fill-color").trim()
+    };
+  });
+
+  expect(editorStyles.color).not.toBe("rgba(0, 0, 0, 0)");
+  expect(editorStyles.textFill).not.toBe("transparent");
 
   await editor.fill("section");
   await setEditorSelection(page, 0, 7);
@@ -261,6 +289,12 @@ test("@ui-note-editor-toolbar toolbar actions and shortcuts transform markdown p
   await setEditorSelection(page, 0, 16);
   await toolbar.getByRole("button", { name: "Code block markdown" }).click();
   await expect(editor).toHaveValue("```\nconst total = 1;\n```");
+
+  await editor.fill("");
+  await setEditorSelection(page, 0, 0);
+  await toolbar.getByRole("button", { name: "Code block markdown" }).click();
+  await expect(editor).toHaveValue("```\n\n```");
+  await expect(await getEditorSelection(page)).toEqual({ end: 4, start: 4 });
 });
 
 test("@ui-note-editor-toolbar desktop toolbar stays compact without breaking hierarchy", async ({ page }) => {

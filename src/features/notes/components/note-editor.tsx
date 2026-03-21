@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
 import { useFormStatus } from "react-dom";
 
 import {
@@ -66,108 +66,6 @@ type CursorState = {
 
 const desktopViewportQuery = "(min-width: 768px)";
 
-function escapeSourceHtml(value: string) {
-  return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
-}
-
-function renderInlineSourceTokens(source: string): string {
-  const pattern = /(`[^`]+`)|(\[([^\]]+)\]\(([^)]+)\))|(\*\*([^*]+)\*\*)|(\*([^*]+)\*)/g;
-  let result = "";
-  let cursor = 0;
-
-  for (const match of source.matchAll(pattern)) {
-    const matchedText = match[0];
-    const matchIndex = match.index ?? 0;
-
-    result += escapeSourceHtml(source.slice(cursor, matchIndex));
-
-    if (match[1]) {
-      result += `<span class="md-token md-token-code-marker">\`</span><span class="md-token md-token-code">${escapeSourceHtml(matchedText.slice(1, -1))}</span><span class="md-token md-token-code-marker">\`</span>`;
-    } else if (match[2]) {
-      result += `<span class="md-token md-token-link-marker">[</span><span class="md-token md-token-link-label">${renderInlineSourceTokens(match[3] ?? "")}</span><span class="md-token md-token-link-marker">](</span><span class="md-token md-token-link-url">${escapeSourceHtml(match[4] ?? "")}</span><span class="md-token md-token-link-marker">)</span>`;
-    } else if (match[5]) {
-      result += `<span class="md-token md-token-strong-marker">**</span><span class="md-token md-token-strong">${renderInlineSourceTokens(match[6] ?? "")}</span><span class="md-token md-token-strong-marker">**</span>`;
-    } else if (match[7]) {
-      result += `<span class="md-token md-token-emphasis-marker">*</span><span class="md-token md-token-emphasis">${renderInlineSourceTokens(match[8] ?? "")}</span><span class="md-token md-token-emphasis-marker">*</span>`;
-    }
-
-    cursor = matchIndex + matchedText.length;
-  }
-
-  result += escapeSourceHtml(source.slice(cursor));
-
-  return result;
-}
-
-function renderHighlightedSource(markdown: string) {
-  if (!markdown) {
-    return `<span class="md-line md-line-placeholder"><span class="md-token md-token-placeholder"># Start writing
-
-Use headings, lists, quotes, links, and code without leaving markdown source.</span></span>`;
-  }
-
-  const lines = markdown.replace(/\r\n?/g, "\n").split("\n");
-  const highlightedLines: string[] = [];
-  let insideFence = false;
-
-  for (const line of lines) {
-    const trimmedLine = line.trim();
-
-    if (!insideFence && /^(\s*)(#{1,6})(\s+)(.*)$/.test(line)) {
-      const [, indent = "", hashes = "", gap = "", content = ""] = line.match(/^(\s*)(#{1,6})(\s+)(.*)$/) ?? [];
-      highlightedLines.push(
-        `<span class="md-line md-line-heading">${escapeSourceHtml(indent)}<span class="md-token md-token-heading-marker">${escapeSourceHtml(hashes)}</span>${escapeSourceHtml(gap)}<span class="md-token md-token-heading">${renderInlineSourceTokens(content)}</span></span>`
-      );
-      continue;
-    }
-
-    if (trimmedLine.startsWith("```")) {
-      const fenceBody = line.replace(/^(\s*)```/, "$1");
-      const language = trimmedLine.slice(3);
-      highlightedLines.push(
-        `<span class="md-line md-line-fence">${escapeSourceHtml(fenceBody.slice(0, fenceBody.length - language.length))}<span class="md-token md-token-fence-marker">\`\`\`</span>${language ? `<span class="md-token md-token-fence-language">${escapeSourceHtml(language)}</span>` : ""}</span>`
-      );
-      insideFence = !insideFence;
-      continue;
-    }
-
-    if (insideFence) {
-      highlightedLines.push(`<span class="md-line md-line-code">${escapeSourceHtml(line) || " "}</span>`);
-      continue;
-    }
-
-    if (/^(\s*)(>\s?)(.*)$/.test(line)) {
-      const [, indent = "", marker = "", content = ""] = line.match(/^(\s*)(>\s?)(.*)$/) ?? [];
-      highlightedLines.push(
-        `<span class="md-line md-line-quote">${escapeSourceHtml(indent)}<span class="md-token md-token-quote-marker">${escapeSourceHtml(marker)}</span><span class="md-token md-token-quote">${renderInlineSourceTokens(content)}</span></span>`
-      );
-      continue;
-    }
-
-    if (/^(\s*)((?:[-*])|(?:\d+\.))(\s+)(.*)$/.test(line)) {
-      const [, indent = "", marker = "", gap = "", content = ""] = line.match(/^(\s*)((?:[-*])|(?:\d+\.))(\s+)(.*)$/) ?? [];
-      highlightedLines.push(
-        `<span class="md-line md-line-list">${escapeSourceHtml(indent)}<span class="md-token md-token-list-marker">${escapeSourceHtml(marker)}</span>${escapeSourceHtml(gap)}<span class="md-token md-token-list">${renderInlineSourceTokens(content)}</span></span>`
-      );
-      continue;
-    }
-
-    if (/^[-*_]{3,}$/.test(trimmedLine)) {
-      highlightedLines.push(`<span class="md-line md-line-rule"><span class="md-token md-token-rule">${escapeSourceHtml(line)}</span></span>`);
-      continue;
-    }
-
-    highlightedLines.push(`<span class="md-line">${renderInlineSourceTokens(line) || " "}</span>`);
-  }
-
-  return highlightedLines.join("\n");
-}
-
 function getCursorState(markdown: string, selectionStart: number, selectionEnd: number): CursorState {
   const normalizedStart = Math.max(0, Math.min(selectionStart, markdown.length));
   const normalizedEnd = Math.max(normalizedStart, Math.min(selectionEnd, markdown.length));
@@ -231,7 +129,6 @@ export function NoteEditor({
   const [viewMode, setViewMode] = useState<NoteEditorViewMode>("source");
   const [isDesktopViewport, setIsDesktopViewport] = useState(false);
   const [editorScrollTop, setEditorScrollTop] = useState(0);
-  const [editorScrollLeft, setEditorScrollLeft] = useState(0);
   const [cursorState, setCursorState] = useState<CursorState>(() => getCursorState(initialMarkdown, 0, 0));
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const selectionRef = useRef<SelectionRange>({
@@ -244,10 +141,6 @@ export function NoteEditor({
   const previewHeadingId = useId();
   const previewTitle = title.trim() || "Untitled note";
   const previewHtml = renderMarkdownToHtml(markdown);
-  const previewStyle = {
-    "--editor-scroll-left": `${editorScrollLeft}px`,
-    "--editor-scroll-top": `${editorScrollTop}px`
-  } as CSSProperties;
   const isMobileViewport = !isDesktopViewport;
   const sourcePaneHidden = viewMode === "preview";
   const previewPaneHidden = viewMode !== "preview" && (isMobileViewport || viewMode === "source");
@@ -277,7 +170,6 @@ export function NoteEditor({
 
   function syncEditorState(textarea: HTMLTextAreaElement) {
     setEditorScrollTop(textarea.scrollTop);
-    setEditorScrollLeft(textarea.scrollLeft);
     selectionRef.current = {
       end: textarea.selectionEnd,
       start: textarea.selectionStart
@@ -388,7 +280,6 @@ export function NoteEditor({
     textarea.focus();
     textarea.setSelectionRange(nextSelection.start, nextSelection.end);
     setEditorScrollTop(textarea.scrollTop);
-    setEditorScrollLeft(textarea.scrollLeft);
     selectionRef.current = {
       end: textarea.selectionEnd,
       start: textarea.selectionStart
@@ -429,7 +320,6 @@ export function NoteEditor({
     }
 
     setEditorScrollTop(textarea.scrollTop);
-    setEditorScrollLeft(textarea.scrollLeft);
     setCursorState(getCursorState(markdown, textarea.selectionStart, textarea.selectionEnd));
   }, [markdown]);
 
@@ -447,16 +337,14 @@ export function NoteEditor({
     shouldRestoreSelectionRef.current = false;
     textarea.focus();
     textarea.scrollTop = editorScrollTop;
-    textarea.scrollLeft = editorScrollLeft;
     textarea.setSelectionRange(selectionRef.current.start, selectionRef.current.end);
     setEditorScrollTop(textarea.scrollTop);
-    setEditorScrollLeft(textarea.scrollLeft);
     selectionRef.current = {
       end: textarea.selectionEnd,
       start: textarea.selectionStart
     };
     setCursorState(getCursorState(markdown, textarea.selectionStart, textarea.selectionEnd));
-  }, [editorScrollLeft, editorScrollTop, viewMode, markdown]);
+  }, [editorScrollTop, viewMode, markdown]);
 
   const toolbarActions = [
     {
@@ -502,7 +390,7 @@ export function NoteEditor({
       shortcut: "Lines"
     },
     {
-      label: "{ }",
+      label: "```",
       name: "Code block",
       run: toggleFencedCodeBlock,
       shortcut: "Selection"
@@ -711,7 +599,7 @@ export function NoteEditor({
                   className={`note-editor-pane note-editor-pane-source${sourcePaneHidden ? " note-editor-pane-hidden" : ""}`}
                   data-testid="note-editor-source-pane"
                 >
-                  <div className="note-editor-surface" style={previewStyle}>
+                  <div className="note-editor-surface">
                     <div aria-hidden="true" className="note-editor-gutter">
                       <div
                         className="note-editor-gutter-track"
@@ -726,15 +614,6 @@ export function NoteEditor({
                     </div>
 
                     <div className="note-editor-stage">
-                      <pre aria-hidden="true" className="note-editor-highlight">
-                        <code
-                          className="note-editor-highlight-content"
-                          dangerouslySetInnerHTML={{
-                            __html: renderHighlightedSource(markdown)
-                          }}
-                        />
-                      </pre>
-
                       <textarea
                         aria-label="Markdown body"
                         aria-describedby={editorHintId}
@@ -747,9 +626,13 @@ export function NoteEditor({
                         onKeyUp={(event) => syncEditorState(event.currentTarget)}
                         onScroll={(event) => syncEditorState(event.currentTarget)}
                         onSelect={(event) => syncEditorState(event.currentTarget)}
+                        placeholder={`# Start writing
+
+Use headings, lists, quotes, links, and code without leaving markdown source.`}
                         ref={textareaRef}
                         spellCheck="true"
                         value={markdown}
+                        wrap="soft"
                       />
                     </div>
                   </div>

@@ -970,6 +970,10 @@ textarea {
 }
 
 .note-editor-workbench {
+  --note-editor-source-font-size: 0.93rem;
+  --note-editor-source-line-height: 1.65;
+  --note-editor-source-padding-top: 0.95rem;
+  --note-editor-source-padding-bottom: 1.05rem;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(241, 245, 249, 0.94)),
     rgba(255, 255, 255, 0.88);
@@ -1232,51 +1236,45 @@ textarea {
   border-right: 1px solid rgba(100, 116, 139, 0.14);
   color: var(--ink-faint);
   font-family: var(--font-mono);
-  font-size: 0.76rem;
+  font-size: var(--note-editor-source-font-size);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--note-editor-source-line-height);
   letter-spacing: 0.03em;
   min-width: 3.45rem;
   overflow: hidden;
-  padding: 1rem 0.55rem 1.15rem 0.7rem;
+  padding: var(--note-editor-source-padding-top) 0.55rem var(--note-editor-source-padding-bottom) 0.7rem;
   text-align: right;
 }
 
 .note-editor-gutter-track {
   display: grid;
   gap: 0;
-  line-height: 1.65;
+  line-height: inherit;
+}
+
+.note-editor-gutter-track span {
+  align-items: flex-start;
+  display: flex;
+  justify-content: flex-end;
+  min-height: calc(var(--note-editor-source-font-size) * var(--note-editor-source-line-height));
 }
 
 .note-editor-stage {
+  display: grid;
   min-height: inherit;
-  position: relative;
 }
 
-.note-editor-highlight,
 .note-editor-input {
   font-family: var(--font-mono);
-  font-size: 0.93rem;
+  font-size: var(--note-editor-source-font-size);
   letter-spacing: 0;
-  line-height: 1.65;
+  line-height: var(--note-editor-source-line-height);
   margin: 0;
   min-height: inherit;
-  padding: 0.95rem 1rem 1.05rem;
+  padding: var(--note-editor-source-padding-top) 1rem var(--note-editor-source-padding-bottom);
   tab-size: 2;
   white-space: pre-wrap;
   word-break: break-word;
-}
-
-.note-editor-highlight {
-  color: var(--ink-soft);
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  position: absolute;
-}
-
-.note-editor-highlight-content {
-  display: block;
-  min-height: 100%;
-  transform: translate(calc(var(--editor-scroll-left) * -1), calc(var(--editor-scroll-top) * -1));
 }
 
 .note-editor-input {
@@ -1284,15 +1282,18 @@ textarea {
   border: 0;
   border-radius: 0;
   caret-color: var(--accent-strong);
-  color: transparent;
+  color: var(--ink);
   display: block;
   min-width: 0;
   outline: none;
   overflow: auto;
-  position: relative;
   resize: vertical;
   width: 100%;
-  -webkit-text-fill-color: transparent;
+  -webkit-text-fill-color: currentColor;
+}
+
+.note-editor-input::placeholder {
+  color: rgba(71, 85, 105, 0.74);
 }
 
 .note-editor-input::selection {
@@ -1310,64 +1311,6 @@ textarea {
     inset 0 1px 0 rgba(255, 255, 255, 0.88),
     0 0 0 0.2rem rgba(50, 72, 99, 0.08),
     0 1rem 2.4rem rgba(15, 23, 42, 0.09);
-}
-
-.md-line {
-  display: block;
-  min-height: 1.65em;
-}
-
-.md-line-placeholder {
-  color: var(--ink-faint);
-}
-
-.md-token-placeholder {
-  color: rgba(71, 85, 105, 0.74);
-}
-
-.md-token-heading-marker,
-.md-token-list-marker,
-.md-token-quote-marker,
-.md-token-rule,
-.md-token-fence-marker,
-.md-token-code-marker,
-.md-token-link-marker,
-.md-token-strong-marker,
-.md-token-emphasis-marker {
-  color: #7c8ea7;
-}
-
-.md-token-heading,
-.md-token-strong {
-  color: #1f3652;
-  font-weight: 600;
-}
-
-.md-token-link-label,
-.md-token-link-url {
-  color: #245c8f;
-}
-
-.md-token-link-url,
-.md-token-code,
-.md-line-code,
-.md-token-fence-language {
-  color: #6e3f71;
-}
-
-.md-token-emphasis,
-.md-token-list,
-.md-token-quote {
-  color: var(--ink-soft);
-}
-
-.md-line-code {
-  background: rgba(226, 232, 240, 0.34);
-  color: #5f4764;
-}
-
-.md-line-fence {
-  background: rgba(226, 232, 240, 0.26);
 }
 
 .summary-textarea {
@@ -2308,6 +2251,11 @@ textarea {
     grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
   }
 
+  .note-editor-workbench {
+    --note-editor-source-padding-top: 1rem;
+    --note-editor-source-padding-bottom: 1.15rem;
+  }
+
   .note-editor-surface {
     grid-template-columns: auto minmax(0, 1fr);
     min-height: clamp(21rem, 48vh, 28rem);
@@ -2342,9 +2290,9 @@ textarea {
     display: block;
   }
 
-  .note-editor-highlight,
   .note-editor-input {
-    padding: 1rem 1.1rem 1.15rem;
+    padding-left: 1.1rem;
+    padding-right: 1.1rem;
   }
 
   .note-list-item {

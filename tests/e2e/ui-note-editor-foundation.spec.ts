@@ -212,6 +212,36 @@ async function expectWorkbenchHierarchy(page: Page, viewport: "desktop" | "mobil
   }
 }
 
+async function expectGutterMetricsMatchEditor(page: Page) {
+  const metrics = await page.evaluate(() => {
+    const gutter = document.querySelector<HTMLElement>(".note-editor-gutter");
+    const editor = document.querySelector<HTMLTextAreaElement>("[data-testid='note-markdown-input']");
+
+    if (!gutter || !editor) {
+      throw new Error("Expected note editor gutter and input to exist.");
+    }
+
+    const gutterStyles = getComputedStyle(gutter);
+    const editorStyles = getComputedStyle(editor);
+
+    return {
+      editorFontSize: editorStyles.fontSize,
+      editorLineHeight: editorStyles.lineHeight,
+      editorPaddingBottom: editorStyles.paddingBottom,
+      editorPaddingTop: editorStyles.paddingTop,
+      gutterFontSize: gutterStyles.fontSize,
+      gutterLineHeight: gutterStyles.lineHeight,
+      gutterPaddingBottom: gutterStyles.paddingBottom,
+      gutterPaddingTop: gutterStyles.paddingTop
+    };
+  });
+
+  expect(metrics.gutterFontSize).toBe(metrics.editorFontSize);
+  expect(metrics.gutterLineHeight).toBe(metrics.editorLineHeight);
+  expect(metrics.gutterPaddingTop).toBe(metrics.editorPaddingTop);
+  expect(metrics.gutterPaddingBottom).toBe(metrics.editorPaddingBottom);
+}
+
 test.describe.configure({ mode: "serial" });
 
 let seededNoteId = "";
@@ -232,6 +262,7 @@ test("@ui-note-editor-foundation source-first authoring keeps markdown preview a
   await expect(page.getByRole("heading", { name: "New draft note" })).toBeVisible();
   await expect(page.getByTestId("note-markdown-workbench")).toBeVisible();
   await expect(page.locator(".note-editor-gutter-track span").first()).toHaveText("01");
+  await expect(page.locator(".note-editor-highlight")).toHaveCount(0);
 
   await page.getByRole("textbox", { name: "Title" }).fill("Source-first editor foundation");
 
@@ -269,6 +300,7 @@ test("@ui-note-editor-foundation desktop workbench looks upgraded without breaki
   await expect(page.getByTestId("note-editor-preview-pane")).toContainText("Preview");
   await expect(page.getByTestId("note-markdown-preview")).toContainText("Keep note publishing unchanged");
   await expectWorkbenchHierarchy(page, "desktop");
+  await expectGutterMetricsMatchEditor(page);
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
 
