@@ -5,7 +5,7 @@
   "id": "042-public-showroom-first-screen-priority",
   "title": "Public showroom first-screen priority",
   "order": 42,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "043-public-home-density-regression-pass",
   "prompt_docs": [
@@ -28,7 +28,8 @@
     "The old explanatory showroom copy still appears above the feed.",
     "The homepage still spends most of the first screen on framing chrome instead of cards.",
     "The page regresses into a marketing-hero layout."
-  ]
+  ],
+  "completed_at": "2026-03-21T07:36:41.829Z"
 }
 ```
 
@@ -70,3 +71,4 @@ Promote only when the public homepage clearly prioritizes published content over
 - Start here. Append timestamped progress notes as work lands.
 - 2026-03-21 16:30 KST: Confirmed the homepage still rendered a multi-sentence explanatory lede above the public grid and that no `@ui-public-home-density` Playwright coverage existed yet.
 - 2026-03-21 16:34 KST: Removed the explanatory lede from the public homepage intro, tightened the public shell spacing so showroom cards appear sooner, added dedicated `@ui-public-home-density` desktop/mobile coverage, refreshed affected homepage UI snapshots, and verified `npm run test:e2e -- --grep @ui-public-home-density` plus `npm run verify`.
+- 2026-03-21T07:36:41.829Z: automatically promoted after deterministic checks and evaluator approval.

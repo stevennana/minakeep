@@ -1,0 +1,15 @@
+[main ddd1ebd] ralph: 042-public-showroom-first-screen-priority 2026-03-21T16:36:41+09:00
+ 35 files changed, 791 insertions(+), 77 deletions(-)
+ rename docs/exec-plans/{active => completed}/041-public-search-collapsed-default.md (92%)
+ create mode 100644 state/artifacts/20260321T161927-041-public-search-collapsed-default/backlog.log
+ create mode 100644 state/artifacts/20260321T161927-041-public-search-collapsed-default/promote.log
+ create mode 100644 state/artifacts/20260321T162904-042-public-showroom-first-screen-priority/commit.log
+ create mode 100644 state/artifacts/20260321T162904-042-public-showroom-first-screen-priority/evaluator.log
+ create mode 100644 state/artifacts/20260321T162904-042-public-showroom-first-screen-priority/npm-run-test-e2e-grep-ui-public-home-density-next-server.log
+ create mode 100644 state/artifacts/20260321T162904-042-public-showroom-first-screen-priority/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260321T162904-042-public-showroom-first-screen-priority/task-prompt.log
+ create mode 100644 state/artifacts/20260321T162904-042-public-showroom-first-screen-priority/worker.jsonl
+ create mode 100644 tests/e2e/ui-public-home-density.spec.ts
+ create mode 100644 tests/e2e/ui-public-home-density.spec.ts-snapshots/ui-public-home-density-desktop-darwin.png
+ create mode 100644 tests/e2e/ui-public-home-density.spec.ts-snapshots/ui-public-home-density-mobile-darwin.png
+commit: created

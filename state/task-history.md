@@ -30,3 +30,4 @@
 - 2026-03-21T06:51:53.767Z: promoted 039-public-publishing-regression-pass -> 040-public-wave-hardening
 - 2026-03-21T07:02:12.831Z: promoted 040-public-wave-hardening -> NONE
 - 2026-03-21T07:28:34.636Z: promoted 041-public-search-collapsed-default -> 042-public-showroom-first-screen-priority
+- 2026-03-21T07:36:41.829Z: promoted 042-public-showroom-first-screen-priority -> 043-public-home-density-regression-pass

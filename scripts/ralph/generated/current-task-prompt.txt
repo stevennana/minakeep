@@ -2,31 +2,30 @@ Read the following repository documents before making changes:
 - AGENTS.md
 - docs/FRONTEND.md
 - docs/product-specs/public-home-showroom.md
-- docs/design-docs/homepage-showroom-rhythm.md
+- docs/product-specs/public-showroom-search.md
 - docs/design-docs/public-home-first-screen-density.md
 - docs/references/ui-verification-contract.md
-- docs/exec-plans/active/042-public-showroom-first-screen-priority.md
+- docs/exec-plans/active/043-public-home-density-regression-pass.md
 
-Current task id: 042-public-showroom-first-screen-priority
-Current task title: Public showroom first-screen priority
+Current task id: 043-public-home-density-regression-pass
+Current task title: Public home density regression pass
 
 Objective:
-Make the showroom itself the first-screen focus on the public homepage.
+Prove that the new public-home density rules stay stable across responsive and accessibility checks.
 
 Scope:
-- remove the non-essential explanatory copy block above the public feed
-- tighten public-home framing so real content appears immediately
-- preserve the mixed notes-and-links showroom rhythm
+- desktop and mobile screenshot stability for the public homepage
+- collapsed and expanded search-state coverage
+- accessibility coverage for the compact public-home chrome
 
 Out of scope:
-- public search semantics
-- note and link publishing rules
-- owner-surface changes
+- new homepage features
+- owner-surface regressions outside shared typography and chrome
 
 Exit criteria:
-1. The public homepage removes the extra explanatory showroom text block above the grid.
-2. Published cards are visibly present in the first screen on common desktop and mobile viewports.
-3. The page keeps a clean, composed showroom rhythm rather than reverting to a hero-led layout.
+1. The public homepage remains readable and content-first at `1440x900` and `390x844`.
+2. UI checks cover both the collapsed search state and the explicit expanded state.
+3. Accessibility checks pass for the compact search affordance and showroom-first layout.
 4. `npm run test:e2e -- --grep @ui-public-home-density` passes.
 5. `npm run verify` passes.
 
@@ -35,7 +34,7 @@ Required checks:
 - `npm run test:e2e -- --grep @ui-public-home-density`
 
 Evaluator notes:
-Promote only when the public homepage clearly prioritizes published content over framing copy.
+Promote only when the new density changes are protected by deterministic responsive and accessibility coverage.
 
 Required repository artifacts for this task:
 - src/app/page.tsx

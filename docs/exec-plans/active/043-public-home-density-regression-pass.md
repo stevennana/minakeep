@@ -63,3 +63,5 @@ Promote only when the new density changes are protected by deterministic respons
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-21 16:40 KST: Extended `tests/e2e/ui-public-home-density.spec.ts` so the task-specific UI tag now checks collapsed desktop/mobile screenshots plus explicit expanded-search behavior, ARIA state changes, focus, overflow, and first-screen showroom visibility after expansion.
+- 2026-03-21 16:40 KST: Verified the required gates locally with `npm run test:e2e -- --grep @ui-public-home-density` and `npm run verify`; both passed.

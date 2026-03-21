@@ -227,6 +227,20 @@ async function expectFirstScreenShowroomPresence(page: Page, viewportHeight: num
   expect(firstCardBox.y + minimumVisibleHeight).toBeLessThan(viewportHeight);
 }
 
+async function expectExpandedSearchState(page: Page, viewportHeight: number, minimumVisibleHeight: number) {
+  const closeSearchButton = page.getByRole("button", { name: "Close public title search" });
+  const searchInput = page.getByRole("searchbox", { name: "Search public titles" });
+  const firstCardBox = await getBox(page.locator("[data-testid='public-home-showroom'] .note-preview-card").first());
+
+  await expect(closeSearchButton).toBeVisible();
+  await expect(closeSearchButton).toHaveAttribute("aria-expanded", "true");
+  await expect(searchInput).toBeVisible();
+  await expect(searchInput).toBeFocused();
+  await expect(page.getByTestId("public-home-search-summary")).toHaveText("Showing all 4 public items.");
+  expect(firstCardBox.y).toBeLessThan(viewportHeight);
+  expect(firstCardBox.y + minimumVisibleHeight).toBeLessThan(viewportHeight);
+}
+
 test.describe.configure({ mode: "serial" });
 
 test.beforeEach(async () => {
@@ -241,12 +255,15 @@ test("@ui-regression @ui-public-home-density public homepage keeps published car
   await page.setViewportSize(desktopViewport);
   await page.goto("/");
 
+  const searchToggle = page.getByRole("button", { name: "Open public title search" });
+
   await expect(page.locator("[data-testid='public-home-showroom'] .note-preview-card")).toHaveCount(
     seededPublishedNotes.length + seededPublishedLinks.length
   );
   await expect(page.getByRole("heading", { name: "Published notes and links" })).toBeVisible();
   await expect(page.locator(".public-intro-panel .lede")).toHaveCount(0);
   await expect(page.getByTestId("public-home-search-toggle")).toBeVisible();
+  await expect(searchToggle).toHaveAttribute("aria-expanded", "false");
   await expectFirstScreenShowroomPresence(page, desktopViewport.height, 88);
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
@@ -255,11 +272,23 @@ test("@ui-regression @ui-public-home-density public homepage keeps published car
     animations: "disabled",
     maxDiffPixelRatio: 0.02
   });
+
+  await searchToggle.click();
+  await expectExpandedSearchState(page, desktopViewport.height, 48);
+  await expectAccessibleStructure(page);
+  await expectNoHorizontalOverflow(page);
+
+  await page.getByRole("button", { name: "Close public title search" }).click();
+  await expect(searchToggle).toBeVisible();
+  await expect(searchToggle).toHaveAttribute("aria-expanded", "false");
+  await expectFirstScreenShowroomPresence(page, desktopViewport.height, 88);
 });
 
 test("@ui-regression @ui-public-home-density @ui-responsive public homepage keeps published cards in the first mobile screen", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await page.goto("/");
+
+  const searchToggle = page.getByRole("button", { name: "Open public title search" });
 
   await expect(page.locator("[data-testid='public-home-showroom'] .note-preview-card")).toHaveCount(
     seededPublishedNotes.length + seededPublishedLinks.length
@@ -267,6 +296,7 @@ test("@ui-regression @ui-public-home-density @ui-responsive public homepage keep
   await expect(page.getByRole("heading", { name: "Published notes and links" })).toBeVisible();
   await expect(page.locator(".public-intro-panel .lede")).toHaveCount(0);
   await expect(page.getByTestId("public-home-search-toggle")).toBeVisible();
+  await expect(searchToggle).toHaveAttribute("aria-expanded", "false");
   await expectFirstScreenShowroomPresence(page, mobileViewport.height, 64);
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
@@ -275,4 +305,14 @@ test("@ui-regression @ui-public-home-density @ui-responsive public homepage keep
     animations: "disabled",
     maxDiffPixelRatio: 0.02
   });
+
+  await searchToggle.click();
+  await expectExpandedSearchState(page, mobileViewport.height, 24);
+  await expectAccessibleStructure(page);
+  await expectNoHorizontalOverflow(page);
+
+  await page.getByRole("button", { name: "Close public title search" }).click();
+  await expect(searchToggle).toBeVisible();
+  await expect(searchToggle).toHaveAttribute("aria-expanded", "false");
+  await expectFirstScreenShowroomPresence(page, mobileViewport.height, 64);
 });
