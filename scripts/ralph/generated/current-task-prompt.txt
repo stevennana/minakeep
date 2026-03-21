@@ -1,48 +1,55 @@
 Read the following repository documents before making changes:
 - AGENTS.md
 - ARCHITECTURE.md
-- docs/FRONTEND.md
-- docs/design-docs/media-storage-and-serving.md
-- docs/product-specs/link-favicon-caching.md
-- docs/exec-plans/active/053-link-favicon-cache-and-render.md
+- docs/RELIABILITY.md
+- docs/SECURITY.md
+- docs/design-docs/container-runtime-packaging.md
+- docs/product-specs/docker-packaging.md
+- docs/exec-plans/active/054-docker-packaging-and-compose.md
 
-Current task id: 053-link-favicon-cache-and-render
-Current task title: Link favicon cache and render
+Current task id: 054-docker-packaging-and-compose
+Current task title: Docker packaging and Compose
 
 Objective:
-Fetch and cache link favicons locally so owner and public link cards can render stable head images.
+Package Minakeep as a source-built Docker image with a documented Compose deployment path.
 
 Scope:
-- favicon fetch and local cache
-- owner/public link-card favicon rendering
-- fallback icon behavior on fetch failure
+- Dockerfile
+- Compose example
+- mounted DB/media/log paths
+- env-driven runtime configuration including AI vars
 
 Out of scope:
-- note-image uploads
-- periodic favicon recrawling daemon
-- Docker packaging
+- orchestration manifests beyond Compose
+- object-storage integration
+- multi-profile deployment matrix beyond one clear primary path
 
 Exit criteria:
-1. Minakeep attempts to resolve and cache a favicon when a link is saved or refreshed.
-2. Owner and public link cards use the cached favicon when available.
-3. Favicon failure falls back cleanly without blocking link save.
-4. `npm run test:e2e -- --grep @link-favicon` passes.
-5. `npm run verify` passes.
+1. The repo builds a production-style Docker image successfully.
+2. The repo includes a Compose path with mounted DB, media, logs, and env config.
+3. Docker packaging aligns with the existing runtime-prep and AI env contract.
+4. `docker build -t minakeep:test .` passes.
+5. `docker compose config` passes.
+6. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @link-favicon`
+- `docker build -t minakeep:test .`
+- `docker compose config`
 
 Evaluator notes:
-Promote only when favicon behavior is stable, local-cache based, and failure-tolerant.
+Promote only when Docker support is real and operator-usable, not just described in docs.
 
 Required repository artifacts for this task:
-- src/features/links
-- tests/e2e
+- Dockerfile
+- docker-compose.yml
+- .dockerignore
+- README.md
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @link-favicon
+- docker build -t minakeep:test .
+- docker compose config
 
 Previous known gaps from the last evaluation:
 - none

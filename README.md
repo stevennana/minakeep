@@ -69,6 +69,65 @@ Run the full deterministic verification suite:
 npm run verify
 ```
 
+## Docker / Compose
+
+Build the production-style image from source:
+
+```bash
+docker build -t minakeep:test .
+```
+
+Run the primary operator path with Docker Compose:
+
+```bash
+cp .env.compose.example .env
+mkdir -p data media logs
+docker compose up --build -d
+```
+
+The compose file fixes the container-internal runtime paths to `/app/data` and `/app/media`; the `.env` file is for auth, port, log level, and optional AI config.
+
+The Compose path keeps mutable runtime state mounted outside the image:
+
+- `./data` -> `/app/data` for SQLite, with `DATABASE_URL=file:/app/data/minakeep.db`
+- `./media` -> `/app/media` for uploaded note images and cached favicons
+- `./logs` -> `/app/logs` for timestamped `start:logged`-style server logs written by the container entrypoint
+
+The container startup path reuses the existing env contract. On each boot it:
+
+1. ensures the mounted DB/media/log directories exist
+2. runs `npm run db:prepare`
+3. starts `next start` on `0.0.0.0:$PORT`
+
+Required auth/runtime env vars for Compose:
+
+```bash
+AUTH_SECRET="replace-with-a-long-random-secret"
+OWNER_USERNAME="owner"
+OWNER_PASSWORD="replace-with-a-long-password"
+```
+
+Optional AI env vars use the same local contract as direct Node runs:
+
+```bash
+LLM_BASE="https://mina-host.example/v1"
+TOKEN="replace-with-a-mina-api-token"
+MODEL="replace-with-a-mina-model-id"
+MINA_AI_TIMEOUT_MS="15000"
+```
+
+Inspect the resolved Compose configuration:
+
+```bash
+docker compose config
+```
+
+Follow operator logs:
+
+```bash
+docker compose logs -f app
+```
+
 ## Useful commands
 
 ```bash
@@ -101,6 +160,7 @@ npm run test:e2e -- --grep @ai-real
 - Active work is tracked in `docs/exec-plans/active/`.
 - Completed task history is preserved in `docs/exec-plans/completed/`.
 - AI credentials are server-only and should stay in local or shell environment, not committed project files.
+- Docker Compose is the primary container deployment path; `docker run` is a secondary fallback, not the main operator model.
 
 ## Build journey
 

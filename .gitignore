@@ -9,6 +9,8 @@ node_modules
 playwright-report
 test-results
 logs/*.log
+data/
+media/
 tsconfig.tsbuildinfo
 
 !logs/.gitkeep

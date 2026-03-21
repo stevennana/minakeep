@@ -1,0 +1,36 @@
+services:
+  app:
+    build:
+      context: .
+    image: minakeep:local
+    restart: unless-stopped
+    init: true
+    ports:
+      - "${PORT:-3000}:${PORT:-3000}"
+    environment:
+      PORT: ${PORT:-3000}
+      AUTH_TRUST_HOST: "true"
+      AUTH_SECRET: ${AUTH_SECRET:-replace-with-a-long-random-secret}
+      DATABASE_URL: file:/app/data/minakeep.db
+      OWNER_USERNAME: ${OWNER_USERNAME:-owner}
+      OWNER_PASSWORD: ${OWNER_PASSWORD:-replace-with-a-long-password}
+      MEDIA_ROOT: /app/media
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      LLM_BASE: ${LLM_BASE:-}
+      TOKEN: ${TOKEN:-}
+      MODEL: ${MODEL:-}
+      MINA_AI_TIMEOUT_MS: ${MINA_AI_TIMEOUT_MS:-15000}
+    volumes:
+      - ./data:/app/data
+      - ./media:/app/media
+      - ./logs:/app/logs
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "node -e \"fetch('http://127.0.0.1:' + (process.env.PORT || '3000') + '/api/health').then((response) => process.exit(response.ok ? 0 : 1)).catch(() => process.exit(1))\""
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s

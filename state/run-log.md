@@ -811,3 +811,57 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T221705-053-link-favicon-cache-and-render/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T221705-053-link-favicon-cache-and-render/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 053-link-favicon-cache-and-render -> 054-docker-packaging-and-compose
+- backlog: rendered current=054-docker-packaging-and-compose
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooo
+- cycle: finished
+
+### cycle 2026-03-21T22:41:09+09:00 task=054-docker-packaging-and-compose
+- artifacts: state/artifacts/20260321T224109-054-docker-packaging-and-compose
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T224109-054-docker-packaging-and-compose/worker.jsonl
+- worker-summary: Implemented the Docker packaging slice: [Dockerfile](/Users/stevenna/WebstormProjects/minakeep/Dockerfile#L1) now builds a source-based multi-stage image, [container-start.mjs](/Users/stevenna/WebstormProjects/minakeep/scripts/container-start.mjs#L1) prepares mounted runtime paths, runs `npm run db:prepare`, and starts Next on `0.0.0.0:$PORT`, and [docker-compose.yml](/Users/stevenna/WebstormProjects/minakeep/docker-compose.yml#L1) defines the primary Compose path with mounted `/app/data`, `/app/media`, and `/app/logs` plus env-driven auth/logging/AI config. I also added [.dockerignore](/Users/stevenna/WebstormProjects/minakeep/.dockerignore), [.env.compose.example](/Users/stevenna/WebstormProjects/minakeep/.env.compose.example), updated the operator docs in [README.md](/Users/stevenna/WebstormProjects/minakeep/README.md#L72), aligned the packaging docs, and appended the task log in [054-docker-packaging-and-compose.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/054-docker-packaging-and-compose.md#L74).
+- evaluator: started
+- evaluator: status=not_done promotion=false Deterministic checks failed; task is not ready for promotion. -> state/artifacts/20260321T224109-054-docker-packaging-and-compose/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T224109-054-docker-packaging-and-compose/npm-run-verify-next-server.log
+- commit: commit: skipped (deterministic checks not passing)
+- promote: Task 054-docker-packaging-and-compose not eligible for promotion.
+- backlog: rendered current=054-docker-packaging-and-compose
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox
+- cycle: finished
+
+### cycle 2026-03-21T22:55:32+09:00 task=054-docker-packaging-and-compose
+- artifacts: state/artifacts/20260321T225532-054-docker-packaging-and-compose
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: stalled (no worker.jsonl progress for 900s) -> state/artifacts/20260321T225532-054-docker-packaging-and-compose/worker-stall.json
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!
+Worker stalled. Stopping loop for RCA.
+## loop start 2026-03-21T23:24:02+09:00
+
+### cycle 2026-03-21T23:24:02+09:00 task=054-docker-packaging-and-compose
+- artifacts: state/artifacts/20260321T232402-054-docker-packaging-and-compose
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T232402-054-docker-packaging-and-compose/worker.jsonl
+- worker-summary: The Docker packaging path is in place, and I fixed one real runtime issue: the container startup reuses `npm run db:prepare`, so the runtime image now includes Prisma’s config file ([Dockerfile](/Users/stevenna/WebstormProjects/minakeep/Dockerfile#L43)). I also updated the task progress log with the current verification state ([054-docker-packaging-and-compose.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/054-docker-packaging-and-compose.md#L74)) and wrote the operator handoff summary to [state/last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt#L1).
+- evaluator: started
+- evaluator: status=not_done promotion=false Deterministic checks failed; task is not ready for promotion. -> state/artifacts/20260321T232402-054-docker-packaging-and-compose/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T232402-054-docker-packaging-and-compose/npm-run-verify-next-server.log
+- commit: commit: skipped (deterministic checks not passing)
+- promote: Task 054-docker-packaging-and-compose not eligible for promotion.
+- backlog: rendered current=054-docker-packaging-and-compose
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!x
+- cycle: finished
+
+### cycle 2026-03-21T23:30:02+09:00 task=054-docker-packaging-and-compose
+- artifacts: state/artifacts/20260321T233002-054-docker-packaging-and-compose
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T233002-054-docker-packaging-and-compose/worker.jsonl
+- worker-summary: The remaining repo-side fix for task 054 was in [Dockerfile](/Users/stevenna/WebstormProjects/minakeep/Dockerfile): the builder stage now creates a disposable temp runtime path and runs `npm run db:prepare` before `next build`, because the prerendered homepage still reads Prisma-backed published content during the image build. I also appended concrete validation notes to [054-docker-packaging-and-compose.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/054-docker-packaging-and-compose.md) and wrote the operator handoff summary to [state/last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt). The required Docker artifacts are present in [Dockerfile](/Users/stevenna/WebstormProjects/minakeep/Dockerfile), [docker-compose.yml](/Users/stevenna/WebstormProjects/minakeep/docker-compose.yml), [.dockerignore](/Users/stevenna/WebstormProjects/minakeep/.dockerignore), and [README.md](/Users/stevenna/WebstormProjects/minakeep/README.md).
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T233002-054-docker-packaging-and-compose/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T233002-054-docker-packaging-and-compose/npm-run-verify-next-server.log
