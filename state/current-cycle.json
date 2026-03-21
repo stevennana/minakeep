@@ -1,8 +1,8 @@
 {
-  "task_id": "041-public-search-collapsed-default",
-  "started_at": "2026-03-21T16:19:27+09:00",
-  "artifact_dir": "state/artifacts/20260321T161927-041-public-search-collapsed-default",
+  "task_id": "042-public-showroom-first-screen-priority",
+  "started_at": "2026-03-21T16:29:04+09:00",
+  "artifact_dir": "state/artifacts/20260321T162904-042-public-showroom-first-screen-priority",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-03-21T07:28:34.451Z"
+  "updated_at": "2026-03-21T07:36:41.646Z"
 }

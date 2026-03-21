@@ -197,19 +197,19 @@ async function expectShowroomHierarchy(page: Page) {
 async function expectHomepageTypography(page: Page, viewport: "desktop" | "mobile") {
   const styles = await page.evaluate(() => {
     const heading = document.querySelector(".public-intro-panel h1");
-    const lede = document.querySelector(".public-intro-panel .lede");
+    const eyebrow = document.querySelector(".public-intro-panel .eyebrow");
     const archiveCount = document.querySelector(".public-home-count strong");
     const sectionLabel = document.querySelector(".note-collection-panel .section-heading strong");
 
-    if (!heading || !lede || !archiveCount || !sectionLabel) {
+    if (!heading || !eyebrow || !archiveCount || !sectionLabel) {
       return null;
     }
 
     return {
       archiveCountColor: getComputedStyle(archiveCount).color,
       archiveCountSize: Number.parseFloat(getComputedStyle(archiveCount).fontSize),
+      eyebrowSize: Number.parseFloat(getComputedStyle(eyebrow).fontSize),
       headingSize: Number.parseFloat(getComputedStyle(heading).fontSize),
-      ledeSize: Number.parseFloat(getComputedStyle(lede).fontSize),
       sectionLabelColor: getComputedStyle(sectionLabel).color
     };
   });
@@ -220,8 +220,8 @@ async function expectHomepageTypography(page: Page, viewport: "desktop" | "mobil
     return;
   }
 
-  expect(styles.headingSize).toBeGreaterThan(styles.ledeSize + 8);
-  expect(styles.headingSize).toBeLessThan(viewport === "desktop" ? 33 : 31);
+  expect(styles.headingSize).toBeGreaterThan(styles.eyebrowSize + 8);
+  expect(styles.headingSize).toBeLessThan(viewport === "desktop" ? 30 : 28);
   expect(styles.archiveCountSize).toBeLessThan(styles.headingSize);
   expect(styles.archiveCountColor).toBe("rgb(51, 65, 85)");
   expect(styles.sectionLabelColor).toBe("rgb(51, 65, 85)");
@@ -244,7 +244,8 @@ test("@ui-regression @ui-home-shell @ui-public-home-shell @ui-public-type @ui-re
   await expect(page.locator(".public-note-showroom .note-preview-card")).toHaveCount(seededNotes.length);
   await expect(page.locator(".public-home-shell-head")).toBeVisible();
   await expect(page.locator(".note-collection-panel .section-heading").filter({ hasText: "Published notes" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Notes the owner has chosen to share." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Published notes" })).toBeVisible();
+  await expect(page.locator(".public-intro-panel .lede")).toHaveCount(0);
   await expect(page.getByRole("navigation", { name: "Primary" }).getByRole("link", { name: "Owner login" })).toBeVisible();
   await expect(page.getByRole("complementary")).toHaveCount(0);
   await expect(page.getByText("Owner entrance")).toHaveCount(0);
@@ -267,7 +268,8 @@ test("@ui-regression @ui-home-shell @ui-public-home-shell @ui-public-type @ui-re
   await expect(page.locator(".public-note-showroom .note-preview-card")).toHaveCount(seededNotes.length);
   await expect(page.locator(".public-home-shell-head")).toBeVisible();
   await expect(page.locator(".note-collection-panel .section-heading").filter({ hasText: "Published notes" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Notes the owner has chosen to share." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Published notes" })).toBeVisible();
+  await expect(page.locator(".public-intro-panel .lede")).toHaveCount(0);
   await expect(page.getByRole("navigation", { name: "Primary" }).getByRole("link", { name: "Owner login" })).toBeVisible();
   await expect(page.getByRole("complementary")).toHaveCount(0);
   await expect(page.getByText("Owner entrance")).toHaveCount(0);

@@ -1,0 +1,17 @@
+[main 49a49de] ralph: 041-public-search-collapsed-default 2026-03-21T16:28:34+09:00
+ 40 files changed, 1002 insertions(+), 117 deletions(-)
+ create mode 100644 docs/design-docs/public-home-first-screen-density.md
+ create mode 100644 docs/exec-plans/active/041-public-search-collapsed-default.md
+ create mode 100644 docs/exec-plans/active/042-public-showroom-first-screen-priority.md
+ create mode 100644 docs/exec-plans/active/043-public-home-density-regression-pass.md
+ create mode 100644 docs/exec-plans/active/044-public-home-wave-hardening.md
+ rename docs/exec-plans/{active => completed}/040-public-wave-hardening.md (92%)
+ create mode 100644 state/artifacts/20260321T155223-040-public-wave-hardening/backlog.log
+ create mode 100644 state/artifacts/20260321T155223-040-public-wave-hardening/promote.log
+ create mode 100644 state/artifacts/20260321T161927-041-public-search-collapsed-default/commit.log
+ create mode 100644 state/artifacts/20260321T161927-041-public-search-collapsed-default/evaluator.log
+ create mode 100644 state/artifacts/20260321T161927-041-public-search-collapsed-default/npm-run-test-e2e-grep-ui-public-search-collapse-next-server.log
+ create mode 100644 state/artifacts/20260321T161927-041-public-search-collapsed-default/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260321T161927-041-public-search-collapsed-default/task-prompt.log
+ create mode 100644 state/artifacts/20260321T161927-041-public-search-collapsed-default/worker.jsonl
+commit: created

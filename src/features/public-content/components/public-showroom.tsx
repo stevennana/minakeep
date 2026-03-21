@@ -176,6 +176,7 @@ export function PublicShowroom({
     : `${publishedNotes} published note${publishedNotes === 1 ? "" : "s"}`;
   const listTitle = hasPublishedLinks ? "Published notes and links" : "Published notes";
   const listMeta = normalizedQuery ? `${filteredItems.length} matching title${filteredItems.length === 1 ? "" : "s"}` : "Newest first";
+  const showroomHeading = hasPublishedLinks ? "Published notes and links" : "Published notes";
   const emptyStateMessage =
     items.length === 0
       ? "No published notes or links yet. The public site stays empty until the owner explicitly publishes one."
@@ -272,12 +273,7 @@ export function PublicShowroom({
           <div className="public-home-shell-head public-hero public-intro-panel">
             <div className="public-home-shell-copy">
               <p className="eyebrow">Public showroom</p>
-              <h1>{hasPublishedLinks ? "Notes and links the owner has chosen to share." : "Notes the owner has chosen to share."}</h1>
-              <p className="field-note lede">
-                {hasPublishedLinks
-                  ? "Published notes and published links lead the public surface. Drafts, private links, tags, and AI workflow stay inside the private studio until the owner chooses to publish them."
-                  : "Published notes lead the public surface. Drafts, saved links, tags, and AI workflow stay inside the private studio until the owner chooses to publish them."}
-              </p>
+              <h1>{showroomHeading}</h1>
             </div>
             <div className="public-home-count" aria-label={hasPublishedLinks ? "Public archive size" : "Published note archive size"}>
               <span>Archive</span>

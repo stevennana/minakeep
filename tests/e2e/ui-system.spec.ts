@@ -171,7 +171,7 @@ test("@ui-regression @ui-system public chrome holds together on desktop", async 
   await page.goto("/");
 
   await expect(page.getByRole("navigation", { name: "Primary" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Notes the owner has chosen to share." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Published notes" })).toBeVisible();
   await expect(page.getByRole("navigation", { name: "Primary" }).getByRole("link", { name: "Owner login" })).toBeVisible();
   await expect(page.getByRole("complementary")).toHaveCount(0);
   await expect(page.locator(".note-collection-panel .section-heading").filter({ hasText: "Published notes" })).toBeVisible();

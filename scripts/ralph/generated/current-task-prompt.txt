@@ -1,40 +1,41 @@
 Read the following repository documents before making changes:
 - AGENTS.md
 - docs/FRONTEND.md
-- docs/product-specs/public-showroom-search.md
+- docs/product-specs/public-home-showroom.md
+- docs/design-docs/homepage-showroom-rhythm.md
 - docs/design-docs/public-home-first-screen-density.md
 - docs/references/ui-verification-contract.md
-- docs/exec-plans/active/041-public-search-collapsed-default.md
+- docs/exec-plans/active/042-public-showroom-first-screen-priority.md
 
-Current task id: 041-public-search-collapsed-default
-Current task title: Public search collapsed default
+Current task id: 042-public-showroom-first-screen-priority
+Current task title: Public showroom first-screen priority
 
 Objective:
-Keep the public title-search control available without letting it dominate the homepage by default.
+Make the showroom itself the first-screen focus on the public homepage.
 
 Scope:
-- collapsed or compact default search state on `/`
-- explicit expand interaction for the public search input
-- preserve current title-only mixed-feed filtering behavior after expansion
+- remove the non-essential explanatory copy block above the public feed
+- tighten public-home framing so real content appears immediately
+- preserve the mixed notes-and-links showroom rhythm
 
 Out of scope:
-- new public search capabilities
-- owner search changes
-- broader showroom shell copy changes
+- public search semantics
+- note and link publishing rules
+- owner-surface changes
 
 Exit criteria:
-1. The public homepage no longer opens with a large expanded search area.
-2. Visitors can explicitly expand the public search control and then filter the mixed published feed by title.
-3. The collapsed search state remains clear and usable on desktop and mobile.
-4. `npm run test:e2e -- --grep @ui-public-search-collapse` passes.
+1. The public homepage removes the extra explanatory showroom text block above the grid.
+2. Published cards are visibly present in the first screen on common desktop and mobile viewports.
+3. The page keeps a clean, composed showroom rhythm rather than reverting to a hero-led layout.
+4. `npm run test:e2e -- --grep @ui-public-home-density` passes.
 5. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-public-search-collapse`
+- `npm run test:e2e -- --grep @ui-public-home-density`
 
 Evaluator notes:
-Promote only when the default collapsed search state improves first-screen content visibility without hiding search discoverability.
+Promote only when the public homepage clearly prioritizes published content over framing copy.
 
 Required repository artifacts for this task:
 - src/app/page.tsx
@@ -42,7 +43,7 @@ Required repository artifacts for this task:
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-public-search-collapse
+- npm run test:e2e -- --grep @ui-public-home-density
 
 Previous known gaps from the last evaluation:
 - none

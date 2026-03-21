@@ -16,8 +16,8 @@ test("public homepage exposes the mixed published content surface", async ({ pag
 
   await expect(
     page
-      .getByRole("heading", { name: "Notes the owner has chosen to share." })
-      .or(page.getByRole("heading", { name: "Notes and links the owner has chosen to share." }))
+      .getByRole("heading", { name: "Published notes" })
+      .or(page.getByRole("heading", { name: "Published notes and links" }))
   ).toBeVisible();
   await expect(page.getByRole("navigation").getByRole("link", { name: "Owner login" })).toBeVisible();
   await expect(emptyState.or(publishedNoteEntry)).toBeVisible();

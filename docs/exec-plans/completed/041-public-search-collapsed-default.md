@@ -5,7 +5,7 @@
   "id": "041-public-search-collapsed-default",
   "title": "Public search collapsed default",
   "order": 41,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "042-public-showroom-first-screen-priority",
   "prompt_docs": [
@@ -27,7 +27,8 @@
     "The public search input is still fully expanded on first load.",
     "The collapsed affordance is hard to discover or unusable on touch screens.",
     "The search broadens beyond title-only matching."
-  ]
+  ],
+  "completed_at": "2026-03-21T07:28:34.636Z"
 }
 ```
 
@@ -68,3 +69,4 @@ Promote only when the default collapsed search state improves first-screen conte
 
 - Start here. Append timestamped progress notes as work lands.
 - 2026-03-21 16:24 KST: Changed the public homepage search to a collapsed-by-default toggle with explicit open/close actions, preserved title-only mixed-feed filtering when expanded, updated the public search E2E flow, and tagged the public showroom UI checks for `@ui-public-search-collapse`.
+- 2026-03-21T07:28:34.636Z: automatically promoted after deterministic checks and evaluator approval.

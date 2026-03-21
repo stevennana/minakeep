@@ -612,3 +612,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T161927-041-public-search-collapsed-default/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T161927-041-public-search-collapsed-default/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 041-public-search-collapsed-default -> 042-public-showroom-first-screen-priority
+- backlog: rendered current=042-public-showroom-first-screen-priority
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooo
+- cycle: finished
+
+### cycle 2026-03-21T16:29:04+09:00 task=042-public-showroom-first-screen-priority
+- artifacts: state/artifacts/20260321T162904-042-public-showroom-first-screen-priority
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T162904-042-public-showroom-first-screen-priority/worker.jsonl
+- worker-summary: The public homepage now prioritizes the showroom itself: the explanatory lede above the grid is gone, the intro framing is reduced to a compact heading/count block in [public-showroom.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/public-content/components/public-showroom.tsx), and the related spacing was tightened in [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css) so published cards appear sooner without changing the mixed notes-and-links rhythm.
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T162904-042-public-showroom-first-screen-priority/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T162904-042-public-showroom-first-screen-priority/npm-run-verify-next-server.log

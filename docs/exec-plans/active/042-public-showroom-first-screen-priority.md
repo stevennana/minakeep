@@ -68,3 +68,5 @@ Promote only when the public homepage clearly prioritizes published content over
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-21 16:30 KST: Confirmed the homepage still rendered a multi-sentence explanatory lede above the public grid and that no `@ui-public-home-density` Playwright coverage existed yet.
+- 2026-03-21 16:34 KST: Removed the explanatory lede from the public homepage intro, tightened the public shell spacing so showroom cards appear sooner, added dedicated `@ui-public-home-density` desktop/mobile coverage, refreshed affected homepage UI snapshots, and verified `npm run test:e2e -- --grep @ui-public-home-density` plus `npm run verify`.

@@ -29,3 +29,4 @@
 - 2026-03-21T06:44:09.168Z: promoted 038-public-showroom-responsive-polish -> 039-public-publishing-regression-pass
 - 2026-03-21T06:51:53.767Z: promoted 039-public-publishing-regression-pass -> 040-public-wave-hardening
 - 2026-03-21T07:02:12.831Z: promoted 040-public-wave-hardening -> NONE
+- 2026-03-21T07:28:34.636Z: promoted 041-public-search-collapsed-default -> 042-public-showroom-first-screen-priority

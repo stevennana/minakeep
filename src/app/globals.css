@@ -710,17 +710,17 @@ textarea {
 .public-home-shell-head,
 .public-home-shell-copy {
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-3);
 }
 
 .public-home-shell-head {
   border-bottom: 1px solid var(--line);
-  gap: var(--space-3);
-  padding-bottom: var(--space-4);
+  gap: var(--space-2);
+  padding-bottom: var(--space-3);
 }
 
 .public-home-shell-copy {
-  gap: var(--space-2);
+  gap: 0.35rem;
 }
 
 .public-home-count {
@@ -731,8 +731,8 @@ textarea {
   display: inline-grid;
   gap: 0.18rem;
   justify-self: start;
-  min-width: 11rem;
-  padding: 0.9rem 1rem;
+  min-width: 10rem;
+  padding: 0.72rem 0.9rem;
 }
 
 .public-home-count span {
@@ -754,11 +754,11 @@ textarea {
 }
 
 .public-intro-panel {
-  gap: var(--space-3);
+  gap: var(--space-2);
 }
 
 .public-search-shell {
-  margin-bottom: var(--space-5);
+  margin-bottom: var(--space-4);
 }
 
 .public-search-panel {
@@ -798,14 +798,10 @@ textarea {
 }
 
 .public-intro-panel h1 {
-  font-size: clamp(1.45rem, 2.6vw, 1.92rem);
+  font-size: clamp(1.35rem, 2.2vw, 1.72rem);
   line-height: 1.05;
-  max-width: 14ch;
-}
-
-.public-intro-panel .lede {
-  font-size: var(--text-sm);
-  max-width: 30rem;
+  margin: 0;
+  max-width: 12ch;
 }
 
 .note-collection-panel,
@@ -1116,7 +1112,7 @@ textarea {
   display: grid;
   gap: var(--space-4);
   grid-template-columns: minmax(0, 1fr);
-  margin-top: var(--space-5);
+  margin-top: var(--space-4);
 }
 
 .note-list-item,
