@@ -113,8 +113,7 @@ test("@ui-system public chrome holds together on desktop", async ({ page }) => {
     animations: "disabled"
   });
   await expect(page.locator(".public-hero")).toHaveScreenshot("ui-system-public-hero-desktop.png", {
-    animations: "disabled",
-    mask: [page.locator(".public-hero .summary-row")]
+    animations: "disabled"
   });
 });
 

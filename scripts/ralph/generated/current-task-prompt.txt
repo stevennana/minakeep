@@ -1,50 +1,47 @@
 Read the following repository documents before making changes:
 - AGENTS.md
-- docs/DESIGN.md
 - docs/FRONTEND.md
-- docs/design-docs/cool-monochrome-visual-system.md
-- docs/design-docs/responsive-ui-rules.md
+- docs/product-specs/public-home-showroom.md
+- docs/design-docs/homepage-showroom-rhythm.md
 - docs/references/ui-verification-contract.md
-- docs/exec-plans/active/021-ui-design-system-foundation.md
+- docs/exec-plans/active/022-public-home-shell-reset.md
 
-Current task id: 021-ui-design-system-foundation
-Current task title: UI design-system foundation
+Current task id: 022-public-home-shell-reset
+Current task title: Public home shell reset
 
 Objective:
-Introduce the reusable design-system layer for the next UI wave so later route-level redesign tasks can focus on composition instead of restyling everything ad hoc.
+Reduce homepage hero dominance and reframe `/` as a note-first showroom shell.
 
 Scope:
-- define shared design tokens for color, type scale, spacing, radius, and shadows
-- introduce reusable presentation primitives for shells, panels, cards, metadata rows, tags, and button variants
-- set the cool monochrome base and smaller typography scale
-- keep route and feature logic intact
+- lighten the introductory framing
+- make published note previews the main focus above the fold
+- keep note metadata compact and secondary
 
 Out of scope:
-- homepage-specific composition work
-- owner-specific layout restructuring
-- route-level content hierarchy changes beyond what the shared system needs
+- final dynamic grid rhythm details
+- owner workspace redesign
+- public note reading page polish
 
 Exit criteria:
-1. The repo has a shared visual system encoded in reusable primitives and tokens.
-2. Existing route logic remains intact while presentation becomes easier to restyle centrally.
-3. `npm run test:e2e -- --grep @ui-system` passes with desktop/mobile screenshots, visible hierarchy anchors, and accessibility checks.
+1. The homepage reads as a note showroom before it reads as a product introduction.
+2. Intro framing is present but visually subordinate to the archive content.
+3. `npm run test:e2e -- --grep @ui-home-shell` passes with desktop/mobile screenshots, visible note-first hierarchy, and accessibility checks.
 4. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-system`
+- `npm run test:e2e -- --grep @ui-home-shell`
 
 Evaluator notes:
-Promote when the deterministic UI checks pass and later UI tasks can clearly reuse the shared system instead of re-solving basic styling per route.
+Promote when the deterministic UI checks pass and `/` clearly prioritizes note discovery over promo framing.
 
 Required repository artifacts for this task:
-- src/app/globals.css
-- src
+- src/app/page.tsx
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-system
+- npm run test:e2e -- --grep @ui-home-shell
 
 Previous known gaps from the last evaluation:
 - none

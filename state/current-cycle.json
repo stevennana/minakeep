@@ -1,8 +1,8 @@
 {
-  "task_id": "021-ui-design-system-foundation",
-  "started_at": "2026-03-21T10:14:58+09:00",
-  "artifact_dir": "state/artifacts/20260321T101458-021-ui-design-system-foundation",
+  "task_id": "022-public-home-shell-reset",
+  "started_at": "2026-03-21T10:35:52+09:00",
+  "artifact_dir": "state/artifacts/20260321T103552-022-public-home-shell-reset",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-03-21T01:35:22.284Z"
+  "updated_at": "2026-03-21T01:48:11.233Z"
 }

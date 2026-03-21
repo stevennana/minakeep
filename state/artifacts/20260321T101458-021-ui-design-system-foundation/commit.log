@@ -1,0 +1,36 @@
+[main 4fe973c] ralph: 021-ui-design-system-foundation 2026-03-21T10:35:22+09:00
+ 64 files changed, 3062 insertions(+), 714 deletions(-)
+ create mode 100644 docs/design-docs/cool-monochrome-visual-system.md
+ create mode 100644 docs/design-docs/homepage-showroom-rhythm.md
+ create mode 100644 docs/design-docs/owner-workspace-density.md
+ create mode 100644 docs/design-docs/responsive-ui-rules.md
+ create mode 100644 docs/exec-plans/active/021-ui-design-system-foundation.md
+ create mode 100644 docs/exec-plans/active/022-public-home-shell-reset.md
+ create mode 100644 docs/exec-plans/active/023-public-home-dynamic-grid.md
+ create mode 100644 docs/exec-plans/active/024-public-note-reading-polish.md
+ create mode 100644 docs/exec-plans/active/025-owner-shell-density-reset.md
+ create mode 100644 docs/exec-plans/active/026-owner-dashboard-density.md
+ create mode 100644 docs/exec-plans/active/027-editor-and-form-density.md
+ create mode 100644 docs/exec-plans/active/028-secondary-owner-surface-pass.md
+ create mode 100644 docs/exec-plans/active/029-mobile-responsive-polish.md
+ create mode 100644 docs/exec-plans/active/030-ui-hardening-and-regression.md
+ create mode 100644 docs/product-specs/owner-workspace-density.md
+ create mode 100644 docs/product-specs/public-home-showroom.md
+ create mode 100644 docs/product-specs/public-note-reading.md
+ create mode 100644 docs/product-specs/responsive-ui-behavior.md
+ create mode 100644 docs/references/ui-verification-contract.md
+ create mode 100644 src/components/ui/primitives.tsx
+ create mode 100644 state/artifacts/20260321T101458-021-ui-design-system-foundation/commit.log
+ create mode 100644 state/artifacts/20260321T101458-021-ui-design-system-foundation/evaluator.log
+ create mode 100644 state/artifacts/20260321T101458-021-ui-design-system-foundation/npm-run-test-e2e-grep-ui-system-next-server.log
+ create mode 100644 state/artifacts/20260321T101458-021-ui-design-system-foundation/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260321T101458-021-ui-design-system-foundation/task-prompt.log
+ create mode 100644 state/artifacts/20260321T101458-021-ui-design-system-foundation/worker.jsonl
+ create mode 100644 tests/e2e/ui-system.spec.ts
+ create mode 100644 tests/e2e/ui-system.spec.ts-snapshots/ui-system-dashboard-hero-desktop-darwin.png
+ create mode 100644 tests/e2e/ui-system.spec.ts-snapshots/ui-system-login-mobile-darwin.png
+ create mode 100644 tests/e2e/ui-system.spec.ts-snapshots/ui-system-public-hero-desktop-darwin.png
+ create mode 100644 tests/e2e/ui-system.spec.ts-snapshots/ui-system-site-header-desktop-darwin.png
+ create mode 100644 tests/e2e/ui-system.spec.ts-snapshots/ui-system-vault-header-desktop-darwin.png
+ create mode 100644 tests/e2e/ui-system.spec.ts-snapshots/ui-system-vault-header-mobile-darwin.png
+commit: created

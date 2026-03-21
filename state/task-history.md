@@ -11,3 +11,4 @@
 - 2026-03-20T18:56:20.484Z: promoted 018-link-ai-enrichment -> 019-knowledge-studio-ui-refresh
 - 2026-03-20T19:18:12.066Z: promoted 019-knowledge-studio-ui-refresh -> 020-ai-ui-hardening
 - 2026-03-20T20:08:22.997Z: promoted 020-ai-ui-hardening -> NONE
+- 2026-03-21T01:35:22.465Z: promoted 021-ui-design-system-foundation -> 022-public-home-shell-reset

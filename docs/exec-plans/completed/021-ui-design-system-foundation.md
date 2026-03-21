@@ -5,7 +5,7 @@
   "id": "021-ui-design-system-foundation",
   "title": "UI design-system foundation",
   "order": 21,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "022-public-home-shell-reset",
   "prompt_docs": [
@@ -25,7 +25,8 @@
     "src",
     "tests/e2e"
   ],
-  "human_review_triggers": []
+  "human_review_triggers": [],
+  "completed_at": "2026-03-21T01:35:22.465Z"
 }
 ```
 
@@ -71,3 +72,4 @@ Promote when the deterministic UI checks pass and later UI tasks can clearly reu
 - 2026-03-21 10:48 KST: Added a dedicated `@ui-system` Playwright spec with desktop/mobile visual snapshots, hierarchy-anchor assertions, horizontal overflow checks, and lightweight automated accessibility structure checks against shared public/private shells.
 - 2026-03-21 10:59 KST: `npm run test:e2e -- --grep @ui-system` passed after writing stable desktop/mobile snapshots for the site header, public hero, login layout, and private vault header/dashboard hero.
 - 2026-03-21 11:01 KST: `npm run verify` passed, confirming the shared-system refactor did not break the existing auth, note, publish, link, tag, search, AI, or startup smoke paths.
+- 2026-03-21T01:35:22.465Z: automatically promoted after deterministic checks and evaluator approval.

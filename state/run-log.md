@@ -299,3 +299,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Repository inspection supports promotion. The shared system is substantively in place: [primitives.tsx](/Users/stevenna/WebstormProjects/minakeep/src/components/ui/primitives.tsx) defines reusable surface, heading, metadata, tag, detail, and button primitives; [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css) centralizes cool-monochrome tokens for color, type, spacing, radius, and shadows with responsive rules; and the public/private shells plus note, link, tag, search, login, and public-note surfaces now consume that layer without changing underlying route behavior. The required deterministic evidence is present in [ui-system.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-system.spec.ts) and its committed snapshots, and the provided logs show both `npm run test:e2e -- --grep @ui-system` and `npm run verify` passing. I did not find a substantive gap against this task’s stated scope or exit criteria. -> state/artifacts/20260321T101458-021-ui-design-system-foundation/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T101458-021-ui-design-system-foundation/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 021-ui-design-system-foundation -> 022-public-home-shell-reset
+- backlog: rendered current=022-public-home-shell-reset
+- health: ooxxoooxoxxoxooxxxoo
+- cycle: finished
+
+### cycle 2026-03-21T10:35:52+09:00 task=022-public-home-shell-reset
+- artifacts: state/artifacts/20260321T103552-022-public-home-shell-reset
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T103552-022-public-home-shell-reset/worker.jsonl
+- worker-summary: The homepage now reads note-first. [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/page.tsx) moves the published-note collection into the dominant shell, reduces the intro to a smaller supporting card, and keeps the owner login/workflow rail secondary. [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css) adds the layout changes for the showroom-first hierarchy, compact archive counter, and tighter public note card rhythm.
+- evaluator: started
+- evaluator: status=done promotion=true The task is complete. The homepage implementation in `src/app/page.tsx` and `src/app/globals.css` clearly makes published notes the dominant above-the-fold content, keeps the intro framing subordinate in a secondary rail, and presents note metadata as supporting information. The repository includes deterministic `@ui-home-shell` coverage with committed desktop/mobile snapshots and accessibility/overflow/hierarchy checks, and the recorded required commands passed (`npm run test:e2e -- --grep @ui-home-shell`, `npm run verify`). I did not find a substantive blocker against promotion for task 022. -> state/artifacts/20260321T103552-022-public-home-shell-reset/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T103552-022-public-home-shell-reset/npm-run-verify-next-server.log
