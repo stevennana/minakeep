@@ -19,11 +19,23 @@ const linkSummarySelect = {
   url: true,
   title: true,
   summary: true,
+  isPublished: true,
+  publishedAt: true,
   enrichmentStatus: true,
   enrichmentError: true,
   enrichmentAttempts: true,
   enrichmentUpdatedAt: true,
   createdAt: true,
+  updatedAt: true,
+  tags: linkTagSelect
+};
+
+const linkPublishedSelect = {
+  id: true,
+  url: true,
+  title: true,
+  summary: true,
+  publishedAt: true,
   updatedAt: true,
   tags: linkTagSelect
 };
@@ -55,6 +67,22 @@ export const linksRepo = {
     });
 
     return links.map(mapLinkRecord);
+  },
+  async listPublished() {
+    return prisma.link.findMany({
+      where: {
+        isPublished: true
+      },
+      orderBy: [
+        {
+          publishedAt: "desc"
+        },
+        {
+          updatedAt: "desc"
+        }
+      ],
+      select: linkPublishedSelect
+    });
   },
   async listForOwnerByTag(ownerId: string, tagName: string) {
     const links = await prisma.link.findMany({
@@ -125,6 +153,20 @@ export const linksRepo = {
         ownerId,
         url: data.url,
         title: data.title
+      },
+      select: linkSummarySelect
+    });
+
+    return mapLinkRecord(link);
+  },
+  async updatePublication(id: string, isPublished: boolean) {
+    const link = await prisma.link.update({
+      where: {
+        id
+      },
+      data: {
+        isPublished,
+        publishedAt: isPublished ? new Date() : null
       },
       select: linkSummarySelect
     });

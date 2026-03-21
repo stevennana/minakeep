@@ -1,51 +1,44 @@
 Read the following repository documents before making changes:
 - AGENTS.md
-- docs/QUALITY_SCORE.md
-- docs/RELIABILITY.md
-- docs/DESIGN.md
-- docs/references/ui-verification-contract.md
-- docs/exec-plans/active/030-ui-hardening-and-regression.md
+- docs/FRONTEND.md
+- docs/SECURITY.md
+- docs/design-docs/minakeep-content-model.md
+- docs/product-specs/public-link-publishing.md
+- docs/exec-plans/active/031-public-publishing-foundation.md
 
-Current task id: 030-ui-hardening-and-regression
-Current task title: UI hardening and regression
+Current task id: 031-public-publishing-foundation
+Current task title: Public publishing foundation
 
 Objective:
-Stabilize the UI-only redesign wave and keep the reusable design system, responsive behavior, and docs aligned.
+Extend the product and persistence contract from notes-only public publishing to mixed published notes and published links.
 
 Scope:
-- close obvious visual inconsistencies
-- ensure reusable primitives are actually the styling source of truth
-- keep docs and operator guidance aligned with the shipped UI wave
-- record remaining UI debt explicitly
+- define the shared public-content boundary for notes and links
+- add the publish-state foundation needed for links
+- keep public access limited to explicitly published content
 
 Out of scope:
-- new product features
-- new AI behavior
-- a second redesign direction
+- homepage shell cleanup
+- title-only public search
+- typography tuning
 
 Exit criteria:
-1. `npm run verify` passes.
-2. `npm run test:e2e -- --grep @ui-regression` passes with desktop/mobile screenshots, no obvious overflow regressions, and accessibility checks.
-3. `npm run start:smoke` passes.
-4. Shared primitives, responsive rules, and route styling are aligned.
-5. Remaining UI debt is explicit.
+1. The repo has a clear notes-plus-links public publishing model.
+2. Links can participate in public publishing without weakening private-by-default behavior.
+3. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-regression`
-- `npm run start:smoke`
 
 Evaluator notes:
-Promote when the deterministic UI checks pass and the redesigned system feels coherent and maintainable rather than merely different.
+Promote only when later public-link and public-showroom tasks can build on one unambiguous publishing boundary.
 
 Required repository artifacts for this task:
-- scripts/ralph/README.md
+- src
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-regression
-- npm run start:smoke
 
 Previous known gaps from the last evaluation:
 - none

@@ -11,22 +11,25 @@ Describe the user-facing structure of Minakeep so an agent can implement the UI 
 - reusable presentational components layered above existing route and feature logic
 
 ## Route Map
-- `/` -> public homepage showroom of published notes
+- `/` -> public showroom of published notes and published links
 - `/notes/[slug]` -> public published-note reading page
 - `/login` -> owner sign-in
 - `/app` -> private notes-first dashboard shell
 - `/app/notes/new` -> create note
 - `/app/notes/[id]/edit` -> edit note and preview markdown
-- `/app/links` -> private saved-link management
+- `/app/links` -> private saved-link management with publish controls
 - `/app/tags` -> shared-tag overview
 - `/app/search` -> owner-only search and filtering
 
 ## Primary Screens
 ### Public homepage
-Acts as a note showroom first. It should emphasize a dynamic grid of note previews with varied heights, compact metadata, and restrained framing.
+Acts as a mixed public showroom first. It should emphasize a dynamic grid of published note and published link previews, remove the old owner-entrance side section, and place one unified title-only search bar in the public surface.
 
 ### Public note page
 Prioritizes reading comfort with narrower measure, clearer hierarchy, quieter metadata, and supporting AI summary/tags.
+
+### Published link cards
+Appear in the public showroom alongside note cards, with title, summary, and tags, and open the external destination in a new tab.
 
 ### Owner login
 Simple credentials screen with reduced visual bulk and cleaner desktop/mobile balance.
@@ -42,23 +45,26 @@ Secondary owner surfaces should inherit the same density and responsive behavior
 
 ## UI Rules
 - keep public reading calm, clear, and note-first
-- use a cool monochrome studio palette rather than the current warm paper atmosphere
-- keep headings materially smaller than the current implementation
-- prefer a dynamic but controlled grid rhythm over rigid equal-height card walls
+- the public homepage no longer needs a separate “Owner entrance” or “Private origin” section
+- use one unified title-only public search bar without a type selector
+- published link cards should look related to note cards but remain visibly distinguishable as links
+- tone down `h1` scale and `strong` emphasis across public and owner surfaces without flattening hierarchy
 - keep the owner workspace compact and professional on desktop
 - build reusable design primitives and CSS tokens so style changes do not require route-level logic edits
 - make mobile layouts easy to scan and operate with one hand
 
 ## Search / Share / Admin Notes
-- search remains owner-only
+- public search is homepage-only and title-only
+- owner search remains private
 - tags remain shared across notes and links
-- links remain private even when notes can be public
-- publishing remains a note-level decision, not a site-wide mode switch
+- publishing is a per-item decision for both notes and links
+- published links open the saved destination in a new tab
 - AI metadata remains visible but visually secondary to authored content
 
 ## Frontend Non-Goals for v1
-- public search UI
+- public search filters by type
+- public full-text search over summaries or note bodies
+- public link detail pages
 - rich-text editor tooling
 - attachment/upload interfaces
 - cloned Karakeep layout or branding
-- route-specific one-off styling that bypasses the shared design system without strong reason

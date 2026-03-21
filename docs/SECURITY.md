@@ -5,7 +5,7 @@ Define the security posture for Minakeep's current shipped slice.
 
 ## Core Security Rules
 - keep `/app` routes private to the owner account
-- expose only published notes on public routes
+- expose only explicitly published notes and explicitly published links on public routes
 - do not log secrets, passwords, session tokens, or full private note/link payloads
 - validate owner credentials on the server only
 - store only the owner password hash in SQLite
@@ -23,14 +23,17 @@ Define the security posture for Minakeep's current shipped slice.
 - the real-endpoint `@ai-real` gate must use those same local-only AI env vars and must not introduce a fallback or client-side copy of them
 
 ## Public Surfaces
-- `/` and `/notes/[slug]` are public
+- `/` is public and may show published notes plus published links
+- `/notes/[slug]` is public for published notes
 - `/login` is public but only for owner authentication
 - `/app/*` routes are private
+- public title search must only query published content
+- public link cards must open only the already-saved external URL in a new tab
 - API health checks must expose only non-sensitive readiness information
 
 ## Verification
 - private routes redirect unauthenticated users to `/login`
-- unpublished notes never render on public routes
+- unpublished notes and unpublished links never render on public routes
 - unsafe saved-link URL schemes are rejected before persistence
 - no secrets appear in logs, docs examples, or test fixtures
 - owner auth and route protection stay covered by automated checks before promotion

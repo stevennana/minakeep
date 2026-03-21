@@ -449,3 +449,14 @@ Worker stalled. Stopping loop for RCA.
 - health: ooxxoooxoxxoxooxxxooooox!ooooo
 - cycle: finished
 No remaining task. Stopping loop.
+## loop start 2026-03-21T14:02:58+09:00
+
+### cycle 2026-03-21T14:02:58+09:00 task=031-public-publishing-foundation
+- artifacts: state/artifacts/20260321T140258-031-public-publishing-foundation
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T140258-031-public-publishing-foundation/worker.jsonl
+- worker-summary: Implemented task `031-public-publishing-foundation` by adding explicit link publish state in [schema.prisma](/Users/stevenna/WebstormProjects/minakeep/prisma/schema.prisma#L39), carrying it through the link contract in [types.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/links/types.ts#L9), [repo.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/links/repo.ts#L17), and [service.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/links/service.ts#L17), and adding a shared mixed published-content boundary in [public-content/types.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/public-content/types.ts#L1) and [public-content/service.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/public-content/service.ts#L1). I also added unit coverage in [public-content.test.ts](/Users/stevenna/WebstormProjects/minakeep/tests/unit/public-content.test.ts#L1), updated the task log in [031-public-publishing-foundation.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/031-public-publishing-foundation.md#L62), and wrote the operator handoff to [state/last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt#L1).
+- evaluator: started
+- evaluator: status=not_done promotion=false `npm run verify` passes, and the repo now has link publish-state fields plus a shared mixed `public-content` type/service. But the task is not complete in substance: links still cannot actually participate in public publishing through the app, and the repo does not yet present one unambiguous publishing boundary. The links surface has no publish/unpublish action path, the homepage is still notes-only, and current homepage copy/tests explicitly assert that public links are absent, which conflicts with the docs and the new shared public-content contract. -> state/artifacts/20260321T140258-031-public-publishing-foundation/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T140258-031-public-publishing-foundation/npm-run-verify-next-server.log

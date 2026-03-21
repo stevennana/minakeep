@@ -5,7 +5,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Minakeep",
-  description: "Private notes and links, with selectively published public notes."
+  description: "Private notes and links, with selectively published public notes and links."
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

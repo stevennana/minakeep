@@ -21,4 +21,14 @@
 - [x] 028-secondary-owner-surface-pass — Secondary owner surface pass
 - [x] 029-mobile-responsive-polish — Mobile responsive polish
 - [x] 030-ui-hardening-and-regression — UI hardening and regression
+- [ ] 031-public-publishing-foundation — Public publishing foundation ← current
+- [ ] 032-owner-link-publish-controls — Owner link publish controls
+- [ ] 033-public-mixed-showroom-feed — Public mixed showroom feed
+- [ ] 034-public-showroom-shell-cleanup — Public showroom shell cleanup
+- [ ] 035-public-showroom-title-search — Public showroom title search
+- [ ] 036-public-link-new-tab-behavior — Public link new-tab behavior
+- [ ] 037-ui-hierarchy-softening — UI hierarchy softening
+- [ ] 038-public-showroom-responsive-polish — Public showroom responsive polish
+- [ ] 039-public-publishing-regression-pass — Public publishing regression pass
+- [ ] 040-public-wave-hardening — Public wave hardening
 

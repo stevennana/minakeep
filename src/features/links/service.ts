@@ -18,6 +18,12 @@ export async function listOwnerLinks(ownerId: string) {
   return linksRepo.listForOwner(ownerId);
 }
 
+export async function listPublishedLinks() {
+  const links = await linksRepo.listPublished();
+
+  return links.filter((link): link is typeof link & { publishedAt: Date } => link.publishedAt !== null);
+}
+
 export async function createSavedLink(ownerId: string, input: LinkDraftInput) {
   const normalizedInput = normalizeLinkInput(input);
 
@@ -30,6 +36,34 @@ export async function createSavedLink(ownerId: string, input: LinkDraftInput) {
 
     throw error;
   }
+}
+
+export async function publishLink(ownerId: string, id: string) {
+  const existingLink = await linksRepo.findByIdForOwner(ownerId, id);
+
+  if (!existingLink) {
+    return null;
+  }
+
+  if (existingLink.isPublished) {
+    return existingLink;
+  }
+
+  return linksRepo.updatePublication(id, true);
+}
+
+export async function unpublishLink(ownerId: string, id: string) {
+  const existingLink = await linksRepo.findByIdForOwner(ownerId, id);
+
+  if (!existingLink) {
+    return null;
+  }
+
+  if (!existingLink.isPublished) {
+    return existingLink;
+  }
+
+  return linksRepo.updatePublication(id, false);
 }
 
 export async function retryLinkEnrichment(ownerId: string, id: string) {

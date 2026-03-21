@@ -1,7 +1,7 @@
 # AGENTS.md
 
 ## Purpose
-Minakeep is a self-hosted knowledge vault for private markdown notes and saved links, with selectively published public notes, automatic AI enrichment, and a polished knowledge-studio interface.
+Minakeep is a self-hosted knowledge vault for private markdown notes and saved links, with selectively published public notes and links, automatic AI enrichment, and a polished knowledge-studio interface.
 
 This repository is optimized for agent-legible development and a Ralph-style task-promotion loop.
 
@@ -20,25 +20,27 @@ Before changing code or plans, read these files in order:
 ### In scope for v1
 - capture private markdown notes
 - save private links with manual URL and title, plus generated AI summary and tags
-- publish selected notes to a public homepage and public note pages
+- publish selected notes and selected links to the public showroom
 - organize notes and links with shared tags and owner-only basic search
 - automatically enrich notes and links with AI-generated summary and tags after save
-- refresh the full app into a dense, polished knowledge-studio UI
+- refine the public showroom and public typography hierarchy without breaking the reusable design system
+- add one unified title-only public search bar on the homepage
 
 ### Explicitly out of scope for v1
 - multi-user collaboration or invite flows
 - browser importers, automation rules, OCR, or content archiving
 - AI chat and ask-your-vault interactions
 - multi-provider AI orchestration beyond the Mina-hosted OpenAI-compatible endpoint
-- public link publishing or anonymous search
+- public body/full-text search
+- public link detail pages before opening the external destination
 
 ## Product Shape
-- public homepage lists published notes only
-- anonymous readers can open published note pages only
+- public homepage is a mixed showroom of published notes and published links
+- anonymous readers can open published note pages and open published links in a new tab
+- the homepage search bar filters public content by title only, without a type selector
 - private owner routes handle note drafting, link saving, tags, search, and AI metadata visibility
 - notes are markdown-first; links keep manual URL/title capture but AI-owned summary/tags
 - AI enrichment runs automatically after note or link save and records visible success/failure state
-- public and private surfaces share one elegant knowledge-studio visual system
 
 ## Technical Shape
 - Next.js App Router with TypeScript and npm
@@ -63,6 +65,9 @@ For manual server inspection, prefer `npm run start:logged` and set `LOG_LEVEL` 
 - owner sign-in works for the configured owner account
 - owner can create and edit a draft markdown note
 - owner can publish a note and see it appear on `/`
+- owner can publish a link and see it appear on `/`
+- public link cards open the external destination in a new tab
+- the public search bar filters published notes and published links by title only
 - anonymous readers can open a published note page
 - owner can save a link and receive generated AI summary/tags
 - owner can save a note and receive generated AI summary/tags

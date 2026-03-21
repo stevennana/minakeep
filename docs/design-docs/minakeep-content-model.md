@@ -19,21 +19,24 @@ Define the stable content concepts for v1 so note, publish, link, retrieval, and
 
 ### Link
 - a link has `url`, `title`, `summary`, and shared tags
-- links remain private in v1
 - links are standalone saved items, not note attachments
-- link summary and tags may be AI-owned metadata in the next wave
+- a link is private by default
+- a link may be published or unpublished explicitly
+- published links are visible on the public showroom only, not through a separate public detail page
+- public link cards open the saved external URL in a new tab
 
 ### Tag
 - tags are shared across notes and links
 - tags are owner-facing organization primitives, not public taxonomy pages
 
 ## Publishing Rules
-- publishing applies to notes only
+- publishing applies to both notes and links
 - publishing does not expose the entire private vault
-- public routes must exclude drafts and unpublished notes by default
+- public routes must exclude drafts, unpublished notes, and unpublished links by default
+- the public homepage mixes published notes and published links in one showroom feed
 
 ## Retrieval Rules
-- search is owner-only in v1
-- v1 search targets note titles, link titles, URLs, and tags
-- future full-text retrieval work must be proposed as a separate feature wave instead of silently broadening the current contract
+- public search is homepage-only and title-only
+- owner search is private and targets note titles, link titles, URLs, and tags
+- future public full-text retrieval should be proposed as a separate feature wave instead of silently broadening the contract
 - AI-generated metadata may improve display and tagging before retrieval expands into summary/body search
