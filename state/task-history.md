@@ -16,3 +16,4 @@
 - 2026-03-21T02:01:41.458Z: promoted 023-public-home-dynamic-grid -> 024-public-note-reading-polish
 - 2026-03-21T02:14:07.880Z: promoted 024-public-note-reading-polish -> 025-owner-shell-density-reset
 - 2026-03-21T03:12:55.784Z: manually promoted 025-owner-shell-density-reset -> 026-owner-dashboard-density | reason=operator manual promotion
+- 2026-03-21T03:27:30.360Z: promoted 026-owner-dashboard-density -> 027-editor-and-form-density

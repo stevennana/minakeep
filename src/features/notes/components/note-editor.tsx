@@ -3,7 +3,18 @@
 import { useState } from "react";
 import { useFormStatus } from "react-dom";
 
-import { Button, ButtonLink, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
+import {
+  Button,
+  ButtonLink,
+  DetailBlock,
+  FormField,
+  IntroBlock,
+  MetadataRow,
+  SectionHeading,
+  Surface,
+  TagChip,
+  TagList
+} from "@/components/ui/primitives";
 import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pending-refresh";
 import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
 import type { EnrichmentState } from "@/features/enrichment/types";
@@ -83,27 +94,23 @@ export function NoteEditor({
   return (
     <div className="note-editor-shell">
       <EnrichmentPendingRefresh enabled={enrichment?.status === "pending"} />
-      <Surface className="note-editor-intro" tone="hero">
-        <p className="eyebrow">Private note authoring</p>
-        <h1>{formTitle}</h1>
-        <p className="lede">{formDescription}</p>
-        <div className="summary-row">
-          <div>
-            <strong>Drafting surface</strong>
-            <span>Textarea editing with live markdown preview</span>
+      <Surface className="note-editor-intro ui-intro-surface" tone="hero">
+        <IntroBlock compact description={formDescription} eyebrow="Private note authoring" title={formTitle}>
+          <div className="ui-support-grid ui-support-grid-balanced">
+            <DetailBlock title="Drafting surface">
+              <p>Textarea editing with a live markdown preview.</p>
+            </DetailBlock>
+            <DetailBlock title="Publishing">
+              <p>{publication?.isPublished ? "Currently visible on public routes." : "Private until explicitly published."}</p>
+            </DetailBlock>
+            <DetailBlock title="AI metadata">
+              <p>{enrichment ? getEnrichmentStatusLabel(enrichment.status) : "Available after the first save."}</p>
+            </DetailBlock>
           </div>
-          <div>
-            <strong>Publishing</strong>
-            <span>{publication?.isPublished ? "Currently visible on public routes" : "Private until explicitly published"}</span>
-          </div>
-          <div>
-            <strong>AI metadata</strong>
-            <span>{enrichment ? getEnrichmentStatusLabel(enrichment.status) : "Available after the first save"}</span>
-          </div>
-        </div>
+        </IntroBlock>
         {publication ? (
-          <div className="publication-panel">
-            <MetadataRow>
+          <Surface className="publication-panel" tone="inset">
+            <MetadataRow leading>
               <span>{publication.isPublished ? "Published" : "Private draft"}</span>
               <span>{publication.isPublished ? "Visible on public routes" : "Hidden from public routes"}</span>
             </MetadataRow>
@@ -123,13 +130,13 @@ export function NoteEditor({
                 </ButtonLink>
               ) : null}
             </div>
-          </div>
+          </Surface>
         ) : null}
         {savedNotice ? <p className="status-note">{savedNotice}</p> : null}
       </Surface>
 
       {enrichment ? (
-        <Surface className="note-generated-panel" data-testid="note-enrichment-panel" tone="panel">
+        <Surface className="note-generated-panel ui-form-surface" data-testid="note-enrichment-panel" tone="panel">
           <SectionHeading meta="Secondary to authored content" title="AI note metadata" />
           <EnrichmentStatusBlock state={enrichment} />
           <div className="note-generated-copy">
@@ -163,10 +170,9 @@ export function NoteEditor({
       ) : null}
 
       <div className="note-editor-grid">
-        <Surface action={action} as="form" className="note-form" tone="panel">
+        <Surface action={action} as="form" className="note-form ui-form-surface ui-form-stack" tone="panel">
           <SectionHeading meta="Title and markdown body" title="Draft" />
-          <label className="field-group">
-            <span>Title</span>
+          <FormField label="Title">
             <input
               autoComplete="off"
               className="text-input"
@@ -177,10 +183,9 @@ export function NoteEditor({
               type="text"
               value={title}
             />
-          </label>
+          </FormField>
 
-          <label className="field-group note-body-field">
-            <span>Markdown body</span>
+          <FormField className="note-body-field" label="Markdown body">
             <textarea
               className="note-textarea"
               name="markdown"
@@ -191,14 +196,14 @@ Use markdown for headings, lists, links, and code.`}
               spellCheck="true"
               value={markdown}
             />
-          </label>
+          </FormField>
 
           <div className="button-row">
             <SaveButton label={submitLabel} />
           </div>
         </Surface>
 
-        <Surface aria-labelledby="note-preview-heading" className="note-preview-panel" tone="panel">
+        <Surface aria-labelledby="note-preview-heading" className="note-preview-panel ui-form-surface" tone="panel">
           <SectionHeading meta="Rendered markdown" title="Preview" />
           <h2 id="note-preview-heading">{previewTitle}</h2>
           <div

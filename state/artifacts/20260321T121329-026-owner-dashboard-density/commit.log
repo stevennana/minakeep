@@ -1,0 +1,28 @@
+[main 5868c22] ralph: 026-owner-dashboard-density 2026-03-21T12:27:30+09:00
+ 46 files changed, 1755 insertions(+), 146 deletions(-)
+ rename docs/exec-plans/{active => completed}/024-public-note-reading-polish.md (92%)
+ rename docs/exec-plans/{active => completed}/025-owner-shell-density-reset.md (63%)
+ create mode 100755 scripts/ralph/manual-promote.sh
+ create mode 100644 state/artifacts/20260321T110211-024-public-note-reading-polish/backlog.log
+ create mode 100644 state/artifacts/20260321T110211-024-public-note-reading-polish/promote.log
+ create mode 100644 state/artifacts/20260321T111438-025-owner-shell-density-reset/backlog.log
+ create mode 100644 state/artifacts/20260321T111438-025-owner-shell-density-reset/commit.log
+ create mode 100644 state/artifacts/20260321T111438-025-owner-shell-density-reset/evaluator.log
+ create mode 100644 state/artifacts/20260321T111438-025-owner-shell-density-reset/npm-run-test-e2e-grep-ui-owner-shell-next-server.log
+ create mode 100644 state/artifacts/20260321T111438-025-owner-shell-density-reset/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260321T111438-025-owner-shell-density-reset/promote.log
+ create mode 100644 state/artifacts/20260321T111438-025-owner-shell-density-reset/task-prompt.log
+ create mode 100644 state/artifacts/20260321T111438-025-owner-shell-density-reset/worker.jsonl
+ create mode 100644 state/artifacts/20260321T112504-025-owner-shell-density-reset/task-prompt.log
+ create mode 100644 state/artifacts/20260321T112504-025-owner-shell-density-reset/worker-stall.json
+ create mode 100644 state/artifacts/20260321T112504-025-owner-shell-density-reset/worker.jsonl
+ create mode 100644 state/artifacts/20260321T121329-026-owner-dashboard-density/commit.log
+ create mode 100644 state/artifacts/20260321T121329-026-owner-dashboard-density/evaluator.log
+ create mode 100644 state/artifacts/20260321T121329-026-owner-dashboard-density/npm-run-test-e2e-grep-ui-owner-dashboard-next-server.log
+ create mode 100644 state/artifacts/20260321T121329-026-owner-dashboard-density/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260321T121329-026-owner-dashboard-density/task-prompt.log
+ create mode 100644 state/artifacts/20260321T121329-026-owner-dashboard-density/worker.jsonl
+ create mode 100644 tests/e2e/ui-owner-dashboard.spec.ts
+ create mode 100644 tests/e2e/ui-owner-dashboard.spec.ts-snapshots/ui-owner-dashboard-desktop-darwin.png
+ create mode 100644 tests/e2e/ui-owner-dashboard.spec.ts-snapshots/ui-owner-dashboard-mobile-darwin.png
+commit: created

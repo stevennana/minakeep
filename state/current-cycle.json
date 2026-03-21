@@ -1,8 +1,8 @@
 {
-  "task_id": "026-owner-dashboard-density",
-  "started_at": "2026-03-21T12:13:29+09:00",
-  "artifact_dir": "state/artifacts/20260321T121329-026-owner-dashboard-density",
+  "task_id": "027-editor-and-form-density",
+  "started_at": "2026-03-21T12:28:00+09:00",
+  "artifact_dir": "state/artifacts/20260321T122800-027-editor-and-form-density",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-03-21T03:27:30.172Z"
+  "updated_at": "2026-03-21T03:43:04.365Z"
 }

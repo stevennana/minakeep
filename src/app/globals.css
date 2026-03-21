@@ -247,6 +247,9 @@ textarea {
 .summary-row,
 .tag-filter-list,
 .detail-stack,
+.ui-intro-block,
+.ui-support-grid,
+.ui-form-stack,
 .note-editor-grid,
 .link-form,
 .link-list,
@@ -258,7 +261,8 @@ textarea {
 .search-form,
 .note-generated-panel,
 .note-generated-copy,
-.field-group {
+.field-group,
+.ui-field {
   display: grid;
   gap: var(--space-4);
 }
@@ -312,6 +316,11 @@ textarea {
   padding: var(--space-5);
 }
 
+.ui-intro-surface,
+.ui-form-surface {
+  padding: 1rem 1.05rem 1.1rem;
+}
+
 .ui-surface-hero,
 .hero-card {
   box-shadow: var(--shadow-hero);
@@ -344,7 +353,6 @@ textarea {
 
 .ui-detail-block,
 .detail-block,
-.publication-panel,
 .note-list-item,
 .link-list-item,
 .route-tile,
@@ -357,7 +365,6 @@ textarea {
 
 .ui-detail-block,
 .detail-block,
-.publication-panel,
 .note-list-item,
 .link-list-item,
 .route-tile {
@@ -410,6 +417,21 @@ textarea {
   font-size: var(--text-display);
   line-height: 0.96;
   max-width: 15ch;
+}
+
+.ui-intro-block {
+  gap: var(--space-3);
+}
+
+.ui-intro-block h1 {
+  font-size: clamp(1.35rem, 2.5vw, 1.95rem);
+  line-height: 0.98;
+  max-width: 14ch;
+}
+
+.ui-intro-block .lede {
+  font-size: var(--text-sm);
+  max-width: 34rem;
 }
 
 .note-preview-panel h2 {
@@ -483,6 +505,32 @@ textarea {
 
 .detail-stack {
   margin-top: var(--space-4);
+}
+
+.ui-support-grid {
+  gap: 0.75rem;
+}
+
+.ui-support-grid-dual {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.ui-support-grid-balanced {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.ui-support-grid .ui-detail-block,
+.ui-support-grid .detail-block {
+  padding: 0.8rem 0.85rem;
+}
+
+.ui-support-grid .ui-detail-block strong,
+.ui-support-grid .detail-block strong {
+  margin-bottom: 0.3rem;
+}
+
+.ui-form-stack {
+  gap: 0.85rem;
 }
 
 .vault-shell {
@@ -824,6 +872,12 @@ textarea {
   align-content: start;
 }
 
+.note-preview-panel {
+  align-content: start;
+  display: grid;
+  gap: var(--space-4);
+}
+
 .note-body-field {
   min-height: 0;
 }
@@ -835,7 +889,7 @@ textarea {
   border: 1px solid rgba(100, 116, 139, 0.2);
   border-radius: var(--radius-2);
   color: var(--ink);
-  padding: 0.92rem 1rem;
+  padding: 0.8rem 0.92rem;
   transition:
     border-color 140ms ease,
     box-shadow 140ms ease,
@@ -853,7 +907,7 @@ textarea {
 }
 
 .note-textarea {
-  min-height: 25rem;
+  min-height: clamp(18rem, 45vh, 22rem);
   resize: vertical;
 }
 
@@ -863,7 +917,7 @@ textarea {
 
 .sign-in-form {
   display: grid;
-  gap: var(--space-4);
+  gap: 0.85rem;
 }
 
 .sign-in-form label {
@@ -878,7 +932,8 @@ textarea {
   gap: 0.45rem;
 }
 
-.field-group span {
+.field-group span,
+.ui-field-label {
   color: var(--ink-muted);
   font-size: var(--text-xs);
   letter-spacing: 0.1em;
@@ -961,9 +1016,11 @@ textarea {
 }
 
 .publication-panel {
-  display: grid;
-  gap: var(--space-4);
-  margin-top: var(--space-5);
+  margin-top: var(--space-4);
+}
+
+.publication-panel .button-row {
+  margin-top: 0;
 }
 
 .note-list,
@@ -1499,6 +1556,10 @@ textarea {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .ui-support-grid {
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  }
+
   .note-preview-card-balanced {
     min-height: 17rem;
   }
@@ -1508,7 +1569,7 @@ textarea {
   }
 
   .login-layout {
-    grid-template-columns: minmax(0, 1.02fr) minmax(18rem, 0.98fr);
+    grid-template-columns: minmax(0, 1.08fr) minmax(18rem, 0.92fr);
   }
 
   .link-manager-grid {
@@ -1517,7 +1578,7 @@ textarea {
   }
 
   .note-editor-grid {
-    grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
   }
 
   .note-list-item {

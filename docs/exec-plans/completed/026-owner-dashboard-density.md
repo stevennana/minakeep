@@ -5,7 +5,7 @@
   "id": "026-owner-dashboard-density",
   "title": "Owner dashboard density",
   "order": 26,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "027-editor-and-form-density",
   "prompt_docs": [
@@ -23,7 +23,8 @@
     "src/app/app/page.tsx",
     "tests/e2e"
   ],
-  "human_review_triggers": []
+  "human_review_triggers": [],
+  "completed_at": "2026-03-21T03:27:30.360Z"
 }
 ```
 
@@ -64,3 +65,4 @@ Promote when the deterministic UI checks pass and the dashboard reads like a com
 - Start here. Append timestamped progress notes as work lands.
 - 2026-03-21 12:22 KST: Tightened `/app` hero hierarchy with smaller heading scale, compact stat cards, and a side-aligned action row so the dashboard opens as a working surface instead of an oversized banner.
 - 2026-03-21 12:22 KST: Reworked dashboard note rows into denser primary/support columns, kept AI summary/status/tags visible in a quieter rail, and added seeded `@ui-owner-dashboard` Playwright coverage with desktop/mobile screenshots, overflow checks, hierarchy checks, and accessibility assertions.
+- 2026-03-21T03:27:30.360Z: automatically promoted after deterministic checks and evaluator approval.

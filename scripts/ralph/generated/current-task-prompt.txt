@@ -4,44 +4,45 @@ Read the following repository documents before making changes:
 - docs/product-specs/owner-workspace-density.md
 - docs/design-docs/owner-workspace-density.md
 - docs/references/ui-verification-contract.md
-- docs/exec-plans/active/026-owner-dashboard-density.md
+- docs/exec-plans/active/027-editor-and-form-density.md
 
-Current task id: 026-owner-dashboard-density
-Current task title: Owner dashboard density
+Current task id: 027-editor-and-form-density
+Current task title: Editor and form density
 
 Objective:
-Tighten the owner dashboard so it feels compact and professional without becoming visually cramped.
+Make the note editor and login/form surfaces smaller, cleaner, and more reusable without changing their logic.
 
 Scope:
-- reduce heading scale and padding
-- make note-list density more practical on desktop
-- keep AI metadata visible but visually secondary
+- reduce form bulk and oversized intro treatment
+- keep editor preview and controls readable
+- rely on shared design primitives instead of one-off styling
 
 Out of scope:
-- note editor and login forms
-- links/tags/search redesign
-- homepage work
+- homepage redesign
+- dashboard-specific list density
+- links/tags/search-specific layout work
 
 Exit criteria:
-1. The dashboard shows more useful note content without feeling cluttered.
-2. Typography and spacing feel more human-scaled than the current implementation.
-3. `npm run test:e2e -- --grep @ui-owner-dashboard` passes with desktop/mobile screenshots, visible hierarchy, and accessibility checks.
+1. Owner forms feel materially less oversized.
+2. Editor and login screens use the shared design system coherently.
+3. `npm run test:e2e -- --grep @ui-forms` passes with desktop/mobile screenshots, visible form hierarchy, and accessibility checks.
 4. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-owner-dashboard`
+- `npm run test:e2e -- --grep @ui-forms`
 
 Evaluator notes:
-Promote when the deterministic UI checks pass and the dashboard reads like a compact tool rather than an oversized card wall.
+Promote when the deterministic UI checks pass and the editor/form surfaces are more concise without hurting usability.
 
 Required repository artifacts for this task:
-- src/app/app/page.tsx
+- src/features/notes/components/note-editor.tsx
+- src/app/login/page.tsx
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-owner-dashboard
+- npm run test:e2e -- --grep @ui-forms
 
 Previous known gaps from the last evaluation:
 - none

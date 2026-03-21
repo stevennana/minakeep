@@ -130,3 +130,36 @@ export function DetailBlock({ children, className, title, ...props }: DetailBloc
     </div>
   );
 }
+
+type IntroBlockProps = ComponentPropsWithoutRef<"div"> & {
+  eyebrow: ReactNode;
+  title: ReactNode;
+  description?: ReactNode;
+  compact?: boolean;
+};
+
+export function IntroBlock({ eyebrow, title, description, compact = false, className, children, ...props }: IntroBlockProps) {
+  return (
+    <div className={cx("ui-intro-block", compact && "ui-intro-block-compact", className)} {...props}>
+      <p className="eyebrow">{eyebrow}</p>
+      <h1>{title}</h1>
+      {description ? <p className="lede">{description}</p> : null}
+      {children}
+    </div>
+  );
+}
+
+type FormFieldProps = ComponentPropsWithoutRef<"label"> & {
+  label: ReactNode;
+  hint?: ReactNode;
+};
+
+export function FormField({ children, className, hint, label, ...props }: FormFieldProps) {
+  return (
+    <label className={cx("field-group ui-field", className)} {...props}>
+      <span className="ui-field-label">{label}</span>
+      {children}
+      {hint ? <span className="field-note ui-field-note">{hint}</span> : null}
+    </label>
+  );
+}
