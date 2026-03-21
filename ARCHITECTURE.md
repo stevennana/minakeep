@@ -9,6 +9,7 @@ Minakeep is a web application with:
 - a private owner area for notes, links, tags, and search
 - an automatic AI enrichment path for notes and links
 - a SQLite-backed persistence layer for content and owner identity
+- a mounted media storage path for uploaded note images and cached link favicons
 - a deterministic operator path with logged startup and Ralph-loop state tracking
 
 ## Architectural Priorities
@@ -37,6 +38,9 @@ Markdown note drafts, publishing state, slugs, public rendering, and note-side e
 ### Links
 Manual bookmark capture with URL/title plus AI-generated summary and shared tags.
 
+### Media
+Uploaded note images, cached link favicons, media visibility rules, and server-backed media delivery.
+
 ### Tags and search
 Shared tagging plus owner-only filtering and search over titles, URLs, and tags.
 
@@ -47,7 +51,7 @@ Automatic summary/tag generation for notes and links through a Mina-hosted OpenA
 Shared design tokens, layout rules, and component language for public and private surfaces.
 
 ### Operations
-Prisma runtime prep, startup smoke, operator logging, and Ralph loop state.
+Prisma runtime prep, startup smoke, operator logging, Docker packaging, and Ralph loop state.
 
 ## Frontend / Backend Shape
 ### Frontend
@@ -60,6 +64,7 @@ Prisma runtime prep, startup smoke, operator logging, and Ralph loop state.
 ### Server
 - Auth.js handles owner sign-in
 - route handlers expose health and future server-backed workflows
+- route handlers or server-backed media endpoints should mediate owner/private media visibility instead of exposing the full media volume directly
 - Prisma access stays behind narrow server-side helpers
 - server logging stays explicit and avoids secrets or full sensitive payloads
 - the external AI client must stay behind a dedicated integration layer and never leak tokens into client-side code
@@ -67,6 +72,7 @@ Prisma runtime prep, startup smoke, operator logging, and Ralph loop state.
 ## Persistence Strategy
 - SQLite is the v1 source of truth
 - Prisma schema defines owner, note, link, and shared tag tables up front, and note/link records carry shared enrichment state fields for status, error, attempt count, and last update time
+- uploaded note images and cached favicons should live on a mounted filesystem path rather than inside SQLite blobs
 - `db:prepare` must generate the client, sync schema, and seed the owner account
 - future migrations should extend the existing schema instead of replacing it ad hoc
 
@@ -74,6 +80,7 @@ Prisma runtime prep, startup smoke, operator logging, and Ralph loop state.
 - `npm run verify` is the promotion gate for normal task completion
 - `npm run verify` must include lint, typecheck, build, unit tests, E2E tests, and startup smoke
 - `npm run start:logged` gives operators a persistent server log path under `logs/`
+- future container tasks should add deterministic image-build and startup-proof commands instead of relying on docs alone
 - if the app cannot boot against prepared runtime state, the harness is not ready
 - external AI tasks must add a real-endpoint E2E check when `LLM_BASE`, `TOKEN`, and `MODEL` are configured, using Playwright coverage tagged `@ai-real`
 

@@ -10,12 +10,14 @@ Define the reliability expectations and failure-handling rules for Minakeep.
 - AI enrichment failures must not block note or link persistence
 - external AI verification must be explicit instead of assumed from unit tests alone
 - public rendering should fail closed when persisted public data is malformed or unsafe
+- media and favicon fetch failures must fall back cleanly instead of blocking note save, link save, or public rendering
 
 ## Verification
 - `npm run db:prepare` prepares SQLite state and owner seed deterministically
 - `npm run start:smoke` boots the production-style server and probes a health endpoint
 - `npm run verify` includes startup proof alongside code-level checks
 - Ralph status and backlog rendering must work without hand-editing state files
+- Docker tasks must add deterministic image-build and startup checks instead of promoting from Compose docs alone
 - AI tasks must require a real-endpoint E2E check when `LLM_BASE`, `TOKEN`, and `MODEL` are present
 - the real-endpoint Playwright path is tagged `@ai-real`, and promotable AI tasks must pass `npm run test:e2e -- --grep @ai-real` when those env vars are configured
 - `npm run verify` does not replace the separate `@ai-real` run for promotable AI work
@@ -24,6 +26,7 @@ Define the reliability expectations and failure-handling rules for Minakeep.
 ## Runtime Startup Contract
 If the app depends on persistent runtime state, document how runtime preparation happens and how a production-style startup smoke proves the `start` path actually works.
 For Minakeep, `npm run db:prepare` is the explicit runtime-prep step and `npm run start:smoke` must be able to boot the built app and probe `/api/health`.
+For the container wave, the repo should also prove a Docker image can boot against mounted DB/media/log paths and env-driven runtime config.
 
 ## Operator Logging
 Document how `npm run start:logged` writes operator-visible server logs into `logs/`, which environment variable controls the log level, and which levels are supported for manual debugging.
@@ -37,6 +40,7 @@ When tests cover subtle or business-critical behavior, capture why those tests e
 If a user-visible behavior depends on an outside resource such as AI chat or a third-party service, require end-to-end coverage before promotion.
 For the AI enrichment wave, E2E must prove: note save with generated metadata, link save with generated metadata, and save-with-visible-failure when the endpoint fails or times out.
 For the mixed public wave, checks should also prove that stale or manually seeded invalid published-link URLs stay hidden from public routes instead of being rendered optimistically.
+For the media wave, E2E must prove: note image upload with markdown insertion, owner-visible draft image rendering, public image visibility only after note publish, and favicon fallback when fetch/cache fails.
 For the UI redesign wave, the tagged `@ui-*` Playwright coverage must prove both `1440x900` desktop and `390x844` mobile behavior, stable screenshots, visible hierarchy anchors/actions, and automated accessibility scanning.
 The shared helper under `tests/e2e/ai-real.ts` is the contract point for checking whether those env vars are present before running real-endpoint journeys.
 Owner surfaces that render pending enrichment state should auto-refresh while enrichment is running, including the private dashboard, links, search, tags, and note editor routes. Retry should be a visible action only from a failed state rather than a second control path for already-pending work.
@@ -49,6 +53,7 @@ Because the Playwright suite shares one mutable SQLite runtime state, the harnes
 - `start:logged` is intended for operator inspection, not for Ralph automation
 - external AI reliability will depend on the Mina-hosted endpoint and the quality of visible retry/failure handling
 - AI retries are still operator-triggered and immediate; v1 has no deferred queue, backoff, or attempt history beyond the current visible status
+- favicon refresh can still be operator-triggered or save-triggered only; v1 does not require a separate crawler or periodic refresh daemon
 
 ## Environment-Specific Verification Blockers
 If the direct operator path passes but the current sandboxed or wrapped runner still fails, record that separately from normal product bugs and escalate it explicitly instead of hiding it inside generic “not done” wording.

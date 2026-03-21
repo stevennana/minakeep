@@ -16,6 +16,8 @@ Define the stable content concepts for v1 so note, publish, link, retrieval, and
 - a note may be published or unpublished explicitly
 - only published notes are visible on public routes
 - a note may also carry AI-generated summary/tag metadata and visible enrichment status
+- a note may embed uploaded image references in markdown
+- the first embedded markdown image is the derived note card image in this wave
 
 ### Link
 - a link has `url`, `title`, `summary`, and shared tags
@@ -24,6 +26,13 @@ Define the stable content concepts for v1 so note, publish, link, retrieval, and
 - a link may be published or unpublished explicitly
 - published links are visible on the public showroom only, not through a separate public detail page
 - public link cards open the saved external URL in a new tab
+- a link may also carry a cached favicon reference for owner/public card display
+
+### Media
+- uploaded note images are stored on a mounted filesystem path, not inside SQLite blobs
+- cached link favicons are stored on that same mounted media path or a dedicated media subpath
+- uploaded note images remain private until the note is published
+- only images referenced by a published note should be publicly resolvable
 
 ### Tag
 - tags are shared across notes and links

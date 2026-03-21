@@ -25,6 +25,8 @@ A scoped Karakeep-inspired product can deliver the useful core without dragging 
 - selective public publishing for both notes and links
 - a clean public showroom that exposes real published items in the first screen, with optional title-only search kept compact until needed and a calmer, less aggressive hierarchy
 - a stronger markdown authoring workbench that keeps markdown as the source of truth while making writing faster and easier
+- image-rich notes with uploadable markdown images and cached link favicons that improve list-card scanning
+- a documented Docker deployment path with mounted data and env-driven runtime configuration
 
 ## Non-Goals for v1
 - multi-user collaboration or invite flows
@@ -33,6 +35,7 @@ A scoped Karakeep-inspired product can deliver the useful core without dragging 
 - provider abstraction beyond the Mina-hosted OpenAI-compatible endpoint
 - public full-text search or public link detail pages
 - Notion-style rich-text document storage or collaborative block editing
+- object-storage integration or generalized arbitrary attachment management
 
 ## v1 Success Signals
 - owners can publish notes and links into one coherent public showroom without exposing private content
@@ -41,6 +44,8 @@ A scoped Karakeep-inspired product can deliver the useful core without dragging 
 - public links open externally in a new tab and behave like lightweight reference items
 - the public hierarchy feels calmer, with less oversized `h1` and `strong` emphasis
 - owners can draft longer notes comfortably using source-first markdown editing, preview modes, and compact authoring aids
+- owners can upload note images once and see them across editor, owner lists, and published note surfaces
+- operators can run the app through a documented Docker image plus Compose path with mounted DB, media, logs, and env config
 
 ## Product Risks
 - mixed public content can become confusing if note and link cards are not differentiated clearly
@@ -48,3 +53,5 @@ A scoped Karakeep-inspired product can deliver the useful core without dragging 
 - adding public links can accidentally leak private link states if publishing boundaries are not explicit
 - toning down hierarchy can flatten the UI if not balanced carefully
 - a richer editor can accidentally break markdown fidelity or overload the note workflow if it behaves like a second document model
+- uploaded media can weaken the private-vault model if image visibility does not stay aligned with note publish state
+- favicon fetching can add network fragility unless failure paths fall back cleanly and cached assets stay bounded

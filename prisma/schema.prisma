@@ -12,6 +12,7 @@ model User {
   passwordHash String
   notes        Note[]
   links        Link[]
+  mediaAssets  MediaAsset[]
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
@@ -32,6 +33,7 @@ model Note {
   isPublished Boolean  @default(false)
   publishedAt DateTime?
   tags        Tag[]
+  mediaAssets MediaAsset[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -50,6 +52,7 @@ model Link {
   isPublished Boolean  @default(false)
   publishedAt DateTime?
   tags      Tag[]
+  mediaAssets MediaAsset[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -63,4 +66,25 @@ model Tag {
   links     Link[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model MediaAsset {
+  id          String   @id @default(cuid())
+  ownerId     String
+  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  noteId      String?
+  note        Note?    @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  linkId      String?
+  link        Link?    @relation(fields: [linkId], references: [id], onDelete: Cascade)
+  kind        String
+  storageKey  String   @unique
+  fileName    String
+  contentType String
+  sizeBytes   Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([ownerId, kind])
+  @@index([noteId, kind])
+  @@index([linkId, kind])
 }

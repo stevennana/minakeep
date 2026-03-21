@@ -14,6 +14,8 @@ This directory contains durable design decisions that are deeper than the top-le
 | `knowledge-studio-visual-system.md` | confirmed | previous broad visual-system direction for the shipped tranche |
 | `cool-monochrome-visual-system.md` | confirmed | next-wave visual system, tokens, and reusable styling primitives |
 | `homepage-showroom-rhythm.md` | confirmed | public homepage composition, dynamic grid behavior, and preview-card rhythm |
+| `media-storage-and-serving.md` | confirmed | mounted media storage, publish-gated image serving, and derived card-image rules |
+| `container-runtime-packaging.md` | confirmed | Docker image, Compose, mounted volumes, and env-driven operator packaging |
 | `public-home-first-screen-density.md` | confirmed | collapsed search chrome, minimal framing copy, and first-screen showroom priority |
 | `markdown-editor-workbench.md` | confirmed | source-first note-editor architecture, view modes, toolbar rules, and mobile authoring behavior |
 | `owner-workspace-density.md` | confirmed | desktop density rules, slimmer navigation, and compact owner layouts |

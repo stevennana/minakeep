@@ -9,11 +9,14 @@ If a UI or API behavior is visible to users, it should be defined here before im
 |---|---|---|
 | `note-authoring.md` | confirmed | Private note drafting, preview, and note-side AI metadata visibility |
 | `markdown-editor-workbench.md` | confirmed | Source-first markdown editor modes, toolbar, shortcuts, and mobile authoring behavior |
+| `note-image-attachments.md` | confirmed | Uploaded note images, markdown embedding, and derived note-card image behavior |
 | `public-note-publishing.md` | confirmed | Public note visibility and note pages |
 | `link-capture.md` | confirmed | Private bookmark capture with AI-owned summary/tag metadata |
+| `link-favicon-caching.md` | confirmed | Cached favicon fetch and card rendering for saved links |
 | `tag-filtering-and-owner-search.md` | confirmed | Shared tags and basic private retrieval |
 | `note-ai-enrichment.md` | confirmed | Automatic AI summary/tag generation for notes |
 | `link-ai-enrichment.md` | confirmed | Automatic AI summary/tag generation for links |
+| `docker-packaging.md` | confirmed | Docker image, Compose path, mounted volumes, and env-driven runtime setup |
 | `knowledge-studio-ui-refresh.md` | completed | Previous broad visual redesign tranche |
 | `public-home-showroom.md` | confirmed | Mixed public showroom of published notes and links |
 | `public-note-reading.md` | confirmed | Public note reading polish and metadata hierarchy |

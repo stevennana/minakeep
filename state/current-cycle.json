@@ -1,8 +1,8 @@
 {
-  "task_id": "049-note-editor-hardening",
-  "started_at": "2026-03-21T18:23:44+09:00",
-  "artifact_dir": "state/artifacts/20260321T182344-049-note-editor-hardening",
-  "phase": "finished",
-  "status": "finished",
-  "updated_at": "2026-03-21T09:33:57.118Z"
+  "task_id": "050-media-storage-foundation",
+  "started_at": "2026-03-21T21:29:03+09:00",
+  "artifact_dir": "state/artifacts/20260321T212903-050-media-storage-foundation",
+  "phase": "commit",
+  "status": "running",
+  "updated_at": "2026-03-21T12:39:54.563Z"
 }

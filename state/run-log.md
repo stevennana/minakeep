@@ -755,3 +755,14 @@ No remaining task. Stopping loop.
 - health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooo
 - cycle: finished
 No remaining task. Stopping loop.
+## loop start 2026-03-21T21:29:03+09:00
+
+### cycle 2026-03-21T21:29:03+09:00 task=050-media-storage-foundation
+- artifacts: state/artifacts/20260321T212903-050-media-storage-foundation
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T212903-050-media-storage-foundation/worker.jsonl
+- worker-summary: Implemented task 050 by adding a mounted media boundary across the schema, config, service, and route layers. [schema.prisma](/Users/stevenna/WebstormProjects/minakeep/prisma/schema.prisma#L71) now defines a shared `MediaAsset` model for note images and link favicons, [env.ts](/Users/stevenna/WebstormProjects/minakeep/src/lib/config/env.ts#L14) adds one configurable `MEDIA_ROOT`, [types.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/media/types.ts#L1) centralizes asset-path and publish-gated visibility rules, and [route.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/media/[assetId]/route.ts#L10) serves `/media/[assetId]` without exposing raw filesystem paths. The server now keeps draft note images owner-only, allows published note images only when referenced in published markdown, and allows published-link favicons through the same boundary via [service.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/media/service.ts#L16).
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T212903-050-media-storage-foundation/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T212903-050-media-storage-foundation/npm-run-verify-next-server.log

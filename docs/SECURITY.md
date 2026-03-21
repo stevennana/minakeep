@@ -14,6 +14,7 @@ Define the security posture for Minakeep's current shipped slice.
 - do not send private note or link content to unconfigured or fallback endpoints silently
 - visible AI failure copy may name missing env keys, but it must never echo configured secret values
 - public routes must fail closed on malformed or unsafe published-link URLs, even if stale SQLite data exists
+- uploaded note images must not become public solely because they were uploaded; public access must stay tied to published-note visibility rules
 
 ## Secrets and Config
 - keep `AUTH_SECRET`, `DATABASE_URL`, `OWNER_USERNAME`, and `OWNER_PASSWORD` in environment configuration only
@@ -22,6 +23,7 @@ Define the security posture for Minakeep's current shipped slice.
 - document required environment variables in `.env.example` and runtime docs
 - if AI config is partial, surface only which keys are missing and keep save behavior local and deterministic
 - the real-endpoint `@ai-real` gate must use those same local-only AI env vars and must not introduce a fallback or client-side copy of them
+- mounted media, SQLite, and log volumes must be operator-configurable rather than hardcoded into the image
 
 ## Public Surfaces
 - `/` is public and may show published notes plus published links
@@ -31,6 +33,8 @@ Define the security posture for Minakeep's current shipped slice.
 - public title search must only query published content
 - public link cards must open only the already-saved external URL in a new tab
 - API health checks must expose only non-sensitive readiness information
+- public note images must be resolvable only through notes that are actually published
+- cached favicons should be served from Minakeep rather than hotlinking third-party icon URLs directly on public pages
 
 ## Verification
 - private routes redirect unauthenticated users to `/login`
@@ -43,3 +47,4 @@ Define the security posture for Minakeep's current shipped slice.
 - server logs may record HTTP status or high-level failure class for the Mina endpoint, but not request bodies, tokens, or full private note/link payloads
 - real-endpoint AI verification must fail or skip based on missing `LLM_BASE`, `TOKEN`, and `MODEL`, not by substituting committed defaults
 - the shared public-content boundary must revalidate published-link URLs before public rendering so seeded `javascript:` or malformed URLs stay hidden
+- media access rules must prove that draft-note images are not publicly retrievable while published-note images remain publicly renderable

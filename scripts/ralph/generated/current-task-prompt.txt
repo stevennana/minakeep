@@ -1,47 +1,48 @@
 Read the following repository documents before making changes:
 - AGENTS.md
+- ARCHITECTURE.md
 - docs/FRONTEND.md
-- docs/product-specs/note-authoring.md
-- docs/product-specs/markdown-editor-workbench.md
-- docs/design-docs/markdown-editor-workbench.md
-- docs/exec-plans/active/049-note-editor-hardening.md
+- docs/design-docs/minakeep-content-model.md
+- docs/design-docs/media-storage-and-serving.md
+- docs/product-specs/note-image-attachments.md
+- docs/exec-plans/active/050-media-storage-foundation.md
 
-Current task id: 049-note-editor-hardening
-Current task title: Note editor hardening
+Current task id: 050-media-storage-foundation
+Current task title: Media storage foundation
 
 Objective:
-Reconcile docs, regression coverage, and markdown-fidelity protection after the richer editor wave lands.
+Introduce the mounted media-storage and serving boundary required for note-image uploads and cached favicons.
 
 Scope:
-- doc alignment for the richer note-editor behavior
-- regression and fidelity coverage
-- remaining editor debt tracking
+- media storage root and metadata contract
+- publish-gated media visibility rules
+- server-backed media delivery boundary
 
 Out of scope:
-- new editor features beyond the agreed workbench scope
-- collaborative note editing
-- attachment management
+- note-editor upload UI
+- card rendering
+- Docker packaging work
 
 Exit criteria:
-1. Docs reflect the shipped source-first editor workbench accurately.
-2. Markdown fidelity and mode-switch risks are covered by deterministic checks.
-3. Remaining note-editor debt is either fixed or explicitly tracked.
+1. The codebase has one clear mounted-media path for uploaded note images and cached favicons.
+2. Draft-note images remain private while published-note images can render publicly.
+3. `npm run test:e2e -- --grep @media-foundation` passes.
 4. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
+- `npm run test:e2e -- --grep @media-foundation`
 
 Evaluator notes:
-Promote only when the richer editor wave is documented, protected, and still clearly markdown-native.
+Promote only when the media boundary is clear, mounted-storage based, and consistent with the private-vault model.
 
 Required repository artifacts for this task:
-- docs
-- src/features/notes/components/note-editor.tsx
+- src
 - tests/e2e
-- tests/unit
 
 Required commands for this task:
 - npm run verify
+- npm run test:e2e -- --grep @media-foundation
 
 Previous known gaps from the last evaluation:
 - none

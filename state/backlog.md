@@ -40,4 +40,10 @@
 - [x] 047-note-editor-view-modes — Note editor view modes
 - [x] 048-note-editor-mobile-workflow — Note editor mobile workflow
 - [x] 049-note-editor-hardening — Note editor hardening
+- [ ] 050-media-storage-foundation — Media storage foundation ← current
+- [ ] 051-note-image-upload-and-embed — Note image upload and embed
+- [ ] 052-note-image-display-and-publish — Note image display and publish
+- [ ] 053-link-favicon-cache-and-render — Link favicon cache and render
+- [ ] 054-docker-packaging-and-compose — Docker packaging and Compose
+- [ ] 055-media-and-container-hardening — Media and container hardening
 
