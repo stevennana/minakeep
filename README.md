@@ -101,3 +101,39 @@ npm run test:e2e -- --grep @ai-real
 - Active work is tracked in `docs/exec-plans/active/`.
 - Completed task history is preserved in `docs/exec-plans/completed/`.
 - AI credentials are server-only and should stay in local or shell environment, not committed project files.
+
+## Build journey
+
+This project was built through the Mina-Ralph loop workflow rather than by hand-coding one large feature branch.
+
+The practical flow was:
+
+1. bootstrap the repo around docs-first planning, a Next.js scaffold, and the Ralph task loop
+2. define a small active queue with explicit promotion gates
+3. implement one task at a time
+4. run deterministic checks
+5. promote the next task only when the required checks passed
+6. reopen planning when one queue wave was exhausted
+
+The Mina-Ralph skill handled the repeatable engineering loop:
+
+- write and refresh product specs, design docs, and exec plans
+- keep the repo-local docs tree as the system of record
+- implement scoped tasks from the active queue
+- run verification commands and Playwright coverage
+- maintain Ralph state, task history, and promotion flow
+
+The founder still guided the product direction between waves. In other words, this repository was not created with zero human input; it was built through founder-directed wave planning plus skill-driven implementation and verification.
+
+### Major waves so far
+
+- bootstrap foundation and core note flow
+- public note publishing
+- private link capture plus owner retrieval
+- AI enrichment foundation, note AI, and link AI
+- broad UI refresh and owner-workspace density work
+- public mixed showroom, public link publishing, and public title-only search
+- public-home density refinement
+- markdown editor workbench, toolbar, modes, mobile workflow, and hardening
+
+For the concrete promotion history, see [state/task-history.md](/Users/stevenna/WebstormProjects/minakeep/state/task-history.md).
