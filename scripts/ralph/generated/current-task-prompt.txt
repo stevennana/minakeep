@@ -1,48 +1,49 @@
 Read the following repository documents before making changes:
 - AGENTS.md
 - docs/FRONTEND.md
-- docs/SECURITY.md
-- docs/design-docs/minakeep-content-model.md
-- docs/product-specs/public-link-publishing.md
-- docs/exec-plans/active/031-public-publishing-foundation.md
+- docs/product-specs/public-home-showroom.md
+- docs/references/ui-verification-contract.md
+- docs/exec-plans/active/034-public-showroom-shell-cleanup.md
 
-Current task id: 031-public-publishing-foundation
-Current task title: Public publishing foundation
+Current task id: 034-public-showroom-shell-cleanup
+Current task title: Public showroom shell cleanup
 
 Objective:
-Extend the product and persistence contract from notes-only public publishing to mixed published notes and published links.
+Remove the public “Owner entrance / Private origin” side section and simplify the homepage shell around the mixed showroom.
 
 Scope:
-- define the shared public-content boundary for notes and links
-- add the publish-state foundation needed for links
-- keep public access limited to explicitly published content
+- remove the old owner-entrance side section
+- keep the top owner login entry as the only owner call-to-action on the public page
+- simplify public framing around the mixed feed
 
 Out of scope:
-- homepage shell cleanup
-- title-only public search
-- typography tuning
+- public search implementation
+- link publishing logic
+- typography-wide hierarchy tuning
 
 Exit criteria:
-1. The repo has a clear notes-plus-links public publishing model.
-2. Links can participate in public publishing without weakening private-by-default behavior.
-3. `npm run verify` passes.
+1. The old owner-entrance side section is gone.
+2. The public page still provides owner login via the top navigation only.
+3. `npm run test:e2e -- --grep @ui-public-home-shell` passes with desktop/mobile screenshots, visible hierarchy anchors, and accessibility checks.
+4. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
+- `npm run test:e2e -- --grep @ui-public-home-shell`
 
 Evaluator notes:
-Promote only when later public-link and public-showroom tasks can build on one unambiguous publishing boundary.
+Promote when the deterministic UI checks pass and the public shell is cleaner without losing core navigation clarity.
 
 Required repository artifacts for this task:
-- src
+- src/app/page.tsx
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
+- npm run test:e2e -- --grep @ui-public-home-shell
 
 Previous known gaps from the last evaluation:
-- Exit criterion 1 is still incomplete repo-wide: `docs/design-docs/minakeep-information-architecture.md` says `/` is for published notes only, and `docs/product-specs/public-note-publishing.md` still says the homepage lists only published notes. Those contradictions leave the notes-plus-links publishing boundary ambiguous.
-- The active queue is now out of sync with shipped behavior: `docs/exec-plans/active/index.md` and queued tasks `032-owner-link-publish-controls.md` and `033-public-mixed-showroom-feed.md` still treat already-implemented behavior as future work. That weakens the clarity required for promotion.
+- none
 
 Rules:
 - Work only on this task.

@@ -167,27 +167,25 @@ async function expectAccessibleStructure(page: Page) {
   expect(audit.issues).toEqual([]);
 }
 
-async function expectShowroomHierarchy(page: Page, viewport: "desktop" | "mobile") {
-  const noteCollection = page.locator(".note-collection-panel");
-  const introPanel = page.locator(".public-hero");
-  const noteBox = await noteCollection.boundingBox();
-  const introBox = await introPanel.boundingBox();
+async function expectShowroomHierarchy(page: Page) {
+  const shellHead = page.locator(".public-home-shell-head");
+  const sectionHeading = page.locator(".note-collection-panel .section-heading");
+  const firstCard = page.locator(".public-note-showroom .note-preview-card").first();
+  const shellHeadBox = await shellHead.boundingBox();
+  const sectionHeadingBox = await sectionHeading.boundingBox();
+  const firstCardBox = await firstCard.boundingBox();
 
-  expect(noteBox).not.toBeNull();
-  expect(introBox).not.toBeNull();
+  expect(shellHeadBox).not.toBeNull();
+  expect(sectionHeadingBox).not.toBeNull();
+  expect(firstCardBox).not.toBeNull();
 
-  if (!noteBox || !introBox) {
+  if (!shellHeadBox || !sectionHeadingBox || !firstCardBox) {
     return;
   }
 
-  if (viewport === "desktop") {
-    expect(noteBox.width).toBeGreaterThan(introBox.width);
-    expect(noteBox.height).toBeGreaterThan(introBox.height);
-    expect(noteBox.x).toBeLessThan(introBox.x);
-  } else {
-    expect(noteBox.y).toBeLessThan(introBox.y);
-    expect(noteBox.height).toBeGreaterThan(introBox.height);
-  }
+  expect(shellHeadBox.y).toBeLessThan(sectionHeadingBox.y);
+  expect(sectionHeadingBox.y).toBeLessThan(firstCardBox.y);
+  expect(shellHeadBox.width).toBeGreaterThan(0);
 }
 
 test.describe.configure({ mode: "serial" });
@@ -200,15 +198,19 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-regression @ui-home-shell @ui-responsive homepage reads note-first on desktop", async ({ page }) => {
+test("@ui-regression @ui-home-shell @ui-public-home-shell @ui-responsive homepage reads note-first on desktop", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await page.goto("/");
 
   await expect(page.locator(".public-note-showroom .note-preview-card")).toHaveCount(seededNotes.length);
+  await expect(page.locator(".public-home-shell-head")).toBeVisible();
   await expect(page.locator(".note-collection-panel .section-heading").filter({ hasText: "Published notes" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Notes the owner has chosen to share." })).toBeVisible();
-  await expect(page.getByRole("complementary").getByRole("link", { name: "Owner login" })).toBeVisible();
-  await expectShowroomHierarchy(page, "desktop");
+  await expect(page.getByRole("navigation", { name: "Primary" }).getByRole("link", { name: "Owner login" })).toBeVisible();
+  await expect(page.getByRole("complementary")).toHaveCount(0);
+  await expect(page.getByText("Owner entrance")).toHaveCount(0);
+  await expect(page.getByText("Private origin")).toHaveCount(0);
+  await expectShowroomHierarchy(page);
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
 
@@ -217,15 +219,19 @@ test("@ui-regression @ui-home-shell @ui-responsive homepage reads note-first on 
   });
 });
 
-test("@ui-regression @ui-home-shell @ui-responsive homepage stays note-first on mobile", async ({ page }) => {
+test("@ui-regression @ui-home-shell @ui-public-home-shell @ui-responsive homepage stays note-first on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await page.goto("/");
 
   await expect(page.locator(".public-note-showroom .note-preview-card")).toHaveCount(seededNotes.length);
+  await expect(page.locator(".public-home-shell-head")).toBeVisible();
   await expect(page.locator(".note-collection-panel .section-heading").filter({ hasText: "Published notes" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Notes the owner has chosen to share." })).toBeVisible();
-  await expect(page.getByRole("complementary").getByRole("link", { name: "Owner login" })).toBeVisible();
-  await expectShowroomHierarchy(page, "mobile");
+  await expect(page.getByRole("navigation", { name: "Primary" }).getByRole("link", { name: "Owner login" })).toBeVisible();
+  await expect(page.getByRole("complementary")).toHaveCount(0);
+  await expect(page.getByText("Owner entrance")).toHaveCount(0);
+  await expect(page.getByText("Private origin")).toHaveCount(0);
+  await expectShowroomHierarchy(page);
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
 

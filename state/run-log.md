@@ -490,3 +490,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Task 031 is complete in substance. The repository now defines one mixed public publishing boundary for notes and links, persists link publish state, keeps public access constrained to explicitly published content, and the provided `npm run verify` pass matches the implementation and coverage I inspected. -> state/artifacts/20260321T143636-031-public-publishing-foundation/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T143636-031-public-publishing-foundation/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 031-public-publishing-foundation -> 034-public-showroom-shell-cleanup
+- backlog: rendered current=034-public-showroom-shell-cleanup
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxo
+- cycle: finished
+
+### cycle 2026-03-21T14:47:32+09:00 task=034-public-showroom-shell-cleanup
+- artifacts: state/artifacts/20260321T144732-034-public-showroom-shell-cleanup
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T144732-034-public-showroom-shell-cleanup/worker.jsonl
+- worker-summary: Collapsed the public homepage to a single showroom surface in [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/page.tsx) and kept the archive framing inline at the top of that panel. The old `Private origin` / `Owner entrance` side section is gone, and the top navigation `Owner login` link remains the only owner CTA on `/`. I also removed the public two-column shell behavior in [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css) so the mixed feed stays in one cleaner public frame.
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T144732-034-public-showroom-shell-cleanup/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T144732-034-public-showroom-shell-cleanup/npm-run-verify-next-server.log

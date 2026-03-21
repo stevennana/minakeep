@@ -695,8 +695,7 @@ textarea {
 }
 
 .public-home-shell-head,
-.public-home-shell-copy,
-.public-home-rail {
+.public-home-shell-copy {
   display: grid;
   gap: var(--space-4);
 }
@@ -1734,7 +1733,6 @@ textarea {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .public-home-grid,
   .dashboard-grid {
     grid-template-columns: minmax(0, 1.16fr) minmax(18rem, 0.84fr);
   }
@@ -1909,10 +1907,6 @@ textarea {
 
   .public-note-card {
     padding: var(--space-7);
-  }
-
-  .public-home-grid {
-    grid-template-columns: minmax(0, 1.36fr) minmax(18rem, 0.64fr);
   }
 
   .public-note-showroom {

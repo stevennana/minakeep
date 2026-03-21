@@ -5,7 +5,7 @@
   "id": "034-public-showroom-shell-cleanup",
   "title": "Public showroom shell cleanup",
   "order": 34,
-  "status": "queued",
+  "status": "active",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "035-public-showroom-title-search",
   "prompt_docs": [
@@ -61,3 +61,9 @@ Promote when the deterministic UI checks pass and the public shell is cleaner wi
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-21 15:00 KST: Read the task contract, public-home spec, frontend guidance, and UI verification contract; confirmed the homepage still shipped both the `Private origin` rail and the `Owner entrance` side panel.
+- 2026-03-21 15:06 KST: Collapsed the public homepage shell to a single showroom surface in `src/app/page.tsx`, keeping the archive framing inline and leaving the top navigation as the only owner login entry.
+- 2026-03-21 15:06 KST: Updated scoped Playwright coverage to assert the removed complementary panel is gone and to target the top navigation login link for the public home shell/system checks.
+- 2026-03-21 15:12 KST: Regenerated the affected deterministic Playwright baselines for `ui-home-shell`, `ui-home-grid`, and `ui-system` after the public shell simplification.
+- 2026-03-21 15:18 KST: `npm run test:e2e -- --grep @ui-public-home-shell` passed.
+- 2026-03-21 15:22 KST: `npm run verify` passed, including the full E2E suite and startup smoke.

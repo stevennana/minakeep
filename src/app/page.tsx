@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { ButtonLink, DetailBlock, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
+import { MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
 import { listPublishedContent } from "@/features/public-content/service";
 
 const publishedDateFormatter = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
@@ -117,13 +117,14 @@ export default async function HomePage() {
     <div className="feature-layout public-home-layout">
       <div className="public-home-grid">
         <Surface className="note-collection-panel" tone="panel">
-          <div className="public-home-shell-head">
+          <div className="public-home-shell-head public-hero public-intro-panel">
             <div className="public-home-shell-copy">
               <p className="eyebrow">Public showroom</p>
-              <p className="field-note">
+              <h1>{hasPublishedLinks ? "Notes and links the owner has chosen to share." : "Notes the owner has chosen to share."}</h1>
+              <p className="field-note lede">
                 {hasPublishedLinks
-                  ? "Published notes and published links lead the public surface. Drafts, private links, tags, and AI workflow stay inside the private studio."
-                  : "Published notes lead the public surface. Drafts, saved links, tags, and AI workflow stay inside the private studio."}
+                  ? "Published notes and published links lead the public surface. Drafts, private links, tags, and AI workflow stay inside the private studio until the owner chooses to publish them."
+                  : "Published notes lead the public surface. Drafts, saved links, tags, and AI workflow stay inside the private studio until the owner chooses to publish them."}
               </p>
             </div>
             <div className="public-home-count" aria-label={hasPublishedLinks ? "Public archive size" : "Published note archive size"}>
@@ -142,43 +143,6 @@ export default async function HomePage() {
             </div>
           )}
         </Surface>
-
-        <div className="public-home-rail">
-          <Surface className="public-hero public-intro-panel" tone="panel">
-            <div className="hero-copy">
-              <p className="eyebrow">Private origin</p>
-              <h1>{hasPublishedLinks ? "Notes and links the owner has chosen to share." : "Notes the owner has chosen to share."}</h1>
-              <p className="lede">
-                {hasPublishedLinks
-                  ? "The public reading room only surfaces notes and links the owner has explicitly published. Everything else stays in the private vault until the owner promotes it."
-                  : "The public reading room only surfaces notes the owner has explicitly published. Everything else stays in the private vault until the owner promotes it."}
-              </p>
-            </div>
-          </Surface>
-
-          <Surface as="aside" className="public-side-panel" tone="panel">
-            <SectionHeading meta="Private workflow" title="Owner entrance" />
-            <p className="field-note">
-              Sign in to draft notes, capture links, review AI-generated summaries and tags, and decide what appears on
-              public routes.
-            </p>
-            <div className="button-row">
-              <ButtonLink href="/login">Owner login</ButtonLink>
-            </div>
-            <div className="detail-stack">
-              <DetailBlock title="Public side">
-                <p>
-                  {hasPublishedLinks
-                    ? `${publishedNotes} published note${publishedNotes === 1 ? "" : "s"} and ${publishedLinks} published link${publishedLinks === 1 ? "" : "s"}.`
-                    : "Published notes only. No anonymous search, no public link listings."}
-                </p>
-              </DetailBlock>
-              <DetailBlock title="Private side">
-                <p>Notes, links, tags, and search stay aligned in one shared knowledge-studio system.</p>
-              </DetailBlock>
-            </div>
-          </Surface>
-        </div>
       </div>
     </div>
   );

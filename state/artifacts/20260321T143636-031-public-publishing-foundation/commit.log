@@ -1,0 +1,12 @@
+[main 339a8af] ralph: 031-public-publishing-foundation 2026-03-21T14:47:01+09:00
+ 22 files changed, 1412 insertions(+), 55 deletions(-)
+ rename docs/exec-plans/{active => completed}/032-owner-link-publish-controls.md (80%)
+ rename docs/exec-plans/{active => completed}/033-public-mixed-showroom-feed.md (79%)
+ create mode 100644 state/artifacts/20260321T141452-031-public-publishing-foundation/backlog.log
+ create mode 100644 state/artifacts/20260321T141452-031-public-publishing-foundation/promote.log
+ create mode 100644 state/artifacts/20260321T143636-031-public-publishing-foundation/commit.log
+ create mode 100644 state/artifacts/20260321T143636-031-public-publishing-foundation/evaluator.log
+ create mode 100644 state/artifacts/20260321T143636-031-public-publishing-foundation/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260321T143636-031-public-publishing-foundation/task-prompt.log
+ create mode 100644 state/artifacts/20260321T143636-031-public-publishing-foundation/worker.jsonl
+commit: created

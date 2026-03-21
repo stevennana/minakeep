@@ -5,7 +5,7 @@
   "id": "031-public-publishing-foundation",
   "title": "Public publishing foundation",
   "order": 31,
-  "status": "active",
+  "status": "completed",
   "next_task_on_success": "034-public-showroom-shell-cleanup",
   "prompt_docs": [
     "AGENTS.md",
@@ -25,7 +25,8 @@
     "The task broadens into public search or typography work.",
     "Publishing boundaries for notes versus links are still ambiguous.",
     "Mixed public content is implemented without clear draft/private protections."
-  ]
+  ],
+  "completed_at": "2026-03-21T05:47:01.867Z"
 }
 ```
 
@@ -70,3 +71,4 @@ Promote only when later public-link and public-showroom tasks can build on one u
 - 2026-03-21 14:52 KST - Updated E2E/UI coverage and generated schema docs to reflect the mixed public publishing boundary; full verification pending on this run.
 - 2026-03-21 15:02 KST - `npm run verify` passed after adding the owner link publish controls, mixed public homepage boundary, and deterministic UI/E2E coverage for the new notes-plus-links public contract.
 - 2026-03-21 14:38 KST - Reconciled the remaining repo drift after confirming the mixed publishing boundary was already shipped in `src` and `tests/e2e`: updated stale notes-only docs, retired queued tasks `032` and `033` as separately executable work, and pointed the active queue to `034`.
+- 2026-03-21T05:47:01.867Z: automatically promoted after deterministic checks and evaluator approval.
