@@ -4,7 +4,7 @@
 Keep Minakeep legible by separating public reading from private authoring from the first scaffold onward.
 
 ## Public Surface
-- `/` is the public homepage for published notes only
+- `/` is the public homepage for published notes and published links
 - `/notes/[slug]` is the only public content-detail route in v1
 - public routes should feel calm and reading-oriented, not like an admin dashboard
 

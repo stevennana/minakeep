@@ -41,9 +41,8 @@ Required commands for this task:
 - npm run verify
 
 Previous known gaps from the last evaluation:
-- Exit criterion 1 is not met in substance: the repo still has an ambiguous public publishing model. The required docs describe `/` as a mixed notes-plus-links showroom, but the shipped homepage remains notes-only and explicitly says there are 'no public link listings'.
-- Exit criterion 2 is not met in substance: links have persistence/domain groundwork, but they cannot yet participate in public publishing through repository routes. `publishLink`/`unpublishLink` exist in service code, but there are no corresponding link publish/unpublish server actions or UI controls in `/app/links`.
-- The verification suite still locks in the old notes-only public contract, so later tasks are not building from a single consistent boundary yet.
+- Exit criterion 1 is still incomplete repo-wide: `docs/design-docs/minakeep-information-architecture.md` says `/` is for published notes only, and `docs/product-specs/public-note-publishing.md` still says the homepage lists only published notes. Those contradictions leave the notes-plus-links publishing boundary ambiguous.
+- The active queue is now out of sync with shipped behavior: `docs/exec-plans/active/index.md` and queued tasks `032-owner-link-publish-controls.md` and `033-public-mixed-showroom-feed.md` still treat already-implemented behavior as future work. That weakens the clarity required for promotion.
 
 Rules:
 - Work only on this task.

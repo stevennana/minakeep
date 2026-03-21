@@ -475,3 +475,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=not_done promotion=false Code and verification are strong, but the repository does not yet present one unambiguous public-publishing contract repo-wide. The mixed notes-plus-links behavior is implemented, yet key docs still describe a notes-only public homepage, so exit criterion 1 is not satisfied in substance. -> state/artifacts/20260321T141452-031-public-publishing-foundation/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T141452-031-public-publishing-foundation/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Task 031-public-publishing-foundation not eligible for promotion.
+- backlog: rendered current=031-public-publishing-foundation
+- health: ooxxoooxoxxoxooxxxooooox!oooooxx
+- cycle: finished
+
+### cycle 2026-03-21T14:36:36+09:00 task=031-public-publishing-foundation
+- artifacts: state/artifacts/20260321T143636-031-public-publishing-foundation
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T143636-031-public-publishing-foundation/worker.jsonl
+- worker-summary: Task `031` is reconciled and the repo now has one unambiguous mixed public publishing boundary. I updated the stale notes-only docs in [minakeep-information-architecture.md](/Users/stevenna/WebstormProjects/minakeep/docs/design-docs/minakeep-information-architecture.md) and [public-note-publishing.md](/Users/stevenna/WebstormProjects/minakeep/docs/product-specs/public-note-publishing.md), updated the active task metadata and progress log in [031-public-publishing-foundation.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/031-public-publishing-foundation.md), fixed the queue in [index.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/index.md), and moved already-shipped tasks into completed history at [032-owner-link-publish-controls.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/completed/032-owner-link-publish-controls.md) and [033-public-mixed-showroom-feed.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/completed/033-public-mixed-showroom-feed.md). I left the existing implementation intact after confirming `src` and `tests/e2e` already enforce the mixed notes-plus-links boundary.
+- evaluator: started
+- evaluator: status=done promotion=true Task 031 is complete in substance. The repository now defines one mixed public publishing boundary for notes and links, persists link publish state, keeps public access constrained to explicitly published content, and the provided `npm run verify` pass matches the implementation and coverage I inspected. -> state/artifacts/20260321T143636-031-public-publishing-foundation/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T143636-031-public-publishing-foundation/npm-run-verify-next-server.log

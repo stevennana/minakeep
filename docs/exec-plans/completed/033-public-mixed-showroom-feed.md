@@ -5,7 +5,7 @@
   "id": "033-public-mixed-showroom-feed",
   "title": "Public mixed showroom feed",
   "order": 33,
-  "status": "queued",
+  "status": "completed",
   "next_task_on_success": "034-public-showroom-shell-cleanup",
   "prompt_docs": [
     "AGENTS.md",
@@ -23,7 +23,8 @@
   "human_review_triggers": [
     "Published links are still absent from the public homepage.",
     "Notes and links are mixed without a readable distinction in their preview treatment."
-  ]
+  ],
+  "completed_at": "2026-03-21T05:38:28Z"
 }
 ```
 
@@ -60,3 +61,4 @@ Promote only when the homepage is a coherent mixed showroom rather than a notes-
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-21 14:38 KST - Marked complete during task `031-public-publishing-foundation` reconciliation after confirming `/` already renders the mixed published-notes and published-links feed through the shared `public-content` boundary and that E2E coverage verifies unpublished links remain excluded.

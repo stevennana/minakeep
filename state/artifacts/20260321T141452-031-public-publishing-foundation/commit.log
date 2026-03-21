@@ -1,0 +1,10 @@
+[main 7c8478b] ralph: 031-public-publishing-foundation 2026-03-21T14:36:06+09:00
+ 25 files changed, 1671 insertions(+), 87 deletions(-)
+ create mode 100644 state/artifacts/20260321T140258-031-public-publishing-foundation/backlog.log
+ create mode 100644 state/artifacts/20260321T140258-031-public-publishing-foundation/promote.log
+ create mode 100644 state/artifacts/20260321T141452-031-public-publishing-foundation/commit.log
+ create mode 100644 state/artifacts/20260321T141452-031-public-publishing-foundation/evaluator.log
+ create mode 100644 state/artifacts/20260321T141452-031-public-publishing-foundation/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260321T141452-031-public-publishing-foundation/task-prompt.log
+ create mode 100644 state/artifacts/20260321T141452-031-public-publishing-foundation/worker.jsonl
+commit: created
