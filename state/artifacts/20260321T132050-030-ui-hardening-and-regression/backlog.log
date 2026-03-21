@@ -1,0 +1,23 @@
+# Backlog
+
+- [x] 010-bootstrap-foundation — Bootstrap foundation
+- [x] 011-note-authoring — Note authoring
+- [x] 012-public-note-publishing — Public note publishing
+- [x] 013-link-capture — Link capture
+- [x] 014-tag-filtering-and-owner-search — Tag filtering and owner search
+- [x] 015-hardening-and-maintenance — Hardening and maintenance
+- [x] 016-ai-enrichment-foundation — AI enrichment foundation
+- [x] 017-note-ai-enrichment — Note AI enrichment
+- [x] 018-link-ai-enrichment — Link AI enrichment
+- [x] 019-knowledge-studio-ui-refresh — Knowledge studio UI refresh
+- [x] 020-ai-ui-hardening — AI and UI hardening
+- [x] 021-ui-design-system-foundation — UI design-system foundation
+- [x] 022-public-home-shell-reset — Public home shell reset
+- [x] 023-public-home-dynamic-grid — Public home dynamic grid
+- [x] 024-public-note-reading-polish — Public note reading polish
+- [x] 025-owner-shell-density-reset — Owner shell density reset
+- [x] 026-owner-dashboard-density — Owner dashboard density
+- [x] 027-editor-and-form-density — Editor and form density
+- [x] 028-secondary-owner-surface-pass — Secondary owner surface pass
+- [x] 029-mobile-responsive-polish — Mobile responsive polish
+- [x] 030-ui-hardening-and-regression — UI hardening and regression
