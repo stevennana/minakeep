@@ -550,3 +550,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T152355-037-ui-hierarchy-softening/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T152355-037-ui-hierarchy-softening/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 037-ui-hierarchy-softening -> 038-public-showroom-responsive-polish
+- backlog: rendered current=038-public-showroom-responsive-polish
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooo
+- cycle: finished
+
+### cycle 2026-03-21T15:36:02+09:00 task=038-public-showroom-responsive-polish
+- artifacts: state/artifacts/20260321T153602-038-public-showroom-responsive-polish
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T153602-038-public-showroom-responsive-polish/worker.jsonl
+- worker-summary: Added a dedicated mixed-showroom UI regression slice in [ui-public-showroom.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-public-showroom.spec.ts) plus new desktop/mobile baselines in [ui-public-showroom.spec.ts-snapshots](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-public-showroom.spec.ts-snapshots). The spec seeds published notes and links together, checks the unified title-only search bar, verifies desktop/mobile layout behavior, and includes accessibility and no-overflow assertions under the required `@ui-public-showroom` tag. I also added a stable homepage test hook in [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/page.tsx) and a small responsive hardening rule in [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css) so long public copy cannot force overflow. The task log was updated in [038-public-showroom-responsive-polish.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/038-public-showroom-responsive-polish.md), and the operator handoff was written to [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T153602-038-public-showroom-responsive-polish/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T153602-038-public-showroom-responsive-polish/npm-run-verify-next-server.log

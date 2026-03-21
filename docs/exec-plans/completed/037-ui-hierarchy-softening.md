@@ -5,7 +5,7 @@
   "id": "037-ui-hierarchy-softening",
   "title": "UI hierarchy softening",
   "order": 37,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "038-public-showroom-responsive-polish",
   "prompt_docs": [
@@ -22,7 +22,8 @@
     "src/app/globals.css",
     "tests/e2e"
   ],
-  "human_review_triggers": []
+  "human_review_triggers": [],
+  "completed_at": "2026-03-21T06:35:32.590Z"
 }
 ```
 
@@ -63,3 +64,4 @@ Promote when the deterministic UI checks pass and the hierarchy is calmer withou
 - Start here. Append timestamped progress notes as work lands.
 - 2026-03-21 15:26:17 KST: Reduced shared `h1` scale and softened `strong` label styling in `src/app/globals.css`, then tagged the public homepage and public note Playwright specs with `@ui-public-type` and added computed-style checks so the required UI command proves the calmer hierarchy directly.
 - 2026-03-21 15:33:03 KST: Refreshed the affected deterministic UI screenshot baselines and re-ran `npm run test:e2e -- --grep @ui-public-type` plus `npm run verify`; both commands pass locally with the softened hierarchy in place.
+- 2026-03-21T06:35:32.590Z: automatically promoted after deterministic checks and evaluator approval.

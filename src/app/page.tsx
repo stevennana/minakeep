@@ -25,7 +25,7 @@ export default async function HomePage() {
   }));
 
   return (
-    <div className="feature-layout public-home-layout">
+    <div className="feature-layout public-home-layout" data-testid="public-home-layout">
       <PublicShowroom hasPublishedLinks={hasPublishedLinks} items={showroomItems} />
     </div>
   );

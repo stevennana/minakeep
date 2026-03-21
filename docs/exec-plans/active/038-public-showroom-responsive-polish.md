@@ -5,7 +5,7 @@
   "id": "038-public-showroom-responsive-polish",
   "title": "Public showroom responsive polish",
   "order": 38,
-  "status": "queued",
+  "status": "active",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "039-public-publishing-regression-pass",
   "prompt_docs": [
@@ -62,3 +62,7 @@ Promote when the deterministic UI checks pass and the public showroom/search rem
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-21 15:46 KST: Read the task contract plus public-home/search/frontend docs, then audited the homepage implementation and existing UI coverage. Confirmed the required `@ui-public-showroom` Playwright slice was missing even though other homepage UI tests existed.
+- 2026-03-21 15:46 KST: Added a stable homepage test hook and a small responsive hardening rule (`min-width: 0` on the public homepage/search shell children) to prevent long copy from forcing overflow while keeping the current layout intact.
+- 2026-03-21 15:50 KST: Added `tests/e2e/ui-public-showroom.spec.ts` with deterministic desktop/mobile coverage for the mixed note+link feed, unified search bar, overflow checks, accessibility checks, and screenshot baselines under the required `@ui-public-showroom` tag.
+- 2026-03-21 15:52 KST: Required checks passed locally: `npm run test:e2e -- --grep @ui-public-showroom` and `npm run verify`.

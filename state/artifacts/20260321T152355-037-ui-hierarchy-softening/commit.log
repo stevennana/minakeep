@@ -1,0 +1,12 @@
+[main 8367b03] ralph: 037-ui-hierarchy-softening 2026-03-21T15:35:32+09:00
+ 44 files changed, 640 insertions(+), 86 deletions(-)
+ rename docs/exec-plans/{active => completed}/036-public-link-new-tab-behavior.md (92%)
+ create mode 100644 state/artifacts/20260321T151430-036-public-link-new-tab-behavior/backlog.log
+ create mode 100644 state/artifacts/20260321T151430-036-public-link-new-tab-behavior/promote.log
+ create mode 100644 state/artifacts/20260321T152355-037-ui-hierarchy-softening/commit.log
+ create mode 100644 state/artifacts/20260321T152355-037-ui-hierarchy-softening/evaluator.log
+ create mode 100644 state/artifacts/20260321T152355-037-ui-hierarchy-softening/npm-run-test-e2e-grep-ui-public-type-next-server.log
+ create mode 100644 state/artifacts/20260321T152355-037-ui-hierarchy-softening/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260321T152355-037-ui-hierarchy-softening/task-prompt.log
+ create mode 100644 state/artifacts/20260321T152355-037-ui-hierarchy-softening/worker.jsonl
+commit: created

@@ -611,6 +611,12 @@ textarea {
   gap: var(--space-5);
 }
 
+.public-home-layout > *,
+.public-home-shell-head > *,
+.public-search-controls > * {
+  min-width: 0;
+}
+
 .public-note-layout {
   gap: var(--space-4);
 }
