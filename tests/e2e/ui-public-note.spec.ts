@@ -199,7 +199,7 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-public-note @ui-responsive public note page keeps a calm desktop reading hierarchy", async ({ page }) => {
+test("@ui-regression @ui-public-note @ui-responsive public note page keeps a calm desktop reading hierarchy", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await page.goto(`/notes/${seededNote.slug}`);
 
@@ -217,7 +217,7 @@ test("@ui-public-note @ui-responsive public note page keeps a calm desktop readi
   });
 });
 
-test("@ui-public-note @ui-responsive public note page stays compact on mobile", async ({ page }) => {
+test("@ui-regression @ui-public-note @ui-responsive public note page stays compact on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await page.goto(`/notes/${seededNote.slug}`);
 

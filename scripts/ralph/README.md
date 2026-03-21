@@ -124,5 +124,6 @@ If no reason is supplied, the override records the default reason `operator manu
 - `manual-promote.sh` is an explicit operator override; use it only for exceptional stalled-but-done cases. If you omit `--reason`, it records `operator manual promotion`.
 - Port cleanup is executed automatically only by the evaluator path for `npm run verify`, `npm run test:e2e`, or other Playwright-bearing commands. Manual local runs do not get that cleanup for free.
 - `ensure-e2e-port-free.sh` is intentionally aggressive and may terminate unrelated processes bound to `127.0.0.1:3100`.
+- UI hardening passes may use `npm run test:e2e -- --grep @ui-regression` as the full-wave deterministic gate once the per-surface UI specs all carry that tag.
 - If the evaluator repeatedly returns `not_done`, tighten the active task doc instead of making the prompt larger.
 - If a task is semantically done but not promotable, fix the contract or the deterministic checks; if you must override, use `manual-promote.sh` so the reason is recorded instead of silently skipping ahead.

@@ -240,7 +240,7 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-home-grid homepage showroom uses a varied desktop grid", async ({ page }) => {
+test("@ui-regression @ui-home-grid homepage showroom uses a varied desktop grid", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await page.goto("/");
 
@@ -259,7 +259,7 @@ test("@ui-home-grid homepage showroom uses a varied desktop grid", async ({ page
   });
 });
 
-test("@ui-home-grid homepage showroom collapses cleanly on mobile", async ({ page }) => {
+test("@ui-regression @ui-home-grid homepage showroom collapses cleanly on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await page.goto("/");
 

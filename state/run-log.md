@@ -428,3 +428,18 @@ Worker stalled. Stopping loop for RCA.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T130341-029-mobile-responsive-polish/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T130341-029-mobile-responsive-polish/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 029-mobile-responsive-polish -> 030-ui-hardening-and-regression
+- backlog: rendered current=030-ui-hardening-and-regression
+- health: ooxxoooxoxxoxooxxxooooox!oooo
+- cycle: finished
+
+### cycle 2026-03-21T13:20:50+09:00 task=030-ui-hardening-and-regression
+- artifacts: state/artifacts/20260321T132050-030-ui-hardening-and-regression
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T132050-030-ui-hardening-and-regression/worker.jsonl
+- worker-summary: Moved compact surface spacing into the shared [`Surface` primitive](/Users/stevenna/WebstormProjects/minakeep/src/components/ui/primitives.tsx) and removed the route-level `ui-intro-surface` / `ui-form-surface` styling flags from the affected routes in [login](/Users/stevenna/WebstormProjects/minakeep/src/app/login/page.tsx), [links](/Users/stevenna/WebstormProjects/minakeep/src/app/app/links/page.tsx), [tags](/Users/stevenna/WebstormProjects/minakeep/src/app/app/tags/page.tsx), [search](/Users/stevenna/WebstormProjects/minakeep/src/app/app/search/page.tsx), and [note-editor](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/components/note-editor.tsx), with the matching style rule in [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css). I also added `@ui-regression` across the deterministic UI specs in [tests/e2e](/Users/stevenna/WebstormProjects/minakeep/tests/e2e), and updated the task/docs/operator guidance in [030-ui-hardening-and-regression.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/030-ui-hardening-and-regression.md), [QUALITY_SCORE.md](/Users/stevenna/WebstormProjects/minakeep/docs/QUALITY_SCORE.md), [ui-verification-contract.md](/Users/stevenna/WebstormProjects/minakeep/docs/references/ui-verification-contract.md), [tech-debt-tracker.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/tech-debt-tracker.md), and [scripts/ralph/README.md](/Users/stevenna/WebstormProjects/minakeep/scripts/ralph/README.md). The operator handoff is written to [state/last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T132050-030-ui-hardening-and-regression/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T132050-030-ui-hardening-and-regression/npm-run-verify-next-server.log

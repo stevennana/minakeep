@@ -97,7 +97,7 @@ async function expectAccessibleStructure(page: Page) {
 
 test.describe.configure({ mode: "serial" });
 
-test("@ui-system public chrome holds together on desktop", async ({ page }) => {
+test("@ui-regression @ui-system public chrome holds together on desktop", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await page.goto("/");
 
@@ -117,7 +117,7 @@ test("@ui-system public chrome holds together on desktop", async ({ page }) => {
   });
 });
 
-test("@ui-system login surface stays readable on mobile", async ({ page }) => {
+test("@ui-regression @ui-system login surface stays readable on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await page.goto("/login");
 
@@ -132,7 +132,7 @@ test("@ui-system login surface stays readable on mobile", async ({ page }) => {
   });
 });
 
-test("@ui-system @ui-owner-shell @ui-responsive private shell keeps hierarchy on desktop", async ({ page }) => {
+test("@ui-regression @ui-system @ui-owner-shell @ui-responsive private shell keeps hierarchy on desktop", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await signIn(page);
 
@@ -153,7 +153,7 @@ test("@ui-system @ui-owner-shell @ui-responsive private shell keeps hierarchy on
   });
 });
 
-test("@ui-system @ui-owner-shell @ui-responsive private shell collapses cleanly on mobile", async ({ page }) => {
+test("@ui-regression @ui-system @ui-owner-shell @ui-responsive private shell collapses cleanly on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await signIn(page);
 

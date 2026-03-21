@@ -13,7 +13,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
   return (
     <div className="feature-layout login-layout">
-      <Surface className="login-intro-card ui-intro-surface" tone="hero">
+      <Surface className="login-intro-card" density="compact" tone="hero">
         <IntroBlock
           compact
           description="Minakeep runs as a single-owner workspace. Public readers only see published notes, while drafting, saved links, tags, and search remain restricted to the private studio."
@@ -31,7 +31,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
         </IntroBlock>
       </Surface>
 
-      <Surface className="login-form-card ui-form-surface" tone="panel">
+      <Surface className="login-form-card" density="compact" tone="panel">
         <SectionHeading meta="Single owner account" title="Credentials" />
         <form action={loginAction} className="sign-in-form ui-form-stack">
           <FormField label="Username">

@@ -29,7 +29,7 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
   return (
     <div className="feature-layout">
       <EnrichmentPendingRefresh enabled={hasPendingResults} />
-      <Surface className="secondary-route-hero ui-intro-surface" tone="hero">
+      <Surface className="secondary-route-hero" density="compact" tone="hero">
         <IntroBlock
           compact
           description="Shared tags stay owner-only in v1. Pick a tag to narrow private notes and saved links without exposing retrieval on the public site."
@@ -50,7 +50,7 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
         </IntroBlock>
       </Surface>
 
-      <Surface className="secondary-filter-panel ui-form-surface" tone="panel">
+      <Surface className="secondary-filter-panel" density="compact" tone="panel">
         <SectionHeading meta="Shared across notes and links" title="Tag filters" />
         <div className="tag-filter-list secondary-tag-filters" aria-label="Shared tag filters">
           <Link
@@ -83,7 +83,7 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
       </Surface>
 
       <div className="retrieval-grid secondary-retrieval-grid">
-        <Surface className="secondary-list-panel secondary-note-panel ui-form-surface" tone="panel">
+        <Surface className="secondary-list-panel secondary-note-panel" density="compact" tone="panel">
           <SectionHeading meta={`${filteredContent.notes.length} note${filteredContent.notes.length === 1 ? "" : "s"}`} title={selectedTag ? `Notes tagged ${selectedTag}` : "Private notes"} />
           {filteredContent.notes.length === 0 ? (
             <p>{selectedTag ? "No private notes match this tag yet." : "No private notes yet."}</p>
@@ -129,7 +129,7 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
           )}
         </Surface>
 
-        <Surface className="secondary-list-panel secondary-link-panel ui-form-surface" tone="panel">
+        <Surface className="secondary-list-panel secondary-link-panel" density="compact" tone="panel">
           <SectionHeading meta={`${filteredContent.links.length} link${filteredContent.links.length === 1 ? "" : "s"}`} title={selectedTag ? `Links tagged ${selectedTag}` : "Private links"} />
           {filteredContent.links.length === 0 ? (
             <p>{selectedTag ? "No private links match this tag yet." : "No private links yet."}</p>

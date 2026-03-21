@@ -14,19 +14,19 @@ Quality scores should reflect both implemented behavior and how convincingly the
 ## Product Domain Scores
 | Area | Score | Notes |
 |---|---|---|
-| Product clarity | B+ | The product behavior is stable, and the next wave is now clearly UI-only: homepage showroom, owner density, responsive polish, and reusable design primitives. |
-| Feature slicing | B | The previous broad UI tranche landed, but the corrective UI wave needs smaller slices than the old single “knowledge-studio refresh” front. |
-| UX focus | B | The product is usable, but the current public/owner surfaces still feel too large and too warm compared with the desired note-first, cleaner presentation. |
+| Product clarity | A- | The public/private knowledge-studio shape is stable, and the redesign wave now has an explicit full-suite `@ui-regression` gate plus recorded remaining UI debt. |
+| Feature slicing | B+ | The redesign was corrected through smaller route/system tasks, and the final hardening pass now validates the whole surface deterministically. |
+| UX focus | B+ | The public and owner surfaces now read as one coherent, cooler, denser system; remaining work is cleanup and regression resistance rather than a new direction. |
 
 ## Architecture Layer Scores
 | Area | Score | Notes |
 |---|---|---|
 | Repo structure | A- | Docs-first structure and feature folders remain legible. |
-| Runtime determinism | A- | Verification and startup proof remain solid; the next wave is mostly presentation-layer work. |
-| Boundary clarity | B+ | Logic boundaries are good; the next improvement is separating reusable style primitives from route-specific presentation. |
+| Runtime determinism | A | Verification and startup proof remain solid, and the UI wave now has a deterministic full-regression Playwright gate instead of relying on per-surface tags alone. |
+| Boundary clarity | A- | Logic boundaries are good, and compact surface styling now lives in the shared `Surface` primitive rather than route-level helper classes. |
 
 ## Immediate Quality Priorities
 - introduce shared design tokens and reusable presentation components
-- tighten desktop density without harming readability
-- make the homepage note showroom feel more dynamic and less hero-led
-- keep mobile scanning quality strong while the layout becomes denser on desktop
+- keep the `@ui-regression` screenshot baselines trustworthy as future feature work lands
+- retire compatibility-only legacy UI class aliases once the remaining selectors and tests can move cleanly onto the shared `ui-*` hooks
+- add smaller presentation contracts if route-level screenshot coverage starts hiding primitive-level drift

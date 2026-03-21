@@ -5,7 +5,7 @@
   "id": "030-ui-hardening-and-regression",
   "title": "UI hardening and regression",
   "order": 30,
-  "status": "queued",
+  "status": "active",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": null,
   "prompt_docs": [
@@ -66,3 +66,7 @@ Promote when the deterministic UI checks pass and the redesigned system feels co
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-21 13:24 KST: Added `@ui-regression` to the existing deterministic UI Playwright specs so `npm run test:e2e -- --grep @ui-regression` now replays the full public/private redesign suite with desktop/mobile screenshots, overflow checks, and accessibility structure checks.
+- 2026-03-21 13:24 KST: Moved compact panel spacing into the shared `Surface` primitive via `density="compact"` and removed route-level `ui-intro-surface` / `ui-form-surface` styling flags from login, editor, links, tags, and search so reusable primitives remain the styling source of truth.
+- 2026-03-21 13:24 KST: Updated the UI verification contract, quality score, Ralph operator README, and tech-debt tracker to reflect the shipped hardening pass and the remaining explicit UI debt.
+- 2026-03-21 13:27 KST: Verified the full task contract locally. `npm run test:e2e -- --grep @ui-regression`, `npm run verify`, and `npm run start:smoke` all passed after the primitive and documentation hardening updates.

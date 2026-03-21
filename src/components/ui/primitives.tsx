@@ -18,6 +18,7 @@ const surfaceToneClasses: Record<SurfaceTone, string> = {
 type SurfaceProps<T extends ElementType> = {
   as?: T;
   tone?: SurfaceTone;
+  density?: "default" | "compact";
   children: ReactNode;
   className?: string;
 } & Omit<ComponentPropsWithoutRef<T>, "as" | "children" | "className">;
@@ -25,6 +26,7 @@ type SurfaceProps<T extends ElementType> = {
 export function Surface<T extends ElementType = "section">({
   as,
   tone = "panel",
+  density = "default",
   children,
   className,
   ...props
@@ -32,7 +34,7 @@ export function Surface<T extends ElementType = "section">({
   const Component = as ?? "section";
 
   return (
-    <Component className={cx(surfaceToneClasses[tone], className)} {...props}>
+    <Component className={cx(surfaceToneClasses[tone], density === "compact" && "ui-surface-compact", className)} {...props}>
       {children}
     </Component>
   );

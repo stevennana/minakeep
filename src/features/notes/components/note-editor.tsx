@@ -94,7 +94,7 @@ export function NoteEditor({
   return (
     <div className="note-editor-shell">
       <EnrichmentPendingRefresh enabled={enrichment?.status === "pending"} />
-      <Surface className="note-editor-intro ui-intro-surface" tone="hero">
+      <Surface className="note-editor-intro" density="compact" tone="hero">
         <IntroBlock compact description={formDescription} eyebrow="Private note authoring" title={formTitle}>
           <div className="ui-support-grid ui-support-grid-balanced">
             <DetailBlock title="Drafting surface">
@@ -136,7 +136,7 @@ export function NoteEditor({
       </Surface>
 
       {enrichment ? (
-        <Surface className="note-generated-panel ui-form-surface" data-testid="note-enrichment-panel" tone="panel">
+        <Surface className="note-generated-panel" data-testid="note-enrichment-panel" density="compact" tone="panel">
           <SectionHeading meta="Secondary to authored content" title="AI note metadata" />
           <EnrichmentStatusBlock state={enrichment} />
           <div className="note-generated-copy">
@@ -170,7 +170,7 @@ export function NoteEditor({
       ) : null}
 
       <div className="note-editor-grid">
-        <Surface action={action} as="form" className="note-form ui-form-surface ui-form-stack" tone="panel">
+        <Surface action={action} as="form" className="note-form ui-form-stack" density="compact" tone="panel">
           <SectionHeading meta="Title and markdown body" title="Draft" />
           <FormField label="Title">
             <input
@@ -203,7 +203,7 @@ Use markdown for headings, lists, links, and code.`}
           </div>
         </Surface>
 
-        <Surface aria-labelledby="note-preview-heading" className="note-preview-panel ui-form-surface" tone="panel">
+        <Surface aria-labelledby="note-preview-heading" className="note-preview-panel" density="compact" tone="panel">
           <SectionHeading meta="Rendered markdown" title="Preview" />
           <h2 id="note-preview-heading">{previewTitle}</h2>
           <div

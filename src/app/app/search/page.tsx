@@ -35,7 +35,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   return (
     <div className="feature-layout">
       <EnrichmentPendingRefresh enabled={hasPendingResults} />
-      <Surface className="secondary-route-hero ui-intro-surface" tone="hero">
+      <Surface className="secondary-route-hero" density="compact" tone="hero">
         <IntroBlock
           compact
           description="This search stays inside the owner area. Public readers do not get a search interface in v1."
@@ -59,7 +59,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       <Surface
         action="/app/search"
         as="form"
-        className="search-form secondary-search-form ui-form-surface"
+        className="search-form secondary-search-form"
+        density="compact"
         role="search"
         tone="panel"
       >
@@ -83,7 +84,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
       {results.query ? (
         <div className="retrieval-grid secondary-retrieval-grid">
-          <Surface className="secondary-list-panel secondary-note-panel ui-form-surface" tone="panel">
+          <Surface className="secondary-list-panel secondary-note-panel" density="compact" tone="panel">
             <SectionHeading meta={`${results.notes.length} result${results.notes.length === 1 ? "" : "s"}`} title="Matching notes" />
             {results.notes.length === 0 ? (
               <p>No private notes matched this query.</p>
@@ -129,7 +130,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             )}
           </Surface>
 
-          <Surface className="secondary-list-panel secondary-link-panel ui-form-surface" tone="panel">
+          <Surface className="secondary-list-panel secondary-link-panel" density="compact" tone="panel">
             <SectionHeading meta={`${results.links.length} result${results.links.length === 1 ? "" : "s"}`} title="Matching links" />
             {results.links.length === 0 ? (
               <p>No private links matched this query.</p>
@@ -187,7 +188,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           </Surface>
         </div>
       ) : (
-        <Surface className="secondary-list-panel ui-form-surface" tone="panel">
+        <Surface className="secondary-list-panel" density="compact" tone="panel">
           <SectionHeading meta="v1 boundaries" title="Search scope" />
           <p>Search matches note titles, link titles, link URLs, and shared tag names. Note bodies and link summaries stay out of scope in v1.</p>
         </Surface>

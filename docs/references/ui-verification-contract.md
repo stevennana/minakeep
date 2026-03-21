@@ -7,6 +7,7 @@
 - every UI-focused exec-plan in the current wave should require:
   - `npm run verify`
   - `npm run test:e2e -- --grep @ui-<surface>`
+- final UI hardening should also support `npm run test:e2e -- --grep @ui-regression` so one deterministic command replays the full redesigned public/private wave
 - UI task metadata should set `promotion_mode` to `deterministic_only`
 - the tagged UI test should prove:
   - desktop `1440x900`

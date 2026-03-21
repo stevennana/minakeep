@@ -243,7 +243,7 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-forms login form stays compact on desktop", async ({ page }) => {
+test("@ui-regression @ui-forms login form stays compact on desktop", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await page.goto("/login");
 
@@ -260,7 +260,7 @@ test("@ui-forms login form stays compact on desktop", async ({ page }) => {
   });
 });
 
-test("@ui-forms login form stays compact on mobile", async ({ page }) => {
+test("@ui-regression @ui-forms login form stays compact on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await page.goto("/login");
 
@@ -276,7 +276,7 @@ test("@ui-forms login form stays compact on mobile", async ({ page }) => {
   });
 });
 
-test("@ui-forms note editor keeps hierarchy on desktop", async ({ page }) => {
+test("@ui-regression @ui-forms note editor keeps hierarchy on desktop", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await signIn(page);
   await page.goto(`/app/notes/${seededNoteId}/edit`);
@@ -295,7 +295,7 @@ test("@ui-forms note editor keeps hierarchy on desktop", async ({ page }) => {
   });
 });
 
-test("@ui-forms note editor keeps hierarchy on mobile", async ({ page }) => {
+test("@ui-regression @ui-forms note editor keeps hierarchy on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await signIn(page);
   await page.goto(`/app/notes/${seededNoteId}/edit`);

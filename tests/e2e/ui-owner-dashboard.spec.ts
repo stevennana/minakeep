@@ -315,7 +315,7 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-owner-dashboard @ui-responsive owner dashboard stays compact on desktop", async ({ page }) => {
+test("@ui-regression @ui-owner-dashboard @ui-responsive owner dashboard stays compact on desktop", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await signIn(page);
 
@@ -334,7 +334,7 @@ test("@ui-owner-dashboard @ui-responsive owner dashboard stays compact on deskto
   });
 });
 
-test("@ui-owner-dashboard @ui-responsive owner dashboard stays usable on mobile", async ({ page }) => {
+test("@ui-regression @ui-owner-dashboard @ui-responsive owner dashboard stays usable on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await signIn(page);
 

@@ -1,47 +1,51 @@
 Read the following repository documents before making changes:
 - AGENTS.md
-- docs/FRONTEND.md
-- docs/product-specs/responsive-ui-behavior.md
-- docs/design-docs/responsive-ui-rules.md
+- docs/QUALITY_SCORE.md
+- docs/RELIABILITY.md
+- docs/DESIGN.md
 - docs/references/ui-verification-contract.md
-- docs/exec-plans/active/029-mobile-responsive-polish.md
+- docs/exec-plans/active/030-ui-hardening-and-regression.md
 
-Current task id: 029-mobile-responsive-polish
-Current task title: Mobile responsive polish
+Current task id: 030-ui-hardening-and-regression
+Current task title: UI hardening and regression
 
 Objective:
-Finish the mobile-first responsive pass so the denser desktop redesign still feels easy to read and use on smaller screens.
+Stabilize the UI-only redesign wave and keep the reusable design system, responsive behavior, and docs aligned.
 
 Scope:
-- improve mobile collapse behavior across public and private surfaces
-- preserve thumb-friendly controls and readable note previews
-- keep responsive behavior consistent through shared layout primitives
+- close obvious visual inconsistencies
+- ensure reusable primitives are actually the styling source of truth
+- keep docs and operator guidance aligned with the shipped UI wave
+- record remaining UI debt explicitly
 
 Out of scope:
-- new product behavior
-- broad desktop visual experimentation unrelated to responsive behavior
+- new product features
+- new AI behavior
+- a second redesign direction
 
 Exit criteria:
-1. Homepage note scanning stays easy on mobile.
-2. Owner navigation and primary actions remain usable on mobile widths.
-3. Responsive behavior feels intentional across the redesigned surfaces.
-4. `npm run test:e2e -- --grep @ui-responsive` passes with `390x844` mobile coverage, screenshots, and accessibility checks.
-5. `npm run verify` passes.
+1. `npm run verify` passes.
+2. `npm run test:e2e -- --grep @ui-regression` passes with desktop/mobile screenshots, no obvious overflow regressions, and accessibility checks.
+3. `npm run start:smoke` passes.
+4. Shared primitives, responsive rules, and route styling are aligned.
+5. Remaining UI debt is explicit.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-responsive`
+- `npm run test:e2e -- --grep @ui-regression`
+- `npm run start:smoke`
 
 Evaluator notes:
-Promote when the deterministic UI checks pass and mobile quality is clearly preserved rather than inferred from desktop success.
+Promote when the deterministic UI checks pass and the redesigned system feels coherent and maintainable rather than merely different.
 
 Required repository artifacts for this task:
-- src/app/globals.css
+- scripts/ralph/README.md
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-responsive
+- npm run test:e2e -- --grep @ui-regression
+- npm run start:smoke
 
 Previous known gaps from the last evaluation:
 - none

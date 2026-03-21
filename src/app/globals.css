@@ -315,8 +315,7 @@ textarea {
   padding: var(--space-5);
 }
 
-.ui-intro-surface,
-.ui-form-surface {
+.ui-surface-compact {
   padding: 1rem 1.05rem 1.1rem;
 }
 

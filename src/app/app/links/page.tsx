@@ -52,7 +52,7 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
   return (
     <div className="feature-layout">
       <EnrichmentPendingRefresh enabled={links.some((link) => link.enrichment.status === "pending")} />
-      <Surface className="secondary-route-hero ui-intro-surface" tone="hero">
+      <Surface className="secondary-route-hero" density="compact" tone="hero">
         <IntroBlock
           compact
           description="Manual bookmark capture stays private in v1. Save the URL and title first, then let Minakeep generate the AI summary and shared tags after save."
@@ -77,7 +77,7 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
       </Surface>
 
       <div className="link-manager-grid secondary-route-grid">
-        <Surface action={createLinkAction} as="form" className="link-form secondary-control-panel ui-form-surface" tone="panel">
+        <Surface action={createLinkAction} as="form" className="link-form secondary-control-panel" density="compact" tone="panel">
           <SectionHeading meta="Manual URL and title" title="Capture" />
           <FormField label="URL">
             <input
@@ -105,7 +105,7 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
           </div>
         </Surface>
 
-        <Surface className="link-list-panel secondary-list-panel secondary-link-panel ui-form-surface" tone="panel">
+        <Surface className="link-list-panel secondary-list-panel secondary-link-panel" density="compact" tone="panel">
           <SectionHeading meta={`${links.length} saved`} title="Saved links" />
           {links.length === 0 ? (
             <p>No saved links yet. Capture the first private bookmark from this page.</p>
