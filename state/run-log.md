@@ -642,3 +642,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T163712-043-public-home-density-regression-pass/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T163712-043-public-home-density-regression-pass/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 043-public-home-density-regression-pass -> 044-public-home-wave-hardening
+- backlog: rendered current=044-public-home-wave-hardening
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooo
+- cycle: finished
+
+### cycle 2026-03-21T16:43:19+09:00 task=044-public-home-wave-hardening
+- artifacts: state/artifacts/20260321T164319-044-public-home-wave-hardening
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T164319-044-public-home-wave-hardening/worker.jsonl
+- worker-summary: Aligned the public-home docs with the shipped compact shell in [docs/FRONTEND.md](/Users/stevenna/WebstormProjects/minakeep/docs/FRONTEND.md#L24), [docs/product-specs/public-home-showroom.md](/Users/stevenna/WebstormProjects/minakeep/docs/product-specs/public-home-showroom.md#L9), [docs/product-specs/public-showroom-search.md](/Users/stevenna/WebstormProjects/minakeep/docs/product-specs/public-showroom-search.md#L9), and [docs/design-docs/public-home-first-screen-density.md](/Users/stevenna/WebstormProjects/minakeep/docs/design-docs/public-home-first-screen-density.md#L6). The updates now explicitly describe the compact archive header, collapsed search summary row, and query reset when search is closed. I also narrowed the remaining related debt in [docs/exec-plans/tech-debt-tracker.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/tech-debt-tracker.md#L6), appended concrete task notes in [docs/exec-plans/active/044-public-home-wave-hardening.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/044-public-home-wave-hardening.md#L63), and wrote the operator handoff to [state/last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt#L1).
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T164319-044-public-home-wave-hardening/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T164319-044-public-home-wave-hardening/npm-run-verify-next-server.log

@@ -63,3 +63,6 @@ Promote only when the docs and task history match the shipped public-home behavi
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-21 16:45 KST: Audited the shipped public homepage against the current specs, design doc, tech-debt tracker, and Playwright coverage. Confirmed the compact shell and collapsed-search behavior already match the density slices in code, with remaining drift limited to under-specific docs and debt wording.
+- 2026-03-21 16:47 KST: Updated `docs/FRONTEND.md`, the public-home/showroom-search specs, and the first-screen density design doc to describe the shipped compact archive header, collapsed search summary row, and clear search-reset behavior. Narrowed the debt tracker note so the remaining mixed-public copy debt is explicitly off-homepage.
+- 2026-03-21 16:47 KST: Ran `npm run verify` successfully. The full gate passed through lint, db prepare, typecheck, build, unit tests, Playwright, and startup smoke with the compact public-home shell unchanged in code.

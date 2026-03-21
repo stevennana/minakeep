@@ -23,7 +23,7 @@ Describe the user-facing structure of Minakeep so an agent can implement the UI 
 
 ## Primary Screens
 ### Public homepage
-Acts as a mixed public showroom first. It should emphasize a dynamic grid of published note and published link previews, remove the old owner-entrance side section, keep framing copy minimal, and keep the public title-only search control collapsed by default until the visitor explicitly expands it.
+Acts as a mixed public showroom first. It should emphasize a dynamic grid of published note and published link previews, remove the old owner-entrance side section, keep framing copy minimal, use a compact archive header instead of a hero block, and keep the public title-only search control collapsed into a small button-and-summary row until the visitor explicitly expands it.
 
 ### Public note page
 Prioritizes reading comfort with narrower measure, clearer hierarchy, quieter metadata, and supporting AI summary/tags.
@@ -57,7 +57,8 @@ Secondary owner surfaces should inherit the same density and responsive behavior
 
 ## Search / Share / Admin Notes
 - public search is homepage-only and title-only
-- the public search affordance is collapsed or compact by default and expands only on explicit user action
+- the public search affordance is collapsed or compact by default, shows title-only scope in its collapsed state, and expands only on explicit user action
+- closing the expanded public search returns to the collapsed state and clears the active query
 - owner search remains private
 - tags remain shared across notes and links
 - publishing is a per-item decision for both notes and links

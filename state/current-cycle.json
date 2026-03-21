@@ -1,8 +1,8 @@
 {
-  "task_id": "043-public-home-density-regression-pass",
-  "started_at": "2026-03-21T16:37:12+09:00",
-  "artifact_dir": "state/artifacts/20260321T163712-043-public-home-density-regression-pass",
+  "task_id": "044-public-home-wave-hardening",
+  "started_at": "2026-03-21T16:43:19+09:00",
+  "artifact_dir": "state/artifacts/20260321T164319-044-public-home-wave-hardening",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-03-21T07:42:49.117Z"
+  "updated_at": "2026-03-21T07:49:51.911Z"
 }

@@ -5,7 +5,7 @@
   "id": "043-public-home-density-regression-pass",
   "title": "Public home density regression pass",
   "order": 43,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "044-public-home-wave-hardening",
   "prompt_docs": [
@@ -24,7 +24,8 @@
     "src/app/page.tsx",
     "tests/e2e"
   ],
-  "human_review_triggers": []
+  "human_review_triggers": [],
+  "completed_at": "2026-03-21T07:42:49.273Z"
 }
 ```
 
@@ -65,3 +66,4 @@ Promote only when the new density changes are protected by deterministic respons
 - Start here. Append timestamped progress notes as work lands.
 - 2026-03-21 16:40 KST: Extended `tests/e2e/ui-public-home-density.spec.ts` so the task-specific UI tag now checks collapsed desktop/mobile screenshots plus explicit expanded-search behavior, ARIA state changes, focus, overflow, and first-screen showroom visibility after expansion.
 - 2026-03-21 16:40 KST: Verified the required gates locally with `npm run test:e2e -- --grep @ui-public-home-density` and `npm run verify`; both passed.
+- 2026-03-21T07:42:49.273Z: automatically promoted after deterministic checks and evaluator approval.

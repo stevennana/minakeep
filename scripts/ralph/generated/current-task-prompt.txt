@@ -4,45 +4,42 @@ Read the following repository documents before making changes:
 - docs/product-specs/public-home-showroom.md
 - docs/product-specs/public-showroom-search.md
 - docs/design-docs/public-home-first-screen-density.md
-- docs/references/ui-verification-contract.md
-- docs/exec-plans/active/043-public-home-density-regression-pass.md
+- docs/exec-plans/active/044-public-home-wave-hardening.md
 
-Current task id: 043-public-home-density-regression-pass
-Current task title: Public home density regression pass
+Current task id: 044-public-home-wave-hardening
+Current task title: Public home wave hardening
 
 Objective:
-Prove that the new public-home density rules stay stable across responsive and accessibility checks.
+Reconcile docs, debt tracking, and any remaining public-home polish after the narrow density slices land.
 
 Scope:
-- desktop and mobile screenshot stability for the public homepage
-- collapsed and expanded search-state coverage
-- accessibility coverage for the compact public-home chrome
+- docs alignment for the refined public-home behavior
+- debt cleanup related to homepage density and chrome
+- final regression check for the compact public-home shell
 
 Out of scope:
-- new homepage features
-- owner-surface regressions outside shared typography and chrome
+- new publishing features
+- owner-workspace redesign
+- broader search-product changes
 
 Exit criteria:
-1. The public homepage remains readable and content-first at `1440x900` and `390x844`.
-2. UI checks cover both the collapsed search state and the explicit expanded state.
-3. Accessibility checks pass for the compact search affordance and showroom-first layout.
-4. `npm run test:e2e -- --grep @ui-public-home-density` passes.
-5. `npm run verify` passes.
+1. The docs describe the shipped collapsed-search and first-screen-showroom behavior accurately.
+2. Remaining public-home density debt is either resolved or explicitly tracked.
+3. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-public-home-density`
 
 Evaluator notes:
-Promote only when the new density changes are protected by deterministic responsive and accessibility coverage.
+Promote only when the docs and task history match the shipped public-home behavior and no hidden homepage density drift remains.
 
 Required repository artifacts for this task:
+- docs
 - src/app/page.tsx
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-public-home-density
 
 Previous known gaps from the last evaluation:
 - none
