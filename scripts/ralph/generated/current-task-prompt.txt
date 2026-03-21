@@ -2,47 +2,48 @@ Read the following repository documents before making changes:
 - AGENTS.md
 - docs/FRONTEND.md
 - docs/product-specs/owner-workspace-density.md
-- docs/design-docs/owner-workspace-density.md
+- docs/product-specs/responsive-ui-behavior.md
 - docs/references/ui-verification-contract.md
-- docs/exec-plans/active/027-editor-and-form-density.md
+- docs/exec-plans/active/028-secondary-owner-surface-pass.md
 
-Current task id: 027-editor-and-form-density
-Current task title: Editor and form density
+Current task id: 028-secondary-owner-surface-pass
+Current task title: Secondary owner surface pass
 
 Objective:
-Make the note editor and login/form surfaces smaller, cleaner, and more reusable without changing their logic.
+Bring links, tags, and search into the same tighter owner-system rhythm as the redesigned dashboard and editor.
 
 Scope:
-- reduce form bulk and oversized intro treatment
-- keep editor preview and controls readable
-- rely on shared design primitives instead of one-off styling
+- align secondary owner surfaces with the new design system
+- reduce oversized cards and spacing
+- keep scanning and retrieval clear
 
 Out of scope:
-- homepage redesign
-- dashboard-specific list density
-- links/tags/search-specific layout work
+- homepage work
+- public note page work
+- final mobile-specific polish beyond what these surfaces immediately need
 
 Exit criteria:
-1. Owner forms feel materially less oversized.
-2. Editor and login screens use the shared design system coherently.
-3. `npm run test:e2e -- --grep @ui-forms` passes with desktop/mobile screenshots, visible form hierarchy, and accessibility checks.
+1. Links, tags, and search feel like part of the same owner workspace family.
+2. Desktop density improves without reducing retrieval clarity.
+3. `npm run test:e2e -- --grep @ui-owner-secondary` passes with desktop/mobile screenshots, visible retrieval anchors, and accessibility checks.
 4. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-forms`
+- `npm run test:e2e -- --grep @ui-owner-secondary`
 
 Evaluator notes:
-Promote when the deterministic UI checks pass and the editor/form surfaces are more concise without hurting usability.
+Promote when the deterministic UI checks pass and the secondary owner routes no longer feel like oversized leftovers from the old UI.
 
 Required repository artifacts for this task:
-- src/features/notes/components/note-editor.tsx
-- src/app/login/page.tsx
+- src/app/app/links/page.tsx
+- src/app/app/tags/page.tsx
+- src/app/app/search/page.tsx
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-forms
+- npm run test:e2e -- --grep @ui-owner-secondary
 
 Previous known gaps from the last evaluation:
 - none

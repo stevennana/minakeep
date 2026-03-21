@@ -5,7 +5,7 @@
   "id": "027-editor-and-form-density",
   "title": "Editor and form density",
   "order": 27,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "028-secondary-owner-surface-pass",
   "prompt_docs": [
@@ -24,7 +24,8 @@
     "src/app/login/page.tsx",
     "tests/e2e"
   ],
-  "human_review_triggers": []
+  "human_review_triggers": [],
+  "completed_at": "2026-03-21T03:43:04.542Z"
 }
 ```
 
@@ -66,3 +67,4 @@ Promote when the deterministic UI checks pass and the editor/form surfaces are m
 - 2026-03-21 12:31 KST: Read the required UI, spec, design, and task docs plus the frontend design/responsive skills. Confirmed the current login and note editor rely on oversized route-specific styling and that the required `@ui-forms` Playwright spec was missing.
 - 2026-03-21 12:31 KST: Refactored the login page and note editor onto shared intro and form-field primitives, tightened the editor/login surface spacing and typography in `globals.css`, and added deterministic `@ui-forms` coverage for login and note editor desktop/mobile hierarchy plus screenshots.
 - 2026-03-21 12:40 KST: Refreshed the affected login screenshot baseline used by `ui-system`, verified `npm run test:e2e -- --grep @ui-forms`, and completed a passing `npm run verify` run. The first verify attempt was blocked by a transient `@ai-real` link test failure, and the second full run passed cleanly without code changes outside this task.
+- 2026-03-21T03:43:04.542Z: automatically promoted after deterministic checks and evaluator approval.

@@ -1,8 +1,8 @@
 {
-  "task_id": "027-editor-and-form-density",
-  "started_at": "2026-03-21T12:28:00+09:00",
-  "artifact_dir": "state/artifacts/20260321T122800-027-editor-and-form-density",
+  "task_id": "028-secondary-owner-surface-pass",
+  "started_at": "2026-03-21T12:43:34+09:00",
+  "artifact_dir": "state/artifacts/20260321T124334-028-secondary-owner-surface-pass",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-03-21T03:43:04.365Z"
+  "updated_at": "2026-03-21T04:03:10.957Z"
 }

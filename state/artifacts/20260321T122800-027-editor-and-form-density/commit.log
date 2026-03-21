@@ -1,0 +1,17 @@
+[main 217c8db] ralph: 027-editor-and-form-density 2026-03-21T12:43:04+09:00
+ 30 files changed, 963 insertions(+), 115 deletions(-)
+ rename docs/exec-plans/{active => completed}/026-owner-dashboard-density.md (91%)
+ create mode 100644 state/artifacts/20260321T121329-026-owner-dashboard-density/backlog.log
+ create mode 100644 state/artifacts/20260321T121329-026-owner-dashboard-density/promote.log
+ create mode 100644 state/artifacts/20260321T122800-027-editor-and-form-density/commit.log
+ create mode 100644 state/artifacts/20260321T122800-027-editor-and-form-density/evaluator.log
+ create mode 100644 state/artifacts/20260321T122800-027-editor-and-form-density/npm-run-test-e2e-grep-ui-forms-next-server.log
+ create mode 100644 state/artifacts/20260321T122800-027-editor-and-form-density/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260321T122800-027-editor-and-form-density/task-prompt.log
+ create mode 100644 state/artifacts/20260321T122800-027-editor-and-form-density/worker.jsonl
+ create mode 100644 tests/e2e/ui-forms.spec.ts
+ create mode 100644 tests/e2e/ui-forms.spec.ts-snapshots/ui-forms-editor-desktop-darwin.png
+ create mode 100644 tests/e2e/ui-forms.spec.ts-snapshots/ui-forms-editor-mobile-darwin.png
+ create mode 100644 tests/e2e/ui-forms.spec.ts-snapshots/ui-forms-login-desktop-darwin.png
+ create mode 100644 tests/e2e/ui-forms.spec.ts-snapshots/ui-forms-login-mobile-darwin.png
+commit: created

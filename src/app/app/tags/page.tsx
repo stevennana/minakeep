@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
+import { DetailBlock, IntroBlock, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
 import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pending-refresh";
 import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
 import { listOwnerTags, listOwnerContentByTag } from "@/features/tags/service";
@@ -17,6 +17,7 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
   const owner = await requireOwnerSession();
   const resolvedSearchParams = (await searchParams) ?? {};
   const selectedTag = normalizeSingleTagName(resolvedSearchParams.tag);
+  const dateFormatter = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
   const [tags, filteredContent] = await Promise.all([
     listOwnerTags(owner.id),
     listOwnerContentByTag(owner.id, selectedTag)
@@ -28,33 +29,34 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
   return (
     <div className="feature-layout">
       <EnrichmentPendingRefresh enabled={hasPendingResults} />
-      <Surface tone="hero">
-        <p className="eyebrow">Shared tags</p>
-        <h1>Filter the private vault by tag.</h1>
-        <p className="lede">
-          Shared tags stay owner-only in v1. Pick a tag to narrow private notes and saved links without exposing
-          retrieval on the public site.
-        </p>
-        <div className="summary-row">
-          <div>
-            <strong>Tag library</strong>
-            <span>{tags.length} shared tag{tags.length === 1 ? "" : "s"}</span>
+      <Surface className="secondary-route-hero ui-intro-surface" tone="hero">
+        <IntroBlock
+          compact
+          description="Shared tags stay owner-only in v1. Pick a tag to narrow private notes and saved links without exposing retrieval on the public site."
+          eyebrow="Shared tags"
+          title="Browse one private taxonomy"
+        >
+          <div aria-label="Tags overview" className="ui-support-grid secondary-summary-grid">
+            <DetailBlock title="Tag library">
+              <p>{tags.length} shared tag{tags.length === 1 ? "" : "s"}</p>
+            </DetailBlock>
+            <DetailBlock title="Selection">
+              <p>{selectedTag ?? "All private content"}</p>
+            </DetailBlock>
+            <DetailBlock title="Boundary">
+              <p>Tag exploration stays inside the owner area.</p>
+            </DetailBlock>
           </div>
-          <div>
-            <strong>Selection</strong>
-            <span>{selectedTag ?? "All private content"}</span>
-          </div>
-          <div>
-            <strong>Public boundary</strong>
-            <span>Tag exploration stays inside the owner area</span>
-          </div>
-        </div>
+        </IntroBlock>
       </Surface>
 
-      <Surface tone="panel">
+      <Surface className="secondary-filter-panel ui-form-surface" tone="panel">
         <SectionHeading meta="Shared across notes and links" title="Tag filters" />
-        <div className="tag-filter-list" aria-label="Shared tag filters">
-          <Link className={!selectedTag ? "tag-filter-link tag-filter-link-active" : "tag-filter-link"} href="/app/tags">
+        <div className="tag-filter-list secondary-tag-filters" aria-label="Shared tag filters">
+          <Link
+            className={!selectedTag ? "tag-filter-link tag-filter-link-active secondary-tag-filter" : "tag-filter-link secondary-tag-filter"}
+            href="/app/tags"
+          >
             All content
           </Link>
           {tags.length === 0 ? (
@@ -62,7 +64,11 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
           ) : (
             tags.map((tag) => (
               <Link
-                className={selectedTag === tag.name ? "tag-filter-link tag-filter-link-active" : "tag-filter-link"}
+                className={
+                  selectedTag === tag.name
+                    ? "tag-filter-link tag-filter-link-active secondary-tag-filter"
+                    : "tag-filter-link secondary-tag-filter"
+                }
                 href={`/app/tags?tag=${encodeURIComponent(tag.name)}`}
                 key={tag.id}
               >
@@ -76,30 +82,36 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
         </div>
       </Surface>
 
-      <div className="retrieval-grid">
-        <Surface tone="panel">
-          <SectionHeading
-            meta="Markdown drafts and published notes"
-            title={selectedTag ? `Notes tagged ${selectedTag}` : "Private notes"}
-          />
+      <div className="retrieval-grid secondary-retrieval-grid">
+        <Surface className="secondary-list-panel secondary-note-panel ui-form-surface" tone="panel">
+          <SectionHeading meta={`${filteredContent.notes.length} note${filteredContent.notes.length === 1 ? "" : "s"}`} title={selectedTag ? `Notes tagged ${selectedTag}` : "Private notes"} />
           {filteredContent.notes.length === 0 ? (
             <p>{selectedTag ? "No private notes match this tag yet." : "No private notes yet."}</p>
           ) : (
             <div className="note-list">
               {filteredContent.notes.map((note) => (
-                <article className="note-list-item" key={note.id}>
-                  <div>
+                <article className="note-list-item dashboard-note-item secondary-note-item" key={note.id}>
+                  <div className="dashboard-note-primary">
                     <MetadataRow leading>
                       <span>{note.isPublished ? "Published" : "Draft"}</span>
-                      <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(note.updatedAt)}</span>
+                      <span>{dateFormatter.format(note.updatedAt)}</span>
                     </MetadataRow>
                     <Link className="note-list-link" href={`/app/notes/${note.id}/edit`}>
                       {note.title}
                     </Link>
-                    <p>{note.excerpt || "Empty draft"}</p>
-                    {note.summary ? <p className="note-generated-summary">AI summary: {note.summary}</p> : null}
-                    <EnrichmentStatusBlock state={note.enrichment} />
-                    <TagList aria-label="Note tags">
+                    <p className="dashboard-note-excerpt">{note.excerpt || "Empty draft"}</p>
+                  </div>
+                  <div className="dashboard-note-secondary secondary-note-secondary">
+                    <div className="dashboard-note-ai">
+                      <strong>AI summary</strong>
+                      {note.summary ? (
+                        <p className="note-generated-summary dashboard-note-ai-summary">{note.summary}</p>
+                      ) : (
+                        <p className="field-note dashboard-note-ai-empty">A generated summary will appear here after a successful enrichment run.</p>
+                      )}
+                    </div>
+                    <EnrichmentStatusBlock detailClassName="dashboard-note-ai-detail" state={note.enrichment} />
+                    <TagList aria-label="Note tags" className="dashboard-note-tags secondary-note-tags">
                       {note.tags.length === 0 ? (
                         <TagChip muted>No generated tags</TagChip>
                       ) : (
@@ -117,54 +129,56 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
           )}
         </Surface>
 
-        <Surface tone="panel">
-          <SectionHeading
-            meta="Owner-only saved references"
-            title={selectedTag ? `Links tagged ${selectedTag}` : "Private links"}
-          />
+        <Surface className="secondary-list-panel secondary-link-panel ui-form-surface" tone="panel">
+          <SectionHeading meta={`${filteredContent.links.length} link${filteredContent.links.length === 1 ? "" : "s"}`} title={selectedTag ? `Links tagged ${selectedTag}` : "Private links"} />
           {filteredContent.links.length === 0 ? (
             <p>{selectedTag ? "No private links match this tag yet." : "No private links yet."}</p>
           ) : (
             <div className="link-list">
               {filteredContent.links.map((link) => (
-                <article className="link-list-item" key={link.id}>
-                  <div className="link-list-heading">
-                    <MetadataRow leading>
-                      <span>Private link</span>
-                    </MetadataRow>
-                    <a className="note-list-link" href={link.url} rel="noopener noreferrer" target="_blank">
-                      {link.title}
-                    </a>
-                    <p className="link-url">{link.url}</p>
+                <article className="link-list-item secondary-link-item" key={link.id}>
+                  <div className="secondary-link-main">
+                    <div className="link-list-heading secondary-link-heading">
+                      <MetadataRow leading>
+                        <span>Private link</span>
+                        <span>{dateFormatter.format(link.updatedAt)}</span>
+                      </MetadataRow>
+                      <a className="note-list-link" href={link.url} rel="noopener noreferrer" target="_blank">
+                        {link.title}
+                      </a>
+                      <p className="link-url">{link.url}</p>
+                    </div>
+                    <div className="link-list-footer secondary-link-footer">
+                      <MetadataRow>
+                        <span>Selection</span>
+                        <span>{selectedTag ?? "All tags"}</span>
+                      </MetadataRow>
+                    </div>
                   </div>
-                  <EnrichmentStatusBlock state={link.enrichment} />
-                  <div className="note-generated-copy">
-                    <strong>AI summary</strong>
-                    {link.summary ? (
-                      <p className="link-summary">AI summary: {link.summary}</p>
-                    ) : (
-                      <p className="field-note">A generated summary will appear here after a successful enrichment run.</p>
-                    )}
-                  </div>
-                  <div className="note-generated-copy">
-                    <strong>AI tags</strong>
-                    <TagList aria-label="Link tags">
-                      {link.tags.length === 0 ? (
-                        <TagChip muted>No generated tags yet</TagChip>
+                  <div className="secondary-link-meta">
+                    <EnrichmentStatusBlock detailClassName="secondary-link-status" state={link.enrichment} />
+                    <div className="note-generated-copy secondary-generated-copy">
+                      <strong>AI summary:</strong>
+                      {link.summary ? (
+                        <p className="link-summary">{link.summary}</p>
                       ) : (
-                        link.tags.map((tag) => (
-                          <TagChip key={tag.id}>
-                            {tag.name}
-                          </TagChip>
-                        ))
+                        <p className="field-note">A generated summary will appear here after a successful enrichment run.</p>
                       )}
-                    </TagList>
-                  </div>
-                  <div className="link-list-footer">
-                    <MetadataRow>
-                      <span>Updated</span>
-                      <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(link.updatedAt)}</span>
-                    </MetadataRow>
+                    </div>
+                    <div className="note-generated-copy secondary-generated-copy">
+                      <strong>AI tags</strong>
+                      <TagList aria-label="Link tags">
+                        {link.tags.length === 0 ? (
+                          <TagChip muted>No generated tags yet</TagChip>
+                        ) : (
+                          link.tags.map((tag) => (
+                            <TagChip key={tag.id}>
+                              {tag.name}
+                            </TagChip>
+                          ))
+                        )}
+                      </TagList>
+                    </div>
                   </div>
                 </article>
               ))}
