@@ -765,6 +765,24 @@ textarea {
   gap: var(--space-3);
 }
 
+.public-search-panel-collapsed,
+.public-search-panel-expanded {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.public-search-collapsed-row,
+.public-search-header {
+  align-items: center;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.public-search-toggle {
+  justify-self: start;
+  min-width: 11.5rem;
+}
+
 .public-search-controls {
   display: grid;
   gap: var(--space-3);
@@ -1810,6 +1828,11 @@ textarea {
   .public-home-shell-head {
     align-items: end;
     grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .public-search-collapsed-row,
+  .public-search-header {
+    grid-template-columns: auto minmax(0, 1fr);
   }
 
   .public-search-controls {

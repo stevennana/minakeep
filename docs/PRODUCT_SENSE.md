@@ -23,7 +23,7 @@ A scoped Karakeep-inspired product can deliver the useful core without dragging 
 - one place for private note and link capture
 - automatic AI-generated summary and tags after save
 - selective public publishing for both notes and links
-- a clean public showroom with one title-only search bar and a calmer, less aggressive hierarchy
+- a clean public showroom that exposes real published items in the first screen, with optional title-only search kept compact until needed and a calmer, less aggressive hierarchy
 
 ## Non-Goals for v1
 - multi-user collaboration or invite flows
@@ -35,11 +35,12 @@ A scoped Karakeep-inspired product can deliver the useful core without dragging 
 ## v1 Success Signals
 - owners can publish notes and links into one coherent public showroom without exposing private content
 - public visitors can find published items quickly through title-only search
+- the public homepage shows real showroom content in the first screen instead of spending that space on explanatory chrome
 - public links open externally in a new tab and behave like lightweight reference items
 - the public hierarchy feels calmer, with less oversized `h1` and `strong` emphasis
 
 ## Product Risks
 - mixed public content can become confusing if note and link cards are not differentiated clearly
-- public search can feel noisy if title filtering is not immediate and predictable
+- public search can feel noisy if title filtering is not immediate and predictable, or too hidden when collapsed
 - adding public links can accidentally leak private link states if publishing boundaries are not explicit
 - toning down hierarchy can flatten the UI if not balanced carefully

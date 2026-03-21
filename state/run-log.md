@@ -595,3 +595,20 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Task 040 is substantively complete. The required checks passed, the mixed public boundary now fail-closes unsafe or malformed published links in the shared `public-content` layer, the public search/showroom behavior is covered by unit and E2E tests, the repo docs and operator guidance are aligned with the shipped mixed public model, and the remaining note-centric copy debt is explicitly recorded. -> state/artifacts/20260321T155223-040-public-wave-hardening/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T155223-040-public-wave-hardening/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 040-public-wave-hardening -> NONE
+- backlog: rendered current=NONE
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxoooooooo
+- cycle: finished
+No remaining task. Stopping loop.
+## loop start 2026-03-21T16:19:27+09:00
+
+### cycle 2026-03-21T16:19:27+09:00 task=041-public-search-collapsed-default
+- artifacts: state/artifacts/20260321T161927-041-public-search-collapsed-default
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T161927-041-public-search-collapsed-default/worker.jsonl
+- worker-summary: The homepage search now opens collapsed by default and expands only on explicit user action, while preserving the same title-only mixed-feed filtering after expansion. The behavior lives in [public-showroom.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/public-content/components/public-showroom.tsx) with the route wired from [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/page.tsx); supporting layout styles are in [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css). I also updated the public search coverage in [ui-public-showroom.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-public-showroom.spec.ts) and [public-home-search.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/public-home-search.spec.ts), refreshed the affected UI baselines, logged progress in [041-public-search-collapsed-default.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/041-public-search-collapsed-default.md), and wrote the operator handoff to [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T161927-041-public-search-collapsed-default/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T161927-041-public-search-collapsed-default/npm-run-verify-next-server.log

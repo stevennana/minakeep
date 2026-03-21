@@ -10,6 +10,7 @@ Keep the redesigned UI mobile-compatible from the start, with reading and scanni
 
 ## Homepage Rules
 - dynamic note showroom collapses into a clean single-column or narrow two-column pattern based on width
+- the collapsed search affordance should not consume enough vertical space to push the first row of cards out of view
 - note previews should remain readable without horizontal compression
 
 ## Owner Rules

@@ -197,15 +197,20 @@ test.afterAll(async () => {
 test("public homepage live search filters mixed published content by title only", async ({ page }) => {
   await page.goto("/");
 
+  const searchToggle = page.getByRole("button", { name: "Open public title search" });
   const searchInput = page.getByRole("searchbox", { name: "Search public titles" });
   const showroomCards = page.locator("[data-testid='public-home-showroom'] .note-preview-card");
 
-  await expect(searchInput).toBeVisible();
+  await expect(searchToggle).toBeVisible();
+  await expect(searchInput).toHaveCount(0);
   await expect(page.getByRole("combobox")).toHaveCount(0);
   await expect(showroomCards).toHaveCount(seededPublishedNotes.length + seededPublishedLinks.length);
   await expect(page.getByRole("link", { name: seededPublishedNotes[0].title })).toBeVisible();
   await expect(page.getByRole("link", { name: seededPublishedLinks[0].title })).toBeVisible();
   await expect(page.getByRole("link", { name: seededUnsafePublishedLink.title })).toHaveCount(0);
+
+  await searchToggle.click();
+  await expect(searchInput).toBeVisible();
 
   await searchInput.fill("NEEDLE");
 

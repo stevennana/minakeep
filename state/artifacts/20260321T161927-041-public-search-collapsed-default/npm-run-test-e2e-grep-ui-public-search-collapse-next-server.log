@@ -1,0 +1,13 @@
+
+> minakeep@0.1.0 dev
+> next dev --hostname 127.0.0.1 --port 3100
+
+[1m[38;2;173;127;168m▲ Next.js 16.2.0[39m[22m (Turbopack)
+- Local:         http://127.0.0.1:3100
+- Network:       http://127.0.0.1:3100
+- Environments: .env
+[32m[1m✓[22m[39m Ready in 189ms
+
+ GET /api/health [32m200[39m in 72ms[2m (next.js: 63ms, application-code: 10ms)[22m
+ GET / [32m200[39m in 193ms[2m (next.js: 30ms, application-code: 163ms)[22m
+ GET / [32m200[39m in 21ms[2m (next.js: 1031µs, application-code: 20ms)[22m

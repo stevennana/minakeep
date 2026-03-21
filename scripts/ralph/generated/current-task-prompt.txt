@@ -1,45 +1,48 @@
 Read the following repository documents before making changes:
 - AGENTS.md
-- docs/QUALITY_SCORE.md
-- docs/RELIABILITY.md
-- docs/SECURITY.md
-- docs/exec-plans/active/040-public-wave-hardening.md
+- docs/FRONTEND.md
+- docs/product-specs/public-showroom-search.md
+- docs/design-docs/public-home-first-screen-density.md
+- docs/references/ui-verification-contract.md
+- docs/exec-plans/active/041-public-search-collapsed-default.md
 
-Current task id: 040-public-wave-hardening
-Current task title: Public wave hardening
+Current task id: 041-public-search-collapsed-default
+Current task title: Public search collapsed default
 
 Objective:
-Stabilize the mixed public publishing/search wave and keep the docs, reliability, and security posture aligned.
+Keep the public title-search control available without letting it dominate the homepage by default.
 
 Scope:
-- close obvious public-wave inconsistencies
-- reconcile docs and operator guidance with the new public model
-- keep remaining debt explicit
+- collapsed or compact default search state on `/`
+- explicit expand interaction for the public search input
+- preserve current title-only mixed-feed filtering behavior after expansion
 
 Out of scope:
-- new feature fronts
-- new public content types
-- new search modes
+- new public search capabilities
+- owner search changes
+- broader showroom shell copy changes
 
 Exit criteria:
-1. `npm run verify` passes.
-2. `npm run start:smoke` passes.
-3. Docs, reliability, and security guidance match the shipped public wave.
-4. Remaining debt is explicit.
+1. The public homepage no longer opens with a large expanded search area.
+2. Visitors can explicitly expand the public search control and then filter the mixed published feed by title.
+3. The collapsed search state remains clear and usable on desktop and mobile.
+4. `npm run test:e2e -- --grep @ui-public-search-collapse` passes.
+5. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run start:smoke`
+- `npm run test:e2e -- --grep @ui-public-search-collapse`
 
 Evaluator notes:
-Promote only when the mixed public publishing/search wave is stable enough for the next tranche.
+Promote only when the default collapsed search state improves first-screen content visibility without hiding search discoverability.
 
 Required repository artifacts for this task:
-- scripts/ralph/README.md
+- src/app/page.tsx
+- tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run start:smoke
+- npm run test:e2e -- --grep @ui-public-search-collapse
 
 Previous known gaps from the last evaluation:
 - none

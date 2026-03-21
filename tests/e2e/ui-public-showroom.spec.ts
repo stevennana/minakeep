@@ -255,6 +255,20 @@ async function expectSearchLayout(page: Page, viewport: "desktop" | "mobile") {
   }
 }
 
+async function expectCollapsedSearchLayout(page: Page, viewport: "desktop" | "mobile") {
+  const toggle = page.getByTestId("public-home-search-toggle");
+  const summary = page.locator("[data-testid='public-home-search-summary']");
+  const toggleBox = await getBox(toggle);
+  const summaryBox = await getBox(summary);
+
+  if (viewport === "desktop") {
+    expect(summaryBox.x).toBeGreaterThan(toggleBox.x + toggleBox.width - 24);
+  } else {
+    expect(summaryBox.y).toBeGreaterThan(toggleBox.y + toggleBox.height - 8);
+    expect(Math.abs(summaryBox.x - toggleBox.x)).toBeLessThanOrEqual(2);
+  }
+}
+
 test.describe.configure({ mode: "serial" });
 
 test.beforeEach(async () => {
@@ -265,22 +279,24 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-regression @ui-public-showroom mixed public showroom stays clean on desktop", async ({ page }) => {
+test("@ui-regression @ui-public-showroom @ui-public-search-collapse mixed public showroom keeps search collapsed by default on desktop", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await page.goto("/");
 
   const showroomCards = page.locator("[data-testid='public-home-showroom'] .note-preview-card");
+  const searchToggle = page.getByRole("button", { name: "Open public title search" });
   const searchInput = page.getByRole("searchbox", { name: "Search public titles" });
 
   await expect(page.getByTestId("public-home-layout")).toBeVisible();
-  await expect(searchInput).toBeVisible();
+  await expect(searchToggle).toBeVisible();
+  await expect(searchInput).toHaveCount(0);
   await expect(showroomCards).toHaveCount(seededPublishedNotes.length + seededPublishedLinks.length);
   await expect(page.getByRole("link", { name: seededPublishedNotes[0].title })).toBeVisible();
   await expect(page.getByRole("link", { name: seededPublishedLinks[0].title })).toBeVisible();
   await expect(page.getByText("Opens in new tab")).toHaveCount(seededPublishedLinks.length);
-  await expect(page.getByTestId("public-home-search-summary")).toHaveText("Showing all 4 public items.");
+  await expect(page.getByTestId("public-home-search-summary")).toHaveText("Title-only filter across 4 public items.");
   await expectMixedFeedRhythm(page, "desktop");
-  await expectSearchLayout(page, "desktop");
+  await expectCollapsedSearchLayout(page, "desktop");
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
 
@@ -288,21 +304,49 @@ test("@ui-regression @ui-public-showroom mixed public showroom stays clean on de
     animations: "disabled",
     maxDiffPixelRatio: 0.02
   });
+
+  await searchToggle.click();
+  await expect(searchInput).toBeVisible();
+  await expect(page.getByRole("button", { name: "Close public title search" })).toBeVisible();
+  await expect(page.getByTestId("public-home-search-summary")).toHaveText("Showing all 4 public items.");
+  await expectSearchLayout(page, "desktop");
+
+  await searchInput.fill("needle");
+
+  await expect(showroomCards).toHaveCount(2);
+  await expect(page.getByRole("link", { name: seededPublishedNotes[1].title })).toBeVisible();
+  await expect(page.getByRole("link", { name: seededPublishedLinks[1].title })).toBeVisible();
+  await expect(page.getByTestId("public-home-search-summary")).toHaveText("Showing 2 of 4 public items.");
 });
 
-test("@ui-regression @ui-public-showroom mixed public showroom and search stay usable on mobile", async ({ page }) => {
+test("@ui-regression @ui-public-showroom @ui-public-search-collapse mixed public showroom search expands cleanly on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await page.goto("/");
 
   const showroomCards = page.locator("[data-testid='public-home-showroom'] .note-preview-card");
+  const searchToggle = page.getByRole("button", { name: "Open public title search" });
   const searchInput = page.getByRole("searchbox", { name: "Search public titles" });
 
   await expect(page.getByTestId("public-home-layout")).toBeVisible();
-  await expect(searchInput).toBeVisible();
+  await expect(searchToggle).toBeVisible();
+  await expect(searchInput).toHaveCount(0);
   await expect(showroomCards).toHaveCount(seededPublishedNotes.length + seededPublishedLinks.length);
   await expect(page.getByRole("link", { name: seededPublishedNotes[0].title })).toBeVisible();
   await expect(page.getByRole("link", { name: seededPublishedLinks[0].title })).toBeVisible();
   await expectMixedFeedRhythm(page, "mobile");
+  await expect(page.getByTestId("public-home-search-summary")).toHaveText("Title-only filter across 4 public items.");
+  await expectCollapsedSearchLayout(page, "mobile");
+  await expectAccessibleStructure(page);
+  await expectNoHorizontalOverflow(page);
+
+  await expect(page.getByTestId("public-home-layout")).toHaveScreenshot("ui-public-showroom-mobile.png", {
+    animations: "disabled",
+    maxDiffPixelRatio: 0.02
+  });
+
+  await searchToggle.click();
+  await expect(searchInput).toBeVisible();
+  await expect(page.getByRole("button", { name: "Close public title search" })).toBeVisible();
   await expectSearchLayout(page, "mobile");
 
   await searchInput.fill("needle");
@@ -314,9 +358,4 @@ test("@ui-regression @ui-public-showroom mixed public showroom and search stay u
   await expect(page.getByTestId("public-home-search-summary")).toHaveText("Showing 2 of 4 public items.");
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
-
-  await expect(page.getByTestId("public-home-layout")).toHaveScreenshot("ui-public-showroom-mobile.png", {
-    animations: "disabled",
-    maxDiffPixelRatio: 0.02
-  });
 });

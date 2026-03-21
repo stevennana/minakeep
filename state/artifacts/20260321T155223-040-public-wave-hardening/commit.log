@@ -1,0 +1,11 @@
+[main 1c57ceb] ralph: 040-public-wave-hardening 2026-03-21T16:02:12+09:00
+ 30 files changed, 1379 insertions(+), 92 deletions(-)
+ rename docs/exec-plans/{active => completed}/039-public-publishing-regression-pass.md (92%)
+ create mode 100644 state/artifacts/20260321T154439-039-public-publishing-regression-pass/backlog.log
+ create mode 100644 state/artifacts/20260321T154439-039-public-publishing-regression-pass/promote.log
+ create mode 100644 state/artifacts/20260321T155223-040-public-wave-hardening/commit.log
+ create mode 100644 state/artifacts/20260321T155223-040-public-wave-hardening/evaluator.log
+ create mode 100644 state/artifacts/20260321T155223-040-public-wave-hardening/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260321T155223-040-public-wave-hardening/task-prompt.log
+ create mode 100644 state/artifacts/20260321T155223-040-public-wave-hardening/worker.jsonl
+commit: created

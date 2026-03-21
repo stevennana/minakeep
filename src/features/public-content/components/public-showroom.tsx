@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import { FormField, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
+import { Button, FormField, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
 
 type ShowroomTag = {
   id: string;
@@ -147,11 +147,30 @@ function getSearchSummary(query: string, visibleCount: number, totalCount: numbe
   return `Showing ${visibleCount} of ${totalCount} public item${totalCount === 1 ? "" : "s"}.`;
 }
 
-export function PublicShowroom({ hasPublishedLinks, items }: { hasPublishedLinks: boolean; items: PublicShowroomItem[] }) {
+function getCollapsedSearchSummary(totalCount: number) {
+  if (totalCount === 0) {
+    return "Search becomes available once something is published.";
+  }
+
+  return `Title-only filter across ${totalCount} public item${totalCount === 1 ? "" : "s"}.`;
+}
+
+export function PublicShowroom({
+  defaultSearchExpanded = false,
+  hasPublishedLinks,
+  items
+}: {
+  defaultSearchExpanded?: boolean;
+  hasPublishedLinks: boolean;
+  items: PublicShowroomItem[];
+}) {
+  const [isSearchExpanded, setIsSearchExpanded] = useState(defaultSearchExpanded);
   const [query, setQuery] = useState("");
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const publishedNotes = items.filter((item) => item.kind === "note").length;
   const normalizedQuery = query.trim().toLocaleLowerCase();
   const filteredItems = normalizedQuery.length === 0 ? items : items.filter((item) => item.title.toLocaleLowerCase().includes(normalizedQuery));
+  const searchPanelId = "public-title-search-panel";
   const publishedCountLabel = hasPublishedLinks
     ? `${items.length} public item${items.length === 1 ? "" : "s"}`
     : `${publishedNotes} published note${publishedNotes === 1 ? "" : "s"}`;
@@ -164,32 +183,87 @@ export function PublicShowroom({ hasPublishedLinks, items }: { hasPublishedLinks
         ? "No published notes or links match this title."
         : "No published notes match this title.";
 
+  useEffect(() => {
+    if (isSearchExpanded) {
+      searchInputRef.current?.focus();
+    }
+  }, [isSearchExpanded]);
+
+  const openSearch = () => setIsSearchExpanded(true);
+  const closeSearch = () => {
+    setQuery("");
+    setIsSearchExpanded(false);
+  };
+
   return (
     <>
       <Surface className="public-search-shell" density="compact" role="search" tone="panel">
-        <div className="search-form public-search-panel">
-          <SectionHeading meta="Title-only live filter" title="Search public titles" />
-          <div className="public-search-controls">
-            <FormField
-              className="public-search-field"
-              hint="Matches published note and link titles only."
-              label="Title filter"
-            >
-              <input
-                aria-label="Search public titles"
-                autoComplete="off"
-                className="text-input"
-                data-testid="public-home-search-input"
-                onChange={(event) => setQuery(event.currentTarget.value)}
-                placeholder={hasPublishedLinks ? "Filter published notes and links by title" : "Filter published notes by title"}
-                type="search"
-                value={query}
-              />
-            </FormField>
-            <p className="field-note public-search-summary" data-testid="public-home-search-summary">
-              {getSearchSummary(query.trim(), filteredItems.length, items.length)}
-            </p>
-          </div>
+        <div className={`search-form public-search-panel ${isSearchExpanded ? "public-search-panel-expanded" : "public-search-panel-collapsed"}`}>
+          {isSearchExpanded ? (
+            <>
+              <div className="public-search-header">
+                <SectionHeading meta="Title-only live filter" title="Search public titles" />
+                <Button
+                  aria-controls={searchPanelId}
+                  aria-expanded={isSearchExpanded}
+                  aria-label="Close public title search"
+                  className="public-search-toggle"
+                  data-testid="public-home-search-toggle"
+                  onClick={closeSearch}
+                  type="button"
+                  variant="ghost"
+                >
+                  Close search
+                </Button>
+              </div>
+              <div className="public-search-controls" id={searchPanelId}>
+                <FormField
+                  className="public-search-field"
+                  hint="Matches published note and link titles only."
+                  label="Title filter"
+                >
+                  <input
+                    aria-label="Search public titles"
+                    autoComplete="off"
+                    className="text-input"
+                    data-testid="public-home-search-input"
+                    onChange={(event) => setQuery(event.currentTarget.value)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Escape") {
+                        event.preventDefault();
+                        closeSearch();
+                      }
+                    }}
+                    placeholder={hasPublishedLinks ? "Filter published notes and links by title" : "Filter published notes by title"}
+                    ref={searchInputRef}
+                    type="search"
+                    value={query}
+                  />
+                </FormField>
+                <p className="field-note public-search-summary" data-testid="public-home-search-summary">
+                  {getSearchSummary(query.trim(), filteredItems.length, items.length)}
+                </p>
+              </div>
+            </>
+          ) : (
+            <div className="public-search-collapsed-row">
+              <Button
+                aria-controls={searchPanelId}
+                aria-expanded={isSearchExpanded}
+                aria-label="Open public title search"
+                className="public-search-toggle"
+                data-testid="public-home-search-toggle"
+                onClick={openSearch}
+                type="button"
+                variant="ghost"
+              >
+                Search titles
+              </Button>
+              <p className="field-note public-search-summary" data-testid="public-home-search-summary">
+                {getCollapsedSearchSummary(items.length)}
+              </p>
+            </div>
+          )}
         </div>
       </Surface>
 
