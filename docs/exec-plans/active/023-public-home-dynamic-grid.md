@@ -5,7 +5,7 @@
   "id": "023-public-home-dynamic-grid",
   "title": "Public home dynamic grid",
   "order": 23,
-  "status": "queued",
+  "status": "active",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "024-public-note-reading-polish",
   "prompt_docs": [
@@ -62,3 +62,6 @@ Promote when the deterministic UI checks pass and the grid feels intentionally c
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-21 10:51 KST: Reworked `src/app/page.tsx` into a note-first showroom grid with a reusable `PublishedNotePreviewCard`, reordered card hierarchy to title -> preview -> metadata -> tags, and added deterministic compact/balanced/feature card variants based on published note content.
+- 2026-03-21 10:51 KST: Added homepage card styling in `src/app/globals.css` for varied minimum heights, calmer metadata treatment, and a two-column desktop showroom grid that keeps the right-side intro rail intact.
+- 2026-03-21 10:58 KST: Added `tests/e2e/ui-home-grid.spec.ts` with desktop/mobile screenshot baselines plus explicit rhythm, overflow, and accessibility assertions; refreshed impacted `@ui-home-shell` and `@ui-system` snapshots; `npm run test:e2e -- --grep @ui-home-grid` and `npm run verify` now pass locally.

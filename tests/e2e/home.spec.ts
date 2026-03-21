@@ -11,7 +11,7 @@ test("public homepage exposes the published notes surface", async ({ page }) => 
   await page.goto("/");
 
   const emptyState = page.getByText("No published notes yet.");
-  const publishedNoteEntry = page.locator(".note-list-item").first();
+  const publishedNoteEntry = page.locator(".note-preview-card").first();
 
   await expect(page.getByRole("heading", { name: "Notes the owner has chosen to share." })).toBeVisible();
   await expect(page.getByRole("navigation").getByRole("link", { name: "Owner login" })).toBeVisible();
@@ -155,7 +155,7 @@ This note should appear on the public site when published.`;
   await expect(page.getByRole("link", { name: "View public note" })).toBeVisible();
 
   await page.goto("/");
-  const publicNoteEntry = page.locator(".note-list-item").filter({ has: page.getByRole("link", { name: title }) });
+  const publicNoteEntry = page.locator(".note-preview-card").filter({ has: page.getByRole("link", { name: title }) });
   await expect(publicNoteEntry.getByRole("link", { name: title })).toBeVisible();
   await expect(publicNoteEntry.getByLabel("Published note tags")).toBeVisible();
 

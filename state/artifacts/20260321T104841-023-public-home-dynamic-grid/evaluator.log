@@ -1,0 +1,510 @@
+/Users/stevenna/WebstormProjects/minakeep/scripts/ralph/generated/current-evaluator-prompt.txt
+OpenAI Codex v0.116.0 (research preview)
+--------
+workdir: /Users/stevenna/WebstormProjects/minakeep
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: high
+reasoning summaries: none
+session id: 019d0e1f-1b05-7b83-ab2a-317f2fba1c56
+--------
+user
+You are the promotion evaluator for a repository-local Ralph loop.
+
+Read these documents before deciding:
+- AGENTS.md
+- docs/FRONTEND.md
+- docs/product-specs/public-home-showroom.md
+- docs/design-docs/homepage-showroom-rhythm.md
+- docs/references/ui-verification-contract.md
+- docs/exec-plans/active/023-public-home-dynamic-grid.md
+
+Current task id: 023-public-home-dynamic-grid
+Current task title: Public home dynamic grid
+
+Objective:
+Implement the homepage’s varied-height note showroom and reusable note-preview card treatment.
+
+Scope:
+- build a grid-based note archive with dynamic card heights
+- keep titles and previews primary, metadata secondary
+- ensure the dynamic rhythm still scans quickly
+
+Out of scope:
+- public note page changes
+- owner workspace changes
+- mobile-specific final polish beyond what the homepage grid immediately needs
+
+Exit criteria:
+1. Published note previews form a dynamic, readable grid.
+2. Card rhythm feels more alive than the current uniform list/card treatment.
+3. `npm run test:e2e -- --grep @ui-home-grid` passes with desktop/mobile screenshots, no obvious overflow, and accessibility checks.
+4. `npm run verify` passes.
+
+Evaluator notes:
+Promote when the deterministic UI checks pass and the grid feels intentionally composed rather than merely unequal.
+
+Deterministic check summary:
+{
+  "checked_at": "2026-03-21T02:00:12.730Z",
+  "task_id": "023-public-home-dynamic-grid",
+  "commands": [
+    {
+      "command": "npm run verify",
+      "ok": true,
+      "output": "\n> minakeep@0.1.0 verify\n> npm run lint && npm run db:prepare && npm run typecheck && npm run build && npm run test && npm run start:smoke\n\n\n> minakeep@0.1.0 lint\n> eslint . --max-warnings=0\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 37ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 typecheck\n> tsc --noEmit\n\n\n> minakeep@0.1.0 build\n> next build\n\n▲ Next.js 16.2.0 (Turbopack)\n- Environments: .env\n\n  Creating an optimized production build ...\n✓ Compiled successfully in 1104ms\n  Running TypeScript ...\n  Finished TypeScript in 1439ms ...\n  Collecting page data using 10 workers ...\n  Generating static pages using 10 workers (0/11) ...\n  Generating static pages using 10 workers (2/11) \r\n  Generating static pages using 10 workers (5/11) \r\n  Generating static pages using 10 workers (8/11) \r\n✓ Generating static pages using 10 workers (11/11) in 180ms\n  Finalizing page optimization ...\n\nRoute (app)\n┌ ○ /\n├ ○ /_not-found\n├ ƒ /api/auth/[...nextauth]\n├ ƒ /api/health\n├ ƒ /api/test/mina/chat/completions\n├ ƒ /app\n├ ƒ /app/links\n├ ƒ /app/notes/[id]/edit\n├ ƒ /app/notes/new\n├ ƒ /app/search\n├ ƒ /app/tags\n├ ƒ /login\n└ ƒ /notes/[slug]\n\n\nƒ Proxy (Middleware)\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n\n> minakeep@0.1.0 test\n> npm run test:unit && npm run test:e2e\n\n\n> minakeep@0.1.0 test:unit\n> NODE_PATH=./node_modules/next/dist/compiled node --conditions=react-server --import tsx --test tests/unit/**/*.test.ts\n\n✔ getMinaAiConfigStatus returns disabled when no AI env vars are set (1.774958ms)\n✔ buildMinaChatCompletionsRequest shapes the Mina OpenAI-compatible request (0.544583ms)\n✔ normalizeMinaEnrichmentResponse trims the summary and normalizes repeated tags (8.803708ms)\n✔ getMinaAiRequestTimeoutMs falls back to the default timeout (0.105833ms)\n✔ requestMinaEnrichment aborts hung requests at the configured timeout (23.002125ms)\n✔ requestEnrichment records a failed state when the AI env is not configured (0.796375ms)\n✔ requestEnrichment records a pending state when the AI env is configured (0.112542ms)\n✔ requestEnrichment records which AI env vars are missing when the Mina config is partial (0.125458ms)\n✔ retryEnrichment only requeues records that are already failed (0.12325ms)\n✔ buildLinkEnrichmentMessages includes the link title and URL for the AI prompt (0.4405ms)\n✔ executeLinkEnrichment records generated summary and tags on success (0.4355ms)\n✔ executeLinkEnrichment records a normalized failed state when the request throws (0.129542ms)\n✔ executeLinkEnrichment skips stale attempts (0.059708ms)\n✔ normalizeLinkInput trims fields and canonicalizes the URL (0.654833ms)\n✔ normalizeLinkInput rejects non-http schemes (0.206333ms)\n✔ buildNoteEnrichmentMessages includes the note title and markdown for the AI prompt (0.409416ms)\n✔ executeNoteEnrichment records generated summary and tags on success (0.419958ms)\n✔ executeNoteEnrichment records a normalized failed state when the request throws (0.132417ms)\n✔ executeNoteEnrichment skips stale attempts (0.061834ms)\n✔ renderMarkdownToHtml preserves common note-writing structures while escaping unsafe HTML (0.799ms)\n✔ createNoteExcerpt turns markdown into readable summary text (0.178125ms)\n✔ createNoteSlug normalizes title content (0.416834ms)\n✔ createNoteSlug falls back when the title has no slug-safe characters (0.058ms)\n✔ createUniqueNoteSlug increments an existing base slug (0.060833ms)\nℹ tests 24\nℹ suites 0\nℹ pass 24\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 194.605917\n\n> minakeep@0.1.0 test:e2e\n> npm run db:prepare && playwright test\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 44ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\nRunning 20 tests using 1 worker\n\n  ✓   1 tests/e2e/auth.spec.ts:5:5 › owner can sign in to the private dashboard (935ms)\n  ✓   2 tests/e2e/home.spec.ts:10:5 › public homepage exposes the published notes surface (220ms)\n  ✓   3 tests/e2e/home.spec.ts:21:5 › anonymous visitors cannot access the owner search route (165ms)\n  ✓   4 tests/e2e/home.spec.ts:27:5 › owner can sign in, create a draft note, edit it, and reopen it with rendered preview (1.2s)\n  ✓   5 tests/e2e/home.spec.ts:85:5 › note save still succeeds when the configured AI endpoint times out and exposes a retry path (6.4s)\n  ✓   6 tests/e2e/home.spec.ts:124:5 › owner can publish and unpublish a note across the public routes (1.6s)\n  ✓   7 tests/e2e/home.spec.ts:182:5 › owner can save a private link, receive AI metadata, and keep it off public routes (4.1s)\n  ✓   8 tests/e2e/home.spec.ts:222:5 › link save still succeeds when the configured AI endpoint times out and exposes a retry path (7.4s)\n  ✓   9 tests/e2e/home.spec.ts:264:5 › owner cannot save a private link with an unsafe URL scheme (1.1s)\n  ✓  10 tests/e2e/home.spec.ts:287:5 › owner can filter private links by tag and search notes by title plus links by URL and tag (5.8s)\n  ✓  11 tests/e2e/link-ai-real.spec.ts:10:5 › owner link enrichment completes against the real Mina endpoint @ai-real (4.6s)\n  ✓  12 tests/e2e/note-ai-real.spec.ts:10:5 › owner note enrichment completes against the real Mina endpoint @ai-real (3.6s)\n  ✓  13 tests/e2e/ui-home-grid.spec.ts:243:5 › @ui-home-grid homepage showroom uses a varied desktop grid (456ms)\n  ✓  14 tests/e2e/ui-home-grid.spec.ts:262:5 › @ui-home-grid homepage showroom collapses cleanly on mobile (309ms)\n  ✓  15 tests/e2e/ui-home-shell.spec.ts:203:5 › @ui-home-shell homepage reads note-first on desktop (319ms)\n  ✓  16 tests/e2e/ui-home-shell.spec.ts:220:5 › @ui-home-shell homepage stays note-first on mobile (277ms)\n  ✓  17 tests/e2e/ui-system.spec.ts:100:5 › @ui-system public chrome holds together on desktop (254ms)\n  ✓  18 tests/e2e/ui-system.spec.ts:120:5 › @ui-system login surface stays readable on mobile (221ms)\n  ✓  19 tests/e2e/ui-system.spec.ts:135:5 › @ui-system private shell keeps hierarchy on desktop (399ms)\n  ✓  20 tests/e2e/ui-system.spec.ts:155:5 › @ui-system private shell collapses cleanly on mobile (358ms)\n\n  20 passed (41.7s)\n\n> minakeep@0.1.0 start:smoke\n> node scripts/start-smoke.mjs\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 48ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 start\n> next start --hostname 127.0.0.1 --port 3200\n\n▲ Next.js 16.2.0\n- Local:         http://127.0.0.1:3200\n- Network:       http://127.0.0.1:3200\n✓ Ready in 72ms\n",
+      "preflight": {
+        "command": "ensure-e2e-port-free.sh 3100",
+        "error": "",
+        "ok": true,
+        "output": "port-cleanup: 127.0.0.1:3100 already free\n"
+      },
+      "next_server_log_path": "/Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T104841-023-public-home-dynamic-grid/npm-run-verify-next-server.log"
+    },
+    {
+      "command": "npm run test:e2e -- --grep @ui-home-grid",
+      "ok": true,
+      "output": "\n> minakeep@0.1.0 test:e2e\n> npm run db:prepare && playwright test --grep @ui-home-grid\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 44ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\nRunning 2 tests using 1 worker\n\n  ✓  1 tests/e2e/ui-home-grid.spec.ts:243:5 › @ui-home-grid homepage showroom uses a varied desktop grid (1.7s)\n  ✓  2 tests/e2e/ui-home-grid.spec.ts:262:5 › @ui-home-grid homepage showroom collapses cleanly on mobile (322ms)\n\n  2 passed (3.7s)\n",
+      "preflight": {
+        "command": "ensure-e2e-port-free.sh 3100",
+        "error": "",
+        "ok": true,
+        "output": "port-cleanup: 127.0.0.1:3100 already free\n"
+      },
+      "next_server_log_path": "/Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T104841-023-public-home-dynamic-grid/npm-run-test-e2e-grep-ui-home-grid-next-server.log"
+    }
+  ],
+  "missing_files": [],
+  "pass": true
+}
+
+Worker handoff summary from the last run:
+Implemented the homepage showroom update in [src/app/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/page.tsx) and [src/app/globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css). Published notes now render through a reusable `PublishedNotePreviewCard` treatment with title-first hierarchy, secondary metadata, and deterministic `compact` / `balanced` / `feature` height variants inside a dynamic desktop grid that collapses cleanly on mobile.
+
+Added focused UI coverage in [tests/e2e/ui-home-grid.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-home-grid.spec.ts), updated the affected homepage selectors in [tests/e2e/home.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/home.spec.ts) and [tests/e2e/ui-home-shell.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-home-shell.spec.ts), refreshed the impacted homepage snapshots, and logged the work in [docs/exec-plans/active/023-public-home-dynamic-grid.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/023-public-home-dynamic-grid.md).
+
+`npm run test:e2e -- --grep @ui-home-grid` passed.  
+`npm run verify` passed.
+
+Operator handoff summary:
+- what changed: Homepage note previews now use a varied-height showroom grid with reusable preview cards; added dedicated `@ui-home-grid` Playwright coverage and refreshed impacted UI snapshots.
+- whether the exit criteria appear satisfied: Yes.
+- what remains if the task is still incomplete: Nothing identified for task `023-public-home-dynamic-grid`.
+
+Your job:
+- inspect the repository and current implementation
+- determine whether the current task is actually complete
+- mark `done` only if the exit criteria are satisfied in substance, not just approximately
+- prefer conservative decisions
+- recommend promotion only if the task is truly ready
+
+Return JSON only using the provided schema.
+
+mcp startup: no servers
+exec
+/bin/zsh -lc 'pwd && rg --files AGENTS.md docs/FRONTEND.md docs/product-specs/public-home-showroom.md docs/design-docs/homepage-showroom-rhythm.md docs/references/ui-verification-contract.md docs/exec-plans/active/023-public-home-dynamic-grid.md src/app/page.tsx src/app/globals.css tests/e2e/ui-home-grid.spec.ts tests/e2e/home.spec.ts tests/e2e/ui-home-shell.spec.ts' in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+/Users/stevenna/WebstormProjects/minakeep
+tests/e2e/ui-home-shell.spec.ts
+src/app/globals.css
+src/app/page.tsx
+docs/exec-plans/active/023-public-home-dynamic-grid.md
+docs/references/ui-verification-contract.md
+docs/design-docs/homepage-showroom-rhythm.md
+docs/product-specs/public-home-showroom.md
+docs/FRONTEND.md
+AGENTS.md
+tests/e2e/ui-home-grid.spec.ts
+tests/e2e/home.spec.ts
+exec
+/bin/zsh -lc "sed -n '1,220p' docs/FRONTEND.md" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,220p' AGENTS.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# FRONTEND.md
+
+## Goal
+Describe the user-facing structure of Minakeep so an agent can implement the UI without guessing the product model.
+
+## Tech Direction
+- Next.js application
+- TypeScript
+- App Router
+- server-backed data flows where appropriate
+- reusable presentational components layered above existing route and feature logic
+
+## Route Map
+- `/` -> public homepage showroom of published notes
+- `/notes/[slug]` -> public published-note reading page
+- `/login` -> owner sign-in
+- `/app` -> private notes-first dashboard shell
+- `/app/notes/new` -> create note
+- `/app/notes/[id]/edit` -> edit note and preview markdown
+- `/app/links` -> private saved-link management
+ succeeded in 0ms:
+# AGENTS.md
+
+## Purpose
+Minakeep is a self-hosted knowledge vault for private markdown notes and saved links, with selectively published public notes, automatic AI enrichment, and a polished knowledge-studio interface.
+
+This repository is optimized for agent-legible development and a Ralph-style task-promotion loop.
+
+## Read Order
+Before changing code or plans, read these files in order:
+
+1. `ARCHITECTURE.md`
+2. `docs/PRODUCT_SENSE.md`
+3. `docs/design-docs/core-beliefs.md`
+4. `docs/product-specs/index.md`
+5. `docs/FRONTEND.md`
+6. `docs/PLANS.md`
+7. active plans in `docs/exec-plans/active/`
+
+## Scope Guardrails
+### In scope for v1
+exec
+/bin/zsh -lc "sed -n '1,260p' docs/references/ui-verification-contract.md" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' docs/design-docs/homepage-showroom-rhythm.md" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' docs/exec-plans/active/023-public-home-dynamic-grid.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# Homepage Showroom Rhythm
+
+## Goal
+Make the public homepage feel like a dynamic showroom of notes rather than a product landing page.
+
+## Composition Rules
+- note previews are the primary content, not hero copy
+- introductory framing stays present but visually secondary
+- the grid should feel dynamic through card-height variation, not through chaotic offsets
+- the showroom must remain easy to scan quickly
+
+## Card Rhythm
+- cards may vary in height based on preview length, summary presence, and tag density
+- equal-width columns are acceptable, but equal-height rows are not the target
+- occasional wider cards are acceptable only if they do not break readability or mobile collapse
+
+## Content Priority
+- title first
+- short preview or summary second
+- compact date/meta third
+ succeeded in 0ms:
+# UI Verification Contract
+
+## Source
+- skill reference: `references/ui-verification.md`
+
+## Minakeep adaptation
+- every UI-focused exec-plan in the current wave should require:
+  - `npm run verify`
+  - `npm run test:e2e -- --grep @ui-<surface>`
+- UI task metadata should set `promotion_mode` to `deterministic_only`
+- the tagged UI test should prove:
+  - desktop `1440x900`
+  - mobile `390x844`
+  - key hierarchy anchors and primary actions are visible
+  - no obvious overflow or collapsed-layout regression escapes the scoped surface
+  - screenshot baselines match the expected result
+  - automated accessibility scanning passes
+
+## Wave tags
+- `@ui-system`
+exec
+/bin/zsh -lc "sed -n '1,240p' docs/product-specs/public-home-showroom.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# Public home dynamic grid
+
+```json taskmeta
+{
+  "id": "023-public-home-dynamic-grid",
+  "title": "Public home dynamic grid",
+  "order": 23,
+  "status": "active",
+  "promotion_mode": "deterministic_only",
+  "next_task_on_success": "024-public-note-reading-polish",
+  "prompt_docs": [
+    "AGENTS.md",
+    "docs/FRONTEND.md",
+    "docs/product-specs/public-home-showroom.md",
+    "docs/design-docs/homepage-showroom-rhythm.md",
+    "docs/references/ui-verification-contract.md"
+  ],
+  "required_commands": [
+    "npm run verify",
+    "npm run test:e2e -- --grep @ui-home-grid"
+ succeeded in 0ms:
+# Public home showroom
+
+## Goal
+Turn the public homepage into a note-first showroom with dynamic grid rhythm and cleaner visual framing.
+
+## Trigger / Entry
+An anonymous visitor opens `/`.
+
+## User-Visible Behavior
+- The homepage is led by published note previews, not by a dominant marketing hero.
+- Note previews appear in a grid arrangement with varied heights rather than rigid equal rows.
+- The layout stays easy to scan quickly.
+- Metadata remains compact and secondary to note titles and previews.
+
+## Validation
+- Published note previews dominate the first-screen experience.
+- The homepage grid feels dynamic without becoming visually chaotic.
+- Mobile layouts still scan cleanly.
+- `npm run verify` passes.
+exec
+/bin/zsh -lc "sed -n '1,260p' src/app/page.tsx" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,360p' src/app/globals.css" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import Link from "next/link";
+
+import { ButtonLink, DetailBlock, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
+import { listPublishedNotes } from "@/features/notes/service";
+
+const publishedDateFormatter = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
+
+type PublishedNote = Awaited<ReturnType<typeof listPublishedNotes>>[number];
+type NotePreviewVariant = "compact" | "balanced" | "feature";
+
+function getNotePreviewVariant(note: PublishedNote): NotePreviewVariant {
+  const hasSummary = Boolean(note.summary?.trim());
+  const excerptLength = note.excerpt.trim().length;
+
+  if (hasSummary && (excerptLength > 112 || note.tags.length >= 2)) {
+    return "feature";
+  }
+
+  if (!hasSummary && excerptLength < 96 && note.tags.length <= 1) {
+    return "compact";
+ succeeded in 0ms:
+:root {
+  color-scheme: light;
+  --bg: #eef3f7;
+  --bg-strong: rgba(255, 255, 255, 0.92);
+  --surface: rgba(255, 255, 255, 0.76);
+  --surface-strong: rgba(255, 255, 255, 0.9);
+  --surface-muted: rgba(241, 245, 249, 0.92);
+  --ink: #111827;
+  --ink-soft: #334155;
+  --ink-muted: #64748b;
+  --ink-faint: #94a3b8;
+  --line: rgba(100, 116, 139, 0.22);
+  --line-strong: rgba(51, 65, 85, 0.14);
+  --accent: #324863;
+  --accent-strong: #19293b;
+  --accent-soft: rgba(50, 72, 99, 0.08);
+  --accent-soft-strong: rgba(50, 72, 99, 0.14);
+  --success-soft: rgba(22, 101, 52, 0.08);
+  --success-line: rgba(22, 101, 52, 0.18);
+  --danger-soft: rgba(185, 28, 28, 0.08);
+exec
+/bin/zsh -lc "sed -n '1,360p' tests/e2e/ui-home-grid.spec.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,220p' tests/e2e/home.spec.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "dotenv/config";
+
+import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaClient } from "@prisma/client";
+import { expect, test, type Page } from "@playwright/test";
+
+const desktopViewport = { width: 1440, height: 900 };
+const mobileViewport = { width: 390, height: 844 };
+
+const databaseUrl = process.env.DATABASE_URL;
+
+if (!databaseUrl) {
+  throw new Error("DATABASE_URL must be set before running UI home grid tests.");
+}
+
+const prisma = new PrismaClient({
+  adapter: new PrismaBetterSqlite3({
+    url: databaseUrl
+  })
+});
+ succeeded in 0ms:
+import "dotenv/config";
+
+import { expect, test } from "@playwright/test";
+
+import { setAiPlaywrightTestMode } from "./ai-test-mode";
+
+// These journeys all mutate the same single-owner SQLite state, so serial execution keeps promotion checks deterministic.
+test.describe.configure({ mode: "serial" });
+
+test("public homepage exposes the published notes surface", async ({ page }) => {
+  await page.goto("/");
+
+  const emptyState = page.getByText("No published notes yet.");
+  const publishedNoteEntry = page.locator(".note-preview-card").first();
+
+  await expect(page.getByRole("heading", { name: "Notes the owner has chosen to share." })).toBeVisible();
+  await expect(page.getByRole("navigation").getByRole("link", { name: "Owner login" })).toBeVisible();
+  await expect(emptyState.or(publishedNoteEntry)).toBeVisible();
+});
+
+exec
+/bin/zsh -lc "sed -n '1,320p' tests/e2e/ui-home-shell.spec.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "dotenv/config";
+
+import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaClient } from "@prisma/client";
+import { expect, test, type Page } from "@playwright/test";
+
+const desktopViewport = { width: 1440, height: 900 };
+const mobileViewport = { width: 390, height: 844 };
+
+const databaseUrl = process.env.DATABASE_URL;
+
+if (!databaseUrl) {
+  throw new Error("DATABASE_URL must be set before running UI home shell tests.");
+}
+
+const prisma = new PrismaClient({
+  adapter: new PrismaBetterSqlite3({
+    url: databaseUrl
+  })
+});
+exec
+/bin/zsh -lc 'rg -n "public-home|note-preview-card|public-note-showroom|note-list-link|note-collection-panel|public-home-rail|public-hero|public-side-panel" src/app/globals.css' in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+211:.note-list-link:hover,
+236:.public-home-grid,
+261:.public-home-grid,
+502:.public-home-layout,
+508:.public-home-layout {
+512:.public-side-panel,
+518:.public-hero,
+523:.public-home-shell-head,
+524:.public-home-shell-copy,
+525:.public-home-rail {
+530:.public-home-shell-head {
+536:.public-home-shell-copy {
+540:.public-home-count {
+552:.public-home-count span {
+561:.public-home-count strong {
+585:.note-collection-panel,
+731:.note-list-link:focus-visible,
+774:.public-note-showroom {
+786:.note-preview-card {
+803:.note-preview-card::before {
+exec
+/bin/zsh -lc "rg -n \"listPublishedNotes|excerpt|summary|publishedAt|tags\" -g '"'!node_modules'"' src features" in /Users/stevenna/WebstormProjects/minakeep exited 2 in 0ms:
+rg: features: No such file or directory (os error 2)
+src/features/ai/client.ts:4:import { normalizeTagNames } from "@/features/tags/normalize";
+src/features/ai/client.ts:14:  summary: string;
+src/features/ai/client.ts:15:  tags: string[];
+src/features/ai/client.ts:121:  const summary = typeof (parsed as { summary?: unknown }).summary === "string" ? (parsed as { summary: string }).summary.trim() : "";
+src/features/ai/client.ts:122:  const rawTags = Array.isArray((parsed as { tags?: unknown }).tags) ? (parsed as { tags: unknown[] }).tags : null;
+src/features/ai/client.ts:124:  if (!summary || !rawTags) {
+src/features/ai/client.ts:125:    throw new MinaAiClientError("invalid-response", "The Mina AI endpoint omitted the normalized summary or tags fields.");
+src/features/ai/client.ts:129:    summary,
+src/features/ai/client.ts:130:    tags: normalizeTagNames(
+src/features/links/enrichment.ts:23:  "You generate AI-owned metadata for one private saved link. Return JSON only with keys `summary` and `tags`. " +
+src/features/links/enrichment.ts:25:  "The summary must be 1-2 sentences, concise, factual, and under 240 characters. " +
+src/features/links/enrichment.ts:26:  "The tags array must contain 2-6 short topic tags with no duplicates.";
+src/features/links/enrichment.ts:73:          summary: data.summary,
+src/features/links/enrichment.ts:74:          tagNames: data.tags
+src/features/links/types.ts:2:import type { SavedTag } from "@/features/tags/types";
+src/features/links/types.ts:13:  summary: string | null;
+src/features/links/types.ts:15:  tags: SavedTag[];
+src/features/links/repo.ts:21:  summary: true,
+src/features/links/repo.ts:28:  tags: linkTagSelect
+exec
+/bin/zsh -lc "sed -n '480,930p' src/app/globals.css" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+
+.vault-shell {
+  width: 100%;
+}
+
+.vault-frame {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.vault-frame-header {
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  gap: var(--space-4);
+  padding-bottom: var(--space-5);
+}
+
+.vault-frame-body {
+  display: grid;
+  gap: var(--space-6);
+exec
+/bin/zsh -lc "sed -n '1120,1245p' src/app/globals.css" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+    padding: var(--space-5);
+  }
+
+  .ui-surface,
+  .hero-card,
+  .panel-card,
+  .feature-card,
+  .vault-frame {
+    padding: var(--space-6);
+  }
+}
+
+@media (min-width: 768px) {
+  .page-shell {
+    padding: var(--space-6);
+  }
+
+  .site-header {
+    align-items: center;
+    flex-direction: row;
+exec
+/bin/zsh -lc "rg --files tests/e2e | rg 'ui-home-grid|ui-home-shell|home\\.spec'" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+tests/e2e/ui-home-shell.spec.ts-snapshots/ui-home-shell-desktop-darwin.png
+tests/e2e/ui-home-shell.spec.ts-snapshots/ui-home-shell-mobile-darwin.png
+tests/e2e/ui-home-shell.spec.ts
+tests/e2e/home.spec.ts
+tests/e2e/ui-home-grid.spec.ts-snapshots/ui-home-grid-mobile-darwin.png
+tests/e2e/ui-home-grid.spec.ts-snapshots/ui-home-grid-desktop-darwin.png
+tests/e2e/ui-home-grid.spec.ts
+exec
+/bin/zsh -lc "sed -n '1,120p' src/features/notes/service.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "server-only";
+
+import { requestEnrichment, retryEnrichment } from "@/features/enrichment/service";
+import { notesRepo } from "@/features/notes/repo";
+import { createNoteExcerpt } from "@/features/notes/markdown";
+import type { NoteDraftInput } from "@/features/notes/types";
+import { createUniqueNoteSlug } from "@/features/notes/slug";
+
+function normalizeTitle(title: string) {
+  const trimmedTitle = title.trim();
+
+  return trimmedTitle || "Untitled note";
+}
+
+export async function listOwnerNotes(ownerId: string) {
+  return notesRepo.listForOwner(ownerId);
+}
+
+export async function listPublishedNotes() {
+  const notes = await notesRepo.listPublished();
+exec
+/bin/zsh -lc 'git status --short' in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: error: couldn't create cache file '/tmp/xcrun_db-EDKNjyUA' (errno=Operation not permitted)
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: error: couldn't create cache file '/tmp/xcrun_db-oeR5uxPj' (errno=Operation not permitted)
+ D docs/exec-plans/active/022-public-home-shell-reset.md
+ M docs/exec-plans/active/023-public-home-dynamic-grid.md
+ M scripts/ralph/generated/current-evaluator-prompt.txt
+ M scripts/ralph/generated/current-task-prompt.txt
+ M src/app/globals.css
+ M src/app/page.tsx
+ M state/artifacts/20260321T103552-022-public-home-shell-reset/commit.log
+ M state/backlog.md
+ M state/current-cycle.json
+ M state/current-task.txt
+ M state/deterministic-checks.json
+ M state/last-result.txt
+ M state/run-log.md
+ M state/task-history.md
+ M tests/e2e/home.spec.ts
+ M tests/e2e/ui-home-shell.spec.ts
+viewed image /Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-home-grid.spec.ts-snapshots/ui-home-grid-desktop-darwin.png
+viewed image /Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-home-grid.spec.ts-snapshots/ui-home-grid-mobile-darwin.png
+viewed image /Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-home-shell.spec.ts-snapshots/ui-home-shell-desktop-darwin.png
+codex
+{"decision":"done","recommend_promotion":true,"confidence":0.92,"summary":"The homepage implementation substantively satisfies task 023. `src/app/page.tsx` now renders published notes through a dedicated `PublishedNotePreviewCard` with title-first hierarchy, preview copy before metadata, and tags last. `src/app/globals.css` gives the showroom a two-column desktop grid with deterministic compact/balanced/feature card heights that create visible rhythm without chaotic offsets, and the mobile collapse remains clean. The plan doc is updated, the new `@ui-home-grid` Playwright coverage enforces desktop/mobile screenshots plus overflow and accessibility checks, and the provided deterministic runs for `npm run test:e2e -- --grep @ui-home-grid` and `npm run verify` both passed. The shipped screenshots look intentionally composed rather than merely uneven.","satisfied_exit_criteria":["Published note previews form a dynamic, readable grid.","Card rhythm is materially more alive than the prior uniform treatment while staying easy to scan.","`npm run test:e2e -- --grep @ui-home-grid` passed with desktop/mobile screenshot coverage, overflow checks, and accessibility assertions.","`npm run verify` passed.","Relevant implementation, tests, and active plan are aligned with the documented behavior."],"missing_requirements":[],"human_review_triggers":[]}
+tokens used
+97,886
+{"decision":"done","recommend_promotion":true,"confidence":0.92,"summary":"The homepage implementation substantively satisfies task 023. `src/app/page.tsx` now renders published notes through a dedicated `PublishedNotePreviewCard` with title-first hierarchy, preview copy before metadata, and tags last. `src/app/globals.css` gives the showroom a two-column desktop grid with deterministic compact/balanced/feature card heights that create visible rhythm without chaotic offsets, and the mobile collapse remains clean. The plan doc is updated, the new `@ui-home-grid` Playwright coverage enforces desktop/mobile screenshots plus overflow and accessibility checks, and the provided deterministic runs for `npm run test:e2e -- --grep @ui-home-grid` and `npm run verify` both passed. The shipped screenshots look intentionally composed rather than merely uneven.","satisfied_exit_criteria":["Published note previews form a dynamic, readable grid.","Card rhythm is materially more alive than the prior uniform treatment while staying easy to scan.","`npm run test:e2e -- --grep @ui-home-grid` passed with desktop/mobile screenshot coverage, overflow checks, and accessibility assertions.","`npm run verify` passed.","Relevant implementation, tests, and active plan are aligned with the documented behavior."],"missing_requirements":[],"human_review_triggers":[]}
+evaluation: done promotion=true

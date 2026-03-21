@@ -3,6 +3,64 @@ import Link from "next/link";
 import { ButtonLink, DetailBlock, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
 import { listPublishedNotes } from "@/features/notes/service";
 
+const publishedDateFormatter = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
+
+type PublishedNote = Awaited<ReturnType<typeof listPublishedNotes>>[number];
+type NotePreviewVariant = "compact" | "balanced" | "feature";
+
+function getNotePreviewVariant(note: PublishedNote): NotePreviewVariant {
+  const hasSummary = Boolean(note.summary?.trim());
+  const excerptLength = note.excerpt.trim().length;
+
+  if (hasSummary && (excerptLength > 112 || note.tags.length >= 2)) {
+    return "feature";
+  }
+
+  if (!hasSummary && excerptLength < 96 && note.tags.length <= 1) {
+    return "compact";
+  }
+
+  return "balanced";
+}
+
+function PublishedNotePreviewCard({ note }: { note: PublishedNote }) {
+  const variant = getNotePreviewVariant(note);
+  const primaryPreview = note.summary?.trim() || note.excerpt.trim() || "Published note";
+  const supportingPreview =
+    variant === "feature" && note.summary?.trim() && note.excerpt.trim() !== note.summary.trim() ? note.excerpt.trim() : null;
+
+  return (
+    <article className={`note-preview-card note-preview-card-${variant}`} data-card-variant={variant}>
+      <div className="note-preview-card-body">
+        <h2 className="note-preview-card-title">
+          <Link className="note-list-link" href={`/notes/${note.slug}`}>
+            {note.title}
+          </Link>
+        </h2>
+        <div className="note-preview-card-copy">
+          <p className="note-preview-card-summary">{primaryPreview}</p>
+          {supportingPreview ? <p className="note-preview-card-excerpt">{supportingPreview}</p> : null}
+        </div>
+      </div>
+      <MetadataRow className="note-preview-card-meta">
+        <span>Published note</span>
+        <span>{publishedDateFormatter.format(note.publishedAt)}</span>
+      </MetadataRow>
+      <TagList aria-label="Published note tags" className="note-preview-card-tags">
+        {note.tags.length === 0 ? (
+          <TagChip muted>No generated tags</TagChip>
+        ) : (
+          note.tags.map((tag) => (
+            <TagChip key={tag.id}>
+              {tag.name}
+            </TagChip>
+          ))
+        )}
+      </TagList>
+    </article>
+  );
+}
+
 export default async function HomePage() {
   const notes = await listPublishedNotes();
   const publishedCountLabel = `${notes.length} published note${notes.length === 1 ? "" : "s"}`;
@@ -28,31 +86,9 @@ export default async function HomePage() {
           {notes.length === 0 ? (
             <p>No published notes yet. The public site stays empty until the owner explicitly publishes a note.</p>
           ) : (
-            <div className="note-list public-note-list">
+            <div className="note-list public-note-list public-note-showroom" data-testid="public-home-showroom">
               {notes.map((note) => (
-                <article className="note-list-item note-list-item-public" key={note.id}>
-                  <div>
-                    <MetadataRow leading>
-                      <span>Published note</span>
-                      <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(note.publishedAt)}</span>
-                    </MetadataRow>
-                    <Link className="note-list-link" href={`/notes/${note.slug}`}>
-                      {note.title}
-                    </Link>
-                    <p>{note.summary || note.excerpt || "Published note"}</p>
-                    <TagList aria-label="Published note tags">
-                      {note.tags.length === 0 ? (
-                        <TagChip muted>No generated tags</TagChip>
-                      ) : (
-                        note.tags.map((tag) => (
-                          <TagChip key={tag.id}>
-                            {tag.name}
-                          </TagChip>
-                        ))
-                      )}
-                    </TagList>
-                  </div>
-                </article>
+                <PublishedNotePreviewCard key={note.id} note={note} />
               ))}
             </div>
           )}

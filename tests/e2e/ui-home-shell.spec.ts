@@ -204,7 +204,7 @@ test("@ui-home-shell homepage reads note-first on desktop", async ({ page }) => 
   await page.setViewportSize(desktopViewport);
   await page.goto("/");
 
-  await expect(page.locator(".public-note-list .note-list-item")).toHaveCount(seededNotes.length);
+  await expect(page.locator(".public-note-showroom .note-preview-card")).toHaveCount(seededNotes.length);
   await expect(page.locator(".note-collection-panel .section-heading").filter({ hasText: "Published notes" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Notes the owner has chosen to share." })).toBeVisible();
   await expect(page.getByRole("complementary").getByRole("link", { name: "Owner login" })).toBeVisible();
@@ -221,7 +221,7 @@ test("@ui-home-shell homepage stays note-first on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await page.goto("/");
 
-  await expect(page.locator(".public-note-list .note-list-item")).toHaveCount(seededNotes.length);
+  await expect(page.locator(".public-note-showroom .note-preview-card")).toHaveCount(seededNotes.length);
   await expect(page.locator(".note-collection-panel .section-heading").filter({ hasText: "Published notes" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Notes the owner has chosen to share." })).toBeVisible();
   await expect(page.getByRole("complementary").getByRole("link", { name: "Owner login" })).toBeVisible();

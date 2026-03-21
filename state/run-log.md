@@ -314,3 +314,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true The task is complete. The homepage implementation in `src/app/page.tsx` and `src/app/globals.css` clearly makes published notes the dominant above-the-fold content, keeps the intro framing subordinate in a secondary rail, and presents note metadata as supporting information. The repository includes deterministic `@ui-home-shell` coverage with committed desktop/mobile snapshots and accessibility/overflow/hierarchy checks, and the recorded required commands passed (`npm run test:e2e -- --grep @ui-home-shell`, `npm run verify`). I did not find a substantive blocker against promotion for task 022. -> state/artifacts/20260321T103552-022-public-home-shell-reset/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T103552-022-public-home-shell-reset/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 022-public-home-shell-reset -> 023-public-home-dynamic-grid
+- backlog: rendered current=023-public-home-dynamic-grid
+- health: ooxxoooxoxxoxooxxxooo
+- cycle: finished
+
+### cycle 2026-03-21T10:48:41+09:00 task=023-public-home-dynamic-grid
+- artifacts: state/artifacts/20260321T104841-023-public-home-dynamic-grid
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T104841-023-public-home-dynamic-grid/worker.jsonl
+- worker-summary: Implemented the homepage showroom update in [src/app/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/page.tsx) and [src/app/globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css). Published notes now render through a reusable `PublishedNotePreviewCard` treatment with title-first hierarchy, secondary metadata, and deterministic `compact` / `balanced` / `feature` height variants inside a dynamic desktop grid that collapses cleanly on mobile.
+- evaluator: started
+- evaluator: status=done promotion=true The homepage implementation substantively satisfies task 023. `src/app/page.tsx` now renders published notes through a dedicated `PublishedNotePreviewCard` with title-first hierarchy, preview copy before metadata, and tags last. `src/app/globals.css` gives the showroom a two-column desktop grid with deterministic compact/balanced/feature card heights that create visible rhythm without chaotic offsets, and the mobile collapse remains clean. The plan doc is updated, the new `@ui-home-grid` Playwright coverage enforces desktop/mobile screenshots plus overflow and accessibility checks, and the provided deterministic runs for `npm run test:e2e -- --grep @ui-home-grid` and `npm run verify` both passed. The shipped screenshots look intentionally composed rather than merely uneven. -> state/artifacts/20260321T104841-023-public-home-dynamic-grid/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T104841-023-public-home-dynamic-grid/npm-run-verify-next-server.log

@@ -771,14 +771,73 @@ textarea {
   align-items: start;
 }
 
+.public-note-showroom {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: minmax(0, 1fr);
+  margin-top: var(--space-5);
+}
+
 .note-list-item,
 .link-list-item {
   align-items: start;
 }
 
-.note-list-item-public {
-  background: rgba(255, 255, 255, 0.95);
+.note-preview-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.58)),
+    rgba(235, 241, 246, 0.92);
+  border: 1px solid rgba(100, 116, 139, 0.2);
+  border-radius: var(--radius-4);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    0 1.1rem 2.4rem rgba(15, 23, 42, 0.08);
+  display: grid;
+  gap: var(--space-4);
+  min-height: 14.5rem;
+  padding: var(--space-5);
+  position: relative;
+  overflow: hidden;
+}
+
+.note-preview-card::before {
+  background: linear-gradient(90deg, rgba(65, 90, 119, 0.2), rgba(255, 255, 255, 0.85), rgba(65, 90, 119, 0.12));
+  content: "";
+  height: 1px;
+  left: var(--space-5);
+  position: absolute;
+  right: var(--space-5);
+  top: 0;
+}
+
+.note-preview-card-compact {
+  min-height: 12.75rem;
+}
+
+.note-preview-card-balanced {
+  min-height: 16rem;
+}
+
+.note-preview-card-feature {
+  min-height: 19.5rem;
+}
+
+.note-preview-card-body,
+.note-preview-card-copy {
+  display: grid;
+}
+
+.note-preview-card-body {
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.note-preview-card-copy {
   gap: var(--space-3);
+}
+
+.note-preview-card-title {
+  margin: 0;
 }
 
 .note-list-link {
@@ -795,6 +854,41 @@ textarea {
 
 .note-list-link:hover {
   color: var(--accent-strong);
+}
+
+.note-preview-card .note-list-link {
+  font-size: clamp(1.22rem, 2vw, 1.58rem);
+  line-height: 1.02;
+  margin-top: 0;
+}
+
+.note-preview-card-summary,
+.note-preview-card-excerpt {
+  margin: 0;
+}
+
+.note-preview-card-summary {
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1.68;
+  max-width: 30ch;
+}
+
+.note-preview-card-excerpt {
+  color: var(--ink-soft);
+  font-size: var(--text-sm);
+  line-height: 1.65;
+  max-width: 32ch;
+}
+
+.note-preview-card-meta {
+  border-top: 1px solid rgba(100, 116, 139, 0.18);
+  margin-top: auto;
+  padding-top: var(--space-4);
+}
+
+.note-preview-card-tags {
+  margin-top: -0.15rem;
 }
 
 .link-url {
@@ -1064,8 +1158,16 @@ textarea {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .public-note-list .note-list-item {
-    grid-template-columns: minmax(0, 1fr);
+  .public-note-showroom {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .note-preview-card-balanced {
+    min-height: 17rem;
+  }
+
+  .note-preview-card-feature {
+    min-height: 21rem;
   }
 
   .login-layout {
@@ -1119,5 +1221,9 @@ textarea {
 
   .public-home-grid {
     grid-template-columns: minmax(0, 1.36fr) minmax(18rem, 0.64fr);
+  }
+
+  .public-note-showroom {
+    gap: var(--space-5);
   }
 }

@@ -5,7 +5,7 @@
   "id": "022-public-home-shell-reset",
   "title": "Public home shell reset",
   "order": 22,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "023-public-home-dynamic-grid",
   "prompt_docs": [
@@ -23,7 +23,8 @@
     "src/app/page.tsx",
     "tests/e2e"
   ],
-  "human_review_triggers": []
+  "human_review_triggers": [],
+  "completed_at": "2026-03-21T01:48:11.390Z"
 }
 ```
 
@@ -64,3 +65,4 @@ Promote when the deterministic UI checks pass and `/` clearly prioritizes note d
 - Start here. Append timestamped progress notes as work lands.
 - 2026-03-21 10:40 KST: Reworked `src/app/page.tsx` so the published-note collection leads the home shell, with the intro reduced to a smaller supporting card and the owner entrance kept in a secondary rail.
 - 2026-03-21 10:40 KST: Added deterministic `@ui-home-shell` Playwright coverage with fixed published-note seeding, desktop/mobile screenshot assertions, hierarchy checks, overflow guards, and structural accessibility checks.
+- 2026-03-21T01:48:11.390Z: automatically promoted after deterministic checks and evaluator approval.

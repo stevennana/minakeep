@@ -1,5 +1,11 @@
-The homepage now reads note-first. [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/page.tsx) moves the published-note collection into the dominant shell, reduces the intro to a smaller supporting card, and keeps the owner login/workflow rail secondary. [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css) adds the layout changes for the showroom-first hierarchy, compact archive counter, and tighter public note card rhythm.
+Implemented the homepage showroom update in [src/app/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/page.tsx) and [src/app/globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css). Published notes now render through a reusable `PublishedNotePreviewCard` treatment with title-first hierarchy, secondary metadata, and deterministic `compact` / `balanced` / `feature` height variants inside a dynamic desktop grid that collapses cleanly on mobile.
 
-I added deterministic desktop/mobile coverage in [ui-home-shell.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-home-shell.spec.ts) with committed snapshots under [tests/e2e/ui-home-shell.spec.ts-snapshots](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-home-shell.spec.ts-snapshots), and refreshed the affected public-home `@ui-system` snapshot via [ui-system.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-system.spec.ts). The task log is updated in [022-public-home-shell-reset.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/022-public-home-shell-reset.md), and the operator handoff summary is written to [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
+Added focused UI coverage in [tests/e2e/ui-home-grid.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-home-grid.spec.ts), updated the affected homepage selectors in [tests/e2e/home.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/home.spec.ts) and [tests/e2e/ui-home-shell.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-home-shell.spec.ts), refreshed the impacted homepage snapshots, and logged the work in [docs/exec-plans/active/023-public-home-dynamic-grid.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/023-public-home-dynamic-grid.md).
 
-Validation passed locally: `npm run test:e2e -- --grep @ui-home-shell` and `npm run verify`. Exit criteria appear satisfied.
+`npm run test:e2e -- --grep @ui-home-grid` passed.  
+`npm run verify` passed.
+
+Operator handoff summary:
+- what changed: Homepage note previews now use a varied-height showroom grid with reusable preview cards; added dedicated `@ui-home-grid` Playwright coverage and refreshed impacted UI snapshots.
+- whether the exit criteria appear satisfied: Yes.
+- what remains if the task is still incomplete: Nothing identified for task `023-public-home-dynamic-grid`.

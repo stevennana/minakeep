@@ -4,36 +4,36 @@ Read the following repository documents before making changes:
 - docs/product-specs/public-home-showroom.md
 - docs/design-docs/homepage-showroom-rhythm.md
 - docs/references/ui-verification-contract.md
-- docs/exec-plans/active/022-public-home-shell-reset.md
+- docs/exec-plans/active/023-public-home-dynamic-grid.md
 
-Current task id: 022-public-home-shell-reset
-Current task title: Public home shell reset
+Current task id: 023-public-home-dynamic-grid
+Current task title: Public home dynamic grid
 
 Objective:
-Reduce homepage hero dominance and reframe `/` as a note-first showroom shell.
+Implement the homepage’s varied-height note showroom and reusable note-preview card treatment.
 
 Scope:
-- lighten the introductory framing
-- make published note previews the main focus above the fold
-- keep note metadata compact and secondary
+- build a grid-based note archive with dynamic card heights
+- keep titles and previews primary, metadata secondary
+- ensure the dynamic rhythm still scans quickly
 
 Out of scope:
-- final dynamic grid rhythm details
-- owner workspace redesign
-- public note reading page polish
+- public note page changes
+- owner workspace changes
+- mobile-specific final polish beyond what the homepage grid immediately needs
 
 Exit criteria:
-1. The homepage reads as a note showroom before it reads as a product introduction.
-2. Intro framing is present but visually subordinate to the archive content.
-3. `npm run test:e2e -- --grep @ui-home-shell` passes with desktop/mobile screenshots, visible note-first hierarchy, and accessibility checks.
+1. Published note previews form a dynamic, readable grid.
+2. Card rhythm feels more alive than the current uniform list/card treatment.
+3. `npm run test:e2e -- --grep @ui-home-grid` passes with desktop/mobile screenshots, no obvious overflow, and accessibility checks.
 4. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-home-shell`
+- `npm run test:e2e -- --grep @ui-home-grid`
 
 Evaluator notes:
-Promote when the deterministic UI checks pass and `/` clearly prioritizes note discovery over promo framing.
+Promote when the deterministic UI checks pass and the grid feels intentionally composed rather than merely unequal.
 
 Required repository artifacts for this task:
 - src/app/page.tsx
@@ -41,7 +41,7 @@ Required repository artifacts for this task:
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-home-shell
+- npm run test:e2e -- --grep @ui-home-grid
 
 Previous known gaps from the last evaluation:
 - none

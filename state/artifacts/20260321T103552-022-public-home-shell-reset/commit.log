@@ -1,0 +1,15 @@
+[main e14988f] ralph: 022-public-home-shell-reset 2026-03-21T10:48:11+09:00
+ 29 files changed, 1568 insertions(+), 131 deletions(-)
+ rename docs/exec-plans/{active => completed}/021-ui-design-system-foundation.md (94%)
+ create mode 100644 state/artifacts/20260321T101458-021-ui-design-system-foundation/backlog.log
+ create mode 100644 state/artifacts/20260321T101458-021-ui-design-system-foundation/promote.log
+ create mode 100644 state/artifacts/20260321T103552-022-public-home-shell-reset/commit.log
+ create mode 100644 state/artifacts/20260321T103552-022-public-home-shell-reset/evaluator.log
+ create mode 100644 state/artifacts/20260321T103552-022-public-home-shell-reset/npm-run-test-e2e-grep-ui-home-shell-next-server.log
+ create mode 100644 state/artifacts/20260321T103552-022-public-home-shell-reset/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260321T103552-022-public-home-shell-reset/task-prompt.log
+ create mode 100644 state/artifacts/20260321T103552-022-public-home-shell-reset/worker.jsonl
+ create mode 100644 tests/e2e/ui-home-shell.spec.ts
+ create mode 100644 tests/e2e/ui-home-shell.spec.ts-snapshots/ui-home-shell-desktop-darwin.png
+ create mode 100644 tests/e2e/ui-home-shell.spec.ts-snapshots/ui-home-shell-mobile-darwin.png
+commit: created
