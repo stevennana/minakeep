@@ -23,6 +23,7 @@ export type PublishedPublicNote = PublishedPublicContentBase & {
 
 export type PublishedPublicLink = PublishedPublicContentBase & {
   kind: "link";
+  faviconAssetId: string | null;
   url: string;
 };
 
@@ -51,6 +52,7 @@ export function toPublishedPublicLink(link: PublishedLinkSummary): PublishedPubl
     kind: "link",
     title: link.title,
     summary: link.summary,
+    faviconAssetId: link.faviconAssetId,
     publishedAt: link.publishedAt,
     updatedAt: link.updatedAt,
     tags: link.tags,

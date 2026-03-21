@@ -796,3 +796,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T215714-052-note-image-display-and-publish/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T215714-052-note-image-display-and-publish/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 052-note-image-display-and-publish -> 053-link-favicon-cache-and-render
+- backlog: rendered current=053-link-favicon-cache-and-render
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxoooooo
+- cycle: finished
+
+### cycle 2026-03-21T22:17:05+09:00 task=053-link-favicon-cache-and-render
+- artifacts: state/artifacts/20260321T221705-053-link-favicon-cache-and-render
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T221705-053-link-favicon-cache-and-render/worker.jsonl
+- worker-summary: Task 053 now fetches and caches link favicons into local media storage on save, exposes a manual owner refresh path, and renders cached or fallback favicon heads on both owner and public link cards. The core changes are in [favicon.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/links/favicon.ts), [repo.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/links/repo.ts), [actions.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/app/links/actions.ts), [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/links/page.tsx), and [public-showroom.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/public-content/components/public-showroom.tsx). The stable fallback asset lives at [link-favicon-fallback.svg](/Users/stevenna/WebstormProjects/minakeep/public/icons/link-favicon-fallback.svg).
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T221705-053-link-favicon-cache-and-render/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T221705-053-link-favicon-cache-and-render/npm-run-verify-next-server.log

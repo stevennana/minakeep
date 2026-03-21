@@ -24,6 +24,7 @@ test("toPublishedPublicNote and toPublishedPublicLink preserve the shared public
     title: "Published link",
     url: "https://example.com/published-link",
     summary: "Link summary",
+    faviconAssetId: "favicon-1",
     publishedAt,
     updatedAt,
     tags: [{ id: "tag-2", name: "links" }]
@@ -62,6 +63,7 @@ test("toPublishedPublicNote and toPublishedPublicLink preserve the shared public
       publishedAt: link.publishedAt,
       updatedAt: link.updatedAt,
       tags: link.tags,
+      faviconAssetId: link.faviconAssetId,
       url: link.url
     },
     {
@@ -71,6 +73,7 @@ test("toPublishedPublicNote and toPublishedPublicLink preserve the shared public
       publishedAt,
       updatedAt,
       tags: [{ id: "tag-2", name: "links" }],
+      faviconAssetId: "favicon-1",
       url: "https://example.com/published-link"
     }
   );
@@ -83,6 +86,7 @@ test("sortPublishedContent orders mixed published items by published time, then 
       kind: "link",
       title: "Zulu reference",
       summary: null,
+      faviconAssetId: null,
       publishedAt: new Date("2026-03-20T09:00:00.000Z"),
       updatedAt: new Date("2026-03-20T09:05:00.000Z"),
       tags: [],
@@ -117,6 +121,7 @@ test("sortPublishedContent orders mixed published items by published time, then 
       kind: "link",
       title: "Middle link",
       summary: null,
+      faviconAssetId: null,
       publishedAt: new Date("2026-03-20T09:00:00.000Z"),
       updatedAt: new Date("2026-03-20T10:05:00.000Z"),
       tags: [],
@@ -149,6 +154,7 @@ test("filterSafePublishedContent drops unsafe or malformed published links while
       kind: "link",
       title: "Safe link",
       summary: null,
+      faviconAssetId: null,
       publishedAt: new Date("2026-03-21T08:00:00.000Z"),
       updatedAt: new Date("2026-03-21T08:00:00.000Z"),
       tags: [],
@@ -159,6 +165,7 @@ test("filterSafePublishedContent drops unsafe or malformed published links while
       kind: "link",
       title: "Unsafe link",
       summary: null,
+      faviconAssetId: null,
       publishedAt: new Date("2026-03-21T07:00:00.000Z"),
       updatedAt: new Date("2026-03-21T07:00:00.000Z"),
       tags: [],
@@ -169,6 +176,7 @@ test("filterSafePublishedContent drops unsafe or malformed published links while
       kind: "link",
       title: "Malformed link",
       summary: null,
+      faviconAssetId: null,
       publishedAt: new Date("2026-03-21T06:00:00.000Z"),
       updatedAt: new Date("2026-03-21T06:00:00.000Z"),
       tags: [],

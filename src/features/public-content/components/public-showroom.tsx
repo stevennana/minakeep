@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 import { Button, FormField, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
+import { LinkFavicon } from "@/features/links/components/link-favicon";
 import { NoteCardImage } from "@/features/notes/components/note-card-image";
 import type { NoteCardImage as NoteCardImageData } from "@/features/notes/types";
 
@@ -30,6 +31,7 @@ type ShowroomNoteItem = ShowroomBaseItem & {
 
 type ShowroomLinkItem = ShowroomBaseItem & {
   kind: "link";
+  faviconAssetId: string | null;
   url: string;
 };
 
@@ -100,6 +102,14 @@ function PublishedContentPreviewCard({ item }: { item: PublicShowroomItem }) {
           imageClassName="note-card-image note-preview-card-image"
           testId="public-note-card-image"
           title={item.title}
+        />
+      ) : null}
+      {!isNote ? (
+        <LinkFavicon
+          faviconAssetId={item.faviconAssetId}
+          frameClassName="link-favicon-frame note-preview-card-image-frame link-preview-card-image-frame"
+          imageClassName="link-favicon-image note-preview-card-image link-preview-card-image"
+          testId="public-link-card-favicon"
         />
       ) : null}
       <div className="note-preview-card-body">

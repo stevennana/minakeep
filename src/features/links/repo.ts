@@ -14,11 +14,25 @@ const linkTagSelect = {
   }
 };
 
+const linkFaviconSelect = {
+  where: {
+    kind: "link-favicon"
+  },
+  orderBy: {
+    updatedAt: "desc" as const
+  },
+  select: {
+    id: true
+  },
+  take: 1
+};
+
 const linkSummarySelect = {
   id: true,
   url: true,
   title: true,
   summary: true,
+  mediaAssets: linkFaviconSelect,
   isPublished: true,
   publishedAt: true,
   enrichmentStatus: true,
@@ -35,22 +49,59 @@ const linkPublishedSelect = {
   url: true,
   title: true,
   summary: true,
+  mediaAssets: linkFaviconSelect,
   publishedAt: true,
   updatedAt: true,
   tags: linkTagSelect
 };
 
-function mapLinkRecord<TRecord extends EnrichmentRecordFields>(link: TRecord) {
-  const { enrichmentStatus, enrichmentError, enrichmentAttempts, enrichmentUpdatedAt, ...rest } = link;
+type LinkFaviconRecord = {
+  mediaAssets: Array<{
+    id: string;
+  }>;
+};
+
+function getFaviconAssetId(link: LinkFaviconRecord) {
+  return link.mediaAssets[0]?.id ?? null;
+}
+
+function mapLinkRecord<TRecord extends EnrichmentRecordFields & LinkFaviconRecord>(link: TRecord) {
+  const { enrichmentStatus, enrichmentError, enrichmentAttempts, enrichmentUpdatedAt, mediaAssets, ...rest } = link;
 
   return {
     ...rest,
+    faviconAssetId: getFaviconAssetId({ mediaAssets }),
     enrichment: toEnrichmentState({
       enrichmentStatus,
       enrichmentError,
       enrichmentAttempts,
       enrichmentUpdatedAt
     })
+  };
+}
+
+function mapPublishedLinkRecord(link: {
+  id: string;
+  url: string;
+  title: string;
+  summary: string | null;
+  publishedAt: Date | null;
+  updatedAt: Date;
+  tags: Array<{
+    id: string;
+    name: string;
+  }>;
+  mediaAssets: Array<{
+    id: string;
+  }>;
+}) {
+  if (!link.publishedAt) {
+    throw new Error("Published links must include a publishedAt timestamp.");
+  }
+
+  return {
+    ...link,
+    faviconAssetId: getFaviconAssetId(link)
   };
 }
 
@@ -69,7 +120,7 @@ export const linksRepo = {
     return links.map(mapLinkRecord);
   },
   async listPublished() {
-    return prisma.link.findMany({
+    const links = await prisma.link.findMany({
       where: {
         isPublished: true
       },
@@ -83,6 +134,8 @@ export const linksRepo = {
       ],
       select: linkPublishedSelect
     });
+
+    return links.map(mapPublishedLinkRecord);
   },
   async listForOwnerByTag(ownerId: string, tagName: string) {
     const links = await prisma.link.findMany({
@@ -259,6 +312,18 @@ export const linksRepo = {
         attempts: link.enrichmentAttempts
       }
     };
+  },
+  async findFaviconSourceById(id: string) {
+    return prisma.link.findUnique({
+      where: {
+        id
+      },
+      select: {
+        id: true,
+        ownerId: true,
+        url: true
+      }
+    });
   },
   async recordGeneratedMetadata(id: string, expectedAttempt: number, data: { summary: string; tagNames: string[] }) {
     return prisma.$transaction(async (transaction) => {

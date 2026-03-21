@@ -4,10 +4,11 @@
 Give saved-link cards a stable head image by fetching and caching the target site favicon locally.
 
 ## Trigger / Entry
-The owner saves or updates a link in `/app/links`.
+The owner saves a link or manually refreshes its favicon in `/app/links`.
 
 ## User-Visible Behavior
 - Minakeep attempts to resolve and cache a favicon for the saved link.
+- The owner can request a manual favicon refresh for an existing saved link.
 - Owner and public link cards use the cached favicon as the head image when available.
 - If favicon fetch or cache fails, the link still saves successfully.
 - Failed favicon fetch falls back to a generic stable icon instead of a broken image.

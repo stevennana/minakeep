@@ -4,6 +4,7 @@ import Link from "next/link";
 import { DetailBlock, IntroBlock, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
 import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pending-refresh";
 import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
+import { LinkFavicon } from "@/features/links/components/link-favicon";
 import { OwnerNoteCard } from "@/features/notes/components/owner-note-card";
 import { listOwnerTags, listOwnerContentByTag } from "@/features/tags/service";
 import { normalizeSingleTagName } from "@/features/tags/normalize";
@@ -114,14 +115,21 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
                 <article className="link-list-item secondary-link-item" key={link.id}>
                   <div className="secondary-link-main">
                     <div className="link-list-heading secondary-link-heading">
-                      <MetadataRow leading>
-                        <span>Private link</span>
-                        <span>{dateFormatter.format(link.updatedAt)}</span>
-                      </MetadataRow>
-                      <a className="note-list-link" href={link.url} rel="noopener noreferrer" target="_blank">
-                        {link.title}
-                      </a>
-                      <p className="link-url">{link.url}</p>
+                      <LinkFavicon
+                        faviconAssetId={link.faviconAssetId}
+                        frameClassName="link-favicon-frame secondary-link-favicon-frame"
+                        imageClassName="link-favicon-image secondary-link-favicon-image"
+                      />
+                      <div className="secondary-link-heading-copy">
+                        <MetadataRow leading>
+                          <span>Private link</span>
+                          <span>{dateFormatter.format(link.updatedAt)}</span>
+                        </MetadataRow>
+                        <a className="note-list-link" href={link.url} rel="noopener noreferrer" target="_blank">
+                          {link.title}
+                        </a>
+                        <p className="link-url">{link.url}</p>
+                      </div>
                     </div>
                     <div className="link-list-footer secondary-link-footer">
                       <MetadataRow>

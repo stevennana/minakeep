@@ -3,6 +3,7 @@ import "server-only";
 import { Prisma } from "@prisma/client";
 
 import { requestEnrichment, retryEnrichment } from "@/features/enrichment/service";
+import { cacheLinkFavicon } from "@/features/links/favicon";
 import { normalizeLinkInput } from "@/features/links/normalize";
 import { linksRepo } from "@/features/links/repo";
 import type { LinkDraftInput } from "@/features/links/types";
@@ -78,4 +79,12 @@ export async function retryLinkEnrichment(ownerId: string, id: string) {
 
 export async function startLinkEnrichment(id: string) {
   return requestEnrichment(linksRepo, id);
+}
+
+export async function refreshLinkFavicon(ownerId: string, id: string) {
+  return linksRepo.findByIdForOwner(ownerId, id);
+}
+
+export async function startLinkFaviconRefresh(id: string) {
+  return cacheLinkFavicon(id);
 }

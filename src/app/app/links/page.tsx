@@ -1,4 +1,10 @@
-import { createLinkAction, publishLinkAction, retryLinkEnrichmentAction, unpublishLinkAction } from "@/app/app/links/actions";
+import {
+  createLinkAction,
+  publishLinkAction,
+  refreshLinkFaviconAction,
+  retryLinkEnrichmentAction,
+  unpublishLinkAction
+} from "@/app/app/links/actions";
 import {
   Button,
   DetailBlock,
@@ -12,6 +18,7 @@ import {
 } from "@/components/ui/primitives";
 import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pending-refresh";
 import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
+import { LinkFavicon } from "@/features/links/components/link-favicon";
 import { listOwnerLinks } from "@/features/links/service";
 import { requireOwnerSession } from "@/lib/auth/owner-session";
 
@@ -21,6 +28,7 @@ type LinksPageProps = {
     retried?: string;
     published?: string;
     unpublished?: string;
+    favicon?: string;
     error?: string;
   }>;
 };
@@ -54,7 +62,9 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
           ? "Link published."
           : resolvedSearchParams.unpublished === "1"
             ? "Link unpublished."
-            : getStatusMessage(resolvedSearchParams.error);
+            : resolvedSearchParams.favicon === "1"
+              ? "Favicon refresh requested."
+              : getStatusMessage(resolvedSearchParams.error);
 
   return (
     <div className="feature-layout">
@@ -126,14 +136,29 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
                 <article className="link-list-item secondary-link-item" key={link.id}>
                   <div className="secondary-link-main">
                     <div className="link-list-heading secondary-link-heading">
-                      <MetadataRow leading>
-                        <span>{link.isPublished ? "Published link" : "Private link"}</span>
-                        <span>{dateFormatter.format(link.isPublished && link.publishedAt ? link.publishedAt : link.updatedAt)}</span>
-                      </MetadataRow>
-                      <a className="note-list-link" href={link.url} rel="noopener noreferrer" target="_blank">
-                        {link.title}
-                      </a>
-                      <p className="link-url">{link.url}</p>
+                      <div className="secondary-link-favicon-stack">
+                        <LinkFavicon
+                          faviconAssetId={link.faviconAssetId}
+                          frameClassName="link-favicon-frame secondary-link-favicon-frame"
+                          imageClassName="link-favicon-image secondary-link-favicon-image"
+                          testId="owner-link-favicon"
+                        />
+                        <form action={refreshLinkFaviconAction.bind(null, link.id)} className="secondary-link-favicon-refresh">
+                          <Button aria-label="Refresh favicon" title="Refresh favicon" type="submit" variant="ghost">
+                            ↻
+                          </Button>
+                        </form>
+                      </div>
+                      <div className="secondary-link-heading-copy">
+                        <MetadataRow leading>
+                          <span>{link.isPublished ? "Published link" : "Private link"}</span>
+                          <span>{dateFormatter.format(link.isPublished && link.publishedAt ? link.publishedAt : link.updatedAt)}</span>
+                        </MetadataRow>
+                        <a className="note-list-link" href={link.url} rel="noopener noreferrer" target="_blank">
+                          {link.title}
+                        </a>
+                        <p className="link-url">{link.url}</p>
+                      </div>
                     </div>
                     <div className="link-list-footer secondary-link-footer">
                       <MetadataRow>

@@ -1,48 +1,48 @@
 Read the following repository documents before making changes:
 - AGENTS.md
+- ARCHITECTURE.md
 - docs/FRONTEND.md
 - docs/design-docs/media-storage-and-serving.md
-- docs/product-specs/note-image-attachments.md
-- docs/product-specs/public-home-showroom.md
-- docs/exec-plans/active/052-note-image-display-and-publish.md
+- docs/product-specs/link-favicon-caching.md
+- docs/exec-plans/active/053-link-favicon-cache-and-render.md
 
-Current task id: 052-note-image-display-and-publish
-Current task title: Note image display and publish
+Current task id: 053-link-favicon-cache-and-render
+Current task title: Link favicon cache and render
 
 Objective:
-Surface uploaded note images consistently across owner and public note cards while keeping public media tied to note publication.
+Fetch and cache link favicons locally so owner and public link cards can render stable head images.
 
 Scope:
-- first-image derivation for note cards
-- owner note-list rendering with images
-- public note/showroom image rendering only after publish
+- favicon fetch and local cache
+- owner/public link-card favicon rendering
+- fallback icon behavior on fetch failure
 
 Out of scope:
-- note-image upload UI
-- link favicon work
+- note-image uploads
+- periodic favicon recrawling daemon
 - Docker packaging
 
 Exit criteria:
-1. Owner note cards use the first embedded markdown image when present.
-2. Published note cards and note pages render referenced images publicly.
-3. Draft-note images do not leak on public routes.
-4. `npm run test:e2e -- --grep @ui-note-images` passes.
+1. Minakeep attempts to resolve and cache a favicon when a link is saved or refreshed.
+2. Owner and public link cards use the cached favicon when available.
+3. Favicon failure falls back cleanly without blocking link save.
+4. `npm run test:e2e -- --grep @link-favicon` passes.
 5. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-note-images`
+- `npm run test:e2e -- --grep @link-favicon`
 
 Evaluator notes:
-Promote only when note-image rendering is consistent across owner and public surfaces and the publish boundary stays intact.
+Promote only when favicon behavior is stable, local-cache based, and failure-tolerant.
 
 Required repository artifacts for this task:
-- src
+- src/features/links
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-note-images
+- npm run test:e2e -- --grep @link-favicon
 
 Previous known gaps from the last evaluation:
 - none

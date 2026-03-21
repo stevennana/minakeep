@@ -11,6 +11,7 @@ export type SavedLinkSummary = {
   url: string;
   title: string;
   summary: string | null;
+  faviconAssetId: string | null;
   isPublished: boolean;
   publishedAt: Date | null;
   enrichment: EnrichmentState;
@@ -24,6 +25,7 @@ export type PublishedLinkSummary = {
   url: string;
   title: string;
   summary: string | null;
+  faviconAssetId: string | null;
   publishedAt: Date;
   updatedAt: Date;
   tags: SavedTag[];

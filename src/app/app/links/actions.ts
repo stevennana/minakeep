@@ -10,7 +10,9 @@ import {
   DuplicateLinkUrlError,
   createSavedLink,
   publishLink,
+  refreshLinkFavicon,
   retryLinkEnrichment,
+  startLinkFaviconRefresh,
   startLinkEnrichment,
   unpublishLink
 } from "@/features/links/service";
@@ -37,6 +39,13 @@ function scheduleLinkEnrichment(linkId: string, attempt: number) {
   });
 }
 
+function scheduleLinkFaviconRefresh(linkId: string) {
+  after(async () => {
+    await startLinkFaviconRefresh(linkId);
+    revalidateLinkPaths();
+  });
+}
+
 async function queueLinkEnrichment(linkId: string) {
   const link = await startLinkEnrichment(linkId);
 
@@ -53,6 +62,7 @@ export async function createLinkAction(formData: FormData) {
   try {
     const link = await createSavedLink(owner.id, getLinkInput(formData));
     await queueLinkEnrichment(link.id);
+    scheduleLinkFaviconRefresh(link.id);
   } catch (error) {
     if (error instanceof LinkValidationError) {
       redirect(`/app/links?error=${error.code}`);
@@ -67,6 +77,19 @@ export async function createLinkAction(formData: FormData) {
 
   revalidateLinkPaths();
   redirect("/app/links?saved=1");
+}
+
+export async function refreshLinkFaviconAction(linkId: string) {
+  const owner = await requireOwnerSession();
+  const link = await refreshLinkFavicon(owner.id, linkId);
+
+  if (!link) {
+    notFound();
+  }
+
+  await startLinkFaviconRefresh(link.id);
+  revalidateLinkPaths();
+  redirect("/app/links?favicon=1");
 }
 
 export async function retryLinkEnrichmentAction(linkId: string) {

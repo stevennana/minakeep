@@ -67,3 +67,5 @@ Promote only when favicon behavior is stable, local-cache based, and failure-tol
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-21 23:20 KST: Added deterministic favicon caching infrastructure for links: owner/public link summaries now expose one cached `faviconAssetId`, background save-triggered refresh writes a local `link-favicon` media asset under the mounted media root, and fetch failures keep link save non-blocking while preserving a stable fallback icon path.
+- 2026-03-21 23:20 KST: Updated owner and public link-card rendering to use the cached local favicon when present and `/icons/link-favicon-fallback.svg` otherwise, including a manual owner-side `Refresh favicon` action and focused `@link-favicon` Playwright coverage for cache success, fallback behavior, and refresh recovery.

@@ -5,7 +5,7 @@
   "id": "052-note-image-display-and-publish",
   "title": "Note image display and publish",
   "order": 52,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "053-link-favicon-cache-and-render",
   "prompt_docs": [
@@ -27,7 +27,8 @@
     "The first markdown image is not used consistently for owner/public note cards.",
     "Draft-note images remain publicly reachable.",
     "Public note rendering depends on a different image contract than list-card rendering."
-  ]
+  ],
+  "completed_at": "2026-03-21T13:16:34.888Z"
 }
 ```
 
@@ -69,3 +70,4 @@ Promote only when note-image rendering is consistent across owner and public sur
 - Start here. Append timestamped progress notes as work lands.
 - 2026-03-21 22:45 KST: Derived a `cardImage` from the first embedded markdown image in note records and threaded it through owner note cards plus public showroom note cards without widening the publish contract.
 - 2026-03-21 22:45 KST: Added focused `@ui-note-images` Playwright coverage for owner card rendering, published public card/page rendering, and draft image privacy on `/media/:assetId`.
+- 2026-03-21T13:16:34.888Z: automatically promoted after deterministic checks and evaluator approval.

@@ -8,6 +8,8 @@ const host = process.env.PLAYWRIGHT_WEB_SERVER_HOST ?? "127.0.0.1";
 const port = process.env.PLAYWRIGHT_WEB_SERVER_PORT ?? "3100";
 const logPath = process.env.MINAKEEP_NEXT_SERVER_LOG;
 const aiTestModeFile = process.env.PLAYWRIGHT_AI_TEST_MODE_FILE ?? path.join(tmpdir(), "minakeep-playwright-ai-mode.json");
+const linkFaviconTestModeFile =
+  process.env.PLAYWRIGHT_LINK_FAVICON_TEST_MODE_FILE ?? path.join(tmpdir(), "minakeep-playwright-link-favicon-mode.json");
 
 const logStream = (() => {
   if (!logPath) {
@@ -19,12 +21,14 @@ const logStream = (() => {
 })();
 
 rmSync(aiTestModeFile, { force: true });
+rmSync(linkFaviconTestModeFile, { force: true });
 
 const child = spawn(npmBin, ["run", "dev", "--", "--hostname", host, "--port", port], {
   cwd: process.cwd(),
   env: {
     ...process.env,
     PLAYWRIGHT_AI_TEST_MODE_FILE: aiTestModeFile,
+    PLAYWRIGHT_LINK_FAVICON_TEST_MODE_FILE: linkFaviconTestModeFile,
     PLAYWRIGHT_TEST: "1"
   }
 });
