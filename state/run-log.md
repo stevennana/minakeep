@@ -329,3 +329,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true The homepage implementation substantively satisfies task 023. `src/app/page.tsx` now renders published notes through a dedicated `PublishedNotePreviewCard` with title-first hierarchy, preview copy before metadata, and tags last. `src/app/globals.css` gives the showroom a two-column desktop grid with deterministic compact/balanced/feature card heights that create visible rhythm without chaotic offsets, and the mobile collapse remains clean. The plan doc is updated, the new `@ui-home-grid` Playwright coverage enforces desktop/mobile screenshots plus overflow and accessibility checks, and the provided deterministic runs for `npm run test:e2e -- --grep @ui-home-grid` and `npm run verify` both passed. The shipped screenshots look intentionally composed rather than merely uneven. -> state/artifacts/20260321T104841-023-public-home-dynamic-grid/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T104841-023-public-home-dynamic-grid/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 023-public-home-dynamic-grid -> 024-public-note-reading-polish
+- backlog: rendered current=024-public-note-reading-polish
+- health: ooxxoooxoxxoxooxxxoooo
+- cycle: finished
+
+### cycle 2026-03-21T11:02:11+09:00 task=024-public-note-reading-polish
+- artifacts: state/artifacts/20260321T110211-024-public-note-reading-polish
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T110211-024-public-note-reading-polish/worker.jsonl
+- worker-summary: Tightened the public note page in [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/notes/[slug]/page.tsx) and [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css). The route now reads more like a finished note than a dashboard card: the explanatory lede is gone, the title/date/back link are quieter, the markdown body gets a steadier reading measure, and AI summary/tags sit in a subdued footer below the authored content.
+- evaluator: started
+- evaluator: status=done promotion=true The public note page is substantively complete for task 024. The shipped route and CSS make the page materially more reading-first than before: the framing is slimmer, the reading measure is constrained, the title/meta hierarchy is calmer, and AI summary/tags are moved into a subdued footer below the authored markdown. The dedicated `@ui-public-note` Playwright coverage enforces desktop/mobile screenshots, hierarchy, overflow, and accessibility structure checks, and both required commands passed in the provided deterministic run. -> state/artifacts/20260321T110211-024-public-note-reading-polish/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T110211-024-public-note-reading-polish/npm-run-verify-next-server.log

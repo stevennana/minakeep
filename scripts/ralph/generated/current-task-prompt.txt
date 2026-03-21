@@ -1,47 +1,46 @@
 Read the following repository documents before making changes:
 - AGENTS.md
 - docs/FRONTEND.md
-- docs/product-specs/public-home-showroom.md
-- docs/design-docs/homepage-showroom-rhythm.md
+- docs/product-specs/public-note-reading.md
 - docs/references/ui-verification-contract.md
-- docs/exec-plans/active/023-public-home-dynamic-grid.md
+- docs/exec-plans/active/024-public-note-reading-polish.md
 
-Current task id: 023-public-home-dynamic-grid
-Current task title: Public home dynamic grid
+Current task id: 024-public-note-reading-polish
+Current task title: Public note reading polish
 
 Objective:
-Implement the homepage’s varied-height note showroom and reusable note-preview card treatment.
+Tighten the public note page into a calmer, more compact reading experience.
 
 Scope:
-- build a grid-based note archive with dynamic card heights
-- keep titles and previews primary, metadata secondary
-- ensure the dynamic rhythm still scans quickly
+- reduce oversized note-page framing
+- improve reading width and typography hierarchy
+- quiet supporting metadata and AI summary/tag treatment
 
 Out of scope:
-- public note page changes
-- owner workspace changes
-- mobile-specific final polish beyond what the homepage grid immediately needs
+- homepage redesign
+- owner workspace redesign
+- broad theme-system refactors not needed for the note page
 
 Exit criteria:
-1. Published note previews form a dynamic, readable grid.
-2. Card rhythm feels more alive than the current uniform list/card treatment.
-3. `npm run test:e2e -- --grep @ui-home-grid` passes with desktop/mobile screenshots, no obvious overflow, and accessibility checks.
+1. Public note pages feel more reading-first than dashboard-like.
+2. Metadata remains visible without competing with the authored note body.
+3. `npm run test:e2e -- --grep @ui-public-note` passes with desktop/mobile screenshots, visible reading hierarchy, and accessibility checks.
 4. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-home-grid`
+- `npm run test:e2e -- --grep @ui-public-note`
 
 Evaluator notes:
-Promote when the deterministic UI checks pass and the grid feels intentionally composed rather than merely unequal.
+Promote when the deterministic UI checks pass and the public note page is materially calmer and easier to read than before.
 
 Required repository artifacts for this task:
-- src/app/page.tsx
+- src/app/notes/[slug]/page.tsx
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-home-grid
+- npm run test:e2e -- --grep @ui-public-note
 
 Previous known gaps from the last evaluation:
 - none

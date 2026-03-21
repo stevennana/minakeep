@@ -13,3 +13,4 @@
 - 2026-03-20T20:08:22.997Z: promoted 020-ai-ui-hardening -> NONE
 - 2026-03-21T01:35:22.465Z: promoted 021-ui-design-system-foundation -> 022-public-home-shell-reset
 - 2026-03-21T01:48:11.390Z: promoted 022-public-home-shell-reset -> 023-public-home-dynamic-grid
+- 2026-03-21T02:01:41.458Z: promoted 023-public-home-dynamic-grid -> 024-public-note-reading-polish

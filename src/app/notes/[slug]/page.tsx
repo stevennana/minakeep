@@ -19,58 +19,53 @@ export default async function PublicNotePage({ params }: PublicNotePageProps) {
   }
 
   const publishedAt = note.publishedAt ?? note.updatedAt;
+  const formattedPublishedAt = new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(publishedAt);
 
   return (
     <div className="feature-layout public-note-layout">
       <Surface as="article" className="public-note-card" tone="card">
         <div className="public-note-header">
-          <MetadataRow leading>
-            <span>Published note</span>
-            <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(publishedAt)}</span>
-          </MetadataRow>
-          <p className="eyebrow">Public reading</p>
-          <h1>{note.title}</h1>
-          <p className="lede public-note-lede">
-            Authored markdown stays primary. Generated summary and tags remain visible as supporting metadata, not as a
-            replacement for the note itself.
-          </p>
-          <div className="button-row">
-            <ButtonLink href="/" variant="ghost">
+          <div className="public-note-header-row">
+            <MetadataRow leading className="public-note-meta">
+              <span>Published note</span>
+              <time dateTime={publishedAt.toISOString()}>{formattedPublishedAt}</time>
+            </MetadataRow>
+            <ButtonLink className="public-note-back-link" href="/" variant="ghost">
               Back to published notes
             </ButtonLink>
           </div>
+          <div className="public-note-title-block">
+            <p className="eyebrow">Public note</p>
+            <h1>{note.title}</h1>
+          </div>
         </div>
-        {(note.summary || note.tags.length > 0) && (
-          <Surface tone="inset">
-            <div className="note-generated-copy">
-              <strong>AI summary</strong>
-              {note.summary ? (
-                <p className="note-generated-summary">{note.summary}</p>
-              ) : (
-                <p className="field-note">No generated summary is available for this published note.</p>
-              )}
-            </div>
-            <div className="note-generated-copy">
-              <strong>AI tags</strong>
-              <TagList aria-label="Published note tags">
-                {note.tags.length === 0 ? (
-                  <TagChip muted>No generated tags</TagChip>
-                ) : (
-                  note.tags.map((tag) => (
-                    <TagChip key={tag.id}>
-                      {tag.name}
-                    </TagChip>
-                  ))
-                )}
-              </TagList>
-            </div>
-          </Surface>
-        )}
         <div
           className="markdown-preview public-note-body"
           data-testid="public-note-markdown"
           dangerouslySetInnerHTML={{ __html: renderMarkdownToHtml(note.markdown) }}
         />
+        {(note.summary || note.tags.length > 0) && (
+          <footer className="public-note-support" data-testid="public-note-support">
+            {note.summary ? (
+              <div className="public-note-support-block" data-testid="public-note-summary">
+                <strong>AI summary</strong>
+                <p className="note-generated-summary">{note.summary}</p>
+              </div>
+            ) : null}
+            {note.tags.length > 0 ? (
+              <div className="public-note-support-block" data-testid="public-note-tags">
+                <strong>AI tags</strong>
+                <TagList aria-label="Published note tags" className="public-note-tags">
+                  {note.tags.map((tag) => (
+                    <TagChip className="public-note-tag" key={tag.id}>
+                      {tag.name}
+                    </TagChip>
+                  ))}
+                </TagList>
+              </div>
+            ) : null}
+          </footer>
+        )}
       </Surface>
     </div>
   );

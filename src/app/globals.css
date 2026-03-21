@@ -509,6 +509,10 @@ textarea {
   gap: var(--space-5);
 }
 
+.public-note-layout {
+  gap: var(--space-4);
+}
+
 .public-side-panel,
 .dashboard-side-panel,
 .login-form-card {
@@ -594,12 +598,63 @@ textarea {
 
 .public-note-card {
   margin: 0 auto;
-  max-width: 56rem;
+  max-width: 50rem;
+  padding: var(--space-6) var(--space-5);
+  position: relative;
 }
 
 .public-note-header {
   display: grid;
+  gap: var(--space-5);
+}
+
+.public-note-header-row,
+.public-note-title-block,
+.public-note-support-block {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.public-note-header-row {
+  align-items: center;
+}
+
+.public-note-title-block {
+  gap: var(--space-2);
+}
+
+.public-note-header h1 {
+  font-size: clamp(1.8rem, 4vw, 2.35rem);
+  line-height: 0.98;
+  margin: 0;
+  max-width: 18ch;
+}
+
+.public-note-meta {
+  gap: 0.55rem 0.8rem;
+}
+
+.public-note-back-link {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  color: var(--ink-muted);
+  justify-self: start;
+  min-height: auto;
+  padding: 0;
+}
+
+.public-note-back-link:hover,
+.public-note-back-link:focus-visible {
+  color: var(--accent-strong);
+}
+
+.public-note-support {
+  border-top: 1px solid var(--line);
+  display: grid;
   gap: var(--space-4);
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
 }
 
 .public-note-lede {
@@ -607,7 +662,33 @@ textarea {
 }
 
 .public-note-body {
+  font-size: 1.02rem;
+  line-height: 1.82;
   margin-top: var(--space-5);
+}
+
+.public-note-body > * {
+  max-width: min(100%, 65ch);
+}
+
+.public-note-body pre,
+.public-note-body figure {
+  max-width: 100%;
+}
+
+.public-note-tags {
+  gap: 0.55rem;
+  grid-template-columns: repeat(auto-fit, minmax(5.25rem, max-content));
+}
+
+.public-note-tag {
+  background: rgba(50, 72, 99, 0.06);
+  border-color: rgba(50, 72, 99, 0.12);
+  color: var(--ink-muted);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  min-height: 1.9rem;
+  padding: 0.3rem 0.68rem;
 }
 
 .note-editor-intro,
@@ -1216,7 +1297,7 @@ textarea {
   }
 
   .public-note-card {
-    padding: var(--space-8);
+    padding: var(--space-7);
   }
 
   .public-home-grid {
@@ -1225,5 +1306,13 @@ textarea {
 
   .public-note-showroom {
     gap: var(--space-5);
+  }
+
+  .public-note-header-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .public-note-support {
+    grid-template-columns: minmax(0, 1.35fr) minmax(14rem, 0.65fr);
   }
 }
