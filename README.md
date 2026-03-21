@@ -136,4 +136,4 @@ The founder still guided the product direction between waves. In other words, th
 - public-home density refinement
 - markdown editor workbench, toolbar, modes, mobile workflow, and hardening
 
-For the concrete promotion history, see [state/task-history.md](/Users/stevenna/WebstormProjects/minakeep/state/task-history.md).
+For the concrete promotion history, see [state/task-history.md](state/task-history.md).
