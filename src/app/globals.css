@@ -744,6 +744,28 @@ textarea {
   gap: var(--space-3);
 }
 
+.public-search-shell {
+  margin-bottom: var(--space-5);
+}
+
+.public-search-panel {
+  gap: var(--space-3);
+}
+
+.public-search-controls {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.public-search-field {
+  gap: 0.55rem;
+}
+
+.public-search-summary {
+  align-self: end;
+  margin: 0;
+}
+
 .public-intro-panel h1 {
   font-size: clamp(1.55rem, 3vw, 2.15rem);
   line-height: 1.02;
@@ -1770,6 +1792,11 @@ textarea {
   }
 
   .public-home-shell-head {
+    align-items: end;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .public-search-controls {
     align-items: end;
     grid-template-columns: minmax(0, 1fr) auto;
   }

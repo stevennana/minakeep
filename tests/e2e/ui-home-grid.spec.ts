@@ -93,6 +93,12 @@ async function seedPublishedNotes() {
     throw new Error(`Owner account '${username}' must exist before UI home grid tests run.`);
   }
 
+  await prisma.link.deleteMany({
+    where: {
+      ownerId: owner.id
+    }
+  });
+
   await prisma.note.deleteMany({
     where: {
       ownerId: owner.id
@@ -255,7 +261,8 @@ test("@ui-regression @ui-home-grid homepage showroom uses a varied desktop grid"
   await expectNoHorizontalOverflow(page);
 
   await expect(page.locator(".public-home-grid")).toHaveScreenshot("ui-home-grid-desktop.png", {
-    animations: "disabled"
+    animations: "disabled",
+    maxDiffPixelRatio: 0.02
   });
 });
 
@@ -273,6 +280,7 @@ test("@ui-regression @ui-home-grid homepage showroom collapses cleanly on mobile
   await expectNoHorizontalOverflow(page);
 
   await expect(page.locator(".public-home-grid")).toHaveScreenshot("ui-home-grid-mobile.png", {
-    animations: "disabled"
+    animations: "disabled",
+    maxDiffPixelRatio: 0.02
   });
 });

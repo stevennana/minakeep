@@ -1,38 +1,35 @@
 Read the following repository documents before making changes:
 - AGENTS.md
 - docs/FRONTEND.md
-- docs/product-specs/public-home-showroom.md
-- docs/references/ui-verification-contract.md
-- docs/exec-plans/active/034-public-showroom-shell-cleanup.md
+- docs/product-specs/public-showroom-search.md
+- docs/exec-plans/active/035-public-showroom-title-search.md
 
-Current task id: 034-public-showroom-shell-cleanup
-Current task title: Public showroom shell cleanup
+Current task id: 035-public-showroom-title-search
+Current task title: Public showroom title search
 
 Objective:
-Remove the public “Owner entrance / Private origin” side section and simplify the homepage shell around the mixed showroom.
+Add one unified title-only live search bar for the mixed public showroom.
 
 Scope:
-- remove the old owner-entrance side section
-- keep the top owner login entry as the only owner call-to-action on the public page
-- simplify public framing around the mixed feed
+- one public search input on `/`
+- live in-place filtering of published notes and published links
+- title-only matching
 
 Out of scope:
-- public search implementation
-- link publishing logic
-- typography-wide hierarchy tuning
+- owner search changes
+- public full-text search
+- separate public results routes
 
 Exit criteria:
-1. The old owner-entrance side section is gone.
-2. The public page still provides owner login via the top navigation only.
-3. `npm run test:e2e -- --grep @ui-public-home-shell` passes with desktop/mobile screenshots, visible hierarchy anchors, and accessibility checks.
-4. `npm run verify` passes.
+1. The public homepage exposes one unified search bar without a type selector.
+2. The search filters published notes and published links by title only.
+3. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-public-home-shell`
 
 Evaluator notes:
-Promote when the deterministic UI checks pass and the public shell is cleaner without losing core navigation clarity.
+Promote only when the public search behavior is lightweight, predictable, and does not broaden beyond title-only matching.
 
 Required repository artifacts for this task:
 - src/app/page.tsx
@@ -40,7 +37,6 @@ Required repository artifacts for this task:
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-public-home-shell
 
 Previous known gaps from the last evaluation:
 - none

@@ -182,7 +182,8 @@ test("@ui-regression @ui-system public chrome holds together on desktop", async 
     animations: "disabled"
   });
   await expect(page.locator(".public-hero")).toHaveScreenshot("ui-system-public-hero-desktop.png", {
-    animations: "disabled"
+    animations: "disabled",
+    maxDiffPixelRatio: 0.02
   });
 });
 

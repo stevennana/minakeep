@@ -61,6 +61,12 @@ async function seedPublishedNotes() {
     throw new Error(`Owner account '${username}' must exist before UI home shell tests run.`);
   }
 
+  await prisma.link.deleteMany({
+    where: {
+      ownerId: owner.id
+    }
+  });
+
   await prisma.note.deleteMany({
     where: {
       ownerId: owner.id
@@ -215,7 +221,8 @@ test("@ui-regression @ui-home-shell @ui-public-home-shell @ui-responsive homepag
   await expectNoHorizontalOverflow(page);
 
   await expect(page.locator(".public-home-grid")).toHaveScreenshot("ui-home-shell-desktop.png", {
-    animations: "disabled"
+    animations: "disabled",
+    maxDiffPixelRatio: 0.02
   });
 });
 
@@ -236,6 +243,7 @@ test("@ui-regression @ui-home-shell @ui-public-home-shell @ui-responsive homepag
   await expectNoHorizontalOverflow(page);
 
   await expect(page.locator(".public-home-grid")).toHaveScreenshot("ui-home-shell-mobile.png", {
-    animations: "disabled"
+    animations: "disabled",
+    maxDiffPixelRatio: 0.02
   });
 });

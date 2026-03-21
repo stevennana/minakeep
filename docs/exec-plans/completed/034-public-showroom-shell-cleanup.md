@@ -5,7 +5,7 @@
   "id": "034-public-showroom-shell-cleanup",
   "title": "Public showroom shell cleanup",
   "order": 34,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "035-public-showroom-title-search",
   "prompt_docs": [
@@ -22,7 +22,8 @@
     "src/app/page.tsx",
     "tests/e2e"
   ],
-  "human_review_triggers": []
+  "human_review_triggers": [],
+  "completed_at": "2026-03-21T05:54:37.713Z"
 }
 ```
 
@@ -67,3 +68,4 @@ Promote when the deterministic UI checks pass and the public shell is cleaner wi
 - 2026-03-21 15:12 KST: Regenerated the affected deterministic Playwright baselines for `ui-home-shell`, `ui-home-grid`, and `ui-system` after the public shell simplification.
 - 2026-03-21 15:18 KST: `npm run test:e2e -- --grep @ui-public-home-shell` passed.
 - 2026-03-21 15:22 KST: `npm run verify` passed, including the full E2E suite and startup smoke.
+- 2026-03-21T05:54:37.713Z: automatically promoted after deterministic checks and evaluator approval.

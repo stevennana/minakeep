@@ -1,0 +1,573 @@
+/Users/stevenna/WebstormProjects/minakeep/scripts/ralph/generated/current-evaluator-prompt.txt
+OpenAI Codex v0.116.0 (research preview)
+--------
+workdir: /Users/stevenna/WebstormProjects/minakeep
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: high
+reasoning summaries: none
+session id: 019d0f06-3da2-7671-9406-58a0edf3806f
+--------
+user
+You are the promotion evaluator for a repository-local Ralph loop.
+
+Read these documents before deciding:
+- AGENTS.md
+- docs/FRONTEND.md
+- docs/product-specs/public-showroom-search.md
+- docs/exec-plans/active/035-public-showroom-title-search.md
+
+Current task id: 035-public-showroom-title-search
+Current task title: Public showroom title search
+
+Objective:
+Add one unified title-only live search bar for the mixed public showroom.
+
+Scope:
+- one public search input on `/`
+- live in-place filtering of published notes and published links
+- title-only matching
+
+Out of scope:
+- owner search changes
+- public full-text search
+- separate public results routes
+
+Exit criteria:
+1. The public homepage exposes one unified search bar without a type selector.
+2. The search filters published notes and published links by title only.
+3. `npm run verify` passes.
+
+Evaluator notes:
+Promote only when the public search behavior is lightweight, predictable, and does not broaden beyond title-only matching.
+
+Deterministic check summary:
+{
+  "checked_at": "2026-03-21T06:12:40.405Z",
+  "task_id": "035-public-showroom-title-search",
+  "commands": [
+    {
+      "command": "npm run verify",
+      "ok": true,
+      "output": "\n> minakeep@0.1.0 verify\n> npm run lint && npm run db:prepare && npm run typecheck && npm run build && npm run test && npm run start:smoke\n\n\n> minakeep@0.1.0 lint\n> eslint . --max-warnings=0\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 44ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 typecheck\n> tsc --noEmit\n\n\n> minakeep@0.1.0 build\n> next build\n\n▲ Next.js 16.2.0 (Turbopack)\n- Environments: .env\n\n  Creating an optimized production build ...\n✓ Compiled successfully in 1144ms\n  Running TypeScript ...\n  Finished TypeScript in 1511ms ...\n  Collecting page data using 10 workers ...\n  Generating static pages using 10 workers (0/11) ...\n  Generating static pages using 10 workers (2/11) \r\n  Generating static pages using 10 workers (5/11) \r\n  Generating static pages using 10 workers (8/11) \r\n✓ Generating static pages using 10 workers (11/11) in 180ms\n  Finalizing page optimization ...\n\nRoute (app)\n┌ ○ /\n├ ○ /_not-found\n├ ƒ /api/auth/[...nextauth]\n├ ƒ /api/health\n├ ƒ /api/test/mina/chat/completions\n├ ƒ /app\n├ ƒ /app/links\n├ ƒ /app/notes/[id]/edit\n├ ƒ /app/notes/new\n├ ƒ /app/search\n├ ƒ /app/tags\n├ ƒ /login\n└ ƒ /notes/[slug]\n\n\nƒ Proxy (Middleware)\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n\n> minakeep@0.1.0 test\n> npm run test:unit && npm run test:e2e\n\n\n> minakeep@0.1.0 test:unit\n> NODE_PATH=./node_modules/next/dist/compiled node --conditions=react-server --import tsx --test tests/unit/**/*.test.ts\n\n✔ getMinaAiConfigStatus returns disabled when no AI env vars are set (0.855166ms)\n✔ buildMinaChatCompletionsRequest shapes the Mina OpenAI-compatible request (0.206458ms)\n✔ normalizeMinaEnrichmentResponse trims the summary and normalizes repeated tags (10.246ms)\n✔ normalizeMinaEnrichmentResponse accepts JSON wrapped in a fenced code block (0.206417ms)\n✔ getMinaAiRequestTimeoutMs falls back to the default timeout (0.088875ms)\n✔ requestMinaEnrichment aborts hung requests at the configured timeout (22.175042ms)\n✔ requestEnrichment records a failed state when the AI env is not configured (1.79725ms)\n✔ requestEnrichment records a pending state when the AI env is configured (0.338208ms)\n✔ requestEnrichment records which AI env vars are missing when the Mina config is partial (0.150042ms)\n✔ retryEnrichment only requeues records that are already failed (0.140209ms)\n✔ buildLinkEnrichmentMessages includes the link title and URL for the AI prompt (0.433125ms)\n✔ executeLinkEnrichment records generated summary and tags on success (0.407583ms)\n✔ executeLinkEnrichment records a normalized failed state when the request throws (0.11925ms)\n✔ executeLinkEnrichment skips stale attempts (0.054875ms)\n✔ normalizeLinkInput trims fields and canonicalizes the URL (0.68925ms)\n✔ normalizeLinkInput rejects non-http schemes (0.209542ms)\n✔ buildNoteEnrichmentMessages includes the note title and markdown for the AI prompt (0.413167ms)\n✔ executeNoteEnrichment records generated summary and tags on success (0.846791ms)\n✔ executeNoteEnrichment records a normalized failed state when the request throws (0.508417ms)\n✔ executeNoteEnrichment skips stale attempts (0.107667ms)\n✔ renderMarkdownToHtml preserves common note-writing structures while escaping unsafe HTML (1.463959ms)\n✔ createNoteExcerpt turns markdown into readable summary text (0.387834ms)\n✔ createNoteSlug normalizes title content (0.419916ms)\n✔ createNoteSlug falls back when the title has no slug-safe characters (0.057875ms)\n✔ createUniqueNoteSlug increments an existing base slug (0.060125ms)\n✔ toPublishedPublicNote and toPublishedPublicLink preserve the shared public boundary fields (2.123917ms)\n✔ sortPublishedContent orders mixed published items by published time, then updated time, then title (7.405708ms)\nℹ tests 27\nℹ suites 0\nℹ pass 27\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 209.39225\n\n> minakeep@0.1.0 test:e2e\n> npm run db:prepare && playwright test\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 38ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\nRunning 36 tests using 1 worker\n\n  ✓   1 tests/e2e/auth.spec.ts:5:5 › owner can sign in to the private dashboard (938ms)\n  ✓   2 tests/e2e/home.spec.ts:10:5 › public homepage exposes the mixed published content surface (187ms)\n  ✓   3 tests/e2e/home.spec.ts:25:5 › anonymous visitors cannot access the owner search route (165ms)\n  ✓   4 tests/e2e/home.spec.ts:31:5 › owner can sign in, create a draft note, edit it, and reopen it with rendered preview (1.2s)\n  ✓   5 tests/e2e/home.spec.ts:89:5 › note save still succeeds when the configured AI endpoint times out and exposes a retry path (6.4s)\n  ✓   6 tests/e2e/home.spec.ts:128:5 › owner can publish and unpublish a note across the public routes (1.6s)\n  ✓   7 tests/e2e/home.spec.ts:186:5 › owner can save a private link, receive AI metadata, and keep it off public routes (3.5s)\n  ✓   8 tests/e2e/home.spec.ts:226:5 › owner can publish and unpublish a link across the public homepage (3.9s)\n  ✓   9 tests/e2e/home.spec.ts:281:5 › link save still succeeds when the configured AI endpoint times out and exposes a retry path (6.5s)\n  ✓  10 tests/e2e/home.spec.ts:323:5 › owner cannot save a private link with an unsafe URL scheme (566ms)\n  ✓  11 tests/e2e/home.spec.ts:346:5 › owner can filter private links by tag and search notes by title plus links by URL and tag (4.3s)\n  ✓  12 tests/e2e/link-ai-real.spec.ts:10:5 › owner link enrichment completes against the real Mina endpoint @ai-real (3.7s)\n  ✓  13 tests/e2e/note-ai-real.spec.ts:10:5 › owner note enrichment completes against the real Mina endpoint @ai-real (3.6s)\n  ✓  14 tests/e2e/public-home-search.spec.ts:165:5 › public homepage live search filters mixed published content by title only (271ms)\n  ✓  15 tests/e2e/ui-forms.spec.ts:246:5 › @ui-regression @ui-forms login form stays compact on desktop (263ms)\n  ✓  16 tests/e2e/ui-forms.spec.ts:263:5 › @ui-regression @ui-forms login form stays compact on mobile (250ms)\n  ✓  17 tests/e2e/ui-forms.spec.ts:279:5 › @ui-regression @ui-forms note editor keeps hierarchy on desktop (558ms)\n  ✓  18 tests/e2e/ui-forms.spec.ts:298:5 › @ui-regression @ui-forms note editor keeps hierarchy on mobile (528ms)\n  ✓  19 tests/e2e/ui-home-grid.spec.ts:249:5 › @ui-regression @ui-home-grid homepage showroom uses a varied desktop grid (395ms)\n  ✓  20 tests/e2e/ui-home-grid.spec.ts:269:5 › @ui-regression @ui-home-grid homepage showroom collapses cleanly on mobile (294ms)\n  ✓  21 tests/e2e/ui-home-shell.spec.ts:207:5 › @ui-regression @ui-home-shell @ui-public-home-shell @ui-responsive homepage reads note-first on desktop (311ms)\n  ✓  22 tests/e2e/ui-home-shell.spec.ts:229:5 › @ui-regression @ui-home-shell @ui-public-home-shell @ui-responsive homepage stays note-first on mobile (277ms)\n  ✓  23 tests/e2e/ui-owner-dashboard.spec.ts:318:5 › @ui-regression @ui-owner-dashboard @ui-responsive owner dashboard stays compact on desktop (507ms)\n  ✓  24 tests/e2e/ui-owner-dashboard.spec.ts:337:5 › @ui-regression @ui-owner-dashboard @ui-responsive owner dashboard stays usable on mobile (419ms)\n  ✓  25 tests/e2e/ui-owner-secondary.spec.ts:383:5 › @ui-regression @ui-owner-secondary links surface stays compact on desktop (436ms)\n  ✓  26 tests/e2e/ui-owner-secondary.spec.ts:401:5 › @ui-regression @ui-owner-secondary @ui-responsive links surface stays usable on mobile (423ms)\n  ✓  27 tests/e2e/ui-owner-secondary.spec.ts:416:5 › @ui-regression @ui-owner-secondary tags surface keeps retrieval anchors on desktop (496ms)\n  ✓  28 tests/e2e/ui-owner-secondary.spec.ts:436:5 › @ui-regression @ui-owner-secondary @ui-responsive tags surface stays scannable on mobile (486ms)\n  ✓  29 tests/e2e/ui-owner-secondary.spec.ts:455:5 › @ui-regression @ui-owner-secondary search surface keeps results structured on desktop (540ms)\n  ✓  30 tests/e2e/ui-owner-secondary.spec.ts:474:5 › @ui-regression @ui-owner-secondary @ui-responsive search surface stays stacked on mobile (503ms)\n  ✓  31 tests/e2e/ui-public-note.spec.ts:202:5 › @ui-regression @ui-public-note @ui-responsive public note page keeps a calm desktop reading hierarchy (258ms)\n  ✓  32 tests/e2e/ui-public-note.spec.ts:220:5 › @ui-regression @ui-public-note @ui-responsive public note page stays compact on mobile (237ms)\n  ✓  33 tests/e2e/ui-system.spec.ts:168:5 › @ui-regression @ui-system public chrome holds together on desktop (263ms)\n  ✓  34 tests/e2e/ui-system.spec.ts:190:5 › @ui-regression @ui-system login surface stays readable on mobile (211ms)\n  ✓  35 tests/e2e/ui-system.spec.ts:205:5 › @ui-regression @ui-system @ui-owner-shell @ui-responsive private shell keeps hierarchy on desktop (431ms)\n  ✓  36 tests/e2e/ui-system.spec.ts:226:5 › @ui-regression @ui-system @ui-owner-shell @ui-responsive private shell collapses cleanly on mobile (362ms)\n\n  36 passed (47.4s)\n\n> minakeep@0.1.0 start:smoke\n> node scripts/start-smoke.mjs\n\n\n> minakeep@0.1.0 db:prepare\n> node scripts/db-prepare.mjs\n\n\n✔ Generated Prisma Client (v7.5.0) to ./node_modules/@prisma/client in 46ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\n\nDatasource \"db\": SQLite database \"dev.db\" at \"file:./dev.db\"\n\nThe database is already in sync with the Prisma schema.\n\n\n> minakeep@0.1.0 start\n> next start --hostname 127.0.0.1 --port 3200\n\n▲ Next.js 16.2.0\n- Local:         http://127.0.0.1:3200\n- Network:       http://127.0.0.1:3200\n✓ Ready in 71ms\n",
+      "preflight": {
+        "command": "ensure-e2e-port-free.sh 3100",
+        "error": "",
+        "ok": true,
+        "output": "port-cleanup: 127.0.0.1:3100 already free\n"
+      },
+      "next_server_log_path": "/Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T145507-035-public-showroom-title-search/npm-run-verify-next-server.log"
+    }
+  ],
+  "missing_files": [],
+  "pass": true
+}
+
+Worker handoff summary from the last run:
+Implemented the public homepage title filter and kept it scoped to this task. The server page at [src/app/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/page.tsx#L1) now passes published items into a small client showroom component at [src/features/public-content/components/public-showroom.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/public-content/components/public-showroom.tsx#L1), which renders one live search input, filters published notes and links in place by `title` only, and leaves the underlying public data source unchanged. Public search styling was added in [src/app/globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css#L747).
+
+I added focused E2E coverage for the new behavior in [tests/e2e/public-home-search.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/public-home-search.spec.ts#L1), updated the active task log in [docs/exec-plans/active/035-public-showroom-title-search.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/035-public-showroom-title-search.md#L60), and tightened the existing public UI specs so they clear link state between runs in [tests/e2e/ui-home-grid.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-home-grid.spec.ts#L84), [tests/e2e/ui-home-shell.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-home-shell.spec.ts#L52), and [tests/e2e/ui-system.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-system.spec.ts#L28). I also refreshed [tests/e2e/ui-home-shell.spec.ts-snapshots/ui-home-shell-mobile-darwin.png](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-home-shell.spec.ts-snapshots/ui-home-shell-mobile-darwin.png).
+
+`npm run verify` passed. The task exit criteria appear satisfied.
+
+Operator handoff summary:
+- What changed: added one unified live public search bar on `/` with title-only filtering across published notes and published links; added public-search E2E coverage; fixed public UI test isolation and refreshed one mobile snapshot.
+- Exit criteria status: satisfied; `npm run verify` passed locally.
+- What remains: nothing for task `035-public-showroom-title-search`.
+
+Your job:
+- inspect the repository and current implementation
+- determine whether the current task is actually complete
+- mark `done` only if the exit criteria are satisfied in substance, not just approximately
+- prefer conservative decisions
+- recommend promotion only if the task is truly ready
+
+Return JSON only using the provided schema.
+
+mcp startup: no servers
+exec
+/bin/zsh -lc "sed -n '1,240p' AGENTS.md" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' docs/FRONTEND.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# FRONTEND.md
+
+## Goal
+Describe the user-facing structure of Minakeep so an agent can implement the UI without guessing the product model.
+
+## Tech Direction
+- Next.js application
+- TypeScript
+- App Router
+- server-backed data flows where appropriate
+- reusable presentational components layered above existing route and feature logic
+
+## Route Map
+- `/` -> public showroom of published notes and published links
+- `/notes/[slug]` -> public published-note reading page
+- `/login` -> owner sign-in
+- `/app` -> private notes-first dashboard shell
+- `/app/notes/new` -> create note
+- `/app/notes/[id]/edit` -> edit note and preview markdown
+- `/app/links` -> private saved-link management with publish controls
+ succeeded in 0ms:
+# AGENTS.md
+
+## Purpose
+Minakeep is a self-hosted knowledge vault for private markdown notes and saved links, with selectively published public notes and links, automatic AI enrichment, and a polished knowledge-studio interface.
+
+This repository is optimized for agent-legible development and a Ralph-style task-promotion loop.
+
+## Read Order
+Before changing code or plans, read these files in order:
+
+1. `ARCHITECTURE.md`
+2. `docs/PRODUCT_SENSE.md`
+3. `docs/design-docs/core-beliefs.md`
+4. `docs/product-specs/index.md`
+5. `docs/FRONTEND.md`
+6. `docs/PLANS.md`
+7. active plans in `docs/exec-plans/active/`
+
+## Scope Guardrails
+### In scope for v1
+exec
+/bin/zsh -lc "sed -n '1,260p' docs/product-specs/public-showroom-search.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# Public showroom search
+
+## Goal
+Let anonymous visitors filter the public showroom of published notes and published links through one unified title-only search bar.
+
+## Trigger / Entry
+An anonymous visitor types into the public homepage search bar.
+
+## User-Visible Behavior
+- One public search bar appears on the homepage.
+- The search bar filters published notes and published links together.
+- Search matches titles only.
+- There is no type selector and no separate public results route in this wave.
+- Search updates the homepage showroom in place.
+
+## Validation
+- Title matches for published notes and published links appear in one filtered homepage feed.
+- Non-matching public content is removed from the current view as the query changes.
+- The search does not expose unpublished content.
+- `npm run verify` passes.
+exec
+/bin/zsh -lc "sed -n '1,260p' docs/exec-plans/active/035-public-showroom-title-search.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# Public showroom title search
+
+```json taskmeta
+{
+  "id": "035-public-showroom-title-search",
+  "title": "Public showroom title search",
+  "order": 35,
+  "status": "active",
+  "next_task_on_success": "036-public-link-new-tab-behavior",
+  "prompt_docs": [
+    "AGENTS.md",
+    "docs/FRONTEND.md",
+    "docs/product-specs/public-showroom-search.md"
+  ],
+  "required_commands": [
+    "npm run verify"
+  ],
+  "required_files": [
+    "src/app/page.tsx",
+    "tests/e2e"
+exec
+/bin/zsh -lc "sed -n '720,860p' src/app/globals.css" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,220p' src/app/page.tsx" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' src/features/public-content/components/public-showroom.tsx" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,280p' tests/e2e/public-home-search.spec.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import { PublicShowroom, type PublicShowroomItem } from "@/features/public-content/components/public-showroom";
+import { listPublishedContent } from "@/features/public-content/service";
+
+const publishedDateFormatter = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
+
+export default async function HomePage() {
+  const items = await listPublishedContent();
+  const publishedLinks = items.filter((item) => item.kind === "link").length;
+  const hasPublishedLinks = publishedLinks > 0;
+  const showroomItems: PublicShowroomItem[] = items.map((item) => ({
+    ...item,
+    publishedAtLabel: publishedDateFormatter.format(item.publishedAt)
+  }));
+
+  return (
+    <div className="feature-layout public-home-layout">
+      <PublicShowroom hasPublishedLinks={hasPublishedLinks} items={showroomItems} />
+    </div>
+  );
+}
+ succeeded in 0ms:
+  justify-self: start;
+  min-width: 11rem;
+  padding: 0.9rem 1rem;
+}
+
+.public-home-count span {
+  color: var(--ink-faint);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.public-home-count strong {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  font-weight: 650;
+  letter-spacing: -0.03em;
+ succeeded in 0ms:
+"use client";
+
+import Link from "next/link";
+import { useState } from "react";
+
+import { FormField, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
+
+type ShowroomTag = {
+  id: string;
+  name: string;
+};
+
+type ShowroomBaseItem = {
+  id: string;
+  kind: "note" | "link";
+  title: string;
+  summary: string | null;
+  publishedAtLabel: string;
+  tags: ShowroomTag[];
+};
+ succeeded in 0ms:
+import "dotenv/config";
+
+import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaClient } from "@prisma/client";
+import { expect, test } from "@playwright/test";
+
+const databaseUrl = process.env.DATABASE_URL;
+
+if (!databaseUrl) {
+  throw new Error("DATABASE_URL must be set before running public home search tests.");
+}
+
+const prisma = new PrismaClient({
+  adapter: new PrismaBetterSqlite3({
+    url: databaseUrl
+  })
+});
+
+const seededPublishedNotes = [
+  {
+exec
+/bin/zsh -lc "rg -n \"public-showroom|search bar|title-only|filter\" src tests/e2e docs -g '"'!**/*.png'"'" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+tests/e2e/ui-forms.spec.ts:286:  await expect(page.locator(".note-form .section-heading").filter({ hasText: "Draft" })).toBeVisible();
+tests/e2e/ui-forms.spec.ts:287:  await expect(page.locator(".note-preview-panel .section-heading").filter({ hasText: "Preview" })).toBeVisible();
+tests/e2e/ui-home-shell.spec.ts:213:  await expect(page.locator(".note-collection-panel .section-heading").filter({ hasText: "Published notes" })).toBeVisible();
+tests/e2e/ui-home-shell.spec.ts:235:  await expect(page.locator(".note-collection-panel .section-heading").filter({ hasText: "Published notes" })).toBeVisible();
+docs/FRONTEND.md:22:- `/app/search` -> owner-only search and filtering
+docs/FRONTEND.md:26:Acts as a mixed public showroom first. It should emphasize a dynamic grid of published note and published link previews, remove the old owner-entrance side section, and place one unified title-only search bar in the public surface.
+docs/FRONTEND.md:49:- use one unified title-only public search bar without a type selector
+docs/FRONTEND.md:57:- public search is homepage-only and title-only
+docs/FRONTEND.md:65:- public search filters by type
+tests/e2e/link-ai-real.spec.ts:31:  const linkCard = page.locator("article").filter({ has: page.getByRole("link", { name: title }) });
+tests/e2e/link-ai-real.spec.ts:40:  const searchResult = page.locator("article").filter({ has: page.getByRole("link", { name: title }) });
+tests/e2e/link-ai-real.spec.ts:45:  const taggedResult = page.locator("article").filter({ has: page.getByRole("link", { name: title }) });
+src/components/ui/primitives.tsx:5:  return values.filter(Boolean).join(" ");
+src/features/public-content/components/public-showroom.tsx:151:  const publishedNotes = items.filter((item) => item.kind === "note").length;
+src/features/public-content/components/public-showroom.tsx:153:  const filteredItems = normalizedQuery.length === 0 ? items : items.filter((item) => item.title.toLocaleLowerCase().includes(normalizedQuery));
+src/features/public-content/components/public-showroom.tsx:158:  const listMeta = normalizedQuery ? `${filteredItems.length} matching title${filteredItems.length === 1 ? "" : "s"}` : "Newest first";
+src/features/public-content/components/public-showroom.tsx:170:          <SectionHeading meta="Title-only live filter" title="Search public titles" />
+src/features/public-content/components/public-showroom.tsx:175:              label="Title filter"
+src/features/public-content/components/public-showroom.tsx:189:              {getSearchSummary(query.trim(), filteredItems.length, items.length)}
+src/features/public-content/components/public-showroom.tsx:213:          {filteredItems.length === 0 ? (
+exec
+/bin/zsh -lc "sed -n '1,240p' src/features/public-content/queries.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' src/features/public-content/service.ts" in /Users/stevenna/WebstormProjects/minakeep exited 1 in 0ms:
+sed: src/features/public-content/queries.ts: No such file or directory
+ succeeded in 0ms:
+import "server-only";
+
+import { listPublishedLinks } from "@/features/links/service";
+import { listPublishedNotes } from "@/features/notes/service";
+import { sortPublishedContent, toPublishedPublicLink, toPublishedPublicNote } from "@/features/public-content/types";
+
+export async function listPublishedContent() {
+  const [notes, links] = await Promise.all([listPublishedNotes(), listPublishedLinks()]);
+
+  return sortPublishedContent([...notes.map(toPublishedPublicNote), ...links.map(toPublishedPublicLink)]);
+}
+exec
+/bin/zsh -lc "sed -n '1,220p' tests/unit/public-content.test.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import test from "node:test";
+import assert from "node:assert/strict";
+
+import { sortPublishedContent, toPublishedPublicLink, toPublishedPublicNote } from "../../src/features/public-content/types";
+
+test("toPublishedPublicNote and toPublishedPublicLink preserve the shared public boundary fields", () => {
+  const publishedAt = new Date("2026-03-20T10:00:00.000Z");
+  const updatedAt = new Date("2026-03-20T11:00:00.000Z");
+
+  const note = toPublishedPublicNote({
+    id: "note-1",
+    title: "Published note",
+    slug: "published-note",
+    excerpt: "Note excerpt",
+    summary: "Note summary",
+    publishedAt,
+    updatedAt,
+    tags: [{ id: "tag-1", name: "notes" }]
+  });
+
+exec
+/bin/zsh -lc 'rg -n "listPublishedContent|toPublishedPublic|sortPublishedContent" src tests/unit' in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+tests/unit/public-content.test.ts:4:import { sortPublishedContent, toPublishedPublicLink, toPublishedPublicNote } from "../../src/features/public-content/types";
+tests/unit/public-content.test.ts:6:test("toPublishedPublicNote and toPublishedPublicLink preserve the shared public boundary fields", () => {
+tests/unit/public-content.test.ts:10:  const note = toPublishedPublicNote({
+tests/unit/public-content.test.ts:21:  const link = toPublishedPublicLink({
+tests/unit/public-content.test.ts:76:test("sortPublishedContent orders mixed published items by published time, then updated time, then title", () => {
+tests/unit/public-content.test.ts:77:  const sorted = sortPublishedContent([
+src/app/page.tsx:2:import { listPublishedContent } from "@/features/public-content/service";
+src/app/page.tsx:7:  const items = await listPublishedContent();
+src/features/public-content/service.ts:5:import { sortPublishedContent, toPublishedPublicLink, toPublishedPublicNote } from "@/features/public-content/types";
+src/features/public-content/service.ts:7:export async function listPublishedContent() {
+src/features/public-content/service.ts:10:  return sortPublishedContent([...notes.map(toPublishedPublicNote), ...links.map(toPublishedPublicLink)]);
+src/features/public-content/types.ts:30:export function toPublishedPublicNote(note: PublishedNoteSummary): PublishedPublicNote {
+src/features/public-content/types.ts:44:export function toPublishedPublicLink(link: PublishedLinkSummary): PublishedPublicLink {
+src/features/public-content/types.ts:73:export function sortPublishedContent(items: PublishedPublicContent[]) {
+exec
+/bin/zsh -lc "sed -n '1,220p' src/features/notes/service.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,220p' src/features/links/service.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,220p' src/features/public-content/types.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "server-only";
+
+import { requestEnrichment, retryEnrichment } from "@/features/enrichment/service";
+import { notesRepo } from "@/features/notes/repo";
+import { createNoteExcerpt } from "@/features/notes/markdown";
+import type { NoteDraftInput } from "@/features/notes/types";
+import { createUniqueNoteSlug } from "@/features/notes/slug";
+
+function normalizeTitle(title: string) {
+  const trimmedTitle = title.trim();
+
+  return trimmedTitle || "Untitled note";
+}
+
+export async function listOwnerNotes(ownerId: string) {
+  return notesRepo.listForOwner(ownerId);
+}
+
+export async function listPublishedNotes() {
+  const notes = await notesRepo.listPublished();
+ succeeded in 0ms:
+import "server-only";
+
+import { Prisma } from "@prisma/client";
+
+import { requestEnrichment, retryEnrichment } from "@/features/enrichment/service";
+import { normalizeLinkInput } from "@/features/links/normalize";
+import { linksRepo } from "@/features/links/repo";
+import type { LinkDraftInput } from "@/features/links/types";
+
+export class DuplicateLinkUrlError extends Error {
+  constructor() {
+    super("duplicate-link-url");
+    this.name = "DuplicateLinkUrlError";
+  }
+}
+
+export async function listOwnerLinks(ownerId: string) {
+  return linksRepo.listForOwner(ownerId);
+}
+
+ succeeded in 0ms:
+import type { PublishedLinkSummary } from "@/features/links/types";
+import type { PublishedNoteSummary } from "@/features/notes/types";
+import type { SavedTag } from "@/features/tags/types";
+
+export type PublicContentKind = "note" | "link";
+
+type PublishedPublicContentBase = {
+  id: string;
+  kind: PublicContentKind;
+  title: string;
+  summary: string | null;
+  publishedAt: Date;
+  updatedAt: Date;
+  tags: SavedTag[];
+};
+
+export type PublishedPublicNote = PublishedPublicContentBase & {
+  kind: "note";
+  excerpt: string;
+  slug: string;
+exec
+/bin/zsh -lc "sed -n '1,260p' src/features/links/repo.ts" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,260p' src/features/notes/repo.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+import "server-only";
+
+import type { EnrichmentRecordFields } from "@/features/enrichment/types";
+import { normalizeEnrichmentStatus, toEnrichmentState } from "@/features/enrichment/types";
+import { prisma } from "@/lib/prisma";
+
+const linkTagSelect = {
+  orderBy: {
+    name: "asc" as const
+  },
+  select: {
+    id: true,
+    name: true
+  }
+};
+
+const linkSummarySelect = {
+  id: true,
+  url: true,
+  title: true,
+ succeeded in 0ms:
+import "server-only";
+
+import type { EnrichmentRecordFields } from "@/features/enrichment/types";
+import { normalizeEnrichmentStatus, toEnrichmentState } from "@/features/enrichment/types";
+import { prisma } from "@/lib/prisma";
+
+const noteTagSelect = {
+  orderBy: {
+    name: "asc" as const
+  },
+  select: {
+    id: true,
+    name: true
+  }
+};
+
+const noteSummarySelect = {
+  id: true,
+  title: true,
+  excerpt: true,
+exec
+/bin/zsh -lc "rg -n \"listPublished\\(\" src/features/notes src/features/links" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+src/features/links/service.ts:22:  const links = await linksRepo.listPublished();
+src/features/notes/service.ts:20:  const notes = await notesRepo.listPublished();
+src/features/links/repo.ts:71:  async listPublished() {
+src/features/notes/repo.ts:125:  async listPublished() {
+exec
+/bin/zsh -lc "sed -n '1,220p' package.json" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,220p' tests/e2e/ui-home-shell.spec.ts" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+{
+  "name": "minakeep",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "db:prepare": "node scripts/db-prepare.mjs",
+    "test:unit": "NODE_PATH=./node_modules/next/dist/compiled node --conditions=react-server --import tsx --test tests/unit/**/*.test.ts",
+    "test:e2e": "npm run db:prepare && playwright test",
+    "test": "npm run test:unit && npm run test:e2e",
+    "start:smoke": "node scripts/start-smoke.mjs",
+    "start:logged": "node scripts/start-logged.mjs",
+    "verify": "npm run lint && npm run db:prepare && npm run typecheck && npm run build && npm run test && npm run start:smoke",
+    "postinstall": "prisma generate"
+  },
+  "prisma": {
+ succeeded in 0ms:
+import "dotenv/config";
+
+import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaClient } from "@prisma/client";
+import { expect, test, type Page } from "@playwright/test";
+
+const desktopViewport = { width: 1440, height: 900 };
+const mobileViewport = { width: 390, height: 844 };
+
+const databaseUrl = process.env.DATABASE_URL;
+
+if (!databaseUrl) {
+  throw new Error("DATABASE_URL must be set before running UI home shell tests.");
+}
+
+const prisma = new PrismaClient({
+  adapter: new PrismaBetterSqlite3({
+    url: databaseUrl
+  })
+});
+exec
+/bin/zsh -lc 'git status --short' in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: error: couldn't create cache file '/tmp/xcrun_db-ZQZ7ySMQ' (errno=Operation not permitted)
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: error: couldn't create cache file '/tmp/xcrun_db-cFHiZM7f' (errno=Operation not permitted)
+ D docs/exec-plans/active/034-public-showroom-shell-cleanup.md
+ M docs/exec-plans/active/035-public-showroom-title-search.md
+ M scripts/ralph/generated/current-evaluator-prompt.txt
+ M scripts/ralph/generated/current-task-prompt.txt
+ M src/app/globals.css
+ M src/app/page.tsx
+ M state/artifacts/20260321T144732-034-public-showroom-shell-cleanup/commit.log
+ M state/backlog.md
+ M state/current-cycle.json
+ M state/current-task.txt
+ M state/deterministic-checks.json
+ M state/last-result.txt
+ M state/run-log.md
+ M state/task-history.md
+ M tests/e2e/ui-home-grid.spec.ts
+ M tests/e2e/ui-home-shell.spec.ts
+exec
+/bin/zsh -lc "sed -n '1,120p' docs/PRODUCT_SENSE.md" in /Users/stevenna/WebstormProjects/minakeepexec
+/bin/zsh -lc "sed -n '1,120p' docs/product-specs/index.md" in /Users/stevenna/WebstormProjects/minakeep succeeded in 0ms:
+# PRODUCT_SENSE.md
+
+## One-Line Product Definition
+Minakeep is a self-hosted knowledge vault for private markdown notes and saved links, with selectively published public notes and links, automatic AI enrichment, and a polished knowledge-studio interface.
+
+## Who It Is For
+### Primary user
+A single owner who wants one durable place to capture private notes and bookmarks, then selectively publish polished notes or reference links for public reading.
+
+## User Problem
+Existing tools either optimize for public writing or for private capture, but not both in a simple self-hosted workflow. The owner wants one system for drafting notes, saving links, organizing both, enriching them automatically, and publishing chosen items to a public showroom without opening the entire vault.
+
+## Why This Product Exists
+A scoped Karakeep-inspired product can deliver the useful core without dragging in collaboration, importers, OCR, or crawler infrastructure, while still adding AI metadata generation and a stronger visual identity.
+
+## Product Principles
+- keep the owner’s writing and capture flow fast even when AI enrichment is present
+- treat AI summary and tags as generated metadata, not as a replacement for authored note content
+- keep the public showroom useful for both reading and reference discovery
+- preserve small-product discipline: no chat agent, no collaboration, no crawler platform in this wave
+ succeeded in 0ms:
+# Product Specs Index
+
+## Purpose
+This directory contains user-facing behavior specs.
+If a UI or API behavior is visible to users, it should be defined here before implementation drifts.
+
+## Current Spec Set
+| Spec | Status | Scope |
+|---|---|---|
+| `note-authoring.md` | confirmed | Private note drafting, preview, and note-side AI metadata visibility |
+| `public-note-publishing.md` | confirmed | Public note visibility and note pages |
+| `link-capture.md` | confirmed | Private bookmark capture with AI-owned summary/tag metadata |
+| `tag-filtering-and-owner-search.md` | confirmed | Shared tags and basic private retrieval |
+| `note-ai-enrichment.md` | confirmed | Automatic AI summary/tag generation for notes |
+| `link-ai-enrichment.md` | confirmed | Automatic AI summary/tag generation for links |
+| `knowledge-studio-ui-refresh.md` | completed | Previous broad visual redesign tranche |
+| `public-home-showroom.md` | confirmed | Mixed public showroom of published notes and links |
+| `public-note-reading.md` | confirmed | Public note reading polish and metadata hierarchy |
+| `owner-workspace-density.md` | confirmed | Tighter professional owner layout for desktop and mobile |
+| `responsive-ui-behavior.md` | confirmed | Cross-surface responsive collapse and mobile scanning behavior |
+codex
+{"decision":"done","recommend_promotion":true,"confidence":0.94,"summary":"Task 035 is complete in substance. The homepage now renders one unified live search input on `/` via the client showroom component, filters the mixed published feed in place using `item.title` only, and continues to source data from published-note and published-link queries only. The active plan and public search spec match the shipped behavior, and the recorded `npm run verify` run passed.","satisfied_exit_criteria":["Homepage exposes a single public search bar with no type selector.","Search filters published notes and published links together by title only.","Filtering is in-place on `/` and does not introduce a separate public results route.","Public data source remains limited to published content only.","Recorded `npm run verify` passed, including focused E2E coverage for public homepage search."],"missing_requirements":[],"human_review_triggers":[]}
+tokens used
+68,900
+{"decision":"done","recommend_promotion":true,"confidence":0.94,"summary":"Task 035 is complete in substance. The homepage now renders one unified live search input on `/` via the client showroom component, filters the mixed published feed in place using `item.title` only, and continues to source data from published-note and published-link queries only. The active plan and public search spec match the shipped behavior, and the recorded `npm run verify` run passed.","satisfied_exit_criteria":["Homepage exposes a single public search bar with no type selector.","Search filters published notes and published links together by title only.","Filtering is in-place on `/` and does not introduce a separate public results route.","Public data source remains limited to published content only.","Recorded `npm run verify` passed, including focused E2E coverage for public homepage search."],"missing_requirements":[],"human_review_triggers":[]}
+evaluation: done promotion=true

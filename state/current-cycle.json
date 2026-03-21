@@ -1,8 +1,8 @@
 {
-  "task_id": "034-public-showroom-shell-cleanup",
-  "started_at": "2026-03-21T14:47:32+09:00",
-  "artifact_dir": "state/artifacts/20260321T144732-034-public-showroom-shell-cleanup",
+  "task_id": "035-public-showroom-title-search",
+  "started_at": "2026-03-21T14:55:07+09:00",
+  "artifact_dir": "state/artifacts/20260321T145507-035-public-showroom-title-search",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-03-21T05:54:37.527Z"
+  "updated_at": "2026-03-21T06:14:00.522Z"
 }

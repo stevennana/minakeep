@@ -505,3 +505,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T144732-034-public-showroom-shell-cleanup/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T144732-034-public-showroom-shell-cleanup/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 034-public-showroom-shell-cleanup -> 035-public-showroom-title-search
+- backlog: rendered current=035-public-showroom-title-search
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxoo
+- cycle: finished
+
+### cycle 2026-03-21T14:55:07+09:00 task=035-public-showroom-title-search
+- artifacts: state/artifacts/20260321T145507-035-public-showroom-title-search
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T145507-035-public-showroom-title-search/worker.jsonl
+- worker-summary: Implemented the public homepage title filter and kept it scoped to this task. The server page at [src/app/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/page.tsx#L1) now passes published items into a small client showroom component at [src/features/public-content/components/public-showroom.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/public-content/components/public-showroom.tsx#L1), which renders one live search input, filters published notes and links in place by `title` only, and leaves the underlying public data source unchanged. Public search styling was added in [src/app/globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css#L747).
+- evaluator: started
+- evaluator: status=done promotion=true Task 035 is complete in substance. The homepage now renders one unified live search input on `/` via the client showroom component, filters the mixed published feed in place using `item.title` only, and continues to source data from published-note and published-link queries only. The active plan and public search spec match the shipped behavior, and the recorded `npm run verify` run passed. -> state/artifacts/20260321T145507-035-public-showroom-title-search/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T145507-035-public-showroom-title-search/npm-run-verify-next-server.log
