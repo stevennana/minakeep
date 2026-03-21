@@ -10,7 +10,7 @@ This bookmark site is inspired by the Karakeep project and is built as a demo fo
 - private bookmark capture and management
 - selective publishing for notes and links
 - public showroom for published content
-- AI-generated summaries and tags
+- AI-generated summaries and tags through a Mina-hosted OpenAI-compatible endpoint
 - responsive owner and public UI
 
 ## Tech stack
@@ -34,6 +34,28 @@ Prepare the local database:
 ```bash
 npm run db:prepare
 ```
+
+Configure AI enrichment if you want generated summaries and tags:
+
+```bash
+cp .env.example .env.local
+```
+
+Required AI environment keys:
+
+```bash
+LLM_BASE="https://mina-host.example/v1"
+TOKEN="replace-with-a-mina-api-token"
+MODEL="replace-with-a-mina-model-id"
+```
+
+Optional:
+
+```bash
+MINA_AI_TIMEOUT_MS=15000
+```
+
+Without `LLM_BASE`, `TOKEN`, and `MODEL`, the app still works for note and bookmark capture, but AI enrichment will stay disabled and saves will continue without generated metadata.
 
 Start the app:
 
@@ -59,6 +81,12 @@ npm run start:smoke
 ./scripts/ralph/status.sh
 ```
 
+Run the real-endpoint AI check when the AI env vars are configured:
+
+```bash
+npm run test:e2e -- --grep @ai-real
+```
+
 ## Project structure
 
 - `src/` application code
@@ -72,3 +100,4 @@ npm run start:smoke
 - The repo uses the docs tree as the system of record for product and execution planning.
 - Active work is tracked in `docs/exec-plans/active/`.
 - Completed task history is preserved in `docs/exec-plans/completed/`.
+- AI credentials are server-only and should stay in local or shell environment, not committed project files.
