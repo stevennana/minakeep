@@ -1,15 +1,79 @@
 import "dotenv/config";
 
+import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaClient } from "@prisma/client";
 import { expect, test, type Page } from "@playwright/test";
 
 const desktopViewport = { width: 1440, height: 900 };
 const mobileViewport = { width: 390, height: 844 };
+const databaseUrl = process.env.DATABASE_URL;
+
+if (!databaseUrl) {
+  throw new Error("DATABASE_URL must be set before running UI system tests.");
+}
+
+const prisma = new PrismaClient({
+  adapter: new PrismaBetterSqlite3({
+    url: databaseUrl
+  })
+});
 
 function getOwnerCredentials() {
   return {
     username: process.env.OWNER_USERNAME ?? "owner",
     password: process.env.OWNER_PASSWORD ?? "password"
   };
+}
+
+async function seedPublicChromeContent() {
+  const { username } = getOwnerCredentials();
+  const owner = await prisma.user.findUnique({
+    where: {
+      username
+    }
+  });
+
+  if (!owner) {
+    throw new Error(`Owner account '${username}' must exist before UI system tests run.`);
+  }
+
+  await prisma.note.deleteMany({
+    where: {
+      ownerId: owner.id
+    }
+  });
+
+  await prisma.link.deleteMany({
+    where: {
+      ownerId: owner.id
+    }
+  });
+
+  await prisma.note.create({
+    data: {
+      ownerId: owner.id,
+      title: "Calm public archive",
+      slug: "calm-public-archive",
+      markdown: "# Calm public archive",
+      excerpt: "A small public archive still reads clearly when only explicit note publishing reaches the homepage.",
+      summary: "The public chrome should stay calm and note-first when no links have been promoted yet.",
+      enrichmentStatus: "ready",
+      isPublished: true,
+      publishedAt: new Date("2024-06-01T09:00:00.000Z"),
+      tags: {
+        connectOrCreate: [
+          {
+            where: {
+              name: "public chrome"
+            },
+            create: {
+              name: "public chrome"
+            }
+          }
+        ]
+      }
+    }
+  });
 }
 
 async function signIn(page: Page) {
@@ -97,7 +161,12 @@ async function expectAccessibleStructure(page: Page) {
 
 test.describe.configure({ mode: "serial" });
 
+test.afterAll(async () => {
+  await prisma.$disconnect();
+});
+
 test("@ui-regression @ui-system public chrome holds together on desktop", async ({ page }) => {
+  await seedPublicChromeContent();
   await page.setViewportSize(desktopViewport);
   await page.goto("/");
 

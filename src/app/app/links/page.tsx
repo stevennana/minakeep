@@ -1,4 +1,4 @@
-import { createLinkAction, retryLinkEnrichmentAction } from "@/app/app/links/actions";
+import { createLinkAction, publishLinkAction, retryLinkEnrichmentAction, unpublishLinkAction } from "@/app/app/links/actions";
 import {
   Button,
   DetailBlock,
@@ -19,6 +19,8 @@ type LinksPageProps = {
   searchParams?: Promise<{
     saved?: string;
     retried?: string;
+    published?: string;
+    unpublished?: string;
     error?: string;
   }>;
 };
@@ -41,13 +43,18 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
   const resolvedSearchParams = (await searchParams) ?? {};
   const links = await listOwnerLinks(owner.id);
   const pendingLinks = links.filter((link) => link.enrichment.status === "pending").length;
+  const publishedLinks = links.filter((link) => link.isPublished).length;
   const dateFormatter = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
   const statusMessage =
     resolvedSearchParams.saved === "1"
       ? "Link saved."
       : resolvedSearchParams.retried === "1"
         ? "Retry requested."
-        : getStatusMessage(resolvedSearchParams.error);
+        : resolvedSearchParams.published === "1"
+          ? "Link published."
+          : resolvedSearchParams.unpublished === "1"
+            ? "Link unpublished."
+            : getStatusMessage(resolvedSearchParams.error);
 
   return (
     <div className="feature-layout">
@@ -55,7 +62,7 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
       <Surface className="secondary-route-hero" density="compact" tone="hero">
         <IntroBlock
           compact
-          description="Manual bookmark capture stays private in v1. Save the URL and title first, then let Minakeep generate the AI summary and shared tags after save."
+          description="Save the URL and title first, then let Minakeep generate the AI summary and shared tags. Links stay private until the owner explicitly publishes them to the public showroom."
           eyebrow="Private links"
           title="Reference shelf"
         >
@@ -67,7 +74,11 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
               <p>{pendingLinks === 0 ? "No pending enrichment" : `${pendingLinks} link${pendingLinks === 1 ? "" : "s"} pending`}</p>
             </DetailBlock>
             <DetailBlock title="Visibility">
-              <p>Links remain private even when notes can be published.</p>
+              <p>
+                {publishedLinks === 0
+                  ? "All links are private until explicitly published."
+                  : `${publishedLinks} link${publishedLinks === 1 ? "" : "s"} visible on the public showroom.`}
+              </p>
             </DetailBlock>
           </div>
         </IntroBlock>
@@ -116,8 +127,8 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
                   <div className="secondary-link-main">
                     <div className="link-list-heading secondary-link-heading">
                       <MetadataRow leading>
-                        <span>Private link</span>
-                        <span>{dateFormatter.format(link.updatedAt)}</span>
+                        <span>{link.isPublished ? "Published link" : "Private link"}</span>
+                        <span>{dateFormatter.format(link.isPublished && link.publishedAt ? link.publishedAt : link.updatedAt)}</span>
                       </MetadataRow>
                       <a className="note-list-link" href={link.url} rel="noopener noreferrer" target="_blank">
                         {link.title}
@@ -127,7 +138,7 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
                     <div className="link-list-footer secondary-link-footer">
                       <MetadataRow>
                         <span>Visibility</span>
-                        <span>Owner only</span>
+                        <span>{link.isPublished ? "Public showroom" : "Owner only"}</span>
                       </MetadataRow>
                     </div>
                   </div>
@@ -157,6 +168,19 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
                         )}
                       </TagList>
                     </div>
+                  </div>
+                  <div className="button-row secondary-link-actions">
+                    {link.isPublished ? (
+                      <form action={unpublishLinkAction.bind(null, link.id)}>
+                        <Button type="submit" variant="ghost">
+                          Unpublish link
+                        </Button>
+                      </form>
+                    ) : (
+                      <form action={publishLinkAction.bind(null, link.id)}>
+                        <Button type="submit">Publish link</Button>
+                      </form>
+                    )}
                   </div>
                   {link.enrichment.status === "failed" ? (
                     <form action={retryLinkEnrichmentAction.bind(null, link.id)} className="secondary-link-retry">

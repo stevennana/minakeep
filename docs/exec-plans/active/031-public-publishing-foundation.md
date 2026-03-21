@@ -65,3 +65,7 @@ Promote only when later public-link and public-showroom tasks can build on one u
 - 2026-03-21 14:28 KST - Read the required repo docs and confirmed the current gap: notes already define publish-state and public queries, while links are still private-only in schema and domain code.
 - 2026-03-21 14:34 KST - Added link publish-state fields to the Prisma contract, extended the link repo/service/types with publish and published-list support, and introduced a shared `public-content` boundary for mixed published notes and links without changing the homepage feed yet.
 - 2026-03-21 14:40 KST - `npm run verify` passed after keeping the change set scoped to the publishing contract and leaving the mixed homepage rendering for later tasks.
+- 2026-03-21 14:52 KST - Added explicit link publish/unpublish server actions and owner controls in `/app/links`, including homepage revalidation and owner-visible public/private status.
+- 2026-03-21 14:52 KST - Switched the public homepage to the shared mixed `public-content` query so published links can appear alongside published notes while unpublished items remain excluded.
+- 2026-03-21 14:52 KST - Updated E2E/UI coverage and generated schema docs to reflect the mixed public publishing boundary; full verification pending on this run.
+- 2026-03-21 15:02 KST - `npm run verify` passed after adding the owner link publish controls, mixed public homepage boundary, and deterministic UI/E2E coverage for the new notes-plus-links public contract.

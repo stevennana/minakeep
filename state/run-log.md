@@ -460,3 +460,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=not_done promotion=false `npm run verify` passes, and the repo now has link publish-state fields plus a shared mixed `public-content` type/service. But the task is not complete in substance: links still cannot actually participate in public publishing through the app, and the repo does not yet present one unambiguous publishing boundary. The links surface has no publish/unpublish action path, the homepage is still notes-only, and current homepage copy/tests explicitly assert that public links are absent, which conflicts with the docs and the new shared public-content contract. -> state/artifacts/20260321T140258-031-public-publishing-foundation/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T140258-031-public-publishing-foundation/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Task 031-public-publishing-foundation not eligible for promotion.
+- backlog: rendered current=031-public-publishing-foundation
+- health: ooxxoooxoxxoxooxxxooooox!ooooox
+- cycle: finished
+
+### cycle 2026-03-21T14:14:52+09:00 task=031-public-publishing-foundation
+- artifacts: state/artifacts/20260321T141452-031-public-publishing-foundation
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T141452-031-public-publishing-foundation/worker.jsonl
+- worker-summary: Implemented task `031-public-publishing-foundation` across the public boundary, owner link controls, and verification coverage. The homepage now uses the shared mixed public-content path in [src/app/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/page.tsx), links can be published and unpublished through server actions in [src/app/app/links/actions.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/app/links/actions.ts) and owner controls in [src/app/app/links/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/links/page.tsx), and the contract/docs were aligned in [docs/generated/db-schema.md](/Users/stevenna/WebstormProjects/minakeep/docs/generated/db-schema.md) and [031-public-publishing-foundation.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/031-public-publishing-foundation.md).
+- evaluator: started
+- evaluator: status=not_done promotion=false Code and verification are strong, but the repository does not yet present one unambiguous public-publishing contract repo-wide. The mixed notes-plus-links behavior is implemented, yet key docs still describe a notes-only public homepage, so exit criterion 1 is not satisfied in substance. -> state/artifacts/20260321T141452-031-public-publishing-foundation/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T141452-031-public-publishing-foundation/npm-run-verify-next-server.log

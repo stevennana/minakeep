@@ -1,56 +1,99 @@
 import Link from "next/link";
 
 import { ButtonLink, DetailBlock, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
-import { listPublishedNotes } from "@/features/notes/service";
+import { listPublishedContent } from "@/features/public-content/service";
 
 const publishedDateFormatter = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
 
-type PublishedNote = Awaited<ReturnType<typeof listPublishedNotes>>[number];
-type NotePreviewVariant = "compact" | "balanced" | "feature";
+type PublishedContent = Awaited<ReturnType<typeof listPublishedContent>>[number];
+type ContentPreviewVariant = "compact" | "balanced" | "feature";
 
-function getNotePreviewVariant(note: PublishedNote): NotePreviewVariant {
-  const hasSummary = Boolean(note.summary?.trim());
-  const excerptLength = note.excerpt.trim().length;
+function getDisplayUrl(url: string) {
+  try {
+    const parsedUrl = new URL(url);
+    const pathname = parsedUrl.pathname === "/" ? "" : parsedUrl.pathname;
 
-  if (hasSummary && (excerptLength > 112 || note.tags.length >= 2)) {
+    return `${parsedUrl.host}${pathname}`;
+  } catch {
+    return url.replace(/^https?:\/\//, "");
+  }
+}
+
+function getContentPreviewVariant(item: PublishedContent): ContentPreviewVariant {
+  if (item.kind === "note") {
+    const hasSummary = Boolean(item.summary?.trim());
+    const excerptLength = item.excerpt.trim().length;
+
+    if (hasSummary && (excerptLength > 112 || item.tags.length >= 2)) {
+      return "feature";
+    }
+
+    if (!hasSummary && excerptLength < 96 && item.tags.length <= 1) {
+      return "compact";
+    }
+
+    return "balanced";
+  }
+
+  const hasSummary = Boolean(item.summary?.trim());
+  const displayUrl = getDisplayUrl(item.url);
+
+  if (hasSummary && (displayUrl.length > 32 || item.tags.length >= 2)) {
     return "feature";
   }
 
-  if (!hasSummary && excerptLength < 96 && note.tags.length <= 1) {
+  if (!hasSummary && displayUrl.length < 32 && item.tags.length <= 1) {
     return "compact";
   }
 
   return "balanced";
 }
 
-function PublishedNotePreviewCard({ note }: { note: PublishedNote }) {
-  const variant = getNotePreviewVariant(note);
-  const primaryPreview = note.summary?.trim() || note.excerpt.trim() || "Published note";
+function PublishedContentPreviewCard({ item }: { item: PublishedContent }) {
+  const variant = getContentPreviewVariant(item);
+  const isNote = item.kind === "note";
+  const primaryPreview = isNote ? item.summary?.trim() || item.excerpt.trim() || "Published note" : item.summary?.trim() || "Published link";
   const supportingPreview =
-    variant === "feature" && note.summary?.trim() && note.excerpt.trim() !== note.summary.trim() ? note.excerpt.trim() : null;
+    isNote && variant === "feature" && item.summary?.trim() && item.excerpt.trim() !== item.summary.trim()
+      ? item.excerpt.trim()
+      : null;
 
   return (
-    <article className={`note-preview-card note-preview-card-${variant}`} data-card-variant={variant}>
+    <article
+      className={`note-preview-card note-preview-card-${variant} public-content-card public-content-card-${item.kind}`}
+      data-card-kind={item.kind}
+      data-card-variant={variant}
+    >
       <div className="note-preview-card-body">
         <h2 className="note-preview-card-title">
-          <Link className="note-list-link" href={`/notes/${note.slug}`}>
-            {note.title}
-          </Link>
+          {isNote ? (
+            <Link className="note-list-link" href={`/notes/${item.slug}`}>
+              {item.title}
+            </Link>
+          ) : (
+            <a className="note-list-link" href={item.url} rel="noopener noreferrer" target="_blank">
+              {item.title}
+            </a>
+          )}
         </h2>
         <div className="note-preview-card-copy">
           <p className="note-preview-card-summary">{primaryPreview}</p>
-          {supportingPreview ? <p className="note-preview-card-excerpt">{supportingPreview}</p> : null}
+          {isNote ? (
+            supportingPreview ? <p className="note-preview-card-excerpt">{supportingPreview}</p> : null
+          ) : (
+            <p className="note-preview-card-excerpt public-link-card-url">{getDisplayUrl(item.url)}</p>
+          )}
         </div>
       </div>
       <MetadataRow className="note-preview-card-meta">
-        <span>Published note</span>
-        <span>{publishedDateFormatter.format(note.publishedAt)}</span>
+        <span>{isNote ? "Published note" : "Published link"}</span>
+        <span>{publishedDateFormatter.format(item.publishedAt)}</span>
       </MetadataRow>
-      <TagList aria-label="Published note tags" className="note-preview-card-tags">
-        {note.tags.length === 0 ? (
+      <TagList aria-label={isNote ? "Published note tags" : "Published link tags"} className="note-preview-card-tags">
+        {item.tags.length === 0 ? (
           <TagChip muted>No generated tags</TagChip>
         ) : (
-          note.tags.map((tag) => (
+          item.tags.map((tag) => (
             <TagChip key={tag.id}>
               {tag.name}
             </TagChip>
@@ -62,8 +105,13 @@ function PublishedNotePreviewCard({ note }: { note: PublishedNote }) {
 }
 
 export default async function HomePage() {
-  const notes = await listPublishedNotes();
-  const publishedCountLabel = `${notes.length} published note${notes.length === 1 ? "" : "s"}`;
+  const items = await listPublishedContent();
+  const publishedNotes = items.filter((item) => item.kind === "note").length;
+  const publishedLinks = items.filter((item) => item.kind === "link").length;
+  const hasPublishedLinks = publishedLinks > 0;
+  const publishedCountLabel = hasPublishedLinks
+    ? `${items.length} public item${items.length === 1 ? "" : "s"}`
+    : `${publishedNotes} published note${publishedNotes === 1 ? "" : "s"}`;
 
   return (
     <div className="feature-layout public-home-layout">
@@ -73,22 +121,23 @@ export default async function HomePage() {
             <div className="public-home-shell-copy">
               <p className="eyebrow">Public showroom</p>
               <p className="field-note">
-                Published notes lead the public surface. Drafts, saved links, tags, and AI workflow stay inside the
-                private studio.
+                {hasPublishedLinks
+                  ? "Published notes and published links lead the public surface. Drafts, private links, tags, and AI workflow stay inside the private studio."
+                  : "Published notes lead the public surface. Drafts, saved links, tags, and AI workflow stay inside the private studio."}
               </p>
             </div>
-            <div className="public-home-count" aria-label="Published note archive size">
+            <div className="public-home-count" aria-label={hasPublishedLinks ? "Public archive size" : "Published note archive size"}>
               <span>Archive</span>
               <strong>{publishedCountLabel}</strong>
             </div>
           </div>
-          <SectionHeading meta="Newest first" title="Published notes" />
-          {notes.length === 0 ? (
-            <p>No published notes yet. The public site stays empty until the owner explicitly publishes a note.</p>
+          <SectionHeading meta="Newest first" title={hasPublishedLinks ? "Published notes and links" : "Published notes"} />
+          {items.length === 0 ? (
+            <p>No published notes or links yet. The public site stays empty until the owner explicitly publishes one.</p>
           ) : (
             <div className="note-list public-note-list public-note-showroom" data-testid="public-home-showroom">
-              {notes.map((note) => (
-                <PublishedNotePreviewCard key={note.id} note={note} />
+              {items.map((item) => (
+                <PublishedContentPreviewCard key={`${item.kind}-${item.id}`} item={item} />
               ))}
             </div>
           )}
@@ -98,10 +147,11 @@ export default async function HomePage() {
           <Surface className="public-hero public-intro-panel" tone="panel">
             <div className="hero-copy">
               <p className="eyebrow">Private origin</p>
-              <h1>Notes the owner has chosen to share.</h1>
+              <h1>{hasPublishedLinks ? "Notes and links the owner has chosen to share." : "Notes the owner has chosen to share."}</h1>
               <p className="lede">
-                The public reading room only surfaces notes the owner has explicitly published. Everything else stays
-                in the private vault until the owner promotes it.
+                {hasPublishedLinks
+                  ? "The public reading room only surfaces notes and links the owner has explicitly published. Everything else stays in the private vault until the owner promotes it."
+                  : "The public reading room only surfaces notes the owner has explicitly published. Everything else stays in the private vault until the owner promotes it."}
               </p>
             </div>
           </Surface>
@@ -109,15 +159,19 @@ export default async function HomePage() {
           <Surface as="aside" className="public-side-panel" tone="panel">
             <SectionHeading meta="Private workflow" title="Owner entrance" />
             <p className="field-note">
-              Sign in to draft notes, capture links, review AI-generated summaries and tags, and decide what appears
-              on public routes.
+              Sign in to draft notes, capture links, review AI-generated summaries and tags, and decide what appears on
+              public routes.
             </p>
             <div className="button-row">
               <ButtonLink href="/login">Owner login</ButtonLink>
             </div>
             <div className="detail-stack">
               <DetailBlock title="Public side">
-                <p>Published notes only. No anonymous search, no public link listings.</p>
+                <p>
+                  {hasPublishedLinks
+                    ? `${publishedNotes} published note${publishedNotes === 1 ? "" : "s"} and ${publishedLinks} published link${publishedLinks === 1 ? "" : "s"}.`
+                    : "Published notes only. No anonymous search, no public link listings."}
+                </p>
               </DetailBlock>
               <DetailBlock title="Private side">
                 <p>Notes, links, tags, and search stay aligned in one shared knowledge-studio system.</p>

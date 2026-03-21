@@ -6,7 +6,14 @@ import { after } from "next/server";
 
 import { runLinkEnrichment } from "@/features/links/enrichment";
 import { LinkValidationError } from "@/features/links/normalize";
-import { DuplicateLinkUrlError, createSavedLink, retryLinkEnrichment, startLinkEnrichment } from "@/features/links/service";
+import {
+  DuplicateLinkUrlError,
+  createSavedLink,
+  publishLink,
+  retryLinkEnrichment,
+  startLinkEnrichment,
+  unpublishLink
+} from "@/features/links/service";
 import { requireOwnerSession } from "@/lib/auth/owner-session";
 
 function getLinkInput(formData: FormData) {
@@ -17,6 +24,7 @@ function getLinkInput(formData: FormData) {
 }
 
 function revalidateLinkPaths() {
+  revalidatePath("/");
   revalidatePath("/app/links");
   revalidatePath("/app/search");
   revalidatePath("/app/tags");
@@ -75,4 +83,28 @@ export async function retryLinkEnrichmentAction(linkId: string) {
 
   revalidateLinkPaths();
   redirect("/app/links?retried=1");
+}
+
+export async function publishLinkAction(linkId: string) {
+  const owner = await requireOwnerSession();
+  const link = await publishLink(owner.id, linkId);
+
+  if (!link) {
+    notFound();
+  }
+
+  revalidateLinkPaths();
+  redirect("/app/links?published=1");
+}
+
+export async function unpublishLinkAction(linkId: string) {
+  const owner = await requireOwnerSession();
+  const link = await unpublishLink(owner.id, linkId);
+
+  if (!link) {
+    notFound();
+  }
+
+  revalidateLinkPaths();
+  redirect("/app/links?unpublished=1");
 }

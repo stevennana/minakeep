@@ -1,0 +1,24 @@
+[main 743f3db] ralph: 031-public-publishing-foundation 2026-03-21T14:14:22+09:00
+ 45 files changed, 2446 insertions(+), 186 deletions(-)
+ create mode 100644 docs/exec-plans/active/031-public-publishing-foundation.md
+ create mode 100644 docs/exec-plans/active/032-owner-link-publish-controls.md
+ create mode 100644 docs/exec-plans/active/033-public-mixed-showroom-feed.md
+ create mode 100644 docs/exec-plans/active/034-public-showroom-shell-cleanup.md
+ create mode 100644 docs/exec-plans/active/035-public-showroom-title-search.md
+ create mode 100644 docs/exec-plans/active/036-public-link-new-tab-behavior.md
+ create mode 100644 docs/exec-plans/active/037-ui-hierarchy-softening.md
+ create mode 100644 docs/exec-plans/active/038-public-showroom-responsive-polish.md
+ create mode 100644 docs/exec-plans/active/039-public-publishing-regression-pass.md
+ create mode 100644 docs/exec-plans/active/040-public-wave-hardening.md
+ create mode 100644 docs/product-specs/public-link-publishing.md
+ create mode 100644 docs/product-specs/public-showroom-search.md
+ create mode 100644 docs/product-specs/ui-hierarchy-softening.md
+ create mode 100644 src/features/public-content/service.ts
+ create mode 100644 src/features/public-content/types.ts
+ create mode 100644 state/artifacts/20260321T140258-031-public-publishing-foundation/commit.log
+ create mode 100644 state/artifacts/20260321T140258-031-public-publishing-foundation/evaluator.log
+ create mode 100644 state/artifacts/20260321T140258-031-public-publishing-foundation/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260321T140258-031-public-publishing-foundation/task-prompt.log
+ create mode 100644 state/artifacts/20260321T140258-031-public-publishing-foundation/worker.jsonl
+ create mode 100644 tests/unit/public-content.test.ts
+commit: created

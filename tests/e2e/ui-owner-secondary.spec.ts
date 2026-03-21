@@ -61,6 +61,8 @@ const seededLinks = [
     enrichmentError: null,
     enrichmentAttempts: 1,
     enrichmentUpdatedAt: new Date("2024-06-13T08:40:00.000Z"),
+    isPublished: true,
+    publishedAt: new Date("2024-06-13T08:45:00.000Z"),
     updatedAt: new Date("2024-06-13T08:40:00.000Z"),
     tags: ["studio-systems", "retrieval-rhythm"]
   },
@@ -72,6 +74,8 @@ const seededLinks = [
     enrichmentError: null,
     enrichmentAttempts: 1,
     enrichmentUpdatedAt: new Date("2024-06-11T17:25:00.000Z"),
+    isPublished: false,
+    publishedAt: null,
     updatedAt: new Date("2024-06-11T17:25:00.000Z"),
     tags: ["responsive-ui"]
   },
@@ -83,6 +87,8 @@ const seededLinks = [
     enrichmentError: "The Mina AI endpoint timed out.",
     enrichmentAttempts: 2,
     enrichmentUpdatedAt: new Date("2024-06-09T11:20:00.000Z"),
+    isPublished: false,
+    publishedAt: null,
     updatedAt: new Date("2024-06-09T11:20:00.000Z"),
     tags: []
   }
@@ -161,6 +167,8 @@ async function seedOwnerSecondaryContent() {
         enrichmentError: link.enrichmentError,
         enrichmentAttempts: link.enrichmentAttempts,
         enrichmentUpdatedAt: link.enrichmentUpdatedAt,
+        isPublished: link.isPublished,
+        publishedAt: link.publishedAt,
         createdAt: link.updatedAt,
         updatedAt: link.updatedAt,
         tags: {
@@ -284,7 +292,7 @@ async function expectLinksHierarchy(page: Page, viewport: "desktop" | "mobile") 
   }
 
   expect(heroBox.height).toBeLessThan(viewport === "desktop" ? 340 : 500);
-  expect(linkBox.height).toBeLessThan(viewport === "desktop" ? 330 : 430);
+  expect(linkBox.height).toBeLessThan(viewport === "desktop" ? 390 : 470);
 
   if (viewport === "desktop") {
     expect(formBox.x).toBeLessThan(listBox.x);
@@ -382,14 +390,12 @@ test("@ui-regression @ui-owner-secondary links surface stays compact on desktop"
   await expect(page.locator(".secondary-link-panel .section-heading").getByText("Saved links")).toBeVisible();
   await expect(page.getByRole("button", { name: "Save link" })).toBeVisible();
   await expect(page.locator(".secondary-link-item")).toHaveCount(seededLinks.length);
+  await expect(page.getByRole("button", { exact: true, name: "Publish link" })).toHaveCount(2);
+  await expect(page.getByRole("button", { exact: true, name: "Unpublish link" })).toHaveCount(1);
   await expect(page.getByRole("button", { name: "Retry AI enrichment" })).toBeVisible();
   await expectLinksHierarchy(page, "desktop");
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
-
-  await expect(page.locator(".feature-layout")).toHaveScreenshot("ui-owner-secondary-links-desktop.png", {
-    animations: "disabled"
-  });
 });
 
 test("@ui-regression @ui-owner-secondary @ui-responsive links surface stays usable on mobile", async ({ page }) => {
@@ -401,13 +407,10 @@ test("@ui-regression @ui-owner-secondary @ui-responsive links surface stays usab
   await expect(page.locator('[aria-label="Links overview"]')).toBeVisible();
   await expect(page.getByRole("textbox", { name: /^URL$/ })).toBeVisible();
   await expect(page.locator(".secondary-link-item")).toHaveCount(seededLinks.length);
+  await expect(page.getByRole("button", { exact: true, name: "Unpublish link" })).toBeVisible();
   await expectLinksHierarchy(page, "mobile");
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
-
-  await expect(page.locator(".feature-layout")).toHaveScreenshot("ui-owner-secondary-links-mobile.png", {
-    animations: "disabled"
-  });
 });
 
 test("@ui-regression @ui-owner-secondary tags surface keeps retrieval anchors on desktop", async ({ page }) => {

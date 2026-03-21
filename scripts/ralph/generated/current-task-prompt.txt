@@ -41,7 +41,9 @@ Required commands for this task:
 - npm run verify
 
 Previous known gaps from the last evaluation:
-- none
+- Exit criterion 1 is not met in substance: the repo still has an ambiguous public publishing model. The required docs describe `/` as a mixed notes-plus-links showroom, but the shipped homepage remains notes-only and explicitly says there are 'no public link listings'.
+- Exit criterion 2 is not met in substance: links have persistence/domain groundwork, but they cannot yet participate in public publishing through repository routes. `publishLink`/`unpublishLink` exist in service code, but there are no corresponding link publish/unpublish server actions or UI controls in `/app/links`.
+- The verification suite still locks in the old notes-only public contract, so later tasks are not building from a single consistent boundary yet.
 
 Rules:
 - Work only on this task.

@@ -7,13 +7,17 @@ import { setAiPlaywrightTestMode } from "./ai-test-mode";
 // These journeys all mutate the same single-owner SQLite state, so serial execution keeps promotion checks deterministic.
 test.describe.configure({ mode: "serial" });
 
-test("public homepage exposes the published notes surface", async ({ page }) => {
+test("public homepage exposes the mixed published content surface", async ({ page }) => {
   await page.goto("/");
 
-  const emptyState = page.getByText("No published notes yet.");
+  const emptyState = page.getByText("No published notes or links yet.");
   const publishedNoteEntry = page.locator(".note-preview-card").first();
 
-  await expect(page.getByRole("heading", { name: "Notes the owner has chosen to share." })).toBeVisible();
+  await expect(
+    page
+      .getByRole("heading", { name: "Notes the owner has chosen to share." })
+      .or(page.getByRole("heading", { name: "Notes and links the owner has chosen to share." }))
+  ).toBeVisible();
   await expect(page.getByRole("navigation").getByRole("link", { name: "Owner login" })).toBeVisible();
   await expect(emptyState.or(publishedNoteEntry)).toBeVisible();
 });
@@ -214,6 +218,61 @@ test("owner can save a private link, receive AI metadata, and keep it off public
     await page.goto("/");
     await expect(page.getByRole("link", { name: title })).toHaveCount(0);
     await expect(page.getByText("AI summary for")).toHaveCount(0);
+  } finally {
+    await setAiPlaywrightTestMode("passthrough");
+  }
+});
+
+test("owner can publish and unpublish a link across the public homepage", async ({ page }) => {
+  const username = process.env.OWNER_USERNAME ?? "owner";
+  const password = process.env.OWNER_PASSWORD ?? "password";
+  const uniqueId = `${Date.now()}`;
+  const title = `Published link ${uniqueId}`;
+  const url = `https://example.com/published-link-${uniqueId}`;
+
+  await setAiPlaywrightTestMode("success");
+
+  try {
+    await page.goto("/login");
+    await page.getByLabel("Username").fill(username);
+    await page.getByLabel("Password").fill(password);
+    await page.getByRole("button", { name: "Sign in" }).click();
+
+    await expect(page).toHaveURL(/\/app$/);
+    await page.getByRole("link", { name: "Links" }).click();
+    await expect(page).toHaveURL(/\/app\/links$/);
+
+    await page.getByRole("textbox", { name: /^URL$/ }).fill(url);
+    await page.getByRole("textbox", { name: /^Title$/ }).fill(title);
+    await page.getByRole("button", { name: "Save link" }).click();
+
+    await expect(page).toHaveURL(/\/app\/links\?saved=1$/);
+    const savedLinkEntry = page.locator("article").filter({ has: page.getByRole("link", { name: title }) });
+    await expect(savedLinkEntry).toContainText("Owner only");
+    await expect(savedLinkEntry).toContainText("AI ready", { timeout: 15000 });
+    await savedLinkEntry.getByRole("button", { name: "Publish link" }).click();
+
+    await expect(page).toHaveURL(/\/app\/links\?published=1$/);
+    await expect(page.getByText("Link published.")).toBeVisible();
+    await expect(savedLinkEntry).toContainText("Public showroom");
+    await expect(savedLinkEntry.getByRole("button", { name: "Unpublish link" })).toBeVisible();
+
+    await page.goto("/");
+    const publicLinkEntry = page.locator("[data-card-kind='link']").filter({ has: page.getByRole("link", { name: title }) });
+    const publicLink = publicLinkEntry.getByRole("link", { name: title });
+    await expect(publicLink).toBeVisible();
+    await expect(publicLink).toHaveAttribute("href", url);
+    await expect(publicLink).toHaveAttribute("target", "_blank");
+    await expect(publicLink).toHaveAttribute("rel", /noopener/);
+
+    await page.goto("/app/links");
+    await savedLinkEntry.getByRole("button", { name: "Unpublish link" }).click();
+
+    await expect(page).toHaveURL(/\/app\/links\?unpublished=1$/);
+    await expect(page.getByText("Link unpublished.")).toBeVisible();
+
+    await page.goto("/");
+    await expect(page.getByRole("link", { name: title })).toHaveCount(0);
   } finally {
     await setAiPlaywrightTestMode("passthrough");
   }

@@ -16,7 +16,8 @@
 ### `Link`
 - belongs to one owner
 - stores `url`, `title`, `summary`
-- remains private in v1
+- tracks `isPublished` and optional `publishedAt`
+- stays private by default and only reaches the public showroom when explicitly published
 - many-to-many with shared tags
 
 ### `Tag`

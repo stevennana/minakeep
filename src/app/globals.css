@@ -1295,6 +1295,10 @@ textarea {
   margin-top: 0.1rem;
 }
 
+.secondary-link-actions {
+  margin-top: 0.15rem;
+}
+
 .secondary-tag-filters {
   gap: 0.7rem;
   grid-template-columns: minmax(0, 1fr);
@@ -1335,6 +1339,17 @@ textarea {
   position: absolute;
   right: var(--space-5);
   top: 0;
+}
+
+.public-content-card-link {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.58)),
+    rgba(227, 239, 236, 0.92);
+  border-color: rgba(15, 118, 110, 0.18);
+}
+
+.public-content-card-link::before {
+  background: linear-gradient(90deg, rgba(15, 118, 110, 0.2), rgba(255, 255, 255, 0.9), rgba(15, 118, 110, 0.12));
 }
 
 .note-preview-card-compact {
@@ -1406,6 +1421,16 @@ textarea {
   font-size: var(--text-sm);
   line-height: 1.65;
   max-width: 32ch;
+}
+
+.public-link-card-url {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  letter-spacing: 0;
+  line-height: 1.55;
+  max-width: 34ch;
+  overflow-wrap: anywhere;
+  text-transform: none;
 }
 
 .note-preview-card-meta {
