@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { useFormStatus } from "react-dom";
 
 import {
@@ -65,6 +65,10 @@ type CursorState = {
   column: number;
   selection: number;
 };
+
+function getDefaultGutterRows(markdown: string) {
+  return markdown.split("\n").map((_, index) => String(index + 1).padStart(2, "0"));
+}
 
 const desktopViewportQuery = "(min-width: 768px)";
 
@@ -133,11 +137,13 @@ export function NoteEditor({
   const [isDesktopViewport, setIsDesktopViewport] = useState(false);
   const [editorScrollTop, setEditorScrollTop] = useState(0);
   const [cursorState, setCursorState] = useState<CursorState>(() => getCursorState(initialMarkdown, 0, 0));
+  const [gutterRows, setGutterRows] = useState<string[]>(() => getDefaultGutterRows(initialMarkdown));
   const [imageUploadError, setImageUploadError] = useState<string | null>(null);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [imageUploadNotice, setImageUploadNotice] = useState<string | null>(null);
   const markdownRef = useRef(initialMarkdown);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const measurementRef = useRef<HTMLDivElement | null>(null);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
   const selectionRef = useRef<SelectionRange>({
     end: 0,
@@ -154,9 +160,9 @@ export function NoteEditor({
   const sourcePaneHidden = viewMode === "preview";
   const previewPaneHidden = viewMode !== "preview" && (isMobileViewport || viewMode === "source");
   const lineCount = markdown.split("\n").length;
+  const sourceLines = useMemo(() => markdown.split("\n"), [markdown]);
   const wordCount = markdown.trim() ? markdown.trim().split(/\s+/).length : 0;
   const characterCount = markdown.length;
-  const lineNumbers = Array.from({ length: lineCount }, (_, index) => index + 1);
   const workbenchBodyClassName = `note-editor-workbench-body note-editor-workbench-body-${viewMode}`;
   const toolbarHint = isDesktopViewport
     ? "Syntax-aware editing keeps the source visible and saves one markdown string."
@@ -384,6 +390,81 @@ export function NoteEditor({
       mediaQuery.removeEventListener("change", handleChange);
     };
   }, []);
+
+  useLayoutEffect(() => {
+    const textarea = textareaRef.current;
+
+    if (!textarea || !isDesktopViewport || typeof window === "undefined") {
+      setGutterRows(getDefaultGutterRows(markdown));
+      return;
+    }
+
+    const measurementRoot = measurementRef.current;
+
+    if (!measurementRoot) {
+      return;
+    }
+
+    let frame = 0;
+    let fontReadyCancelled = false;
+
+    const syncGutterRows = () => {
+      const computed = window.getComputedStyle(textarea);
+      const paddingLeft = Number.parseFloat(computed.paddingLeft) || 0;
+      const paddingRight = Number.parseFloat(computed.paddingRight) || 0;
+      const lineHeight = Number.parseFloat(computed.lineHeight) || 0;
+      const measurementWidth = Math.max(textarea.clientWidth - paddingLeft - paddingRight, 0);
+
+      if (!lineHeight || !measurementWidth) {
+        setGutterRows(getDefaultGutterRows(markdown));
+        return;
+      }
+
+      measurementRoot.style.width = `${measurementWidth}px`;
+
+      const nextRows = Array.from(measurementRoot.querySelectorAll<HTMLElement>("[data-line-measurement]")).flatMap((line, index) => {
+        const visualRows = Math.max(1, Math.round(line.getBoundingClientRect().height / lineHeight));
+        const label = String(index + 1).padStart(2, "0");
+
+        return Array.from({ length: visualRows }, (_, rowIndex) => (rowIndex === 0 ? label : ""));
+      });
+
+      setGutterRows((currentRows) => {
+        if (currentRows.length === nextRows.length && currentRows.every((row, index) => row === nextRows[index])) {
+          return currentRows;
+        }
+
+        return nextRows;
+      });
+    };
+
+    const scheduleSync = () => {
+      cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(syncGutterRows);
+    };
+
+    scheduleSync();
+
+    const resizeObserver = new ResizeObserver(() => {
+      scheduleSync();
+    });
+
+    resizeObserver.observe(textarea);
+
+    if (document.fonts) {
+      void document.fonts.ready.then(() => {
+        if (!fontReadyCancelled) {
+          scheduleSync();
+        }
+      });
+    }
+
+    return () => {
+      fontReadyCancelled = true;
+      cancelAnimationFrame(frame);
+      resizeObserver.disconnect();
+    };
+  }, [isDesktopViewport, markdown]);
 
   useEffect(() => {
     const textarea = textareaRef.current;
@@ -691,8 +772,13 @@ export function NoteEditor({
                           transform: `translateY(${-editorScrollTop}px)`
                         }}
                       >
-                        {lineNumbers.map((lineNumber) => (
-                          <span key={lineNumber}>{String(lineNumber).padStart(2, "0")}</span>
+                        {gutterRows.map((lineNumber, index) => (
+                          <span
+                            className={lineNumber ? "" : "note-editor-gutter-continuation"}
+                            key={`${index}-${lineNumber || "continuation"}`}
+                          >
+                            {lineNumber}
+                          </span>
                         ))}
                       </div>
                     </div>
@@ -718,6 +804,13 @@ Use headings, lists, quotes, links, and code without leaving markdown source.`}
                         value={markdown}
                         wrap="soft"
                       />
+                      <div aria-hidden="true" className="note-editor-line-measurements" ref={measurementRef}>
+                        {sourceLines.map((line, index) => (
+                          <div className="note-editor-line-measurement" data-line-measurement key={index}>
+                            {line || "\u200b"}
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </section>

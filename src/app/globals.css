@@ -1277,9 +1277,14 @@ textarea {
   min-height: calc(var(--note-editor-source-font-size) * var(--note-editor-source-line-height));
 }
 
+.note-editor-gutter-continuation {
+  color: transparent;
+}
+
 .note-editor-stage {
   display: grid;
   min-height: inherit;
+  position: relative;
 }
 
 .note-editor-input {
@@ -1321,6 +1326,26 @@ textarea {
 .note-editor-input:focus {
   background: transparent;
   box-shadow: none;
+}
+
+.note-editor-line-measurements {
+  left: -9999px;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  visibility: hidden;
+}
+
+.note-editor-line-measurement {
+  font-family: var(--font-mono);
+  font-size: var(--note-editor-source-font-size);
+  line-height: var(--note-editor-source-line-height);
+  margin: 0;
+  min-height: calc(var(--note-editor-source-font-size) * var(--note-editor-source-line-height));
+  overflow-wrap: anywhere;
+  tab-size: 2;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .note-editor-workbench:focus-within {

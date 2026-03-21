@@ -242,6 +242,27 @@ async function expectGutterMetricsMatchEditor(page: Page) {
   expect(metrics.gutterPaddingBottom).toBe(metrics.editorPaddingBottom);
 }
 
+async function expectWrappedLineGutterStaysAligned(page: Page) {
+  const alignment = await page.evaluate(() => {
+    const entries = Array.from(document.querySelectorAll<HTMLElement>(".note-editor-gutter-track span")).map((entry) => entry.textContent ?? "");
+    const wrappedLineIndex = entries.indexOf("03");
+    const nextLineIndex = entries.indexOf("04");
+
+    return {
+      continuationRows: wrappedLineIndex >= 0 && nextLineIndex >= 0 ? entries.slice(wrappedLineIndex + 1, nextLineIndex) : [],
+      entries,
+      nextLineIndex,
+      wrappedLineIndex
+    };
+  });
+
+  expect(alignment.wrappedLineIndex).toBeGreaterThanOrEqual(0);
+  expect(alignment.nextLineIndex).toBeGreaterThan(alignment.wrappedLineIndex + 1);
+  expect(alignment.continuationRows.length).toBeGreaterThan(0);
+  expect(alignment.continuationRows.every((row) => row === "")).toBe(true);
+  expect(alignment.entries[alignment.nextLineIndex + 1]).toBe("05");
+}
+
 test.describe.configure({ mode: "serial" });
 
 let seededNoteId = "";
@@ -307,6 +328,28 @@ test("@ui-note-editor-foundation desktop workbench looks upgraded without breaki
   await expect(page.locator(".note-editor-shell")).toHaveScreenshot("ui-note-editor-foundation-desktop.png", {
     animations: "disabled"
   });
+});
+
+test("@ui-note-editor-foundation desktop gutter keeps wrapped markdown aligned to following lines", async ({ page }) => {
+  await page.setViewportSize(desktopViewport);
+  await signIn(page);
+  await page.goto("/app/notes/new");
+
+  const editor = page.getByTestId("note-markdown-input");
+
+  await editor.fill(
+    "test\n\n![codexcli](/media/3b92f5a1-6c7b-417c-b948-3dfdce5a8efe-with-extra-wrap-length-for-the-gutter)\nabc\ndef"
+  );
+
+  await expect
+    .poll(async () => {
+      return page.evaluate(() => {
+        return Array.from(document.querySelectorAll<HTMLElement>(".note-editor-gutter-track span")).map((entry) => entry.textContent ?? "");
+      });
+    })
+    .toContain("");
+  await expectWrappedLineGutterStaysAligned(page);
+  await expectNoHorizontalOverflow(page);
 });
 
 test("@ui-note-editor-foundation mobile workbench stays readable in edit-first mode", async ({ page }) => {
