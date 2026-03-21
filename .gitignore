@@ -11,3 +11,4 @@ logs/*.log
 tsconfig.tsbuildinfo
 
 !logs/.gitkeep
+/screenshots/texteditor.png
