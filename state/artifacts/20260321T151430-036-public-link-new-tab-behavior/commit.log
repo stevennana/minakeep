@@ -1,0 +1,11 @@
+[main c8cf80e] ralph: 036-public-link-new-tab-behavior 2026-03-21T15:23:25+09:00
+ 25 files changed, 1159 insertions(+), 79 deletions(-)
+ rename docs/exec-plans/{active => completed}/035-public-showroom-title-search.md (91%)
+ create mode 100644 state/artifacts/20260321T145507-035-public-showroom-title-search/backlog.log
+ create mode 100644 state/artifacts/20260321T145507-035-public-showroom-title-search/promote.log
+ create mode 100644 state/artifacts/20260321T151430-036-public-link-new-tab-behavior/commit.log
+ create mode 100644 state/artifacts/20260321T151430-036-public-link-new-tab-behavior/evaluator.log
+ create mode 100644 state/artifacts/20260321T151430-036-public-link-new-tab-behavior/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260321T151430-036-public-link-new-tab-behavior/task-prompt.log
+ create mode 100644 state/artifacts/20260321T151430-036-public-link-new-tab-behavior/worker.jsonl
+commit: created

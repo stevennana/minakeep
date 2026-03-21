@@ -42,13 +42,15 @@
   --text-lg: 1.08rem;
   --text-xl: 1.28rem;
   --text-2xl: clamp(1.75rem, 3.8vw, 2.55rem);
-  --text-display: clamp(1.95rem, 5vw, 3.35rem);
+  --text-display: clamp(1.8rem, 4.4vw, 2.95rem);
   --measure: 65ch;
   --container-max: 84rem;
   --font-display: "Avenir Next", "Segoe UI Variable", "Helvetica Neue", sans-serif;
   --font-body: "Avenir Next", "Segoe UI Variable", "Helvetica Neue", sans-serif;
   --font-ui: "Avenir Next", "Segoe UI Variable", "Helvetica Neue", sans-serif;
   --font-mono: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  --weight-display: 620;
+  --weight-strong: 600;
 }
 
 * {
@@ -396,7 +398,9 @@ textarea {
 
 .ui-detail-block strong,
 .detail-block strong {
+  color: var(--ink-soft);
   display: block;
+  font-weight: var(--weight-strong);
   margin-bottom: 0.4rem;
 }
 
@@ -405,7 +409,7 @@ textarea {
 .note-preview-panel h2,
 .vault-frame-title {
   font-family: var(--font-display);
-  font-weight: 650;
+  font-weight: var(--weight-display);
   letter-spacing: -0.04em;
   margin: 0;
 }
@@ -422,9 +426,9 @@ textarea {
 }
 
 .ui-intro-block h1 {
-  font-size: clamp(1.35rem, 2.5vw, 1.95rem);
-  line-height: 0.98;
-  max-width: 14ch;
+  font-size: clamp(1.28rem, 2.2vw, 1.78rem);
+  line-height: 1.02;
+  max-width: 15ch;
 }
 
 .ui-intro-block .lede {
@@ -468,11 +472,13 @@ textarea {
 .section-heading strong,
 .ui-section-heading strong,
 .note-generated-copy strong,
+.public-note-support strong,
 .panel-card strong {
+  color: var(--ink-soft);
   display: block;
   font-size: var(--text-xs);
-  font-weight: 700;
-  letter-spacing: 0.16em;
+  font-weight: var(--weight-strong);
+  letter-spacing: 0.14em;
   margin-bottom: 0.3rem;
   text-transform: uppercase;
 }
@@ -624,8 +630,8 @@ textarea {
 }
 
 .dashboard-hero .dashboard-hero-title {
-  font-size: clamp(1.55rem, 2.8vw, 2.15rem);
-  line-height: 0.98;
+  font-size: clamp(1.42rem, 2.45vw, 1.92rem);
+  line-height: 1.02;
   letter-spacing: -0.035em;
   margin: 0;
   max-width: 14ch;
@@ -661,10 +667,11 @@ textarea {
 }
 
 .dashboard-stat strong {
+  color: var(--ink-soft);
   display: block;
   font-size: var(--text-xs);
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  font-weight: var(--weight-strong);
+  letter-spacing: 0.12em;
   margin-bottom: 0.05rem;
   text-transform: uppercase;
 }
@@ -732,10 +739,10 @@ textarea {
 }
 
 .public-home-count strong {
-  color: var(--ink);
+  color: var(--ink-soft);
   font-family: var(--font-display);
-  font-size: clamp(1.2rem, 2vw, 1.5rem);
-  font-weight: 650;
+  font-size: clamp(1.12rem, 1.8vw, 1.38rem);
+  font-weight: var(--weight-display);
   letter-spacing: -0.03em;
   line-height: 1.05;
 }
@@ -767,9 +774,9 @@ textarea {
 }
 
 .public-intro-panel h1 {
-  font-size: clamp(1.55rem, 3vw, 2.15rem);
-  line-height: 1.02;
-  max-width: 13ch;
+  font-size: clamp(1.45rem, 2.6vw, 1.92rem);
+  line-height: 1.05;
+  max-width: 14ch;
 }
 
 .public-intro-panel .lede {
@@ -815,10 +822,10 @@ textarea {
 }
 
 .public-note-header h1 {
-  font-size: clamp(1.8rem, 4vw, 2.35rem);
-  line-height: 0.98;
+  font-size: clamp(1.65rem, 3.45vw, 2.12rem);
+  line-height: 1.02;
   margin: 0;
-  max-width: 18ch;
+  max-width: 20ch;
 }
 
 .public-note-meta {
@@ -1140,11 +1147,12 @@ textarea {
 }
 
 .dashboard-note-ai strong {
+  color: var(--ink-soft);
   display: block;
   font-family: var(--font-ui);
   font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  font-weight: var(--weight-strong);
+  letter-spacing: 0.12em;
   margin-bottom: 0;
   text-transform: uppercase;
 }
@@ -1210,9 +1218,9 @@ textarea {
 }
 
 .secondary-route-hero .ui-intro-block h1 {
-  font-size: clamp(1.45rem, 2.8vw, 2rem);
-  line-height: 0.98;
-  max-width: 13ch;
+  font-size: clamp(1.34rem, 2.35vw, 1.8rem);
+  line-height: 1.02;
+  max-width: 14ch;
 }
 
 .secondary-route-hero .ui-intro-block .lede {
@@ -1561,6 +1569,8 @@ textarea {
 }
 
 .route-tile strong {
+  color: var(--ink-soft);
+  font-weight: var(--weight-strong);
   margin-bottom: 0;
 }
 
@@ -1596,14 +1606,14 @@ textarea {
 .markdown-preview h6 {
   color: var(--ink);
   font-family: var(--font-display);
-  font-weight: 650;
+  font-weight: var(--weight-display);
   letter-spacing: -0.03em;
   line-height: 1.08;
   margin: 1.45rem 0 0.7rem;
 }
 
 .markdown-preview h1 {
-  font-size: 1.85rem;
+  font-size: 1.72rem;
 }
 
 .markdown-preview h2 {

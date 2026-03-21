@@ -5,7 +5,7 @@
   "id": "036-public-link-new-tab-behavior",
   "title": "Public link new-tab behavior",
   "order": 36,
-  "status": "active",
+  "status": "completed",
   "next_task_on_success": "037-ui-hierarchy-softening",
   "prompt_docs": [
     "AGENTS.md",
@@ -23,7 +23,8 @@
   "human_review_triggers": [
     "Published links still replace the current page instead of opening a new tab.",
     "Public link behavior weakens the safe-URL contract."
-  ]
+  ],
+  "completed_at": "2026-03-21T06:23:25.707Z"
 }
 ```
 
@@ -63,3 +64,4 @@ Promote only when published links behave like lightweight public reference items
 - 2026-03-21 15:17:06 +0900: Confirmed the current homepage already renders public links as `_blank` anchors, but only the title was clearly actionable and E2E only checked attributes instead of a real new-tab open.
 - 2026-03-21 15:17:06 +0900: Hardened `/` to drop any published link whose URL is not `http` or `https` before rendering, keeping the public surface aligned with the existing safe-link contract even if persistence is bypassed.
 - 2026-03-21 15:17:06 +0900: Added a visible `Opens in new tab` affordance to published link cards and extended Playwright coverage to verify popup behavior plus public suppression of unsafe published URLs.
+- 2026-03-21T06:23:25.707Z: automatically promoted after deterministic checks and evaluator approval.

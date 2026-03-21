@@ -1,43 +1,46 @@
 Read the following repository documents before making changes:
 - AGENTS.md
 - docs/FRONTEND.md
-- docs/product-specs/public-link-publishing.md
-- docs/SECURITY.md
-- docs/exec-plans/active/036-public-link-new-tab-behavior.md
+- docs/product-specs/ui-hierarchy-softening.md
+- docs/references/ui-verification-contract.md
+- docs/exec-plans/active/037-ui-hierarchy-softening.md
 
-Current task id: 036-public-link-new-tab-behavior
-Current task title: Public link new-tab behavior
+Current task id: 037-ui-hierarchy-softening
+Current task title: UI hierarchy softening
 
 Objective:
-Ensure published link cards open the saved external URL in a new tab with safe public behavior.
+Tone down the oversized and overly strong feel of `h1` and `strong` text across public and owner surfaces.
 
 Scope:
-- external-link new-tab behavior
-- public link-card affordance for external navigation
-- preserve safe protocol handling and public/private boundaries
+- reduce heading scale
+- reduce overly dark or aggressive `strong` treatment
+- preserve readable hierarchy
 
 Out of scope:
-- public link detail pages
-- typography tuning
-- owner shell changes
+- public publishing logic
+- search logic
+- route-level content changes unrelated to hierarchy
 
 Exit criteria:
-1. Clicking a published link card opens the external destination in a new tab.
-2. Public link behavior stays consistent with the existing safe URL rules.
-3. `npm run verify` passes.
+1. `h1` and `strong` feel materially calmer across public and owner surfaces.
+2. Hierarchy remains clear after the softening.
+3. `npm run test:e2e -- --grep @ui-public-type` passes with desktop/mobile screenshots and accessibility checks.
+4. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
+- `npm run test:e2e -- --grep @ui-public-type`
 
 Evaluator notes:
-Promote only when published links behave like lightweight public reference items rather than pseudo-note pages.
+Promote when the deterministic UI checks pass and the hierarchy is calmer without becoming flat.
 
 Required repository artifacts for this task:
-- src/app/page.tsx
+- src/app/globals.css
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
+- npm run test:e2e -- --grep @ui-public-type
 
 Previous known gaps from the last evaluation:
 - none

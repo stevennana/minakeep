@@ -189,6 +189,36 @@ async function expectReadingHierarchy(page: Page, viewport: "desktop" | "mobile"
   expect(metrics.bodyMeasureWidth).toBeLessThanOrEqual(viewport === "desktop" ? 760 : metrics.viewportWidth - 32);
 }
 
+async function expectSoftenedPublicType(page: Page, viewport: "desktop" | "mobile") {
+  const styles = await page.evaluate(() => {
+    const heading = document.querySelector(".public-note-header h1");
+    const bodyParagraph = document.querySelector("[data-testid='public-note-markdown'] p");
+    const supportStrong = document.querySelector("[data-testid='public-note-support'] strong");
+
+    if (!heading || !bodyParagraph || !supportStrong) {
+      return null;
+    }
+
+    return {
+      bodySize: Number.parseFloat(getComputedStyle(bodyParagraph).fontSize),
+      headingSize: Number.parseFloat(getComputedStyle(heading).fontSize),
+      supportStrongColor: getComputedStyle(supportStrong).color,
+      supportStrongSize: Number.parseFloat(getComputedStyle(supportStrong).fontSize)
+    };
+  });
+
+  expect(styles).not.toBeNull();
+
+  if (!styles) {
+    return;
+  }
+
+  expect(styles.headingSize).toBeGreaterThan(styles.bodySize + (viewport === "desktop" ? 12 : 9));
+  expect(styles.headingSize).toBeLessThan(viewport === "desktop" ? 35 : 32);
+  expect(styles.supportStrongSize).toBeLessThan(styles.bodySize);
+  expect(styles.supportStrongColor).toBe("rgb(51, 65, 85)");
+}
+
 test.describe.configure({ mode: "serial" });
 
 test.beforeEach(async () => {
@@ -199,7 +229,7 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-regression @ui-public-note @ui-responsive public note page keeps a calm desktop reading hierarchy", async ({ page }) => {
+test("@ui-regression @ui-public-note @ui-public-type @ui-responsive public note page keeps a calm desktop reading hierarchy", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await page.goto(`/notes/${seededNote.slug}`);
 
@@ -209,6 +239,7 @@ test("@ui-regression @ui-public-note @ui-responsive public note page keeps a cal
   await expect(page.getByLabel("Published note tags")).toContainText("reading");
   await expect(page.getByRole("link", { name: "Back to published notes" })).toBeVisible();
   await expectReadingHierarchy(page, "desktop");
+  await expectSoftenedPublicType(page, "desktop");
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
 
@@ -217,7 +248,7 @@ test("@ui-regression @ui-public-note @ui-responsive public note page keeps a cal
   });
 });
 
-test("@ui-regression @ui-public-note @ui-responsive public note page stays compact on mobile", async ({ page }) => {
+test("@ui-regression @ui-public-note @ui-public-type @ui-responsive public note page stays compact on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await page.goto(`/notes/${seededNote.slug}`);
 
@@ -226,6 +257,7 @@ test("@ui-regression @ui-public-note @ui-responsive public note page stays compa
   await expect(page.getByText(seededNote.summary)).toBeVisible();
   await expect(page.getByRole("link", { name: "Back to published notes" })).toBeVisible();
   await expectReadingHierarchy(page, "mobile");
+  await expectSoftenedPublicType(page, "mobile");
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
 

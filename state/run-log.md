@@ -535,3 +535,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Task 036 appears complete in substance. The public homepage now suppresses non-http/https published links before rendering, published link cards keep the saved external URL as the public target with `_blank` plus `rel="noopener noreferrer"`, and the public UI adds an explicit new-tab affordance. E2E coverage now verifies an actual popup to the saved URL and confirms an unsafe published URL stays off `/`. The provided deterministic run shows `npm run verify` passing. -> state/artifacts/20260321T151430-036-public-link-new-tab-behavior/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T151430-036-public-link-new-tab-behavior/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 036-public-link-new-tab-behavior -> 037-ui-hierarchy-softening
+- backlog: rendered current=037-ui-hierarchy-softening
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxoooo
+- cycle: finished
+
+### cycle 2026-03-21T15:23:55+09:00 task=037-ui-hierarchy-softening
+- artifacts: state/artifacts/20260321T152355-037-ui-hierarchy-softening
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T152355-037-ui-hierarchy-softening/worker.jsonl
+- worker-summary: Reduced the shared heading scale and softened `strong` labels in [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css#L45) and [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css#L399), including the public intro, public note header, dashboard hero/stats, owner support labels, route tiles, and markdown `h1` treatment. I also added explicit `@ui-public-type` style assertions to [ui-home-shell.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-home-shell.spec.ts#L197) and [ui-public-note.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-public-note.spec.ts#L192), then refreshed the affected Playwright snapshot baselines touched by the global typography change.
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T152355-037-ui-hierarchy-softening/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T152355-037-ui-hierarchy-softening/npm-run-verify-next-server.log

@@ -194,6 +194,39 @@ async function expectShowroomHierarchy(page: Page) {
   expect(shellHeadBox.width).toBeGreaterThan(0);
 }
 
+async function expectHomepageTypography(page: Page, viewport: "desktop" | "mobile") {
+  const styles = await page.evaluate(() => {
+    const heading = document.querySelector(".public-intro-panel h1");
+    const lede = document.querySelector(".public-intro-panel .lede");
+    const archiveCount = document.querySelector(".public-home-count strong");
+    const sectionLabel = document.querySelector(".note-collection-panel .section-heading strong");
+
+    if (!heading || !lede || !archiveCount || !sectionLabel) {
+      return null;
+    }
+
+    return {
+      archiveCountColor: getComputedStyle(archiveCount).color,
+      archiveCountSize: Number.parseFloat(getComputedStyle(archiveCount).fontSize),
+      headingSize: Number.parseFloat(getComputedStyle(heading).fontSize),
+      ledeSize: Number.parseFloat(getComputedStyle(lede).fontSize),
+      sectionLabelColor: getComputedStyle(sectionLabel).color
+    };
+  });
+
+  expect(styles).not.toBeNull();
+
+  if (!styles) {
+    return;
+  }
+
+  expect(styles.headingSize).toBeGreaterThan(styles.ledeSize + 8);
+  expect(styles.headingSize).toBeLessThan(viewport === "desktop" ? 33 : 31);
+  expect(styles.archiveCountSize).toBeLessThan(styles.headingSize);
+  expect(styles.archiveCountColor).toBe("rgb(51, 65, 85)");
+  expect(styles.sectionLabelColor).toBe("rgb(51, 65, 85)");
+}
+
 test.describe.configure({ mode: "serial" });
 
 test.beforeEach(async () => {
@@ -204,7 +237,7 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-regression @ui-home-shell @ui-public-home-shell @ui-responsive homepage reads note-first on desktop", async ({ page }) => {
+test("@ui-regression @ui-home-shell @ui-public-home-shell @ui-public-type @ui-responsive homepage reads note-first on desktop", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await page.goto("/");
 
@@ -217,6 +250,7 @@ test("@ui-regression @ui-home-shell @ui-public-home-shell @ui-responsive homepag
   await expect(page.getByText("Owner entrance")).toHaveCount(0);
   await expect(page.getByText("Private origin")).toHaveCount(0);
   await expectShowroomHierarchy(page);
+  await expectHomepageTypography(page, "desktop");
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
 
@@ -226,7 +260,7 @@ test("@ui-regression @ui-home-shell @ui-public-home-shell @ui-responsive homepag
   });
 });
 
-test("@ui-regression @ui-home-shell @ui-public-home-shell @ui-responsive homepage stays note-first on mobile", async ({ page }) => {
+test("@ui-regression @ui-home-shell @ui-public-home-shell @ui-public-type @ui-responsive homepage stays note-first on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await page.goto("/");
 
@@ -239,6 +273,7 @@ test("@ui-regression @ui-home-shell @ui-public-home-shell @ui-responsive homepag
   await expect(page.getByText("Owner entrance")).toHaveCount(0);
   await expect(page.getByText("Private origin")).toHaveCount(0);
   await expectShowroomHierarchy(page);
+  await expectHomepageTypography(page, "mobile");
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
 

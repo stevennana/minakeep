@@ -1,8 +1,8 @@
 {
-  "task_id": "036-public-link-new-tab-behavior",
-  "started_at": "2026-03-21T15:14:30+09:00",
-  "artifact_dir": "state/artifacts/20260321T151430-036-public-link-new-tab-behavior",
+  "task_id": "037-ui-hierarchy-softening",
+  "started_at": "2026-03-21T15:23:55+09:00",
+  "artifact_dir": "state/artifacts/20260321T152355-037-ui-hierarchy-softening",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-03-21T06:23:25.558Z"
+  "updated_at": "2026-03-21T06:35:32.354Z"
 }
