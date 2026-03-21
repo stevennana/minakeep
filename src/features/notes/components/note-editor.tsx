@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import { useFormStatus } from "react-dom";
 
 import {
@@ -57,6 +57,8 @@ type MarkdownEditResult = {
   nextMarkdown: string;
   nextSelection: SelectionRange;
 };
+
+type NoteEditorViewMode = "source" | "split" | "preview";
 
 function escapeSourceHtml(value: string) {
   return value
@@ -579,11 +581,19 @@ export function NoteEditor({
 }: NoteEditorProps) {
   const [title, setTitle] = useState(initialTitle);
   const [markdown, setMarkdown] = useState(initialMarkdown);
+  const [viewMode, setViewMode] = useState<NoteEditorViewMode>("split");
   const [editorScrollTop, setEditorScrollTop] = useState(0);
   const [editorScrollLeft, setEditorScrollLeft] = useState(0);
   const [cursorState, setCursorState] = useState<CursorState>(() => getCursorState(initialMarkdown, 0, 0));
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const selectionRef = useRef<SelectionRange>({
+    end: 0,
+    start: 0
+  });
+  const pendingSelectionRef = useRef<SelectionRange | null>(null);
+  const shouldRestoreSelectionRef = useRef(false);
   const editorHintId = useId();
+  const previewHeadingId = useId();
   const previewTitle = title.trim() || "Untitled note";
   const previewHtml = renderMarkdownToHtml(markdown);
   const previewStyle = {
@@ -594,6 +604,9 @@ export function NoteEditor({
   const wordCount = markdown.trim() ? markdown.trim().split(/\s+/).length : 0;
   const characterCount = markdown.length;
   const lineNumbers = Array.from({ length: lineCount }, (_, index) => index + 1);
+  const sourcePaneHidden = viewMode === "preview";
+  const previewPaneHidden = viewMode === "source";
+  const workbenchBodyClassName = `note-editor-workbench-body note-editor-workbench-body-${viewMode}`;
 
   function runEditorAction(action: (currentMarkdown: string, selection: SelectionRange) => MarkdownEditResult) {
     const textarea = textareaRef.current;
@@ -613,28 +626,19 @@ export function NoteEditor({
   function syncEditorState(textarea: HTMLTextAreaElement) {
     setEditorScrollTop(textarea.scrollTop);
     setEditorScrollLeft(textarea.scrollLeft);
+    selectionRef.current = {
+      end: textarea.selectionEnd,
+      start: textarea.selectionStart
+    };
     setCursorState(getCursorState(markdown, textarea.selectionStart, textarea.selectionEnd));
-  }
-
-  function queueSelection(nextSelection: SelectionRange) {
-    requestAnimationFrame(() => {
-      const textarea = textareaRef.current;
-
-      if (!textarea) {
-        return;
-      }
-
-      textarea.focus();
-      textarea.setSelectionRange(nextSelection.start, nextSelection.end);
-      syncEditorState(textarea);
-    });
   }
 
   function updateMarkdown(nextMarkdown: string, nextSelection?: SelectionRange) {
     setMarkdown(nextMarkdown);
 
     if (nextSelection) {
-      queueSelection(nextSelection);
+      selectionRef.current = nextSelection;
+      pendingSelectionRef.current = nextSelection;
     }
   }
 
@@ -648,8 +652,17 @@ export function NoteEditor({
     const textarea = textareaRef.current;
 
     if (textarea) {
+      selectionRef.current = {
+        end: textarea.selectionEnd,
+        start: textarea.selectionStart
+      };
       setCursorState(getCursorState(nextMarkdown, textarea.selectionStart, textarea.selectionEnd));
     }
+  }
+
+  function handleViewModeChange(nextMode: NoteEditorViewMode) {
+    shouldRestoreSelectionRef.current = nextMode !== "preview";
+    setViewMode(nextMode);
   }
 
   function handleEditorKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
@@ -744,6 +757,26 @@ export function NoteEditor({
     }
   }
 
+  useLayoutEffect(() => {
+    const nextSelection = pendingSelectionRef.current;
+    const textarea = textareaRef.current;
+
+    if (!nextSelection || !textarea) {
+      return;
+    }
+
+    pendingSelectionRef.current = null;
+    textarea.focus();
+    textarea.setSelectionRange(nextSelection.start, nextSelection.end);
+    setEditorScrollTop(textarea.scrollTop);
+    setEditorScrollLeft(textarea.scrollLeft);
+    selectionRef.current = {
+      end: textarea.selectionEnd,
+      start: textarea.selectionStart
+    };
+    setCursorState(getCursorState(markdown, textarea.selectionStart, textarea.selectionEnd));
+  }, [markdown]);
+
   useEffect(() => {
     const textarea = textareaRef.current;
 
@@ -755,6 +788,31 @@ export function NoteEditor({
     setEditorScrollLeft(textarea.scrollLeft);
     setCursorState(getCursorState(markdown, textarea.selectionStart, textarea.selectionEnd));
   }, [markdown]);
+
+  useEffect(() => {
+    if (!shouldRestoreSelectionRef.current || viewMode === "preview") {
+      return;
+    }
+
+    const textarea = textareaRef.current;
+
+    if (!textarea) {
+      return;
+    }
+
+    shouldRestoreSelectionRef.current = false;
+    textarea.focus();
+    textarea.scrollTop = editorScrollTop;
+    textarea.scrollLeft = editorScrollLeft;
+    textarea.setSelectionRange(selectionRef.current.start, selectionRef.current.end);
+    setEditorScrollTop(textarea.scrollTop);
+    setEditorScrollLeft(textarea.scrollLeft);
+    selectionRef.current = {
+      end: textarea.selectionEnd,
+      start: textarea.selectionStart
+    };
+    setCursorState(getCursorState(markdown, textarea.selectionStart, textarea.selectionEnd));
+  }, [editorScrollLeft, editorScrollTop, viewMode, markdown]);
 
   const toolbarActions = [
     {
@@ -810,6 +868,20 @@ export function NoteEditor({
       name: "Link",
       run: insertMarkdownLink,
       shortcut: "Ctrl/Cmd+K"
+    }
+  ];
+  const viewModes: Array<{ description: string; value: NoteEditorViewMode }> = [
+    {
+      description: "Raw editing only",
+      value: "source"
+    },
+    {
+      description: "Draft with source and preview",
+      value: "split"
+    },
+    {
+      description: "Preview review only",
+      value: "preview"
     }
   ];
 
@@ -929,64 +1001,116 @@ export function NoteEditor({
                     {cursorState.selection > 0 ? <span>{cursorState.selection} selected</span> : null}
                   </div>
                 </div>
-                <div aria-label="Markdown formatting toolbar" className="note-editor-toolbar-controls" data-testid="note-editor-toolbar" role="toolbar">
-                  {toolbarActions.map((action) => (
-                    <button
-                      aria-label={`${action.name} markdown`}
-                      className="note-editor-tool"
-                      key={action.name}
-                      onClick={() => runEditorAction(action.run)}
-                      onMouseDown={(event) => event.preventDefault()}
-                      title={`${action.name} (${action.shortcut})`}
-                      type="button"
-                    >
-                      <span aria-hidden="true">{action.label}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="note-editor-surface" style={previewStyle}>
-                <div aria-hidden="true" className="note-editor-gutter">
-                  <div
-                    className="note-editor-gutter-track"
-                    style={{
-                      transform: `translateY(${-editorScrollTop}px)`
-                    }}
-                  >
-                    {lineNumbers.map((lineNumber) => (
-                      <span key={lineNumber}>{String(lineNumber).padStart(2, "0")}</span>
+                <div className="note-editor-toolbar-row">
+                  <div aria-label="Markdown formatting toolbar" className="note-editor-toolbar-controls" data-testid="note-editor-toolbar" role="toolbar">
+                    {toolbarActions.map((action) => (
+                      <button
+                        aria-label={`${action.name} markdown`}
+                        className="note-editor-tool"
+                        key={action.name}
+                        onClick={() => runEditorAction(action.run)}
+                        onMouseDown={(event) => event.preventDefault()}
+                        title={`${action.name} (${action.shortcut})`}
+                        type="button"
+                      >
+                        <span aria-hidden="true">{action.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                  <div aria-label="Note editor view modes" className="note-editor-mode-switcher" data-testid="note-editor-mode-switcher" role="group">
+                    {viewModes.map((mode) => (
+                      <button
+                        aria-pressed={viewMode === mode.value}
+                        className={`note-editor-mode-toggle${viewMode === mode.value ? " note-editor-mode-toggle-active" : ""}`}
+                        key={mode.value}
+                        onClick={() => handleViewModeChange(mode.value)}
+                        onMouseDown={(event) => event.preventDefault()}
+                        title={mode.description}
+                        type="button"
+                      >
+                        {mode.value[0].toUpperCase() + mode.value.slice(1)}
+                      </button>
                     ))}
                   </div>
                 </div>
+              </div>
 
-                <div className="note-editor-stage">
-                  <pre aria-hidden="true" className="note-editor-highlight">
-                    <code
-                      className="note-editor-highlight-content"
+              <div className={workbenchBodyClassName} data-view-mode={viewMode}>
+                <section
+                  aria-hidden={sourcePaneHidden}
+                  className={`note-editor-pane note-editor-pane-source${sourcePaneHidden ? " note-editor-pane-hidden" : ""}`}
+                  data-testid="note-editor-source-pane"
+                >
+                  <div className="note-editor-surface" style={previewStyle}>
+                    <div aria-hidden="true" className="note-editor-gutter">
+                      <div
+                        className="note-editor-gutter-track"
+                        style={{
+                          transform: `translateY(${-editorScrollTop}px)`
+                        }}
+                      >
+                        {lineNumbers.map((lineNumber) => (
+                          <span key={lineNumber}>{String(lineNumber).padStart(2, "0")}</span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="note-editor-stage">
+                      <pre aria-hidden="true" className="note-editor-highlight">
+                        <code
+                          className="note-editor-highlight-content"
+                          dangerouslySetInnerHTML={{
+                            __html: renderHighlightedSource(markdown)
+                          }}
+                        />
+                      </pre>
+
+                      <textarea
+                        aria-label="Markdown body"
+                        aria-describedby={editorHintId}
+                        className="note-editor-input"
+                        data-testid="note-markdown-input"
+                        name="markdown"
+                        onChange={(event) => handleMarkdownChange(event.target.value)}
+                        onClick={(event) => syncEditorState(event.currentTarget)}
+                        onKeyDown={handleEditorKeyDown}
+                        onKeyUp={(event) => syncEditorState(event.currentTarget)}
+                        onScroll={(event) => syncEditorState(event.currentTarget)}
+                        onSelect={(event) => syncEditorState(event.currentTarget)}
+                        ref={textareaRef}
+                        spellCheck="true"
+                        value={markdown}
+                      />
+                    </div>
+                  </div>
+                </section>
+
+                <section
+                  aria-hidden={previewPaneHidden}
+                  aria-labelledby={previewHeadingId}
+                  className={`note-editor-pane note-editor-pane-preview${previewPaneHidden ? " note-editor-pane-hidden" : ""}`}
+                  data-testid="note-editor-preview-pane"
+                >
+                  <div className="note-editor-preview-frame">
+                    <div className="note-editor-preview-head">
+                      <div>
+                        <strong>Preview</strong>
+                        <span>Rendered from the same markdown source</span>
+                      </div>
+                      <span className="note-editor-preview-mode-note">
+                        {viewMode === "preview" ? "Review mode" : "Live while drafting"}
+                      </span>
+                    </div>
+                    <h2 id={previewHeadingId}>{previewTitle}</h2>
+                    <div
+                      className="markdown-preview"
+                      data-testid="note-markdown-preview"
                       dangerouslySetInnerHTML={{
-                        __html: renderHighlightedSource(markdown)
+                        __html: previewHtml || "<p>Start writing to see the rendered preview.</p>"
                       }}
                     />
-                  </pre>
-
-                  <textarea
-                    aria-label="Markdown body"
-                    aria-describedby={editorHintId}
-                    className="note-editor-input"
-                    data-testid="note-markdown-input"
-                    name="markdown"
-                    onChange={(event) => handleMarkdownChange(event.target.value)}
-                    onClick={(event) => syncEditorState(event.currentTarget)}
-                    onKeyDown={handleEditorKeyDown}
-                    onKeyUp={(event) => syncEditorState(event.currentTarget)}
-                    onScroll={(event) => syncEditorState(event.currentTarget)}
-                    onSelect={(event) => syncEditorState(event.currentTarget)}
-                    ref={textareaRef}
-                    spellCheck="true"
-                    value={markdown}
-                  />
-                </div>
+                  </div>
+                </section>
               </div>
             </div>
           </FormField>
@@ -994,18 +1118,6 @@ export function NoteEditor({
           <div className="button-row">
             <SaveButton label={submitLabel} />
           </div>
-        </Surface>
-
-        <Surface aria-labelledby="note-preview-heading" className="note-preview-panel" density="compact" tone="panel">
-          <SectionHeading meta="Rendered from the same markdown source" title="Preview" />
-          <h2 id="note-preview-heading">{previewTitle}</h2>
-          <div
-            className="markdown-preview"
-            data-testid="note-markdown-preview"
-            dangerouslySetInnerHTML={{
-              __html: previewHtml || "<p>Start writing to see the rendered preview.</p>"
-            }}
-          />
         </Surface>
       </div>
     </div>

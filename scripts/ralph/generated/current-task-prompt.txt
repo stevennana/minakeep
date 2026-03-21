@@ -5,37 +5,37 @@ Read the following repository documents before making changes:
 - docs/design-docs/markdown-editor-workbench.md
 - docs/references/markdown-editor-patterns.md
 - docs/references/ui-verification-contract.md
-- docs/exec-plans/active/046-note-editor-toolbar-and-shortcuts.md
+- docs/exec-plans/active/047-note-editor-view-modes.md
 
-Current task id: 046-note-editor-toolbar-and-shortcuts
-Current task title: Note editor toolbar and shortcuts
+Current task id: 047-note-editor-view-modes
+Current task title: Note editor view modes
 
 Objective:
-Add compact authoring aids that make common markdown operations faster without turning the note editor into a heavy rich-text UI.
+Support clear editor modes so owners can choose between raw editing, split drafting, and preview review.
 
 Scope:
-- compact formatting toolbar
-- markdown insertion or transformation helpers
-- keyboard-shortcut friendly behavior
+- `Source`, `Split`, and `Preview` modes for desktop note editing
+- stable mode switching
+- preview continuity with the real note renderer
 
 Out of scope:
-- split/preview mode orchestration
-- mobile-specific workflow polish beyond baseline usability
-- image upload or attachment support
+- mobile-specific layout rules
+- new markdown syntax support unrelated to editor modes
+- public note reading changes
 
 Exit criteria:
-1. Owners can apply common markdown structures quickly through compact controls.
-2. Toolbar actions produce predictable markdown output.
-3. Experienced keyboard-first editing still feels natural.
-4. `npm run test:e2e -- --grep @ui-note-editor-toolbar` passes.
+1. Desktop note editing exposes `Source`, `Split`, and `Preview` modes.
+2. Owners can switch modes without losing text or breaking the preview.
+3. Split mode is clearly usable for normal drafting work.
+4. `npm run test:e2e -- --grep @ui-note-editor-modes` passes.
 5. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-note-editor-toolbar`
+- `npm run test:e2e -- --grep @ui-note-editor-modes`
 
 Evaluator notes:
-Promote only when the toolbar improves speed without bloating the note editor or compromising source transparency.
+Promote only when mode switching is stable and the split view feels like a coherent workbench rather than duplicated panels.
 
 Required repository artifacts for this task:
 - src/features/notes/components/note-editor.tsx
@@ -43,7 +43,7 @@ Required repository artifacts for this task:
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-note-editor-toolbar
+- npm run test:e2e -- --grep @ui-note-editor-modes
 
 Previous known gaps from the last evaluation:
 - none

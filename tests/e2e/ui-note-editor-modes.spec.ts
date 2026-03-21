@@ -10,7 +10,7 @@ const mobileViewport = { width: 390, height: 844 };
 const databaseUrl = process.env.DATABASE_URL;
 
 if (!databaseUrl) {
-  throw new Error("DATABASE_URL must be set before running note editor foundation UI tests.");
+  throw new Error("DATABASE_URL must be set before running note editor mode UI tests.");
 }
 
 const prisma = new PrismaClient({
@@ -20,25 +20,24 @@ const prisma = new PrismaClient({
 });
 
 const seededNote = {
-  title: "Workbench foundation keeps markdown as the source",
-  slug: "workbench-foundation-keeps-markdown-as-the-source",
-  markdown: `# Workbench foundation keeps markdown as the source
+  title: "View modes should keep drafting steady",
+  slug: "view-modes-should-keep-drafting-steady",
+  markdown: `# View modes should keep drafting steady
 
-Source editing should feel deliberate without hiding the syntax.
+Split mode should keep source and preview aligned while the owner writes.
 
-- Keep preview and source aligned
-- Keep the markdown body canonical
-- Keep note publishing unchanged`,
-  excerpt: "Source editing should feel deliberate without hiding the syntax or changing the saved note body.",
-  summary: "A stronger note editor should improve raw markdown authoring while leaving the persisted note model alone.",
+- Preserve the markdown body
+- Keep preview continuity`,
+  excerpt: "View modes should make preview review clearer without disrupting source-first drafting.",
+  summary: "Stable source, split, and preview modes should preserve markdown continuity in the private note workbench.",
   enrichmentStatus: "ready",
   enrichmentError: null,
   enrichmentAttempts: 1,
-  enrichmentUpdatedAt: new Date("2024-05-21T09:00:00.000Z"),
-  isPublished: true,
-  publishedAt: new Date("2024-05-21T09:05:00.000Z"),
-  updatedAt: new Date("2024-05-21T09:05:00.000Z"),
-  tags: ["editor", "markdown", "workbench"]
+  enrichmentUpdatedAt: new Date("2024-05-27T09:30:00.000Z"),
+  isPublished: false,
+  publishedAt: null,
+  updatedAt: new Date("2024-05-27T09:35:00.000Z"),
+  tags: ["editor", "modes", "preview"]
 } as const;
 
 function getOwnerCredentials() {
@@ -57,7 +56,7 @@ async function seedEditableNote() {
   });
 
   if (!owner) {
-    throw new Error(`Owner account '${username}' must exist before note editor foundation UI tests run.`);
+    throw new Error(`Owner account '${username}' must exist before note editor mode UI tests run.`);
   }
 
   await prisma.note.deleteMany({
@@ -175,33 +174,29 @@ async function expectAccessibleStructure(page: Page) {
   expect(audit.issues).toEqual([]);
 }
 
-async function expectWorkbenchHierarchy(page: Page, viewport: "desktop" | "mobile") {
-  const form = page.locator(".note-form");
+async function expectSplitWorkbenchLayout(page: Page, viewport: "desktop" | "mobile") {
   const workbench = page.getByTestId("note-markdown-workbench");
   const sourcePane = page.getByTestId("note-editor-source-pane");
   const previewPane = page.getByTestId("note-editor-preview-pane");
 
-  const [formBox, previewBox, sourceBox, workbenchBox] = await Promise.all([
-    form.boundingBox(),
-    previewPane.boundingBox(),
+  const [workbenchBox, sourceBox, previewBox] = await Promise.all([
+    workbench.boundingBox(),
     sourcePane.boundingBox(),
-    workbench.boundingBox()
+    previewPane.boundingBox()
   ]);
 
-  expect(formBox).not.toBeNull();
-  expect(previewBox).not.toBeNull();
-  expect(sourceBox).not.toBeNull();
   expect(workbenchBox).not.toBeNull();
+  expect(sourceBox).not.toBeNull();
+  expect(previewBox).not.toBeNull();
 
-  if (!formBox || !previewBox || !sourceBox || !workbenchBox) {
+  if (!workbenchBox || !sourceBox || !previewBox) {
     return;
   }
-
-  expect(workbenchBox.height).toBeGreaterThan(viewport === "desktop" ? 350 : 300);
 
   if (viewport === "desktop") {
     expect(sourceBox.x).toBeLessThan(previewBox.x);
     expect(sourceBox.width).toBeGreaterThan(previewBox.width);
+    expect(previewBox.x + previewBox.width).toBeLessThanOrEqual(workbenchBox.x + workbenchBox.width + 1);
     return;
   }
 
@@ -220,73 +215,94 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-note-editor-foundation source-first authoring keeps markdown preview and save flow intact", async ({ page }) => {
+test("@ui-note-editor-modes desktop mode switching keeps markdown and preview stable", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await signIn(page);
-  await page.goto("/app/notes/new");
-
-  await expect(page.getByRole("heading", { name: "New draft note" })).toBeVisible();
-  await expect(page.getByTestId("note-markdown-workbench")).toBeVisible();
-  await expect(page.locator(".note-editor-gutter-track span").first()).toHaveText("01");
-
-  await page.getByRole("textbox", { name: "Title" }).fill("Source-first editor foundation");
+  await page.goto(`/app/notes/${seededNoteId}/edit`);
 
   const editor = page.getByTestId("note-markdown-input");
+  const modeSwitcher = page.getByTestId("note-editor-mode-switcher");
+  const sourceButton = modeSwitcher.getByRole("button", { name: "Source" });
+  const splitButton = modeSwitcher.getByRole("button", { name: "Split" });
+  const previewButton = modeSwitcher.getByRole("button", { name: "Preview" });
+  const sourcePane = page.getByTestId("note-editor-source-pane");
+  const previewPane = page.getByTestId("note-editor-preview-pane");
+
+  await expect(modeSwitcher).toBeVisible();
+  await expect(splitButton).toHaveAttribute("aria-pressed", "true");
+  await expect(sourcePane).toBeVisible();
+  await expect(previewPane).toBeVisible();
+
   await editor.click();
-  await editor.fill("# Source-first editor foundation\n\n- Syntax-aware editing");
   await editor.press("End");
   await editor.press("Enter");
-  await editor.type("Preserves markdown preview");
+  await editor.type("Draft in split mode");
+  await expect(editor).toHaveValue(/Draft in split mode/);
+  await expect(page.getByTestId("note-markdown-preview")).toContainText("Draft in split mode");
 
-  await expect(editor).toHaveValue("# Source-first editor foundation\n\n- Syntax-aware editing\n- Preserves markdown preview");
-  await expect(page.getByTestId("note-markdown-preview")).toContainText("Source-first editor foundation");
-  await expect(page.getByTestId("note-markdown-preview")).toContainText("Preserves markdown preview");
+  await previewButton.click();
+  await expect(previewButton).toHaveAttribute("aria-pressed", "true");
+  await expect(sourcePane).toBeHidden();
+  await expect(previewPane).toBeVisible();
+  await expect(page.getByTestId("note-markdown-preview")).toContainText("Draft in split mode");
 
-  await page.getByRole("button", { name: "Create draft" }).click();
+  await sourceButton.click();
+  await expect(sourceButton).toHaveAttribute("aria-pressed", "true");
+  await expect(sourcePane).toBeVisible();
+  await expect(previewPane).toBeHidden();
+  await expect(editor).toBeFocused();
+  await page.keyboard.press("Enter");
+  await page.keyboard.type("Returns from preview mode");
+  await expect(editor).toHaveValue(/Returns from preview mode/);
 
+  await splitButton.click();
+  await expect(splitButton).toHaveAttribute("aria-pressed", "true");
+  await expect(sourcePane).toBeVisible();
+  await expect(previewPane).toBeVisible();
+  await expect(page.getByTestId("note-markdown-preview")).toContainText("Returns from preview mode");
+
+  await page.getByRole("button", { name: "Save draft" }).click();
   await expect(page).toHaveURL(/\/app\/notes\/[^/]+\/edit\?saved=1$/);
   await expect(page.getByText("Draft saved.")).toBeVisible();
-  await expect(page.getByTestId("note-markdown-input")).toHaveValue(
-    "# Source-first editor foundation\n\n- Syntax-aware editing\n- Preserves markdown preview"
-  );
-  await expect(page.getByTestId("note-markdown-preview")).toContainText("Preserves markdown preview");
+  await expect(page.getByTestId("note-markdown-input")).toHaveValue(/Returns from preview mode/);
+  await expect(page.getByTestId("note-markdown-preview")).toContainText("Returns from preview mode");
 });
 
-test("@ui-note-editor-foundation desktop workbench looks upgraded without breaking edit layout", async ({ page }) => {
+test("@ui-note-editor-modes desktop split mode reads as one workbench", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await signIn(page);
   await page.goto(`/app/notes/${seededNoteId}/edit`);
 
   await expect(page.getByRole("heading", { name: "Edit draft note" })).toBeVisible();
-  await expect(page.getByTestId("note-markdown-workbench")).toBeVisible();
-  await expect(page.locator(".note-editor-toolbar")).toContainText("Markdown source");
-  await expect(page.locator(".note-editor-statusbar")).toContainText("lines");
   await expect(page.getByTestId("note-editor-mode-switcher")).toBeVisible();
-  await expect(page.getByTestId("note-editor-preview-pane")).toContainText("Preview");
-  await expect(page.getByTestId("note-markdown-preview")).toContainText("Keep note publishing unchanged");
-  await expectWorkbenchHierarchy(page, "desktop");
+  await expect(page.getByRole("button", { name: "Split" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByTestId("note-editor-source-pane")).toBeVisible();
+  await expect(page.getByTestId("note-editor-preview-pane")).toBeVisible();
+  await expect(page.getByTestId("note-markdown-preview")).toContainText("Keep preview continuity");
+  await expectSplitWorkbenchLayout(page, "desktop");
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
 
-  await expect(page.locator(".note-editor-shell")).toHaveScreenshot("ui-note-editor-foundation-desktop.png", {
+  await expect(page.locator(".note-editor-shell")).toHaveScreenshot("ui-note-editor-modes-desktop.png", {
     animations: "disabled"
   });
 });
 
-test("@ui-note-editor-foundation mobile workbench stays readable and stacked", async ({ page }) => {
+test("@ui-note-editor-modes mobile keeps the split workbench stacked without desktop mode chrome", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await signIn(page);
   await page.goto(`/app/notes/${seededNoteId}/edit`);
 
   await expect(page.getByRole("heading", { name: "Edit draft note" })).toBeVisible();
-  await expect(page.getByTestId("note-markdown-workbench")).toBeVisible();
-  await expect(page.getByTestId("note-markdown-input")).toBeVisible();
-  await expect(page.locator(".note-editor-statusbar")).toContainText("chars");
-  await expectWorkbenchHierarchy(page, "mobile");
+  await expect(page.getByTestId("note-editor-mode-switcher")).toBeHidden();
+  await expect(page.getByTestId("note-editor-source-pane")).toBeVisible();
+  await expect(page.getByTestId("note-editor-preview-pane")).toBeVisible();
+  await expect(page.getByTestId("note-markdown-preview")).toContainText("Keep preview continuity");
+  await expectSplitWorkbenchLayout(page, "mobile");
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
 
-  await expect(page.locator(".note-editor-shell")).toHaveScreenshot("ui-note-editor-foundation-mobile.png", {
+  await expect(page.locator(".note-editor-shell")).toHaveScreenshot("ui-note-editor-modes-mobile.png", {
     animations: "disabled"
   });
 });

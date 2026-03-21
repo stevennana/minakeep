@@ -34,3 +34,4 @@
 - 2026-03-21T07:42:49.273Z: promoted 043-public-home-density-regression-pass -> 044-public-home-wave-hardening
 - 2026-03-21T07:49:52.076Z: promoted 044-public-home-wave-hardening -> NONE
 - 2026-03-21T08:34:35.233Z: promoted 045-markdown-editor-foundation -> 046-note-editor-toolbar-and-shortcuts
+- 2026-03-21T08:47:49.511Z: promoted 046-note-editor-toolbar-and-shortcuts -> 047-note-editor-view-modes

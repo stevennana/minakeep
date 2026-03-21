@@ -1,8 +1,8 @@
 {
-  "task_id": "046-note-editor-toolbar-and-shortcuts",
-  "started_at": "2026-03-21T17:35:05+09:00",
-  "artifact_dir": "state/artifacts/20260321T173505-046-note-editor-toolbar-and-shortcuts",
+  "task_id": "047-note-editor-view-modes",
+  "started_at": "2026-03-21T18:02:39+09:00",
+  "artifact_dir": "state/artifacts/20260321T180239-047-note-editor-view-modes",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-03-21T08:47:49.307Z"
+  "updated_at": "2026-03-21T09:11:25.270Z"
 }

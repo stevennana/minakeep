@@ -68,3 +68,7 @@ Promote only when mode switching is stable and the split view feels like a coher
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-21 17:49 KST: Reworked the note editor into a single workbench so desktop `Source`, `Split`, and `Preview` modes switch inside one shell while continuing to render preview through the shared note markdown renderer.
+- 2026-03-21 17:49 KST: Added dedicated `@ui-note-editor-modes` Playwright coverage for desktop mode switching plus mobile non-regression, and updated existing editor UI assertions away from the removed standalone preview panel.
+- 2026-03-21 18:00 KST: Refined source-pane focus restoration after returning from `Preview` so mode switching stays stable in the full suite, then passed `npm run test:e2e -- --grep @ui-note-editor-modes` and `npm run verify`.
+- 2026-03-21 18:09 KST: Tightened post-edit caret restoration with a layout effect so intercepted markdown edits keep the cursor stable after mode switches, aligned the tagged mode test with the documented list-continuation behavior, and repassed `npm run test:e2e -- --grep @ui-note-editor-modes` plus `npm run verify`.

@@ -689,3 +689,33 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T173505-046-note-editor-toolbar-and-shortcuts/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T173505-046-note-editor-toolbar-and-shortcuts/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 046-note-editor-toolbar-and-shortcuts -> 047-note-editor-view-modes
+- backlog: rendered current=047-note-editor-view-modes
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxoooooooooooooo
+- cycle: finished
+
+### cycle 2026-03-21T17:48:19+09:00 task=047-note-editor-view-modes
+- artifacts: state/artifacts/20260321T174819-047-note-editor-view-modes
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T174819-047-note-editor-view-modes/worker.jsonl
+- worker-summary: Implemented the desktop view modes in [note-editor.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/components/note-editor.tsx) and [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css). The editor is now one integrated workbench with `Source`, `Split`, and `Preview` toggles on desktop, split stays the default drafting mode, preview still uses the shared note renderer, and returning from preview restores source focus/selection so switching stays stable.
+- evaluator: started
+- evaluator: status=not_done promotion=false Deterministic checks failed; task is not ready for promotion. -> state/artifacts/20260321T174819-047-note-editor-view-modes/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T174819-047-note-editor-view-modes/npm-run-verify-next-server.log
+- commit: commit: skipped (deterministic checks not passing)
+- promote: Task 047-note-editor-view-modes not eligible for promotion.
+- backlog: rendered current=047-note-editor-view-modes
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxoooooooooooooox
+- cycle: finished
+
+### cycle 2026-03-21T18:02:39+09:00 task=047-note-editor-view-modes
+- artifacts: state/artifacts/20260321T180239-047-note-editor-view-modes
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T180239-047-note-editor-view-modes/worker.jsonl
+- worker-summary: Adjusted the editor-mode slice in [note-editor.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/components/note-editor.tsx) so intercepted markdown edits restore caret and selection after render, which keeps typing stable when owners switch back from `Preview` and continue drafting in `Source` or `Split`. I also aligned the task-scoped Playwright flow in [ui-note-editor-modes.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-note-editor-modes.spec.ts) with the documented list-continuation behavior, and appended the task log in [047-note-editor-view-modes.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/047-note-editor-view-modes.md).
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T180239-047-note-editor-view-modes/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T180239-047-note-editor-view-modes/npm-run-verify-next-server.log

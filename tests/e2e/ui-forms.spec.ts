@@ -208,27 +208,34 @@ async function expectLoginHierarchy(page: Page, viewport: "desktop" | "mobile") 
 async function expectEditorHierarchy(page: Page, viewport: "desktop" | "mobile") {
   const intro = page.locator(".note-editor-intro .ui-intro-block");
   const form = page.locator(".note-form");
-  const preview = page.locator(".note-preview-panel");
+  const sourcePane = page.getByTestId("note-editor-source-pane");
+  const previewPane = page.getByTestId("note-editor-preview-pane");
 
-  const [introBox, formBox, previewBox] = await Promise.all([intro.boundingBox(), form.boundingBox(), preview.boundingBox()]);
+  const [introBox, formBox, previewBox, sourceBox] = await Promise.all([
+    intro.boundingBox(),
+    form.boundingBox(),
+    previewPane.boundingBox(),
+    sourcePane.boundingBox()
+  ]);
 
   expect(introBox).not.toBeNull();
   expect(formBox).not.toBeNull();
   expect(previewBox).not.toBeNull();
+  expect(sourceBox).not.toBeNull();
 
-  if (!introBox || !formBox || !previewBox) {
+  if (!introBox || !formBox || !previewBox || !sourceBox) {
     return;
   }
 
   expect(introBox.height).toBeLessThan(viewport === "desktop" ? 240 : 425);
 
   if (viewport === "desktop") {
-    expect(formBox.x).toBeLessThan(previewBox.x);
-    expect(formBox.width).toBeGreaterThan(previewBox.width);
+    expect(sourceBox.x).toBeLessThan(previewBox.x);
+    expect(sourceBox.width).toBeGreaterThan(previewBox.width);
     return;
   }
 
-  expect(previewBox.y).toBeGreaterThan(formBox.y);
+  expect(previewBox.y).toBeGreaterThan(sourceBox.y);
 }
 
 test.describe.configure({ mode: "serial" });
@@ -284,7 +291,8 @@ test("@ui-regression @ui-forms note editor keeps hierarchy on desktop", async ({
   await expect(page.getByRole("heading", { name: "Edit draft note" })).toBeVisible();
   await expect(page.getByText("AI note metadata")).toBeVisible();
   await expect(page.locator(".note-form .section-heading").filter({ hasText: "Draft" })).toBeVisible();
-  await expect(page.locator(".note-preview-panel .section-heading").filter({ hasText: "Preview" })).toBeVisible();
+  await expect(page.getByTestId("note-editor-mode-switcher")).toBeVisible();
+  await expect(page.getByTestId("note-editor-preview-pane")).toContainText("Preview");
   await expect(page.getByTestId("note-markdown-preview")).toContainText("Compact editing surfaces should feel like working tools.");
   await expectEditorHierarchy(page, "desktop");
   await expectAccessibleStructure(page);

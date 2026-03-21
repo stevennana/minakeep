@@ -985,9 +985,11 @@ textarea {
 
 .note-editor-toolbar,
 .note-editor-toolbar-header,
+.note-editor-toolbar-row,
 .note-editor-statusbar,
 .note-editor-toolbar-copy,
-.note-editor-toolbar-controls {
+.note-editor-toolbar-controls,
+.note-editor-mode-switcher {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
@@ -1001,6 +1003,10 @@ textarea {
 }
 
 .note-editor-toolbar-header {
+  justify-content: space-between;
+}
+
+.note-editor-toolbar-row {
   justify-content: space-between;
 }
 
@@ -1029,6 +1035,11 @@ textarea {
 }
 
 .note-editor-toolbar-controls {
+  gap: 0.45rem;
+}
+
+.note-editor-mode-switcher {
+  display: none;
   gap: 0.45rem;
 }
 
@@ -1074,6 +1085,67 @@ textarea {
   padding: 0.35rem 0.65rem;
 }
 
+.note-editor-mode-toggle {
+  align-items: center;
+  background: rgba(241, 245, 249, 0.9);
+  border: 1px solid rgba(100, 116, 139, 0.18);
+  border-radius: var(--radius-pill);
+  color: var(--ink-muted);
+  cursor: pointer;
+  display: inline-flex;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 700;
+  justify-content: center;
+  letter-spacing: 0.14em;
+  min-height: 2.5rem;
+  padding: 0.55rem 0.85rem;
+  text-transform: uppercase;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease,
+    transform 140ms ease,
+    box-shadow 140ms ease;
+}
+
+.note-editor-mode-toggle:hover {
+  background: rgba(255, 255, 255, 0.96);
+  border-color: rgba(50, 72, 99, 0.22);
+  color: var(--accent-strong);
+}
+
+.note-editor-mode-toggle:focus-visible {
+  outline: 2px solid rgba(50, 72, 99, 0.28);
+  outline-offset: 2px;
+}
+
+.note-editor-mode-toggle-active {
+  background: rgba(50, 72, 99, 0.11);
+  border-color: rgba(50, 72, 99, 0.22);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78);
+  color: var(--accent-strong);
+}
+
+.note-editor-workbench-body,
+.note-editor-pane,
+.note-editor-preview-frame,
+.note-editor-preview-head {
+  display: grid;
+}
+
+.note-editor-workbench-body {
+  gap: 0;
+}
+
+.note-editor-pane {
+  min-width: 0;
+}
+
+.note-editor-pane-hidden {
+  display: none;
+}
+
 .note-editor-surface {
   background:
     linear-gradient(180deg, rgba(248, 250, 252, 0.86), rgba(241, 245, 249, 0.98)),
@@ -1081,6 +1153,54 @@ textarea {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   min-height: clamp(21rem, 48vh, 28rem);
+}
+
+.note-editor-preview-frame {
+  background:
+    linear-gradient(180deg, rgba(252, 253, 255, 0.92), rgba(241, 245, 249, 0.98)),
+    rgba(255, 255, 255, 0.96);
+  border-top: 1px solid rgba(100, 116, 139, 0.12);
+  gap: var(--space-4);
+  min-height: clamp(21rem, 48vh, 28rem);
+  padding: 1rem 1.15rem 1.25rem;
+}
+
+.note-editor-preview-head {
+  align-items: center;
+  border-bottom: 1px solid rgba(100, 116, 139, 0.12);
+  gap: 0.9rem;
+  grid-template-columns: minmax(0, 1fr);
+  padding-bottom: 0.9rem;
+}
+
+.note-editor-preview-head strong {
+  color: var(--accent-strong);
+  display: block;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  letter-spacing: 0.16em;
+  margin-bottom: 0.2rem;
+  text-transform: uppercase;
+}
+
+.note-editor-preview-head span,
+.note-editor-preview-mode-note {
+  color: var(--ink-muted);
+  font-size: var(--text-sm);
+}
+
+.note-editor-preview-mode-note {
+  justify-self: start;
+}
+
+.note-editor-pane-preview h2 {
+  font-size: clamp(1.4rem, 2.35vw, 1.9rem);
+  line-height: 1.02;
+  margin: 0;
+}
+
+.note-editor-pane-preview .markdown-preview {
+  min-height: 0;
 }
 
 .note-editor-gutter {
@@ -2136,11 +2256,30 @@ textarea {
   }
 
   .note-editor-grid {
-    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .note-editor-toolbar-controls {
     justify-content: flex-start;
+  }
+
+  .note-editor-mode-switcher {
+    display: inline-flex;
+    justify-content: flex-end;
+  }
+
+  .note-editor-workbench-body-split {
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  }
+
+  .note-editor-preview-frame {
+    border-left: 1px solid rgba(100, 116, 139, 0.12);
+    border-top: 0;
+  }
+
+  .note-editor-preview-head {
+    align-items: end;
+    grid-template-columns: minmax(0, 1fr) auto;
   }
 
   .note-list-item {
