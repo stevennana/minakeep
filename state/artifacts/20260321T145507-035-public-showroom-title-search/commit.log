@@ -1,0 +1,13 @@
+[main 91a1e77] ralph: 035-public-showroom-title-search 2026-03-21T15:14:00+09:00
+ 29 files changed, 1649 insertions(+), 232 deletions(-)
+ rename docs/exec-plans/{active => completed}/034-public-showroom-shell-cleanup.md (92%)
+ create mode 100644 src/features/public-content/components/public-showroom.tsx
+ create mode 100644 state/artifacts/20260321T144732-034-public-showroom-shell-cleanup/backlog.log
+ create mode 100644 state/artifacts/20260321T144732-034-public-showroom-shell-cleanup/promote.log
+ create mode 100644 state/artifacts/20260321T145507-035-public-showroom-title-search/commit.log
+ create mode 100644 state/artifacts/20260321T145507-035-public-showroom-title-search/evaluator.log
+ create mode 100644 state/artifacts/20260321T145507-035-public-showroom-title-search/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260321T145507-035-public-showroom-title-search/task-prompt.log
+ create mode 100644 state/artifacts/20260321T145507-035-public-showroom-title-search/worker.jsonl
+ create mode 100644 tests/e2e/public-home-search.spec.ts
+commit: created

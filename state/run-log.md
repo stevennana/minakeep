@@ -520,3 +520,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Task 035 is complete in substance. The homepage now renders one unified live search input on `/` via the client showroom component, filters the mixed published feed in place using `item.title` only, and continues to source data from published-note and published-link queries only. The active plan and public search spec match the shipped behavior, and the recorded `npm run verify` run passed. -> state/artifacts/20260321T145507-035-public-showroom-title-search/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T145507-035-public-showroom-title-search/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 035-public-showroom-title-search -> 036-public-link-new-tab-behavior
+- backlog: rendered current=036-public-link-new-tab-behavior
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooo
+- cycle: finished
+
+### cycle 2026-03-21T15:14:30+09:00 task=036-public-link-new-tab-behavior
+- artifacts: state/artifacts/20260321T151430-036-public-link-new-tab-behavior
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T151430-036-public-link-new-tab-behavior/worker.jsonl
+- worker-summary: Public link cards on `/` now behave as lightweight external references. [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/page.tsx) filters out any published link whose URL is not `http` or `https` before it reaches the public showroom, and [public-showroom.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/public-content/components/public-showroom.tsx) adds a visible `Opens in new tab` affordance while keeping the saved external URL as the public target.
+- evaluator: started
+- evaluator: status=done promotion=true Task 036 appears complete in substance. The public homepage now suppresses non-http/https published links before rendering, published link cards keep the saved external URL as the public target with `_blank` plus `rel="noopener noreferrer"`, and the public UI adds an explicit new-tab affordance. E2E coverage now verifies an actual popup to the saved URL and confirms an unsafe published URL stays off `/`. The provided deterministic run shows `npm run verify` passing. -> state/artifacts/20260321T151430-036-public-link-new-tab-behavior/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T151430-036-public-link-new-tab-behavior/npm-run-verify-next-server.log

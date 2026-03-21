@@ -54,6 +54,14 @@ const seededPublishedLinks = [
   }
 ] as const;
 
+const seededUnsafePublishedLink = {
+  title: "Unsafe script bookmark",
+  url: "javascript:alert('xss')",
+  summary: "This should never render on the public homepage, even if the database contains it.",
+  publishedAt: new Date("2024-06-08T09:30:00.000Z"),
+  tags: ["unsafe"]
+} as const;
+
 const seededUnpublishedNote = {
   title: "Needle hidden draft",
   slug: "needle-hidden-draft",
@@ -152,6 +160,30 @@ async function seedPublicSearchContent() {
       }
     });
   }
+
+  await prisma.link.create({
+    data: {
+      ownerId: owner.id,
+      title: seededUnsafePublishedLink.title,
+      url: seededUnsafePublishedLink.url,
+      summary: seededUnsafePublishedLink.summary,
+      enrichmentStatus: "ready",
+      isPublished: true,
+      publishedAt: seededUnsafePublishedLink.publishedAt,
+      createdAt: seededUnsafePublishedLink.publishedAt,
+      updatedAt: seededUnsafePublishedLink.publishedAt,
+      tags: {
+        connectOrCreate: seededUnsafePublishedLink.tags.map((tag) => ({
+          where: {
+            name: tag
+          },
+          create: {
+            name: tag
+          }
+        }))
+      }
+    }
+  });
 }
 
 test.beforeEach(async () => {
@@ -173,6 +205,7 @@ test("public homepage live search filters mixed published content by title only"
   await expect(showroomCards).toHaveCount(seededPublishedNotes.length + seededPublishedLinks.length);
   await expect(page.getByRole("link", { name: seededPublishedNotes[0].title })).toBeVisible();
   await expect(page.getByRole("link", { name: seededPublishedLinks[0].title })).toBeVisible();
+  await expect(page.getByRole("link", { name: seededUnsafePublishedLink.title })).toHaveCount(0);
 
   await searchInput.fill("NEEDLE");
 

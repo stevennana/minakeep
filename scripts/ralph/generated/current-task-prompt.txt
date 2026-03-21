@@ -1,35 +1,36 @@
 Read the following repository documents before making changes:
 - AGENTS.md
 - docs/FRONTEND.md
-- docs/product-specs/public-showroom-search.md
-- docs/exec-plans/active/035-public-showroom-title-search.md
+- docs/product-specs/public-link-publishing.md
+- docs/SECURITY.md
+- docs/exec-plans/active/036-public-link-new-tab-behavior.md
 
-Current task id: 035-public-showroom-title-search
-Current task title: Public showroom title search
+Current task id: 036-public-link-new-tab-behavior
+Current task title: Public link new-tab behavior
 
 Objective:
-Add one unified title-only live search bar for the mixed public showroom.
+Ensure published link cards open the saved external URL in a new tab with safe public behavior.
 
 Scope:
-- one public search input on `/`
-- live in-place filtering of published notes and published links
-- title-only matching
+- external-link new-tab behavior
+- public link-card affordance for external navigation
+- preserve safe protocol handling and public/private boundaries
 
 Out of scope:
-- owner search changes
-- public full-text search
-- separate public results routes
+- public link detail pages
+- typography tuning
+- owner shell changes
 
 Exit criteria:
-1. The public homepage exposes one unified search bar without a type selector.
-2. The search filters published notes and published links by title only.
+1. Clicking a published link card opens the external destination in a new tab.
+2. Public link behavior stays consistent with the existing safe URL rules.
 3. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
 
 Evaluator notes:
-Promote only when the public search behavior is lightweight, predictable, and does not broaden beyond title-only matching.
+Promote only when published links behave like lightweight public reference items rather than pseudo-note pages.
 
 Required repository artifacts for this task:
 - src/app/page.tsx

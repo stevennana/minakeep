@@ -23,3 +23,4 @@
 - 2026-03-21T04:30:04.270Z: promoted 030-ui-hardening-and-regression -> NONE
 - 2026-03-21T05:47:01.867Z: promoted 031-public-publishing-foundation -> 034-public-showroom-shell-cleanup
 - 2026-03-21T05:54:37.713Z: promoted 034-public-showroom-shell-cleanup -> 035-public-showroom-title-search
+- 2026-03-21T06:14:00.685Z: promoted 035-public-showroom-title-search -> 036-public-link-new-tab-behavior

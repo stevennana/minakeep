@@ -1,5 +1,6 @@
 import "dotenv/config";
 
+import type { Route } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 
 import { setAiPlaywrightTestMode } from "./ai-test-mode";
@@ -229,6 +230,13 @@ test("owner can publish and unpublish a link across the public homepage", async 
   const uniqueId = `${Date.now()}`;
   const title = `Published link ${uniqueId}`;
   const url = `https://example.com/published-link-${uniqueId}`;
+  const popupRoute = async (route: Route) => {
+    await route.fulfill({
+      body: "<!doctype html><html><head><title>Published link target</title></head><body>Published link target</body></html>",
+      contentType: "text/html",
+      status: 200
+    });
+  };
 
   await setAiPlaywrightTestMode("success");
 
@@ -264,6 +272,16 @@ test("owner can publish and unpublish a link across the public homepage", async 
     await expect(publicLink).toHaveAttribute("href", url);
     await expect(publicLink).toHaveAttribute("target", "_blank");
     await expect(publicLink).toHaveAttribute("rel", /noopener/);
+    await expect(publicLinkEntry).toContainText("Opens in new tab");
+
+    await page.context().route(url, popupRoute);
+    const popupPromise = page.waitForEvent("popup");
+    await publicLink.click();
+    const popup = await popupPromise;
+    await expect(popup).toHaveURL(url);
+    await expect(popup).toHaveTitle("Published link target");
+    await popup.close();
+    await page.context().unroute(url, popupRoute);
 
     await page.goto("/app/links");
     await savedLinkEntry.getByRole("button", { name: "Unpublish link" }).click();
@@ -274,6 +292,7 @@ test("owner can publish and unpublish a link across the public homepage", async 
     await page.goto("/");
     await expect(page.getByRole("link", { name: title })).toHaveCount(0);
   } finally {
+    await page.context().unroute(url, popupRoute).catch(() => undefined);
     await setAiPlaywrightTestMode("passthrough");
   }
 });

@@ -113,6 +113,7 @@ function PublishedContentPreviewCard({ item }: { item: PublicShowroomItem }) {
       </div>
       <MetadataRow className="note-preview-card-meta">
         <span>{isNote ? "Published note" : "Published link"}</span>
+        {!isNote ? <span>Opens in new tab</span> : null}
         <span>{item.publishedAtLabel}</span>
       </MetadataRow>
       <TagList aria-label={isNote ? "Published note tags" : "Published link tags"} className="note-preview-card-tags">

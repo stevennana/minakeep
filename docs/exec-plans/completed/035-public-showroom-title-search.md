@@ -5,7 +5,7 @@
   "id": "035-public-showroom-title-search",
   "title": "Public showroom title search",
   "order": 35,
-  "status": "active",
+  "status": "completed",
   "next_task_on_success": "036-public-link-new-tab-behavior",
   "prompt_docs": [
     "AGENTS.md",
@@ -23,7 +23,8 @@
     "Search still requires a type selector or a separate public results route.",
     "The filter matches summary/body content instead of title only.",
     "Unpublished content leaks into public search results."
-  ]
+  ],
+  "completed_at": "2026-03-21T06:14:00.685Z"
 }
 ```
 
@@ -63,3 +64,4 @@ Promote only when the public search behavior is lightweight, predictable, and do
 - 2026-03-21 15:00 KST: Added a client-side public showroom filter on `/` that matches published note and link titles only while keeping the server data source limited to published content.
 - 2026-03-21 15:00 KST: Added focused Playwright coverage for unified live homepage filtering, including title-only matching and unpublished-content exclusion.
 - 2026-03-21 15:10 KST: Hardened public UI regression seeds against cross-test link leakage, refreshed the affected mobile home-shell snapshot, and confirmed `npm run verify` passes.
+- 2026-03-21T06:14:00.685Z: automatically promoted after deterministic checks and evaluator approval.
