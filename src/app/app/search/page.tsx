@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { Button, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
 import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pending-refresh";
 import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
 import { searchOwnerContent } from "@/features/search/service";
@@ -23,7 +24,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   return (
     <div className="feature-layout">
       <EnrichmentPendingRefresh enabled={hasPendingResults} />
-      <section className="hero-card">
+      <Surface tone="hero">
         <p className="eyebrow">Owner search</p>
         <h1>Search private titles, URLs, and tags.</h1>
         <p className="lede">
@@ -43,13 +44,10 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             <span>{results.query ? `${resultCount} match${resultCount === 1 ? "" : "es"}` : "Run a query to inspect the vault"}</span>
           </div>
         </div>
-      </section>
+      </Surface>
 
-      <form action="/app/search" className="panel-card search-form" role="search">
-        <div className="section-heading">
-          <strong>Search the private vault</strong>
-          <span className="section-meta">Owner-only retrieval</span>
-        </div>
+      <Surface action="/app/search" as="form" className="search-form" role="search" tone="panel">
+        <SectionHeading meta="Owner-only retrieval" title="Search the private vault" />
         <label className="field-group">
           <span>Query</span>
           <input
@@ -62,19 +60,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           />
         </label>
         <div className="button-row">
-          <button className="primary-button" type="submit">
-            Search
-          </button>
+          <Button type="submit">Search</Button>
         </div>
-      </form>
+      </Surface>
 
       {results.query ? (
         <div className="retrieval-grid">
-          <section className="panel-card">
-            <div className="section-heading">
-              <strong>Matching notes</strong>
-              <span className="section-meta">{results.notes.length} result{results.notes.length === 1 ? "" : "s"}</span>
-            </div>
+          <Surface tone="panel">
+            <SectionHeading meta={`${results.notes.length} result${results.notes.length === 1 ? "" : "s"}`} title="Matching notes" />
             {results.notes.length === 0 ? (
               <p>No private notes matched this query.</p>
             ) : (
@@ -82,39 +75,36 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 {results.notes.map((note) => (
                   <article className="note-list-item" key={note.id}>
                     <div>
-                      <div className="note-meta note-meta-leading">
+                      <MetadataRow leading>
                         <span>{note.isPublished ? "Published" : "Draft"}</span>
                         <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(note.updatedAt)}</span>
-                      </div>
+                      </MetadataRow>
                       <Link className="note-list-link" href={`/app/notes/${note.id}/edit`}>
                         {note.title}
                       </Link>
                       <p>{note.excerpt || "Empty draft"}</p>
                       {note.summary ? <p className="note-generated-summary">AI summary: {note.summary}</p> : null}
                       <EnrichmentStatusBlock state={note.enrichment} />
-                      <div className="tag-list" aria-label="Note tags">
+                      <TagList aria-label="Note tags">
                         {note.tags.length === 0 ? (
-                          <span className="tag-pill tag-pill-muted">No generated tags</span>
+                          <TagChip muted>No generated tags</TagChip>
                         ) : (
                           note.tags.map((tag) => (
-                            <span className="tag-pill" key={tag.id}>
+                            <TagChip key={tag.id}>
                               {tag.name}
-                            </span>
+                            </TagChip>
                           ))
                         )}
-                      </div>
+                      </TagList>
                     </div>
                   </article>
                 ))}
               </div>
             )}
-          </section>
+          </Surface>
 
-          <section className="panel-card">
-            <div className="section-heading">
-              <strong>Matching links</strong>
-              <span className="section-meta">{results.links.length} result{results.links.length === 1 ? "" : "s"}</span>
-            </div>
+          <Surface tone="panel">
+            <SectionHeading meta={`${results.links.length} result${results.links.length === 1 ? "" : "s"}`} title="Matching links" />
             {results.links.length === 0 ? (
               <p>No private links matched this query.</p>
             ) : (
@@ -122,9 +112,9 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 {results.links.map((link) => (
                   <article className="link-list-item" key={link.id}>
                     <div className="link-list-heading">
-                      <div className="note-meta note-meta-leading">
+                      <MetadataRow leading>
                         <span>Private link</span>
-                      </div>
+                      </MetadataRow>
                       <a className="note-list-link" href={link.url} rel="noopener noreferrer" target="_blank">
                         {link.title}
                       </a>
@@ -141,38 +131,35 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                     </div>
                     <div className="note-generated-copy">
                       <strong>AI tags</strong>
-                      <div className="tag-list" aria-label="Link tags">
+                      <TagList aria-label="Link tags">
                         {link.tags.length === 0 ? (
-                          <span className="tag-pill tag-pill-muted">No generated tags yet</span>
+                          <TagChip muted>No generated tags yet</TagChip>
                         ) : (
                           link.tags.map((tag) => (
-                            <span className="tag-pill" key={tag.id}>
+                            <TagChip key={tag.id}>
                               {tag.name}
-                            </span>
+                            </TagChip>
                           ))
                         )}
-                      </div>
+                      </TagList>
                     </div>
                     <div className="link-list-footer">
-                      <div className="note-meta">
+                      <MetadataRow>
                         <span>Updated</span>
                         <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(link.updatedAt)}</span>
-                      </div>
+                      </MetadataRow>
                     </div>
                   </article>
                 ))}
               </div>
             )}
-          </section>
+          </Surface>
         </div>
       ) : (
-        <section className="panel-card">
-          <div className="section-heading">
-            <strong>Search scope</strong>
-            <span className="section-meta">v1 boundaries</span>
-          </div>
+        <Surface tone="panel">
+          <SectionHeading meta="v1 boundaries" title="Search scope" />
           <p>Search matches note titles, link titles, link URLs, and shared tag names. Note bodies and link summaries stay out of scope in v1.</p>
-        </section>
+        </Surface>
       )}
     </div>
   );

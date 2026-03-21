@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { useFormStatus } from "react-dom";
 
+import { Button, ButtonLink, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
 import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pending-refresh";
 import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
 import type { EnrichmentState } from "@/features/enrichment/types";
@@ -35,9 +35,9 @@ function SaveButton({ label }: { label: string }) {
   const { pending } = useFormStatus();
 
   return (
-    <button className="primary-button" type="submit">
+    <Button type="submit">
       {pending ? "Saving..." : label}
-    </button>
+    </Button>
   );
 }
 
@@ -45,9 +45,9 @@ function PublicationButton({ idleLabel, pendingLabel }: { idleLabel: string; pen
   const { pending } = useFormStatus();
 
   return (
-    <button className="ghost-button" type="submit">
+    <Button type="submit" variant="ghost">
       {pending ? pendingLabel : idleLabel}
-    </button>
+    </Button>
   );
 }
 
@@ -55,9 +55,9 @@ function RetryButton() {
   const { pending } = useFormStatus();
 
   return (
-    <button className="ghost-button" type="submit">
+    <Button type="submit" variant="ghost">
       {pending ? "Retrying..." : "Retry AI enrichment"}
-    </button>
+    </Button>
   );
 }
 
@@ -83,7 +83,7 @@ export function NoteEditor({
   return (
     <div className="note-editor-shell">
       <EnrichmentPendingRefresh enabled={enrichment?.status === "pending"} />
-      <section className="hero-card note-editor-intro">
+      <Surface className="note-editor-intro" tone="hero">
         <p className="eyebrow">Private note authoring</p>
         <h1>{formTitle}</h1>
         <p className="lede">{formDescription}</p>
@@ -103,10 +103,10 @@ export function NoteEditor({
         </div>
         {publication ? (
           <div className="publication-panel">
-            <div className="note-meta">
+            <MetadataRow>
               <span>{publication.isPublished ? "Published" : "Private draft"}</span>
               <span>{publication.isPublished ? "Visible on public routes" : "Hidden from public routes"}</span>
-            </div>
+            </MetadataRow>
             <div className="button-row">
               {publication.isPublished ? (
                 <form action={publication.unpublishAction}>
@@ -118,22 +118,19 @@ export function NoteEditor({
                 </form>
               )}
               {publication.isPublished ? (
-                <Link className="ghost-button" href={publication.publicHref}>
+                <ButtonLink href={publication.publicHref} variant="ghost">
                   View public note
-                </Link>
+                </ButtonLink>
               ) : null}
             </div>
           </div>
         ) : null}
         {savedNotice ? <p className="status-note">{savedNotice}</p> : null}
-      </section>
+      </Surface>
 
       {enrichment ? (
-        <section className="panel-card note-generated-panel" data-testid="note-enrichment-panel">
-          <div className="section-heading">
-            <strong>AI note metadata</strong>
-            <span className="section-meta">Secondary to authored content</span>
-          </div>
+        <Surface className="note-generated-panel" data-testid="note-enrichment-panel" tone="panel">
+          <SectionHeading meta="Secondary to authored content" title="AI note metadata" />
           <EnrichmentStatusBlock state={enrichment} />
           <div className="note-generated-copy">
             <strong>AI summary</strong>
@@ -145,32 +142,29 @@ export function NoteEditor({
           </div>
           <div className="note-generated-copy">
             <strong>AI tags</strong>
-            <div className="tag-list" data-testid="note-ai-tags">
+            <TagList data-testid="note-ai-tags">
               {generatedTags.length === 0 ? (
-                <span className="tag-pill tag-pill-muted">No generated tags yet</span>
+                <TagChip muted>No generated tags yet</TagChip>
               ) : (
                 generatedTags.map((tag) => (
-                  <span className="tag-pill" key={tag.id}>
+                  <TagChip key={tag.id}>
                     {tag.name}
-                  </span>
+                  </TagChip>
                 ))
               )}
-            </div>
+            </TagList>
           </div>
           {enrichment.status === "failed" && retryAction ? (
             <form action={retryAction}>
               <RetryButton />
             </form>
           ) : null}
-        </section>
+        </Surface>
       ) : null}
 
       <div className="note-editor-grid">
-        <form action={action} className="panel-card note-form">
-          <div className="section-heading">
-            <strong>Draft</strong>
-            <span className="section-meta">Title and markdown body</span>
-          </div>
+        <Surface action={action} as="form" className="note-form" tone="panel">
+          <SectionHeading meta="Title and markdown body" title="Draft" />
           <label className="field-group">
             <span>Title</span>
             <input
@@ -202,13 +196,10 @@ Use markdown for headings, lists, links, and code.`}
           <div className="button-row">
             <SaveButton label={submitLabel} />
           </div>
-        </form>
+        </Surface>
 
-        <section aria-labelledby="note-preview-heading" className="panel-card note-preview-panel">
-          <div className="section-heading">
-            <strong>Preview</strong>
-            <span className="section-meta">Rendered markdown</span>
-          </div>
+        <Surface aria-labelledby="note-preview-heading" className="note-preview-panel" tone="panel">
+          <SectionHeading meta="Rendered markdown" title="Preview" />
           <h2 id="note-preview-heading">{previewTitle}</h2>
           <div
             className="markdown-preview"
@@ -217,7 +208,7 @@ Use markdown for headings, lists, links, and code.`}
               __html: previewHtml || "<p>Start writing to see the rendered preview.</p>"
             }}
           />
-        </section>
+        </Surface>
       </div>
     </div>
   );

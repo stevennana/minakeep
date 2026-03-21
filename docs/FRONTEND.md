@@ -8,10 +8,11 @@ Describe the user-facing structure of Minakeep so an agent can implement the UI 
 - TypeScript
 - App Router
 - server-backed data flows where appropriate
+- reusable presentational components layered above existing route and feature logic
 
 ## Route Map
-- `/` -> public homepage listing published notes
-- `/notes/[slug]` -> public published-note page
+- `/` -> public homepage showroom of published notes
+- `/notes/[slug]` -> public published-note reading page
 - `/login` -> owner sign-in
 - `/app` -> private notes-first dashboard shell
 - `/app/notes/new` -> create note
@@ -22,40 +23,42 @@ Describe the user-facing structure of Minakeep so an agent can implement the UI 
 
 ## Primary Screens
 ### Public homepage
-Shows published notes only, newest first, with title, AI-generated summary when available, tags, and updated date.
+Acts as a note showroom first. It should emphasize a dynamic grid of note previews with varied heights, compact metadata, and restrained framing.
 
 ### Public note page
-Renders one published markdown note by slug, with authored body remaining primary and AI-generated metadata secondary when present.
+Prioritizes reading comfort with narrower measure, clearer hierarchy, quieter metadata, and supporting AI summary/tags.
 
 ### Owner login
-Simple credentials form for the single owner account.
+Simple credentials screen with reduced visual bulk and cleaner desktop/mobile balance.
 
 ### Private dashboard
-Notes-first shell with fast links into note creation, link management, tags, search, and visible AI enrichment state.
+Compact professional workspace with slimmer navigation, tighter lists, and more visible note content above the fold on desktop.
 
-### Note editor
-Textarea-based markdown editing with preview, plus visible AI-generated summary/tag state after save.
+### Note editor and owner forms
+Smaller typographic hierarchy, reduced padding, and reusable form/layout primitives without changing existing logic flows.
 
-### Link manager
-Manual bookmark form for URL/title capture plus private list view with AI-generated summary/tag state.
+### Links, tags, and search
+Secondary owner surfaces should inherit the same density and responsive behavior as the dashboard rather than looking like oversized standalone cards.
 
 ## UI Rules
-- keep public reading calm and legible rather than dashboard-like
-- keep the private area functional and notes-first
-- use one elegant knowledge-studio visual language across public and private surfaces
-- AI metadata should be visible and useful, but it should not visually overpower authored note content
-- do not introduce AI chat affordances, collaboration affordances, or media upload UI in this wave
+- keep public reading calm, clear, and note-first
+- use a cool monochrome studio palette rather than the current warm paper atmosphere
+- keep headings materially smaller than the current implementation
+- prefer a dynamic but controlled grid rhythm over rigid equal-height card walls
+- keep the owner workspace compact and professional on desktop
+- build reusable design primitives and CSS tokens so style changes do not require route-level logic edits
+- make mobile layouts easy to scan and operate with one hand
 
 ## Search / Share / Admin Notes
-- search is owner-only in v1
-- tags are shared across notes and links
-- links stay private even when notes can be public
-- publishing is a note-level decision, not a site-wide mode switch
-- AI-generated summary and tags appear across relevant owner surfaces, and public note listings may use generated summary where available
+- search remains owner-only
+- tags remain shared across notes and links
+- links remain private even when notes can be public
+- publishing remains a note-level decision, not a site-wide mode switch
+- AI metadata remains visible but visually secondary to authored content
 
 ## Frontend Non-Goals for v1
 - public search UI
 - rich-text editor tooling
-- attachment or upload interfaces
-- collaborative presence or sharing controls beyond note publishing
-- ask-your-vault chat UI
+- attachment/upload interfaces
+- cloned Karakeep layout or branding
+- route-specific one-off styling that bypasses the shared design system without strong reason

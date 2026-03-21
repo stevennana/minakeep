@@ -1,55 +1,53 @@
 Read the following repository documents before making changes:
 - AGENTS.md
-- ARCHITECTURE.md
-- docs/QUALITY_SCORE.md
-- docs/RELIABILITY.md
-- docs/SECURITY.md
-- docs/exec-plans/active/020-ai-ui-hardening.md
+- docs/DESIGN.md
+- docs/FRONTEND.md
+- docs/design-docs/cool-monochrome-visual-system.md
+- docs/design-docs/responsive-ui-rules.md
+- docs/references/ui-verification-contract.md
+- docs/exec-plans/active/021-ui-design-system-foundation.md
 
-Current task id: 020-ai-ui-hardening
-Current task title: AI and UI hardening
+Current task id: 021-ui-design-system-foundation
+Current task title: UI design-system foundation
 
 Objective:
-Stabilize the AI enrichment wave and the knowledge-studio UI so the repo is ready for the next tranche after this expansion.
+Introduce the reusable design-system layer for the next UI wave so later route-level redesign tasks can focus on composition instead of restyling everything ad hoc.
 
 Scope:
-- tighten AI failure handling, retry behavior, and external-env documentation
-- reconcile reliability, security, and quality docs with the shipped AI/UI behavior
-- close obvious visual inconsistencies left by the redesign
-- keep Ralph operator guidance aligned with the new promotion gates
+- define shared design tokens for color, type scale, spacing, radius, and shadows
+- introduce reusable presentation primitives for shells, panels, cards, metadata rows, tags, and button variants
+- set the cool monochrome base and smaller typography scale
+- keep route and feature logic intact
 
 Out of scope:
-- new major product features
-- AI chat
-- unrelated infrastructure expansion
+- homepage-specific composition work
+- owner-specific layout restructuring
+- route-level content hierarchy changes beyond what the shared system needs
 
 Exit criteria:
-1. `npm run verify` passes.
-2. `npm run test:e2e -- --grep @ai-real` passes when the AI env vars are configured.
-3. `npm run start:smoke` passes.
-4. Reliability, security, and quality docs match the shipped AI/UI behavior.
-5. Remaining debt is explicit.
+1. The repo has a shared visual system encoded in reusable primitives and tokens.
+2. Existing route logic remains intact while presentation becomes easier to restyle centrally.
+3. `npm run test:e2e -- --grep @ui-system` passes with desktop/mobile screenshots, visible hierarchy anchors, and accessibility checks.
+4. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ai-real`
-- `npm run start:smoke`
+- `npm run test:e2e -- --grep @ui-system`
 
 Evaluator notes:
-Promote only when the repo is operationally ready for the next post-AI wave rather than merely visually or narratively complete.
+Promote when the deterministic UI checks pass and later UI tasks can clearly reuse the shared system instead of re-solving basic styling per route.
 
 Required repository artifacts for this task:
-- scripts/ralph/README.md
+- src/app/globals.css
+- src
+- tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ai-real
-- npm run start:smoke
+- npm run test:e2e -- --grep @ui-system
 
 Previous known gaps from the last evaluation:
-- `docs/RELIABILITY.md` says E2E verification stays serial because the suite shares one mutable SQLite runtime state, but `playwright.config.ts` sets `fullyParallel: true` and the recorded run executed `12 tests using 4 workers`.
-- `tests/e2e/home.spec.ts` also claims serial execution keeps promotion checks deterministic, which does not match the actual harness behavior.
-- Until the harness is made serial or the reliability/operator docs are corrected to the real behavior and determinism story, the repo is not fully reconciled for this hardening task.
+- none
 
 Rules:
 - Work only on this task.

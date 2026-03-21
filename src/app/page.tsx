@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { ButtonLink, DetailBlock, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
 import { listPublishedNotes } from "@/features/notes/service";
 
 export default async function HomePage() {
@@ -8,7 +9,7 @@ export default async function HomePage() {
 
   return (
     <div className="feature-layout public-home-layout">
-      <section className="hero-card public-hero">
+      <Surface className="public-hero" tone="hero">
         <div className="hero-copy">
           <p className="eyebrow">Published notes</p>
           <h1>Notes the owner has chosen to share.</h1>
@@ -31,14 +32,11 @@ export default async function HomePage() {
             <span>Draft privately, publish selectively, keep links private</span>
           </div>
         </div>
-      </section>
+      </Surface>
 
       <div className="public-home-grid">
-        <section className="panel-card note-collection-panel">
-          <div className="section-heading">
-            <strong>Published notes</strong>
-            <span className="section-meta">Newest first</span>
-          </div>
+        <Surface className="note-collection-panel" tone="panel">
+          <SectionHeading meta="Newest first" title="Published notes" />
           {notes.length === 0 ? (
             <p>No published notes yet. The public site stays empty until the owner explicitly publishes a note.</p>
           ) : (
@@ -46,57 +44,50 @@ export default async function HomePage() {
               {notes.map((note) => (
                 <article className="note-list-item note-list-item-public" key={note.id}>
                   <div>
-                    <div className="note-meta note-meta-leading">
+                    <MetadataRow leading>
                       <span>Published note</span>
                       <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(note.publishedAt)}</span>
-                    </div>
+                    </MetadataRow>
                     <Link className="note-list-link" href={`/notes/${note.slug}`}>
                       {note.title}
                     </Link>
                     <p>{note.summary || note.excerpt || "Published note"}</p>
-                    <div className="tag-list" aria-label="Published note tags">
+                    <TagList aria-label="Published note tags">
                       {note.tags.length === 0 ? (
-                        <span className="tag-pill tag-pill-muted">No generated tags</span>
+                        <TagChip muted>No generated tags</TagChip>
                       ) : (
                         note.tags.map((tag) => (
-                          <span className="tag-pill" key={tag.id}>
+                          <TagChip key={tag.id}>
                             {tag.name}
-                          </span>
+                          </TagChip>
                         ))
                       )}
-                    </div>
+                    </TagList>
                   </div>
                 </article>
               ))}
             </div>
           )}
-        </section>
+        </Surface>
 
-        <aside className="panel-card public-side-panel">
-          <div className="section-heading">
-            <strong>Owner entrance</strong>
-            <span className="section-meta">Private workflow</span>
-          </div>
+        <Surface as="aside" className="public-side-panel" tone="panel">
+          <SectionHeading meta="Private workflow" title="Owner entrance" />
           <p className="field-note">
             Sign in to draft notes, capture links, review AI-generated summaries and tags, and decide what appears on
             public routes.
           </p>
           <div className="button-row">
-            <Link className="primary-button" href="/login">
-              Owner login
-            </Link>
+            <ButtonLink href="/login">Owner login</ButtonLink>
           </div>
           <div className="detail-stack">
-            <div className="detail-block">
-              <strong>Public side</strong>
+            <DetailBlock title="Public side">
               <p>Published notes only. No anonymous search, no public link listings.</p>
-            </div>
-            <div className="detail-block">
-              <strong>Private side</strong>
+            </DetailBlock>
+            <DetailBlock title="Private side">
               <p>Notes, links, tags, and search stay aligned in one shared knowledge-studio system.</p>
-            </div>
+            </DetailBlock>
           </div>
-        </aside>
+        </Surface>
       </div>
     </div>
   );

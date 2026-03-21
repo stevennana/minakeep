@@ -1,3 +1,5 @@
+import { Surface } from "@/components/ui/primitives";
+
 type FeaturePlaceholderProps = {
   title: string;
   description: string;
@@ -6,7 +8,7 @@ type FeaturePlaceholderProps = {
 
 export function FeaturePlaceholder({ title, description, bullets }: FeaturePlaceholderProps) {
   return (
-    <section className="feature-card">
+    <Surface tone="card">
       <p className="eyebrow">Bootstrap foundation</p>
       <h1>{title}</h1>
       <p className="lede">{description}</p>
@@ -15,6 +17,6 @@ export function FeaturePlaceholder({ title, description, bullets }: FeaturePlace
           <li key={bullet}>{bullet}</li>
         ))}
       </ul>
-    </section>
+    </Surface>
   );
 }

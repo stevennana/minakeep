@@ -4,6 +4,7 @@ import {
   getEnrichmentStatusDetail,
   getEnrichmentStatusLabel
 } from "@/features/enrichment/types";
+import { MetadataRow } from "@/components/ui/primitives";
 
 type EnrichmentStatusBlockProps = {
   state: EnrichmentState;
@@ -16,10 +17,10 @@ export function EnrichmentStatusBlock({
 }: EnrichmentStatusBlockProps) {
   return (
     <div className="enrichment-status-block">
-      <div className="note-meta note-meta-leading">
+      <MetadataRow leading>
         <span>{getEnrichmentStatusLabel(state.status)}</span>
         <span>{getEnrichmentAttemptLabel(state.attempts)}</span>
-      </div>
+      </MetadataRow>
       <p className={detailClassName}>{getEnrichmentStatusDetail(state)}</p>
     </div>
   );

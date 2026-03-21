@@ -1,9 +1,10 @@
+import { Surface } from "@/components/ui/primitives";
 import { VaultNav } from "@/features/navigation/components/vault-nav";
 
 export default function PrivateVaultLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <div className="vault-shell">
-      <section className="vault-frame">
+      <Surface className="vault-frame" tone="shell">
         <div className="vault-frame-header">
           <div className="vault-frame-copy">
             <p className="eyebrow">Private vault</p>
@@ -15,7 +16,7 @@ export default function PrivateVaultLayout({ children }: Readonly<{ children: Re
           <VaultNav />
         </div>
         <div className="vault-frame-body">{children}</div>
-      </section>
+      </Surface>
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
 import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pending-refresh";
 import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
 import { listOwnerTags, listOwnerContentByTag } from "@/features/tags/service";
@@ -27,7 +28,7 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
   return (
     <div className="feature-layout">
       <EnrichmentPendingRefresh enabled={hasPendingResults} />
-      <section className="hero-card">
+      <Surface tone="hero">
         <p className="eyebrow">Shared tags</p>
         <h1>Filter the private vault by tag.</h1>
         <p className="lede">
@@ -48,19 +49,16 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
             <span>Tag exploration stays inside the owner area</span>
           </div>
         </div>
-      </section>
+      </Surface>
 
-      <section className="panel-card">
-        <div className="section-heading">
-          <strong>Tag filters</strong>
-          <span className="section-meta">Shared across notes and links</span>
-        </div>
+      <Surface tone="panel">
+        <SectionHeading meta="Shared across notes and links" title="Tag filters" />
         <div className="tag-filter-list" aria-label="Shared tag filters">
           <Link className={!selectedTag ? "tag-filter-link tag-filter-link-active" : "tag-filter-link"} href="/app/tags">
             All content
           </Link>
           {tags.length === 0 ? (
-            <span className="tag-pill tag-pill-muted">No shared tags yet</span>
+            <TagChip muted>No shared tags yet</TagChip>
           ) : (
             tags.map((tag) => (
               <Link
@@ -76,14 +74,14 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
             ))
           )}
         </div>
-      </section>
+      </Surface>
 
       <div className="retrieval-grid">
-        <section className="panel-card">
-          <div className="section-heading">
-            <strong>{selectedTag ? `Notes tagged ${selectedTag}` : "Private notes"}</strong>
-            <span className="section-meta">Markdown drafts and published notes</span>
-          </div>
+        <Surface tone="panel">
+          <SectionHeading
+            meta="Markdown drafts and published notes"
+            title={selectedTag ? `Notes tagged ${selectedTag}` : "Private notes"}
+          />
           {filteredContent.notes.length === 0 ? (
             <p>{selectedTag ? "No private notes match this tag yet." : "No private notes yet."}</p>
           ) : (
@@ -91,39 +89,39 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
               {filteredContent.notes.map((note) => (
                 <article className="note-list-item" key={note.id}>
                   <div>
-                    <div className="note-meta note-meta-leading">
+                    <MetadataRow leading>
                       <span>{note.isPublished ? "Published" : "Draft"}</span>
                       <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(note.updatedAt)}</span>
-                    </div>
+                    </MetadataRow>
                     <Link className="note-list-link" href={`/app/notes/${note.id}/edit`}>
                       {note.title}
                     </Link>
                     <p>{note.excerpt || "Empty draft"}</p>
                     {note.summary ? <p className="note-generated-summary">AI summary: {note.summary}</p> : null}
                     <EnrichmentStatusBlock state={note.enrichment} />
-                    <div className="tag-list" aria-label="Note tags">
+                    <TagList aria-label="Note tags">
                       {note.tags.length === 0 ? (
-                        <span className="tag-pill tag-pill-muted">No generated tags</span>
+                        <TagChip muted>No generated tags</TagChip>
                       ) : (
                         note.tags.map((tag) => (
-                          <span className="tag-pill" key={tag.id}>
+                          <TagChip key={tag.id}>
                             {tag.name}
-                          </span>
+                          </TagChip>
                         ))
                       )}
-                    </div>
+                    </TagList>
                   </div>
                 </article>
               ))}
             </div>
           )}
-        </section>
+        </Surface>
 
-        <section className="panel-card">
-          <div className="section-heading">
-            <strong>{selectedTag ? `Links tagged ${selectedTag}` : "Private links"}</strong>
-            <span className="section-meta">Owner-only saved references</span>
-          </div>
+        <Surface tone="panel">
+          <SectionHeading
+            meta="Owner-only saved references"
+            title={selectedTag ? `Links tagged ${selectedTag}` : "Private links"}
+          />
           {filteredContent.links.length === 0 ? (
             <p>{selectedTag ? "No private links match this tag yet." : "No private links yet."}</p>
           ) : (
@@ -131,9 +129,9 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
               {filteredContent.links.map((link) => (
                 <article className="link-list-item" key={link.id}>
                   <div className="link-list-heading">
-                    <div className="note-meta note-meta-leading">
+                    <MetadataRow leading>
                       <span>Private link</span>
-                    </div>
+                    </MetadataRow>
                     <a className="note-list-link" href={link.url} rel="noopener noreferrer" target="_blank">
                       {link.title}
                     </a>
@@ -150,29 +148,29 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
                   </div>
                   <div className="note-generated-copy">
                     <strong>AI tags</strong>
-                    <div className="tag-list" aria-label="Link tags">
+                    <TagList aria-label="Link tags">
                       {link.tags.length === 0 ? (
-                        <span className="tag-pill tag-pill-muted">No generated tags yet</span>
+                        <TagChip muted>No generated tags yet</TagChip>
                       ) : (
                         link.tags.map((tag) => (
-                          <span className="tag-pill" key={tag.id}>
+                          <TagChip key={tag.id}>
                             {tag.name}
-                          </span>
+                          </TagChip>
                         ))
                       )}
-                    </div>
+                    </TagList>
                   </div>
                   <div className="link-list-footer">
-                    <div className="note-meta">
+                    <MetadataRow>
                       <span>Updated</span>
                       <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(link.updatedAt)}</span>
-                    </div>
+                    </MetadataRow>
                   </div>
                 </article>
               ))}
             </div>
           )}
-        </section>
+        </Surface>
       </div>
     </div>
   );

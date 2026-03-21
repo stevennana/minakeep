@@ -11,4 +11,14 @@
 - [x] 018-link-ai-enrichment — Link AI enrichment
 - [x] 019-knowledge-studio-ui-refresh — Knowledge studio UI refresh
 - [x] 020-ai-ui-hardening — AI and UI hardening
+- [ ] 021-ui-design-system-foundation — UI design-system foundation ← current
+- [ ] 022-public-home-shell-reset — Public home shell reset
+- [ ] 023-public-home-dynamic-grid — Public home dynamic grid
+- [ ] 024-public-note-reading-polish — Public note reading polish
+- [ ] 025-owner-shell-density-reset — Owner shell density reset
+- [ ] 026-owner-dashboard-density — Owner dashboard density
+- [ ] 027-editor-and-form-density — Editor and form density
+- [ ] 028-secondary-owner-surface-pass — Secondary owner surface pass
+- [ ] 029-mobile-responsive-polish — Mobile responsive polish
+- [ ] 030-ui-hardening-and-regression — UI hardening and regression
 

@@ -14,18 +14,19 @@ Quality scores should reflect both implemented behavior and how convincingly the
 ## Product Domain Scores
 | Area | Score | Notes |
 |---|---|---|
-| Product clarity | A- | The shipped slice is now clearly defined around private capture, selective note publishing, AI-owned metadata, and explicit promotion gates; remaining operational caveats are documented instead of implied. |
-| Feature slicing | A- | AI foundation, note enrichment, link enrichment, redesign, and hardening stayed separated into promotable slices with explicit contracts. |
-| UX focus | B+ | The knowledge-studio redesign is coherent, and the hardening pass aligns AI status treatment plus pending-state auto-refresh across the editor, dashboard, search, tags, and links surfaces. |
+| Product clarity | B+ | The product behavior is stable, and the next wave is now clearly UI-only: homepage showroom, owner density, responsive polish, and reusable design primitives. |
+| Feature slicing | B | The previous broad UI tranche landed, but the corrective UI wave needs smaller slices than the old single “knowledge-studio refresh” front. |
+| UX focus | B | The product is usable, but the current public/owner surfaces still feel too large and too warm compared with the desired note-first, cleaner presentation. |
 
 ## Architecture Layer Scores
 | Area | Score | Notes |
 |---|---|---|
-| Repo structure | A- | Docs-first structure, feature folders, and Ralph loop wiring remain legible after the first tranche landed. |
-| Runtime determinism | A- | `verify`, startup smoke, the explicit `@ai-real` gate, and a single-worker Playwright harness make normal and AI-specific promotion checks concrete, while leaving external endpoint availability clearly outside the local determinism contract. |
-| Boundary clarity | B+ | Notes, links, tags/search, owner auth, operations, and the Mina AI boundary are explicit; retry rules and failure copy stay centralized instead of drifting across routes. |
+| Repo structure | A- | Docs-first structure and feature folders remain legible. |
+| Runtime determinism | A- | Verification and startup proof remain solid; the next wave is mostly presentation-layer work. |
+| Boundary clarity | B+ | Logic boundaries are good; the next improvement is separating reusable style primitives from route-specific presentation. |
 
 ## Immediate Quality Priorities
-- keep the Mina endpoint contract, server-only env handling, and real-endpoint E2E requirement explicit
-- preserve deterministic runtime prep and production-style startup proof as hard promotion gates
-- keep remaining AI retry debt explicit until v1 has a true queued backoff model
+- introduce shared design tokens and reusable presentation components
+- tighten desktop density without harming readability
+- make the homepage note showroom feel more dynamic and less hero-led
+- keep mobile scanning quality strong while the layout becomes denser on desktop

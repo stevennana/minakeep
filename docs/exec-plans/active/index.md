@@ -5,11 +5,16 @@ This queue is the task-level promotion source of truth for minakeep.
 Only task files in this directory that contain a `taskmeta` JSON block are eligible for automatic selection, evaluation, and promotion.
 
 ## Current recommended sequence
-1. `016-ai-enrichment-foundation.md` -> establish the Mina-hosted OpenAI-compatible client boundary, enrichment state model, and promotion-safe real-endpoint test contract
-2. `017-note-ai-enrichment.md` -> add automatic note summary/tag enrichment with visible status and retry behavior
-3. `018-link-ai-enrichment.md` -> add automatic link summary/tag enrichment with visible status and retry behavior
-4. `019-knowledge-studio-ui-refresh.md` -> refresh the full app into a cohesive elegant knowledge-studio interface
-5. `020-ai-ui-hardening.md` -> reconcile AI reliability, security, and UI polish after the new wave lands
+1. `021-ui-design-system-foundation.md` -> establish shared design tokens, reusable presentation primitives, and the cool monochrome studio base
+2. `022-public-home-shell-reset.md` -> reduce hero dominance and reset the homepage around a note-first showroom structure
+3. `023-public-home-dynamic-grid.md` -> implement the varied-height showroom grid and reusable note preview cards
+4. `024-public-note-reading-polish.md` -> tighten public note reading hierarchy and metadata treatment
+5. `025-owner-shell-density-reset.md` -> introduce a slimmer owner shell and denser desktop structure
+6. `026-owner-dashboard-density.md` -> tighten dashboard list density and owner navigation hierarchy
+7. `027-editor-and-form-density.md` -> compact the note editor, login, and owner form surfaces using reusable primitives
+8. `028-secondary-owner-surface-pass.md` -> align links, tags, and search with the new design system and density rules
+9. `029-mobile-responsive-polish.md` -> finish mobile-first responsive behavior across public and private surfaces
+10. `030-ui-hardening-and-regression.md` -> reconcile consistency, responsive polish, and regression-proofing after the redesign
 
 ## Operating rule
 

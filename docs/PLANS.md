@@ -51,6 +51,8 @@ Read:
 - If the tests do not prove the intended behavior, tighten the task contract and checks before promoting.
 - Fast local checks are for iteration speed; the required commands remain the promotion contract.
 - If a feature depends on an outside resource, include E2E coverage for that feature before promotion.
+- If a task is primarily UI/UX work, require a dedicated `@ui-*` Playwright command in addition to `npm run verify`.
+- UI-focused tasks should use `taskmeta.promotion_mode = deterministic_only` so passing screenshot, responsive, accessibility, and hierarchy checks is sufficient for promotion.
 - If a plan page is still rough or broad, improve the supporting docs and split the plan before promotion work starts.
 - If the same environment-specific blocker repeats three times, branch into a dedicated RCA/fix exec-plan and then return to the original task.
 

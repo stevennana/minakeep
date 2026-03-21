@@ -288,3 +288,14 @@ No remaining task. Stopping loop.
 - health: ooxxoooxoxxoxooxxxo
 - cycle: finished
 No remaining task. Stopping loop.
+## loop start 2026-03-21T10:14:58+09:00
+
+### cycle 2026-03-21T10:14:58+09:00 task=021-ui-design-system-foundation
+- artifacts: state/artifacts/20260321T101458-021-ui-design-system-foundation
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T101458-021-ui-design-system-foundation/worker.jsonl
+- worker-summary: Implemented the design-system foundation. The main changes are the new shared primitives in [primitives.tsx](/Users/stevenna/WebstormProjects/minakeep/src/components/ui/primitives.tsx), the tokenized cool-monochrome reset in [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css), and the route-level adoption across the shared public/private shells and editor/list surfaces so presentation now flows through reusable surfaces, headings, metadata rows, tags, detail blocks, and button variants instead of ad hoc wrappers. I also added deterministic UI-system coverage in [ui-system.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-system.spec.ts) with committed desktop/mobile snapshots under `/tests/e2e/ui-system.spec.ts-snapshots`, and updated the task progress log in [021-ui-design-system-foundation.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/021-ui-design-system-foundation.md).
+- evaluator: started
+- evaluator: status=done promotion=true Repository inspection supports promotion. The shared system is substantively in place: [primitives.tsx](/Users/stevenna/WebstormProjects/minakeep/src/components/ui/primitives.tsx) defines reusable surface, heading, metadata, tag, detail, and button primitives; [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css) centralizes cool-monochrome tokens for color, type, spacing, radius, and shadows with responsive rules; and the public/private shells plus note, link, tag, search, login, and public-note surfaces now consume that layer without changing underlying route behavior. The required deterministic evidence is present in [ui-system.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-system.spec.ts) and its committed snapshots, and the provided logs show both `npm run test:e2e -- --grep @ui-system` and `npm run verify` passing. I did not find a substantive gap against this task’s stated scope or exit criteria. -> state/artifacts/20260321T101458-021-ui-design-system-foundation/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T101458-021-ui-design-system-foundation/npm-run-verify-next-server.log

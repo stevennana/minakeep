@@ -2,6 +2,7 @@ import Link from "next/link";
 import { unstable_noStore as noStore } from "next/cache";
 
 import { signOut } from "@/auth";
+import { Button, ButtonLink, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
 import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pending-refresh";
 import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
 import { listOwnerNotes } from "@/features/notes/service";
@@ -26,7 +27,7 @@ export default async function PrivateDashboardPage() {
   return (
     <div className="feature-layout">
       <EnrichmentPendingRefresh enabled={notes.some((note) => note.enrichment.status === "pending")} />
-      <section className="hero-card">
+      <Surface tone="hero">
         <p className="eyebrow">Private dashboard</p>
         <h1>{owner.name}&rsquo;s notes</h1>
         <p className="lede">
@@ -48,23 +49,18 @@ export default async function PrivateDashboardPage() {
           </div>
         </div>
         <div className="button-row">
-          <Link className="primary-button" href="/app/notes/new">
-            New note
-          </Link>
+          <ButtonLink href="/app/notes/new">New note</ButtonLink>
           <form action={signOutAction}>
-            <button className="ghost-button" type="submit">
+            <Button type="submit" variant="ghost">
               Sign out
-            </button>
+            </Button>
           </form>
         </div>
-      </section>
+      </Surface>
 
       <div className="dashboard-grid">
-        <section className="panel-card">
-          <div className="section-heading">
-            <strong>Notes</strong>
-            <span className="section-meta">Drafts and published notes</span>
-          </div>
+        <Surface tone="panel">
+          <SectionHeading meta="Drafts and published notes" title="Notes" />
           {notes.length === 0 ? (
             <p>No drafts yet. Create the first note to start the private vault.</p>
           ) : (
@@ -72,42 +68,39 @@ export default async function PrivateDashboardPage() {
               {notes.map((note) => (
                 <article className="note-list-item" key={note.id}>
                   <div>
-                    <div className="note-meta note-meta-leading">
+                    <MetadataRow leading>
                       <span>{note.isPublished ? "Published" : "Draft"}</span>
-                    </div>
+                    </MetadataRow>
                     <Link className="note-list-link" href={`/app/notes/${note.id}/edit`}>
                       {note.title}
                     </Link>
                     <p>{note.excerpt || "Empty draft"}</p>
                     {note.summary ? <p className="note-generated-summary">AI summary: {note.summary}</p> : null}
                     <EnrichmentStatusBlock state={note.enrichment} />
-                    <div className="tag-list" aria-label="Note tags">
+                    <TagList aria-label="Note tags">
                       {note.tags.length === 0 ? (
-                        <span className="tag-pill tag-pill-muted">No generated tags</span>
+                        <TagChip muted>No generated tags</TagChip>
                       ) : (
                         note.tags.map((tag) => (
-                          <span className="tag-pill" key={tag.id}>
+                          <TagChip key={tag.id}>
                             {tag.name}
-                          </span>
+                          </TagChip>
                         ))
                       )}
-                    </div>
+                    </TagList>
                   </div>
-                  <div className="note-meta">
+                  <MetadataRow>
                     <span>Updated</span>
                     <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(note.updatedAt)}</span>
-                  </div>
+                  </MetadataRow>
                 </article>
               ))}
             </div>
           )}
-        </section>
+        </Surface>
 
-        <aside className="panel-card dashboard-side-panel">
-          <div className="section-heading">
-            <strong>Workspace routes</strong>
-            <span className="section-meta">Owner-only tools</span>
-          </div>
+        <Surface as="aside" className="dashboard-side-panel" tone="panel">
+          <SectionHeading meta="Owner-only tools" title="Workspace routes" />
           <div className="route-grid">
             <Link className="route-tile" href="/app/links">
               <strong>Reference shelf</strong>
@@ -126,7 +119,7 @@ export default async function PrivateDashboardPage() {
             Use tags to narrow private notes and links, and use search for title, URL, and tag retrieval inside the
             owner area.
           </p>
-        </aside>
+        </Surface>
       </div>
     </div>
   );

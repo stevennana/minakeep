@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { ButtonLink, MetadataRow, Surface, TagChip, TagList } from "@/components/ui/primitives";
 import { renderMarkdownToHtml } from "@/features/notes/markdown";
 import { getPublishedNoteBySlug } from "@/features/notes/service";
 
@@ -22,12 +22,12 @@ export default async function PublicNotePage({ params }: PublicNotePageProps) {
 
   return (
     <div className="feature-layout public-note-layout">
-      <article className="feature-card public-note-card">
+      <Surface as="article" className="public-note-card" tone="card">
         <div className="public-note-header">
-          <div className="note-meta note-meta-leading">
+          <MetadataRow leading>
             <span>Published note</span>
             <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(publishedAt)}</span>
-          </div>
+          </MetadataRow>
           <p className="eyebrow">Public reading</p>
           <h1>{note.title}</h1>
           <p className="lede public-note-lede">
@@ -35,13 +35,13 @@ export default async function PublicNotePage({ params }: PublicNotePageProps) {
             replacement for the note itself.
           </p>
           <div className="button-row">
-            <Link className="ghost-button" href="/">
+            <ButtonLink href="/" variant="ghost">
               Back to published notes
-            </Link>
+            </ButtonLink>
           </div>
         </div>
         {(note.summary || note.tags.length > 0) && (
-          <section className="public-note-metadata">
+          <Surface tone="inset">
             <div className="note-generated-copy">
               <strong>AI summary</strong>
               {note.summary ? (
@@ -52,26 +52,26 @@ export default async function PublicNotePage({ params }: PublicNotePageProps) {
             </div>
             <div className="note-generated-copy">
               <strong>AI tags</strong>
-              <div className="tag-list" aria-label="Published note tags">
+              <TagList aria-label="Published note tags">
                 {note.tags.length === 0 ? (
-                  <span className="tag-pill tag-pill-muted">No generated tags</span>
+                  <TagChip muted>No generated tags</TagChip>
                 ) : (
                   note.tags.map((tag) => (
-                    <span className="tag-pill" key={tag.id}>
+                    <TagChip key={tag.id}>
                       {tag.name}
-                    </span>
+                    </TagChip>
                   ))
                 )}
-              </div>
+              </TagList>
             </div>
-          </section>
+          </Surface>
         )}
         <div
           className="markdown-preview public-note-body"
           data-testid="public-note-markdown"
           dangerouslySetInnerHTML={{ __html: renderMarkdownToHtml(note.markdown) }}
         />
-      </article>
+      </Surface>
     </div>
   );
 }

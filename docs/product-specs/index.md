@@ -13,7 +13,11 @@ If a UI or API behavior is visible to users, it should be defined here before im
 | `tag-filtering-and-owner-search.md` | confirmed | Shared tags and basic private retrieval |
 | `note-ai-enrichment.md` | confirmed | Automatic AI summary/tag generation for notes |
 | `link-ai-enrichment.md` | confirmed | Automatic AI summary/tag generation for links |
-| `knowledge-studio-ui-refresh.md` | confirmed | Full-app visual redesign |
+| `knowledge-studio-ui-refresh.md` | confirmed | Previous broad visual redesign tranche now completed |
+| `public-home-showroom.md` | confirmed | Note-first public homepage redesign with dynamic grid rhythm |
+| `public-note-reading.md` | confirmed | Public note reading polish and metadata hierarchy |
+| `owner-workspace-density.md` | confirmed | Tighter professional owner layout for desktop and mobile |
+| `responsive-ui-behavior.md` | confirmed | Cross-surface responsive collapse and mobile scanning behavior |
 
 ## Editing Rule
 When product behavior changes:

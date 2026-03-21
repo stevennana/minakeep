@@ -1,3 +1,4 @@
+import { Button, DetailBlock, SectionHeading, Surface } from "@/components/ui/primitives";
 import { loginAction } from "./actions";
 
 type LoginPageProps = {
@@ -12,7 +13,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
   return (
     <div className="feature-layout login-layout">
-      <section className="hero-card login-intro-card">
+      <Surface className="login-intro-card" tone="hero">
         <p className="eyebrow">Owner access</p>
         <h1>Sign in to the private vault.</h1>
         <p className="lede">
@@ -20,22 +21,17 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           links, tags, and search remain restricted to the private studio.
         </p>
         <div className="detail-stack">
-          <div className="detail-block">
-            <strong>Bootstrapped through SQLite</strong>
+          <DetailBlock title="Bootstrapped through SQLite">
             <p>The owner account is configured through the environment and seeded by `npm run db:prepare`.</p>
-          </div>
-          <div className="detail-block">
-            <strong>After sign-in</strong>
+          </DetailBlock>
+          <DetailBlock title="After sign-in">
             <p>The private `/app` area exposes note authoring, private link capture, shared tags, and owner-only search.</p>
-          </div>
+          </DetailBlock>
         </div>
-      </section>
+      </Surface>
 
-      <section className="panel-card login-form-card">
-        <div className="section-heading">
-          <strong>Credentials</strong>
-          <span className="section-meta">Single owner account</span>
-        </div>
+      <Surface className="login-form-card" tone="panel">
+        <SectionHeading meta="Single owner account" title="Credentials" />
         <form action={loginAction} className="sign-in-form">
           <label>
             Username
@@ -46,14 +42,12 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             <input autoComplete="current-password" name="password" required type="password" />
           </label>
           <div className="button-row">
-            <button className="primary-button" type="submit">
-              Sign in
-            </button>
+            <Button type="submit">Sign in</Button>
           </div>
         </form>
         {hasError ? <p className="signin-error">Credentials were rejected. Check the seeded owner username and password.</p> : null}
         <p className="auth-note">The private workspace keeps authored notes primary and AI metadata visibly secondary.</p>
-      </section>
+      </Surface>
     </div>
   );
 }

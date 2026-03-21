@@ -18,6 +18,7 @@ Define the reliability expectations and failure-handling rules for Minakeep.
 - AI tasks must require a real-endpoint E2E check when `LLM_BASE`, `TOKEN`, and `MODEL` are present
 - the real-endpoint Playwright path is tagged `@ai-real`, and promotable AI tasks must pass `npm run test:e2e -- --grep @ai-real` when those env vars are configured
 - `npm run verify` does not replace the separate `@ai-real` run for promotable AI work
+- UI-focused tasks must require a dedicated `npm run test:e2e -- --grep @ui-*` command for their scoped surface
 
 ## Runtime Startup Contract
 If the app depends on persistent runtime state, document how runtime preparation happens and how a production-style startup smoke proves the `start` path actually works.
@@ -34,6 +35,7 @@ Document which behaviors are protected by unit tests, which flows require end-to
 When tests cover subtle or business-critical behavior, capture why those tests exist so future loops do not weaken them casually.
 If a user-visible behavior depends on an outside resource such as AI chat or a third-party service, require end-to-end coverage before promotion.
 For the AI enrichment wave, E2E must prove: note save with generated metadata, link save with generated metadata, and save-with-visible-failure when the endpoint fails or times out.
+For the UI redesign wave, the tagged `@ui-*` Playwright coverage must prove both `1440x900` desktop and `390x844` mobile behavior, stable screenshots, visible hierarchy anchors/actions, and automated accessibility scanning.
 The shared helper under `tests/e2e/ai-real.ts` is the contract point for checking whether those env vars are present before running real-endpoint journeys.
 Owner surfaces that render pending enrichment state should auto-refresh while enrichment is running, including the private dashboard, links, search, tags, and note editor routes. Retry should be a visible action only from a failed state rather than a second control path for already-pending work.
 Because the Playwright suite shares one mutable SQLite runtime state, the harness runs with one worker for promotion checks instead of relying on cross-worker coordination.

@@ -1,4 +1,5 @@
 import { createLinkAction, retryLinkEnrichmentAction } from "@/app/app/links/actions";
+import { Button, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
 import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pending-refresh";
 import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
 import { listOwnerLinks } from "@/features/links/service";
@@ -40,7 +41,7 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
   return (
     <div className="feature-layout">
       <EnrichmentPendingRefresh enabled={links.some((link) => link.enrichment.status === "pending")} />
-      <section className="hero-card">
+      <Surface tone="hero">
         <p className="eyebrow">Private links</p>
         <h1>Save links for later retrieval.</h1>
         <p className="lede">
@@ -64,14 +65,11 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
         {statusMessage ? (
           <p className={resolvedSearchParams.error ? "status-note status-note-error" : "status-note"}>{statusMessage}</p>
         ) : null}
-      </section>
+      </Surface>
 
       <div className="link-manager-grid">
-        <form action={createLinkAction} className="panel-card link-form">
-          <div className="section-heading">
-            <strong>Capture a link</strong>
-            <span className="section-meta">Manual URL and title</span>
-          </div>
+        <Surface action={createLinkAction} as="form" className="link-form" tone="panel">
+          <SectionHeading meta="Manual URL and title" title="Capture a link" />
           <label className="field-group">
             <span>URL</span>
             <input
@@ -96,17 +94,12 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
           </label>
           <p className="field-note">AI summary and shared tags are generated automatically after save.</p>
           <div className="button-row">
-            <button className="primary-button" type="submit">
-              Save link
-            </button>
+            <Button type="submit">Save link</Button>
           </div>
-        </form>
+        </Surface>
 
-        <section className="panel-card link-list-panel">
-          <div className="section-heading">
-            <strong>Saved links</strong>
-            <span className="section-meta">Generated metadata stays secondary</span>
-          </div>
+        <Surface className="link-list-panel" tone="panel">
+          <SectionHeading meta="Generated metadata stays secondary" title="Saved links" />
           {links.length === 0 ? (
             <p>No saved links yet. Capture the first private bookmark from this page.</p>
           ) : (
@@ -114,9 +107,9 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
               {links.map((link) => (
                 <article className="link-list-item" key={link.id}>
                   <div className="link-list-heading">
-                    <div className="note-meta note-meta-leading">
+                    <MetadataRow leading>
                       <span>Private link</span>
-                    </div>
+                    </MetadataRow>
                     <a className="note-list-link" href={link.url} rel="noopener noreferrer" target="_blank">
                       {link.title}
                     </a>
@@ -135,36 +128,36 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
                   </div>
                   <div className="note-generated-copy">
                     <strong>AI tags</strong>
-                    <div className="tag-list" aria-label="Link tags" data-testid="link-ai-tags">
+                    <TagList aria-label="Link tags" data-testid="link-ai-tags">
                       {link.tags.length === 0 ? (
-                        <span className="tag-pill tag-pill-muted">No generated tags yet</span>
+                        <TagChip muted>No generated tags yet</TagChip>
                       ) : (
                         link.tags.map((tag) => (
-                          <span className="tag-pill" key={tag.id}>
+                          <TagChip key={tag.id}>
                             {tag.name}
-                          </span>
+                          </TagChip>
                         ))
                       )}
-                    </div>
+                    </TagList>
                   </div>
                   <div className="link-list-footer">
-                    <div className="note-meta">
+                    <MetadataRow>
                       <span>Updated</span>
                       <span>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(link.updatedAt)}</span>
-                    </div>
+                    </MetadataRow>
                   </div>
                   {link.enrichment.status === "failed" ? (
                     <form action={retryLinkEnrichmentAction.bind(null, link.id)}>
-                      <button className="ghost-button" type="submit">
+                      <Button type="submit" variant="ghost">
                         Retry AI enrichment
-                      </button>
+                      </Button>
                     </form>
                   ) : null}
                 </article>
               ))}
             </div>
           )}
-        </section>
+        </Surface>
       </div>
     </div>
   );
