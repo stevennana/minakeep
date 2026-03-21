@@ -1,1 +1,1 @@
-051-note-image-upload-and-embed
+052-note-image-display-and-publish

@@ -3,46 +3,46 @@ Read the following repository documents before making changes:
 - docs/FRONTEND.md
 - docs/design-docs/media-storage-and-serving.md
 - docs/product-specs/note-image-attachments.md
-- docs/product-specs/note-authoring.md
-- docs/exec-plans/active/051-note-image-upload-and-embed.md
+- docs/product-specs/public-home-showroom.md
+- docs/exec-plans/active/052-note-image-display-and-publish.md
 
-Current task id: 051-note-image-upload-and-embed
-Current task title: Note image upload and embed
+Current task id: 052-note-image-display-and-publish
+Current task title: Note image display and publish
 
 Objective:
-Let owners upload note images from the editor and embed them into the markdown body automatically.
+Surface uploaded note images consistently across owner and public note cards while keeping public media tied to note publication.
 
 Scope:
-- note-image upload control in note authoring
-- automatic markdown image insertion
-- preview rendering for uploaded images
+- first-image derivation for note cards
+- owner note-list rendering with images
+- public note/showroom image rendering only after publish
 
 Out of scope:
-- card-image derivation across list pages
+- note-image upload UI
 - link favicon work
-- generalized attachment manager
+- Docker packaging
 
 Exit criteria:
-1. Owners can upload an image from the note editor.
-2. Upload inserts valid markdown image syntax into the note body automatically.
-3. Uploaded images render in the note preview and saved note content.
-4. `npm run test:e2e -- --grep @note-image-upload` passes.
+1. Owner note cards use the first embedded markdown image when present.
+2. Published note cards and note pages render referenced images publicly.
+3. Draft-note images do not leak on public routes.
+4. `npm run test:e2e -- --grep @ui-note-images` passes.
 5. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @note-image-upload`
+- `npm run test:e2e -- --grep @ui-note-images`
 
 Evaluator notes:
-Promote only when upload and markdown insertion feel native to the note editor instead of bolted on.
+Promote only when note-image rendering is consistent across owner and public surfaces and the publish boundary stays intact.
 
 Required repository artifacts for this task:
-- src/features/notes
+- src
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @note-image-upload
+- npm run test:e2e -- --grep @ui-note-images
 
 Previous known gaps from the last evaluation:
 - none

@@ -781,3 +781,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T214024-051-note-image-upload-and-embed/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T214024-051-note-image-upload-and-embed/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 051-note-image-upload-and-embed -> 052-note-image-display-and-publish
+- backlog: rendered current=052-note-image-display-and-publish
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooo
+- cycle: finished
+
+### cycle 2026-03-21T21:57:14+09:00 task=052-note-image-display-and-publish
+- artifacts: state/artifacts/20260321T215714-052-note-image-display-and-publish
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T215714-052-note-image-display-and-publish/worker.jsonl
+- worker-summary: Task 052 is implemented. The first embedded markdown image is now derived as `cardImage` in [repo.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/repo.ts) using parsing added in [markdown.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/markdown.ts), then rendered on owner note cards via [owner-note-card.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/components/owner-note-card.tsx) and [note-card-image.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/components/note-card-image.tsx), and on public showroom note cards in [public-showroom.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/public-content/components/public-showroom.tsx). I also updated the shared note/public types in [types.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/types.ts) and [public-content/types.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/public-content/types.ts), plus the card styling in [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css).
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T215714-052-note-image-display-and-publish/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T215714-052-note-image-display-and-publish/npm-run-verify-next-server.log

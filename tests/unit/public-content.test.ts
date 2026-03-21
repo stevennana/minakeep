@@ -12,6 +12,7 @@ test("toPublishedPublicNote and toPublishedPublicLink preserve the shared public
     title: "Published note",
     slug: "published-note",
     excerpt: "Note excerpt",
+    cardImage: null,
     summary: "Note summary",
     publishedAt,
     updatedAt,
@@ -36,6 +37,7 @@ test("toPublishedPublicNote and toPublishedPublicLink preserve the shared public
       publishedAt: note.publishedAt,
       updatedAt: note.updatedAt,
       tags: note.tags,
+      cardImage: note.cardImage,
       slug: note.slug,
       excerpt: note.excerpt
     },
@@ -46,6 +48,7 @@ test("toPublishedPublicNote and toPublishedPublicLink preserve the shared public
       publishedAt,
       updatedAt,
       tags: [{ id: "tag-1", name: "notes" }],
+      cardImage: null,
       slug: "published-note",
       excerpt: "Note excerpt"
     }
@@ -93,6 +96,7 @@ test("sortPublishedContent orders mixed published items by published time, then 
       publishedAt: new Date("2026-03-20T09:00:00.000Z"),
       updatedAt: new Date("2026-03-20T09:05:00.000Z"),
       tags: [],
+      cardImage: null,
       slug: "alpha-note",
       excerpt: "Alpha excerpt"
     },
@@ -104,6 +108,7 @@ test("sortPublishedContent orders mixed published items by published time, then 
       publishedAt: new Date("2026-03-21T09:00:00.000Z"),
       updatedAt: new Date("2026-03-21T09:00:00.000Z"),
       tags: [],
+      cardImage: null,
       slug: "newest-note",
       excerpt: "Newest excerpt"
     },
@@ -135,6 +140,7 @@ test("filterSafePublishedContent drops unsafe or malformed published links while
       publishedAt: new Date("2026-03-21T09:00:00.000Z"),
       updatedAt: new Date("2026-03-21T09:00:00.000Z"),
       tags: [],
+      cardImage: null,
       slug: "safe-note",
       excerpt: "Safe excerpt"
     },

@@ -1,5 +1,5 @@
 import type { PublishedLinkSummary } from "@/features/links/types";
-import type { PublishedNoteSummary } from "@/features/notes/types";
+import type { NoteCardImage, PublishedNoteSummary } from "@/features/notes/types";
 import type { SavedTag } from "@/features/tags/types";
 
 export type PublicContentKind = "note" | "link";
@@ -16,6 +16,7 @@ type PublishedPublicContentBase = {
 
 export type PublishedPublicNote = PublishedPublicContentBase & {
   kind: "note";
+  cardImage: NoteCardImage | null;
   excerpt: string;
   slug: string;
 };
@@ -38,6 +39,7 @@ export function toPublishedPublicNote(note: PublishedNoteSummary): PublishedPubl
     publishedAt: note.publishedAt,
     updatedAt: note.updatedAt,
     tags: note.tags,
+    cardImage: note.cardImage,
     excerpt: note.excerpt,
     slug: note.slug
   };

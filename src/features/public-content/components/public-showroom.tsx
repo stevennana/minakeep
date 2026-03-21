@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 import { Button, FormField, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
+import { NoteCardImage } from "@/features/notes/components/note-card-image";
+import type { NoteCardImage as NoteCardImageData } from "@/features/notes/types";
 
 type ShowroomTag = {
   id: string;
@@ -21,6 +23,7 @@ type ShowroomBaseItem = {
 
 type ShowroomNoteItem = ShowroomBaseItem & {
   kind: "note";
+  cardImage: NoteCardImageData | null;
   excerpt: string;
   slug: string;
 };
@@ -90,6 +93,15 @@ function PublishedContentPreviewCard({ item }: { item: PublicShowroomItem }) {
       data-card-kind={item.kind}
       data-card-variant={variant}
     >
+      {isNote && item.cardImage ? (
+        <NoteCardImage
+          frameClassName="note-card-image-frame note-preview-card-image-frame"
+          image={item.cardImage}
+          imageClassName="note-card-image note-preview-card-image"
+          testId="public-note-card-image"
+          title={item.title}
+        />
+      ) : null}
       <div className="note-preview-card-body">
         <h2 className="note-preview-card-title">
           {isNote ? (

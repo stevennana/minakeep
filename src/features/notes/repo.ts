@@ -1,7 +1,10 @@
 import "server-only";
 
+import type { Prisma } from "@prisma/client";
+
 import type { EnrichmentRecordFields } from "@/features/enrichment/types";
 import { normalizeEnrichmentStatus, toEnrichmentState } from "@/features/enrichment/types";
+import { getFirstEmbeddedMarkdownImage } from "@/features/notes/markdown";
 import { prisma } from "@/lib/prisma";
 
 const noteTagSelect = {
@@ -17,6 +20,7 @@ const noteTagSelect = {
 const noteSummarySelect = {
   id: true,
   title: true,
+  markdown: true,
   excerpt: true,
   summary: true,
   isPublished: true,
@@ -47,6 +51,34 @@ const notePublishedSelect = {
   tags: noteTagSelect
 };
 
+const notePublishedSummarySelect = {
+  id: true,
+  title: true,
+  slug: true,
+  markdown: true,
+  excerpt: true,
+  summary: true,
+  publishedAt: true,
+  updatedAt: true,
+  tags: noteTagSelect
+};
+
+type NoteSummaryRow = Prisma.NoteGetPayload<{
+  select: typeof noteSummarySelect;
+}>;
+
+type NoteEditorRow = Prisma.NoteGetPayload<{
+  select: typeof noteEditorSelect;
+}>;
+
+type NotePublishedSummaryRow = Prisma.NoteGetPayload<{
+  select: typeof notePublishedSummarySelect;
+}>;
+
+type NotePublishedRow = Prisma.NoteGetPayload<{
+  select: typeof notePublishedSelect;
+}>;
+
 function mapNoteRecord<TRecord extends EnrichmentRecordFields>(note: TRecord) {
   const { enrichmentStatus, enrichmentError, enrichmentAttempts, enrichmentUpdatedAt, ...rest } = note;
 
@@ -58,6 +90,38 @@ function mapNoteRecord<TRecord extends EnrichmentRecordFields>(note: TRecord) {
       enrichmentAttempts,
       enrichmentUpdatedAt
     })
+  };
+}
+
+function mapNoteSummaryRecord(note: NoteSummaryRow) {
+  const { markdown, ...rest } = note;
+
+  return {
+    ...mapNoteRecord(rest),
+    cardImage: getFirstEmbeddedMarkdownImage(markdown)
+  };
+}
+
+function mapNoteEditorRecord(note: NoteEditorRow) {
+  return {
+    ...mapNoteRecord(note),
+    cardImage: getFirstEmbeddedMarkdownImage(note.markdown)
+  };
+}
+
+function mapNotePublishedSummaryRecord(note: NotePublishedSummaryRow) {
+  const { markdown, ...rest } = note;
+
+  return {
+    ...rest,
+    cardImage: getFirstEmbeddedMarkdownImage(markdown)
+  };
+}
+
+function mapNotePublishedRecord(note: NotePublishedRow) {
+  return {
+    ...note,
+    cardImage: getFirstEmbeddedMarkdownImage(note.markdown)
   };
 }
 
@@ -73,7 +137,7 @@ export const notesRepo = {
       select: noteSummarySelect
     });
 
-    return notes.map(mapNoteRecord);
+    return notes.map(mapNoteSummaryRecord);
   },
   async listForOwnerByTag(ownerId: string, tagName: string) {
     const notes = await prisma.note.findMany({
@@ -91,7 +155,7 @@ export const notesRepo = {
       select: noteSummarySelect
     });
 
-    return notes.map(mapNoteRecord);
+    return notes.map(mapNoteSummaryRecord);
   },
   async searchForOwner(ownerId: string, query: string) {
     const notes = await prisma.note.findMany({
@@ -120,10 +184,10 @@ export const notesRepo = {
       select: noteSummarySelect
     });
 
-    return notes.map(mapNoteRecord);
+    return notes.map(mapNoteSummaryRecord);
   },
   async listPublished() {
-    return prisma.note.findMany({
+    const notes = await prisma.note.findMany({
       where: {
         isPublished: true
       },
@@ -135,17 +199,10 @@ export const notesRepo = {
           updatedAt: "desc"
         }
       ],
-      select: {
-        id: true,
-        title: true,
-        slug: true,
-        excerpt: true,
-        summary: true,
-        publishedAt: true,
-        updatedAt: true,
-        tags: noteTagSelect
-      }
+      select: notePublishedSummarySelect
     });
+
+    return notes.map(mapNotePublishedSummaryRecord);
   },
   async findByIdForOwner(ownerId: string, id: string) {
     const note = await prisma.note.findFirst({
@@ -156,16 +213,18 @@ export const notesRepo = {
       select: noteEditorSelect
     });
 
-    return note ? mapNoteRecord(note) : null;
+    return note ? mapNoteEditorRecord(note) : null;
   },
   async findPublishedBySlug(slug: string) {
-    return prisma.note.findFirst({
+    const note = await prisma.note.findFirst({
       where: {
         slug,
         isPublished: true
       },
       select: notePublishedSelect
     });
+
+    return note ? mapNotePublishedRecord(note) : null;
   },
   async listSlugsForOwner(ownerId: string) {
     const notes = await prisma.note.findMany({
@@ -191,7 +250,7 @@ export const notesRepo = {
       select: noteEditorSelect
     });
 
-    return mapNoteRecord(note);
+    return mapNoteEditorRecord(note);
   },
   async update(id: string, data: { title: string; slug: string; markdown: string; excerpt: string }) {
     const note = await prisma.note.update({
@@ -207,7 +266,7 @@ export const notesRepo = {
       select: noteEditorSelect
     });
 
-    return mapNoteRecord(note);
+    return mapNoteEditorRecord(note);
   },
   async updatePublication(id: string, isPublished: boolean) {
     const note = await prisma.note.update({
@@ -221,7 +280,7 @@ export const notesRepo = {
       select: noteEditorSelect
     });
 
-    return mapNoteRecord(note);
+    return mapNoteEditorRecord(note);
   },
   async setEnrichmentPending(id: string) {
     const note = await prisma.note.update({
@@ -243,7 +302,7 @@ export const notesRepo = {
       select: noteEditorSelect
     });
 
-    return mapNoteRecord(note);
+    return mapNoteEditorRecord(note);
   },
   async setEnrichmentReady(id: string) {
     const note = await prisma.note.update({
@@ -258,7 +317,7 @@ export const notesRepo = {
       select: noteEditorSelect
     });
 
-    return mapNoteRecord(note);
+    return mapNoteEditorRecord(note);
   },
   async setEnrichmentFailed(id: string, error: string) {
     const note = await prisma.note.update({
@@ -280,7 +339,7 @@ export const notesRepo = {
       select: noteEditorSelect
     });
 
-    return mapNoteRecord(note);
+    return mapNoteEditorRecord(note);
   },
   async findEnrichmentSourceById(id: string) {
     const note = await prisma.note.findUnique({

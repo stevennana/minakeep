@@ -1736,6 +1736,29 @@ textarea {
   line-height: 1.45;
 }
 
+.note-card-image-frame {
+  background: rgba(241, 245, 249, 0.84);
+  border: 1px solid rgba(100, 116, 139, 0.14);
+  border-radius: var(--radius-2);
+  overflow: hidden;
+}
+
+.note-card-image {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.dashboard-note-image-frame {
+  aspect-ratio: 16 / 9;
+  margin-bottom: 0.1rem;
+}
+
+.dashboard-note-image {
+  height: 100%;
+  object-fit: cover;
+}
+
 .note-preview-card {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.58)),
@@ -1789,6 +1812,15 @@ textarea {
 .note-preview-card-body,
 .note-preview-card-copy {
   display: grid;
+}
+
+.note-preview-card-image-frame {
+  aspect-ratio: 16 / 10;
+}
+
+.note-preview-card-image {
+  height: 100%;
+  object-fit: cover;
 }
 
 .note-preview-card-body {

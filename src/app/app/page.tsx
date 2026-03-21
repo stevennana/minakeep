@@ -1,10 +1,11 @@
+import type { Route } from "next";
 import Link from "next/link";
 import { unstable_noStore as noStore } from "next/cache";
 
 import { signOut } from "@/auth";
-import { Button, ButtonLink, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
+import { Button, ButtonLink, SectionHeading, Surface } from "@/components/ui/primitives";
 import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pending-refresh";
-import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
+import { OwnerNoteCard } from "@/features/notes/components/owner-note-card";
 import { listOwnerNotes } from "@/features/notes/service";
 import { requireOwnerSession } from "@/lib/auth/owner-session";
 
@@ -76,42 +77,12 @@ export default async function PrivateDashboardPage() {
           ) : (
             <div className="note-list owner-dashboard-note-list" data-testid="owner-dashboard-note-list">
               {notes.map((note) => (
-                <article className="note-list-item dashboard-note-item" key={note.id}>
-                  <div className="dashboard-note-primary">
-                    <MetadataRow className="dashboard-note-state" leading>
-                      <span>{note.isPublished ? "Published" : "Draft"}</span>
-                      <span>{dateFormatter.format(note.updatedAt)}</span>
-                    </MetadataRow>
-                    <Link className="note-list-link dashboard-note-link" href={`/app/notes/${note.id}/edit`}>
-                      {note.title}
-                    </Link>
-                    <p className="dashboard-note-excerpt">{note.excerpt || "Empty draft"}</p>
-                  </div>
-                  <div className="dashboard-note-secondary">
-                    <div className="dashboard-note-ai">
-                      <strong>AI summary:</strong>
-                      {note.summary ? (
-                        <p className="note-generated-summary dashboard-note-ai-summary">{note.summary}</p>
-                      ) : (
-                        <p className="field-note dashboard-note-ai-empty">
-                          A generated summary will appear here after a successful enrichment run.
-                        </p>
-                      )}
-                    </div>
-                    <EnrichmentStatusBlock detailClassName="dashboard-note-ai-detail" state={note.enrichment} />
-                    <TagList aria-label="Note tags" className="dashboard-note-tags">
-                      {note.tags.length === 0 ? (
-                        <TagChip muted>No generated tags</TagChip>
-                      ) : (
-                        note.tags.map((tag) => (
-                          <TagChip key={tag.id}>
-                            {tag.name}
-                          </TagChip>
-                        ))
-                      )}
-                    </TagList>
-                  </div>
-                </article>
+                <OwnerNoteCard
+                  href={`/app/notes/${note.id}/edit` as Route}
+                  key={note.id}
+                  note={note}
+                  updatedAtLabel={dateFormatter.format(note.updatedAt)}
+                />
               ))}
             </div>
           )}

@@ -1,8 +1,10 @@
+import type { Route } from "next";
 import Link from "next/link";
 
 import { DetailBlock, IntroBlock, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
 import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pending-refresh";
 import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
+import { OwnerNoteCard } from "@/features/notes/components/owner-note-card";
 import { listOwnerTags, listOwnerContentByTag } from "@/features/tags/service";
 import { normalizeSingleTagName } from "@/features/tags/normalize";
 import { requireOwnerSession } from "@/lib/auth/owner-session";
@@ -90,40 +92,13 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
           ) : (
             <div className="note-list">
               {filteredContent.notes.map((note) => (
-                <article className="note-list-item dashboard-note-item secondary-note-item" key={note.id}>
-                  <div className="dashboard-note-primary">
-                    <MetadataRow leading>
-                      <span>{note.isPublished ? "Published" : "Draft"}</span>
-                      <span>{dateFormatter.format(note.updatedAt)}</span>
-                    </MetadataRow>
-                    <Link className="note-list-link" href={`/app/notes/${note.id}/edit`}>
-                      {note.title}
-                    </Link>
-                    <p className="dashboard-note-excerpt">{note.excerpt || "Empty draft"}</p>
-                  </div>
-                  <div className="dashboard-note-secondary secondary-note-secondary">
-                    <div className="dashboard-note-ai">
-                      <strong>AI summary</strong>
-                      {note.summary ? (
-                        <p className="note-generated-summary dashboard-note-ai-summary">{note.summary}</p>
-                      ) : (
-                        <p className="field-note dashboard-note-ai-empty">A generated summary will appear here after a successful enrichment run.</p>
-                      )}
-                    </div>
-                    <EnrichmentStatusBlock detailClassName="dashboard-note-ai-detail" state={note.enrichment} />
-                    <TagList aria-label="Note tags" className="dashboard-note-tags secondary-note-tags">
-                      {note.tags.length === 0 ? (
-                        <TagChip muted>No generated tags</TagChip>
-                      ) : (
-                        note.tags.map((tag) => (
-                          <TagChip key={tag.id}>
-                            {tag.name}
-                          </TagChip>
-                        ))
-                      )}
-                    </TagList>
-                  </div>
-                </article>
+                <OwnerNoteCard
+                  href={`/app/notes/${note.id}/edit` as Route}
+                  key={note.id}
+                  note={note}
+                  secondary
+                  updatedAtLabel={dateFormatter.format(note.updatedAt)}
+                />
               ))}
             </div>
           )}

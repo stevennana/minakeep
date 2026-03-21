@@ -6,10 +6,16 @@ export type NoteDraftInput = {
   markdown: string;
 };
 
+export type NoteCardImage = {
+  alt: string;
+  src: string;
+};
+
 export type NoteSummary = {
   id: string;
   title: string;
   excerpt: string;
+  cardImage: NoteCardImage | null;
   summary: string | null;
   isPublished: boolean;
   enrichment: EnrichmentState;
@@ -28,6 +34,7 @@ export type PublishedNoteSummary = {
   title: string;
   slug: string;
   excerpt: string;
+  cardImage: NoteCardImage | null;
   summary: string | null;
   publishedAt: Date;
   updatedAt: Date;

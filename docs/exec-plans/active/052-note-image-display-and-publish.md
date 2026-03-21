@@ -67,3 +67,5 @@ Promote only when note-image rendering is consistent across owner and public sur
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-21 22:45 KST: Derived a `cardImage` from the first embedded markdown image in note records and threaded it through owner note cards plus public showroom note cards without widening the publish contract.
+- 2026-03-21 22:45 KST: Added focused `@ui-note-images` Playwright coverage for owner card rendering, published public card/page rendering, and draft image privacy on `/media/:assetId`.

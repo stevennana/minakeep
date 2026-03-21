@@ -29,6 +29,11 @@ function sanitizeUrl(rawUrl: string) {
   return "#";
 }
 
+export type EmbeddedMarkdownImage = {
+  alt: string;
+  src: string;
+};
+
 function renderInlineMarkdown(markdown: string): string {
   const pattern = /(`[^`]+`)|(!\[([^\]]*)\]\(([^)]+)\))|(\[([^\]]+)\]\(([^)]+)\))|(\*\*([^*]+)\*\*)|(\*([^*]+)\*)/g;
   let result = "";
@@ -88,6 +93,23 @@ export function createNoteExcerpt(markdown: string, title: string, maxLength = 1
   }
 
   return `${text.slice(0, maxLength).trimEnd()}...`;
+}
+
+export function getFirstEmbeddedMarkdownImage(markdown: string): EmbeddedMarkdownImage | null {
+  for (const match of markdown.matchAll(/!\[([^\]]*)\]\(([^)]+)\)/g)) {
+    const src = sanitizeUrl(match[2] ?? "");
+
+    if (src === "#") {
+      continue;
+    }
+
+    return {
+      alt: (match[1] ?? "").trim(),
+      src
+    };
+  }
+
+  return null;
 }
 
 export function renderMarkdownToHtml(markdown: string) {
