@@ -42,3 +42,4 @@
 - 2026-03-21T12:56:44.532Z: promoted 051-note-image-upload-and-embed -> 052-note-image-display-and-publish
 - 2026-03-21T13:16:34.888Z: promoted 052-note-image-display-and-publish -> 053-link-favicon-cache-and-render
 - 2026-03-21T13:40:39.055Z: promoted 053-link-favicon-cache-and-render -> 054-docker-packaging-and-compose
+- 2026-03-21T14:36:23.103Z: promoted 054-docker-packaging-and-compose -> 055-media-and-container-hardening

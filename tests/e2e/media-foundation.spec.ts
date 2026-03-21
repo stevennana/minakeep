@@ -220,7 +220,9 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@media-foundation draft note images stay private while the owner can still resolve them through the server-backed route", async ({
+// Hardening contract: draft note uploads must stay dark to anonymous readers even though
+// the owner can resolve the same `/media/:assetId` URL through the authenticated route.
+test("@media-regression @media-foundation draft note images stay private while the owner can still resolve them through the server-backed route", async ({
   page
 }) => {
   const { assetId, svg } = await seedDraftNoteImage();
@@ -238,7 +240,9 @@ test("@media-foundation draft note images stay private while the owner can still
   expect(await ownerResponse?.text()).toBe(svg);
 });
 
-test("@media-foundation published note images and published-link favicons are publicly resolvable, but unreferenced note images stay dark", async ({
+// Hardening contract: public media must remain scoped to published note references and
+// published links only, so stray note-image assets do not turn public accidentally.
+test("@media-regression @media-foundation published note images and published-link favicons are publicly resolvable, but unreferenced note images stay dark", async ({
   page
 }) => {
   const { faviconAssetId, faviconSvg, hiddenAssetId, noteSvg, publishedAssetId } = await seedPublishedMedia();

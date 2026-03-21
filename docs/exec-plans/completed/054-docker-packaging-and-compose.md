@@ -5,7 +5,7 @@
   "id": "054-docker-packaging-and-compose",
   "title": "Docker packaging and Compose",
   "order": 54,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "055-media-and-container-hardening",
   "prompt_docs": [
@@ -31,7 +31,8 @@
     "Mutable DB, media, or logs are baked into the image instead of mounted.",
     "AI env handling in the container path diverges from the existing app env contract.",
     "The Docker task promotes from docs alone without image-build proof."
-  ]
+  ],
+  "completed_at": "2026-03-21T14:36:23.103Z"
 }
 ```
 
@@ -82,3 +83,4 @@ Promote only when Docker support is real and operator-usable, not just described
 - 2026-03-21 23:26:54 KST - Re-ran the required non-Docker checks in the current repo state: `npm run verify` now passes locally end-to-end and `docker compose config` still passes. Also fixed the runtime image to include `prisma.config.ts`, because the container entrypoint reuses `npm run db:prepare` and Prisma loads that config file at startup.
 - 2026-03-21 23:33:20 KST - Fixed the remaining image-build blocker in `Dockerfile`: the builder stage now creates a disposable temp runtime path and runs `npm run db:prepare` before `next build`, which is required because the prerendered public homepage still reads published content through Prisma during the build.
 - 2026-03-21 23:33:20 KST - Re-verified `npm run verify` passes and `docker compose config` passes in the current repo state. `docker build -t minakeep:test .` is still blocked in this sandbox by Docker daemon permission denial, but the builder-stage contract was reproduced locally with the same build-only env values and a temp SQLite path, and that `db:prepare` + `next build` path now succeeds.
+- 2026-03-21T14:36:23.103Z: automatically promoted after deterministic checks and evaluator approval.

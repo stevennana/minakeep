@@ -3,53 +3,49 @@ Read the following repository documents before making changes:
 - ARCHITECTURE.md
 - docs/RELIABILITY.md
 - docs/SECURITY.md
-- docs/design-docs/container-runtime-packaging.md
+- docs/product-specs/note-image-attachments.md
+- docs/product-specs/link-favicon-caching.md
 - docs/product-specs/docker-packaging.md
-- docs/exec-plans/active/054-docker-packaging-and-compose.md
+- docs/exec-plans/active/055-media-and-container-hardening.md
 
-Current task id: 054-docker-packaging-and-compose
-Current task title: Docker packaging and Compose
+Current task id: 055-media-and-container-hardening
+Current task title: Media and container hardening
 
 Objective:
-Package Minakeep as a source-built Docker image with a documented Compose deployment path.
+Reconcile docs, security, reliability, and regression coverage after the media and container wave lands.
 
 Scope:
-- Dockerfile
-- Compose example
-- mounted DB/media/log paths
-- env-driven runtime configuration including AI vars
+- doc alignment
+- regression coverage for media and favicon behavior
+- remaining Docker/operator proof cleanup
 
 Out of scope:
-- orchestration manifests beyond Compose
-- object-storage integration
-- multi-profile deployment matrix beyond one clear primary path
+- new attachment types
+- object storage
+- orchestration platforms beyond the Docker/Compose path already chosen
 
 Exit criteria:
-1. The repo builds a production-style Docker image successfully.
-2. The repo includes a Compose path with mounted DB, media, logs, and env config.
-3. Docker packaging aligns with the existing runtime-prep and AI env contract.
-4. `docker build -t minakeep:test .` passes.
-5. `docker compose config` passes.
-6. `npm run verify` passes.
+1. Docs reflect the shipped media and Docker behavior accurately.
+2. Media visibility and favicon fallback regressions are covered deterministically.
+3. Remaining container/operator debt is resolved or explicitly tracked.
+4. `npm run test:e2e -- --grep @media-regression` passes.
+5. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `docker build -t minakeep:test .`
-- `docker compose config`
+- `npm run test:e2e -- --grep @media-regression`
 
 Evaluator notes:
-Promote only when Docker support is real and operator-usable, not just described in docs.
+Promote only when the media and Docker wave is documented, hardened, and consistent with the private-vault model.
 
 Required repository artifacts for this task:
-- Dockerfile
-- docker-compose.yml
-- .dockerignore
-- README.md
+- docs
+- src
+- tests/e2e
 
 Required commands for this task:
 - npm run verify
-- docker build -t minakeep:test .
-- docker compose config
+- npm run test:e2e -- --grep @media-regression
 
 Previous known gaps from the last evaluation:
 - none

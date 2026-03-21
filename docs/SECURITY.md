@@ -15,6 +15,8 @@ Define the security posture for Minakeep's current shipped slice.
 - visible AI failure copy may name missing env keys, but it must never echo configured secret values
 - public routes must fail closed on malformed or unsafe published-link URLs, even if stale SQLite data exists
 - uploaded note images must not become public solely because they were uploaded; public access must stay tied to published-note visibility rules
+- published note images are public only when the published note still references that `/media/:assetId` URL in markdown
+- cached favicons may be public only through already-published links; a saved private link must not leak its favicon through the public media route
 
 ## Secrets and Config
 - keep `AUTH_SECRET`, `DATABASE_URL`, `OWNER_USERNAME`, and `OWNER_PASSWORD` in environment configuration only
@@ -24,6 +26,7 @@ Define the security posture for Minakeep's current shipped slice.
 - if AI config is partial, surface only which keys are missing and keep save behavior local and deterministic
 - the real-endpoint `@ai-real` gate must use those same local-only AI env vars and must not introduce a fallback or client-side copy of them
 - mounted media, SQLite, and log volumes must be operator-configurable rather than hardcoded into the image
+- the shipped Compose path fixes the container-internal mount points at `/app/data`, `/app/media`, and `/app/logs`; operators may still change the host-side bind targets in Compose without changing the image
 
 ## Public Surfaces
 - `/` is public and may show published notes plus published links
@@ -34,7 +37,7 @@ Define the security posture for Minakeep's current shipped slice.
 - public link cards must open only the already-saved external URL in a new tab
 - API health checks must expose only non-sensitive readiness information
 - public note images must be resolvable only through notes that are actually published
-- cached favicons should be served from Minakeep rather than hotlinking third-party icon URLs directly on public pages
+- cached favicons should be served from Minakeep only for published links, rather than hotlinking third-party icon URLs directly on public pages
 
 ## Verification
 - private routes redirect unauthenticated users to `/login`
@@ -47,4 +50,4 @@ Define the security posture for Minakeep's current shipped slice.
 - server logs may record HTTP status or high-level failure class for the Mina endpoint, but not request bodies, tokens, or full private note/link payloads
 - real-endpoint AI verification must fail or skip based on missing `LLM_BASE`, `TOKEN`, and `MODEL`, not by substituting committed defaults
 - the shared public-content boundary must revalidate published-link URLs before public rendering so seeded `javascript:` or malformed URLs stay hidden
-- media access rules must prove that draft-note images are not publicly retrievable while published-note images remain publicly renderable
+- media access rules must prove that draft-note images are not publicly retrievable, published referenced note images remain publicly renderable, unreferenced note images stay dark, and link favicons become public only when the linked bookmark is published

@@ -18,7 +18,9 @@ async function signIn(page: Page) {
   await expect(page).toHaveURL(/\/app$/);
 }
 
-test("@link-favicon link save caches a favicon locally for owner and public cards, and manual refresh can recover from failure", async ({
+// Hardening contract: favicon fetch failure must not block save, and the owner-visible
+// fallback state must recover deterministically when a later refresh succeeds.
+test("@media-regression @link-favicon link save caches a favicon locally for owner and public cards, and manual refresh can recover from failure", async ({
   page
 }) => {
   const uniqueId = `${Date.now()}`;

@@ -7,15 +7,16 @@ Ship Minakeep as a source-built Docker image with a documented Compose path for 
 An operator wants to run Minakeep in a container instead of a direct local Node process.
 
 ## User-Visible Behavior
-- The repo provides a Docker image build path.
+- The repo provides a source-built multi-stage Docker image build path.
 - The repo provides `docker-compose.yml` as the primary operator setup.
-- Compose mounts persistent paths for SQLite data at `/app/data`, uploaded media and cached favicons at `/app/media`, and logs at `/app/logs`.
+- The shipped Compose file binds `./data`, `./media`, and `./logs` into the fixed container paths `/app/data`, `/app/media`, and `/app/logs`.
 - Runtime configuration, including AI env vars, is supplied through environment variables or env files.
-- The container startup path runs the existing `db:prepare` contract before serving the built app.
+- The container startup path ensures the mounted runtime directories exist, writes a timestamped server log under `/app/logs`, runs the existing `db:prepare` contract, and then serves the built app on `0.0.0.0:$PORT`.
+- The shipped Compose service includes an HTTP healthcheck against `/api/health`.
 
 ## Validation
 - The Docker image builds successfully from the repo source.
 - The containerized app startup path stays compatible with mounted volumes and env-driven runtime prep.
 - The Compose configuration is valid and documented for operator use through `docker compose config`.
 - Mounted DB/media/log paths are clearly defined and not baked into the image.
-- `npm run verify` passes, and the Docker task adds its own deterministic build/start proof.
+- `npm run verify` passes, and the Docker path keeps its build/config proof explicit through `docker build -t minakeep:test .` plus `docker compose config` instead of relying on prose alone.
