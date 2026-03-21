@@ -5,7 +5,7 @@
   "id": "047-note-editor-view-modes",
   "title": "Note editor view modes",
   "order": 47,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "048-note-editor-mobile-workflow",
   "prompt_docs": [
@@ -28,7 +28,8 @@
     "Mode switching loses note content or editor state.",
     "Split mode feels cramped or visually disconnected.",
     "Preview diverges from the actual markdown rendering contract."
-  ]
+  ],
+  "completed_at": "2026-03-21T09:11:25.495Z"
 }
 ```
 
@@ -72,3 +73,4 @@ Promote only when mode switching is stable and the split view feels like a coher
 - 2026-03-21 17:49 KST: Added dedicated `@ui-note-editor-modes` Playwright coverage for desktop mode switching plus mobile non-regression, and updated existing editor UI assertions away from the removed standalone preview panel.
 - 2026-03-21 18:00 KST: Refined source-pane focus restoration after returning from `Preview` so mode switching stays stable in the full suite, then passed `npm run test:e2e -- --grep @ui-note-editor-modes` and `npm run verify`.
 - 2026-03-21 18:09 KST: Tightened post-edit caret restoration with a layout effect so intercepted markdown edits keep the cursor stable after mode switches, aligned the tagged mode test with the documented list-continuation behavior, and repassed `npm run test:e2e -- --grep @ui-note-editor-modes` plus `npm run verify`.
+- 2026-03-21T09:11:25.495Z: automatically promoted after deterministic checks and evaluator approval.

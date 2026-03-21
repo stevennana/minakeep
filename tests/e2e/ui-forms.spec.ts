@@ -209,33 +209,36 @@ async function expectEditorHierarchy(page: Page, viewport: "desktop" | "mobile")
   const intro = page.locator(".note-editor-intro .ui-intro-block");
   const form = page.locator(".note-form");
   const sourcePane = page.getByTestId("note-editor-source-pane");
-  const previewPane = page.getByTestId("note-editor-preview-pane");
 
-  const [introBox, formBox, previewBox, sourceBox] = await Promise.all([
+  const [introBox, formBox, sourceBox] = await Promise.all([
     intro.boundingBox(),
     form.boundingBox(),
-    previewPane.boundingBox(),
     sourcePane.boundingBox()
   ]);
 
   expect(introBox).not.toBeNull();
   expect(formBox).not.toBeNull();
-  expect(previewBox).not.toBeNull();
   expect(sourceBox).not.toBeNull();
 
-  if (!introBox || !formBox || !previewBox || !sourceBox) {
+  if (!introBox || !formBox || !sourceBox) {
     return;
   }
 
   expect(introBox.height).toBeLessThan(viewport === "desktop" ? 240 : 425);
 
   if (viewport === "desktop") {
+    const previewBox = await page.getByTestId("note-editor-preview-pane").boundingBox();
+
+    expect(previewBox).not.toBeNull();
+
+    if (!previewBox) {
+      return;
+    }
+
     expect(sourceBox.x).toBeLessThan(previewBox.x);
     expect(sourceBox.width).toBeGreaterThan(previewBox.width);
     return;
   }
-
-  expect(previewBox.y).toBeGreaterThan(sourceBox.y);
 }
 
 test.describe.configure({ mode: "serial" });
@@ -312,6 +315,9 @@ test("@ui-regression @ui-forms note editor keeps hierarchy on mobile", async ({ 
   await expect(page.getByText("AI note metadata")).toBeVisible();
   await expect(page.getByLabel("Title")).toBeVisible();
   await expect(page.getByLabel("Markdown body")).toBeVisible();
+  await expect(page.getByTestId("note-editor-mode-switcher")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Edit" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByTestId("note-editor-preview-pane")).toBeHidden();
   await expectEditorHierarchy(page, "mobile");
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);

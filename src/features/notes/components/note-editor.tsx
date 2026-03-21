@@ -60,6 +60,8 @@ type MarkdownEditResult = {
 
 type NoteEditorViewMode = "source" | "split" | "preview";
 
+const desktopViewportQuery = "(min-width: 768px)";
+
 function escapeSourceHtml(value: string) {
   return value
     .replaceAll("&", "&amp;")
@@ -581,7 +583,8 @@ export function NoteEditor({
 }: NoteEditorProps) {
   const [title, setTitle] = useState(initialTitle);
   const [markdown, setMarkdown] = useState(initialMarkdown);
-  const [viewMode, setViewMode] = useState<NoteEditorViewMode>("split");
+  const [viewMode, setViewMode] = useState<NoteEditorViewMode>("source");
+  const [isDesktopViewport, setIsDesktopViewport] = useState(false);
   const [editorScrollTop, setEditorScrollTop] = useState(0);
   const [editorScrollLeft, setEditorScrollLeft] = useState(0);
   const [cursorState, setCursorState] = useState<CursorState>(() => getCursorState(initialMarkdown, 0, 0));
@@ -600,13 +603,17 @@ export function NoteEditor({
     "--editor-scroll-left": `${editorScrollLeft}px`,
     "--editor-scroll-top": `${editorScrollTop}px`
   } as CSSProperties;
+  const isMobileViewport = !isDesktopViewport;
+  const sourcePaneHidden = viewMode === "preview";
+  const previewPaneHidden = viewMode !== "preview" && (isMobileViewport || viewMode === "source");
   const lineCount = markdown.split("\n").length;
   const wordCount = markdown.trim() ? markdown.trim().split(/\s+/).length : 0;
   const characterCount = markdown.length;
   const lineNumbers = Array.from({ length: lineCount }, (_, index) => index + 1);
-  const sourcePaneHidden = viewMode === "preview";
-  const previewPaneHidden = viewMode === "source";
   const workbenchBodyClassName = `note-editor-workbench-body note-editor-workbench-body-${viewMode}`;
+  const toolbarHint = isDesktopViewport
+    ? "Syntax-aware editing keeps the source visible and saves one markdown string."
+    : "Edit in markdown, then switch to preview without compressing both panes onto the phone screen.";
 
   function runEditorAction(action: (currentMarkdown: string, selection: SelectionRange) => MarkdownEditResult) {
     const textarea = textareaRef.current;
@@ -777,6 +784,41 @@ export function NoteEditor({
     setCursorState(getCursorState(markdown, textarea.selectionStart, textarea.selectionEnd));
   }, [markdown]);
 
+  useLayoutEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const mediaQuery = window.matchMedia(desktopViewportQuery);
+
+    const syncViewport = (matches: boolean, preserveDesktopSource = false) => {
+      setIsDesktopViewport(matches);
+      setViewMode((current) => {
+        if (!matches && current === "split") {
+          return "source";
+        }
+
+        if (matches && !preserveDesktopSource && current === "source") {
+          return "split";
+        }
+
+        return current;
+      });
+    };
+
+    syncViewport(mediaQuery.matches);
+
+    const handleChange = (event: MediaQueryListEvent) => {
+      syncViewport(event.matches, true);
+    };
+
+    mediaQuery.addEventListener("change", handleChange);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleChange);
+    };
+  }, []);
+
   useEffect(() => {
     const textarea = textareaRef.current;
 
@@ -870,20 +912,41 @@ export function NoteEditor({
       shortcut: "Ctrl/Cmd+K"
     }
   ];
-  const viewModes: Array<{ description: string; value: NoteEditorViewMode }> = [
-    {
-      description: "Raw editing only",
-      value: "source"
-    },
-    {
-      description: "Draft with source and preview",
-      value: "split"
-    },
-    {
-      description: "Preview review only",
-      value: "preview"
-    }
-  ];
+  const viewModes: Array<{ desktopLabel: string; description: string; mobileLabel: string; value: NoteEditorViewMode }> = isDesktopViewport
+    ? [
+        {
+          desktopLabel: "Source",
+          description: "Raw editing only",
+          mobileLabel: "Edit",
+          value: "source"
+        },
+        {
+          desktopLabel: "Split",
+          description: "Draft with source and preview",
+          mobileLabel: "Split",
+          value: "split"
+        },
+        {
+          desktopLabel: "Preview",
+          description: "Preview review only",
+          mobileLabel: "Preview",
+          value: "preview"
+        }
+      ]
+    : [
+        {
+          desktopLabel: "Source",
+          description: "Markdown editing only",
+          mobileLabel: "Edit",
+          value: "source"
+        },
+        {
+          desktopLabel: "Preview",
+          description: "Rendered preview only",
+          mobileLabel: "Preview",
+          value: "preview"
+        }
+      ];
 
   return (
     <div className="note-editor-shell">
@@ -984,13 +1047,17 @@ export function NoteEditor({
             hint="Markdown stays the saved note body. Tab indents selected lines and Enter continues lists or blockquotes."
             label="Markdown body"
           >
-            <div className="note-editor-workbench" data-testid="note-markdown-workbench">
+            <div
+              className="note-editor-workbench"
+              data-editor-workflow={isDesktopViewport ? "desktop" : "mobile"}
+              data-testid="note-markdown-workbench"
+            >
               <div className="note-editor-toolbar">
                 <div className="note-editor-toolbar-header">
                   <div className="note-editor-toolbar-copy">
                     <strong>Markdown source</strong>
                     <span className="field-note" id={editorHintId}>
-                      Syntax-aware editing keeps the source visible and saves one markdown string.
+                      {toolbarHint}
                     </span>
                   </div>
                   <div className="note-editor-statusbar" role="status">
@@ -1028,7 +1095,8 @@ export function NoteEditor({
                         title={mode.description}
                         type="button"
                       >
-                        {mode.value[0].toUpperCase() + mode.value.slice(1)}
+                        <span className="note-editor-mode-label-desktop">{mode.desktopLabel}</span>
+                        <span className="note-editor-mode-label-mobile">{mode.mobileLabel}</span>
                       </button>
                     ))}
                   </div>

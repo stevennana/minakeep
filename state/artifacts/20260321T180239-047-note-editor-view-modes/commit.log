@@ -1,0 +1,23 @@
+[main bc461c6] ralph: 047-note-editor-view-modes 2026-03-21T18:11:25+09:00
+ 41 files changed, 1713 insertions(+), 141 deletions(-)
+ rename docs/exec-plans/{active => completed}/046-note-editor-toolbar-and-shortcuts.md (93%)
+ create mode 100644 state/artifacts/20260321T173505-046-note-editor-toolbar-and-shortcuts/backlog.log
+ create mode 100644 state/artifacts/20260321T173505-046-note-editor-toolbar-and-shortcuts/promote.log
+ create mode 100644 state/artifacts/20260321T174819-047-note-editor-view-modes/backlog.log
+ create mode 100644 state/artifacts/20260321T174819-047-note-editor-view-modes/commit.log
+ create mode 100644 state/artifacts/20260321T174819-047-note-editor-view-modes/evaluator.log
+ create mode 100644 state/artifacts/20260321T174819-047-note-editor-view-modes/npm-run-test-e2e-grep-ui-note-editor-modes-next-server.log
+ create mode 100644 state/artifacts/20260321T174819-047-note-editor-view-modes/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260321T174819-047-note-editor-view-modes/promote.log
+ create mode 100644 state/artifacts/20260321T174819-047-note-editor-view-modes/task-prompt.log
+ create mode 100644 state/artifacts/20260321T174819-047-note-editor-view-modes/worker.jsonl
+ create mode 100644 state/artifacts/20260321T180239-047-note-editor-view-modes/commit.log
+ create mode 100644 state/artifacts/20260321T180239-047-note-editor-view-modes/evaluator.log
+ create mode 100644 state/artifacts/20260321T180239-047-note-editor-view-modes/npm-run-test-e2e-grep-ui-note-editor-modes-next-server.log
+ create mode 100644 state/artifacts/20260321T180239-047-note-editor-view-modes/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260321T180239-047-note-editor-view-modes/task-prompt.log
+ create mode 100644 state/artifacts/20260321T180239-047-note-editor-view-modes/worker.jsonl
+ create mode 100644 tests/e2e/ui-note-editor-modes.spec.ts
+ create mode 100644 tests/e2e/ui-note-editor-modes.spec.ts-snapshots/ui-note-editor-modes-desktop-darwin.png
+ create mode 100644 tests/e2e/ui-note-editor-modes.spec.ts-snapshots/ui-note-editor-modes-mobile-darwin.png
+commit: created

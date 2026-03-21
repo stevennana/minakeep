@@ -1003,15 +1003,18 @@ textarea {
 }
 
 .note-editor-toolbar-header {
+  align-items: flex-start;
   justify-content: space-between;
 }
 
 .note-editor-toolbar-row {
+  align-items: stretch;
   justify-content: space-between;
 }
 
 .note-editor-toolbar-copy {
-  align-items: baseline;
+  align-items: flex-start;
+  flex-direction: column;
 }
 
 .note-editor-toolbar-copy strong {
@@ -1030,17 +1033,25 @@ textarea {
   color: var(--ink-muted);
   font-family: var(--font-mono);
   font-size: 0.76rem;
-  justify-content: flex-end;
+  justify-content: flex-start;
   letter-spacing: 0.02em;
 }
 
 .note-editor-toolbar-controls {
+  flex: 1 1 100%;
   gap: 0.45rem;
+  justify-content: flex-start;
 }
 
 .note-editor-mode-switcher {
-  display: none;
+  background: rgba(226, 232, 240, 0.46);
+  border: 1px solid rgba(100, 116, 139, 0.14);
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  flex: 1 1 100%;
   gap: 0.45rem;
+  padding: 0.2rem;
+  width: 100%;
 }
 
 .note-editor-tool {
@@ -1055,8 +1066,8 @@ textarea {
   font-size: 0.8rem;
   font-weight: 600;
   justify-content: center;
-  min-height: 2.6rem;
-  min-width: 2.6rem;
+  min-height: 2.85rem;
+  min-width: 2.85rem;
   padding: 0.55rem 0.7rem;
   transition:
     background-color 140ms ease,
@@ -1093,12 +1104,14 @@ textarea {
   color: var(--ink-muted);
   cursor: pointer;
   display: inline-flex;
+  flex: 1 1 0;
   font-family: var(--font-ui);
   font-size: 0.72rem;
   font-weight: 700;
   justify-content: center;
   letter-spacing: 0.14em;
-  min-height: 2.5rem;
+  min-height: 2.85rem;
+  min-width: 0;
   padding: 0.55rem 0.85rem;
   text-transform: uppercase;
   transition:
@@ -1127,6 +1140,14 @@ textarea {
   color: var(--accent-strong);
 }
 
+.note-editor-mode-label-desktop {
+  display: none;
+}
+
+.note-editor-mode-label-mobile {
+  display: inline;
+}
+
 .note-editor-workbench-body,
 .note-editor-pane,
 .note-editor-preview-frame,
@@ -1151,8 +1172,8 @@ textarea {
     linear-gradient(180deg, rgba(248, 250, 252, 0.86), rgba(241, 245, 249, 0.98)),
     rgba(248, 250, 252, 0.96);
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  min-height: clamp(21rem, 48vh, 28rem);
+  grid-template-columns: minmax(0, 1fr);
+  min-height: clamp(18rem, 52vh, 24rem);
 }
 
 .note-editor-preview-frame {
@@ -1161,8 +1182,8 @@ textarea {
     rgba(255, 255, 255, 0.96);
   border-top: 1px solid rgba(100, 116, 139, 0.12);
   gap: var(--space-4);
-  min-height: clamp(21rem, 48vh, 28rem);
-  padding: 1rem 1.15rem 1.25rem;
+  min-height: clamp(16rem, 42vh, 21rem);
+  padding: 0.95rem 1rem 1.15rem;
 }
 
 .note-editor-preview-head {
@@ -1204,6 +1225,7 @@ textarea {
 }
 
 .note-editor-gutter {
+  display: none;
   background:
     linear-gradient(180deg, rgba(226, 232, 240, 0.66), rgba(226, 232, 240, 0.38)),
     rgba(226, 232, 240, 0.72);
@@ -1237,7 +1259,7 @@ textarea {
   line-height: 1.65;
   margin: 0;
   min-height: inherit;
-  padding: 1rem 1.1rem 1.15rem;
+  padding: 0.95rem 1rem 1.05rem;
   tab-size: 2;
   white-space: pre-wrap;
   word-break: break-word;
@@ -2260,26 +2282,69 @@ textarea {
   }
 
   .note-editor-toolbar-controls {
+    flex: 1 1 auto;
     justify-content: flex-start;
   }
 
   .note-editor-mode-switcher {
-    display: inline-flex;
+    flex: 0 0 auto;
     justify-content: flex-end;
+    width: auto;
+  }
+
+  .note-editor-mode-toggle {
+    flex: 0 0 auto;
+  }
+
+  .note-editor-mode-label-desktop {
+    display: inline;
+  }
+
+  .note-editor-mode-label-mobile {
+    display: none;
   }
 
   .note-editor-workbench-body-split {
     grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
   }
 
+  .note-editor-surface {
+    grid-template-columns: auto minmax(0, 1fr);
+    min-height: clamp(21rem, 48vh, 28rem);
+  }
+
   .note-editor-preview-frame {
     border-left: 1px solid rgba(100, 116, 139, 0.12);
     border-top: 0;
+    min-height: clamp(21rem, 48vh, 28rem);
+    padding: 1rem 1.15rem 1.25rem;
   }
 
   .note-editor-preview-head {
     align-items: end;
     grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .note-editor-toolbar-header {
+    align-items: center;
+  }
+
+  .note-editor-toolbar-copy {
+    align-items: baseline;
+    flex-direction: row;
+  }
+
+  .note-editor-statusbar {
+    justify-content: flex-end;
+  }
+
+  .note-editor-gutter {
+    display: block;
+  }
+
+  .note-editor-highlight,
+  .note-editor-input {
+    padding: 1rem 1.1rem 1.15rem;
   }
 
   .note-list-item {

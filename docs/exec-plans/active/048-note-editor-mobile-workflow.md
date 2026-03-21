@@ -69,3 +69,6 @@ Promote only when the richer editor remains practical on phones and does not reg
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-21 18:19 KST: Reworked the note editor into a phone-first `Edit` / `Preview` workflow while preserving desktop `Source / Split / Preview`, increased touch-target sizing for toolbar and mode controls, and reclaimed mobile width by removing the gutter on phone layouts.
+- 2026-03-21 18:19 KST: Added dedicated `@ui-note-editor-mobile` Playwright coverage for phone workflow, touch-target sizing, desktop split-mode preservation, and refreshed the affected editor UI snapshots after updating existing note-editor regressions.
+- 2026-03-21 18:20 KST: `npm run test:e2e -- --grep @ui-note-editor-mobile` passed, and the full `npm run verify` gate passed after the mobile editor workflow changes.

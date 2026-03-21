@@ -719,3 +719,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T180239-047-note-editor-view-modes/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T180239-047-note-editor-view-modes/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 047-note-editor-view-modes -> 048-note-editor-mobile-workflow
+- backlog: rendered current=048-note-editor-mobile-workflow
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxo
+- cycle: finished
+
+### cycle 2026-03-21T18:11:55+09:00 task=048-note-editor-mobile-workflow
+- artifacts: state/artifacts/20260321T181155-048-note-editor-mobile-workflow
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T181155-048-note-editor-mobile-workflow/worker.jsonl
+- worker-summary: Phone widths now use a real edit-first note workflow instead of a stacked desktop workbench. In [note-editor.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/components/note-editor.tsx) I kept desktop `Source / Split / Preview`, switched mobile to `Edit / Preview`, and preserved focus/selection behavior when toggling back to editing. In [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css) I enlarged toolbar and mode-toggle hit areas, made the mobile toggle visible, and removed the line-number gutter on phones to reclaim writing space.
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T181155-048-note-editor-mobile-workflow/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T181155-048-note-editor-mobile-workflow/npm-run-verify-next-server.log

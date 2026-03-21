@@ -181,31 +181,35 @@ async function expectWorkbenchHierarchy(page: Page, viewport: "desktop" | "mobil
   const sourcePane = page.getByTestId("note-editor-source-pane");
   const previewPane = page.getByTestId("note-editor-preview-pane");
 
-  const [formBox, previewBox, sourceBox, workbenchBox] = await Promise.all([
+  const [formBox, sourceBox, workbenchBox] = await Promise.all([
     form.boundingBox(),
-    previewPane.boundingBox(),
     sourcePane.boundingBox(),
     workbench.boundingBox()
   ]);
 
   expect(formBox).not.toBeNull();
-  expect(previewBox).not.toBeNull();
   expect(sourceBox).not.toBeNull();
   expect(workbenchBox).not.toBeNull();
 
-  if (!formBox || !previewBox || !sourceBox || !workbenchBox) {
+  if (!formBox || !sourceBox || !workbenchBox) {
     return;
   }
 
   expect(workbenchBox.height).toBeGreaterThan(viewport === "desktop" ? 350 : 300);
 
   if (viewport === "desktop") {
+    const previewBox = await previewPane.boundingBox();
+
+    expect(previewBox).not.toBeNull();
+
+    if (!previewBox) {
+      return;
+    }
+
     expect(sourceBox.x).toBeLessThan(previewBox.x);
     expect(sourceBox.width).toBeGreaterThan(previewBox.width);
     return;
   }
-
-  expect(previewBox.y).toBeGreaterThan(sourceBox.y);
 }
 
 test.describe.configure({ mode: "serial" });
@@ -273,14 +277,18 @@ test("@ui-note-editor-foundation desktop workbench looks upgraded without breaki
   });
 });
 
-test("@ui-note-editor-foundation mobile workbench stays readable and stacked", async ({ page }) => {
+test("@ui-note-editor-foundation mobile workbench stays readable in edit-first mode", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await signIn(page);
   await page.goto(`/app/notes/${seededNoteId}/edit`);
 
   await expect(page.getByRole("heading", { name: "Edit draft note" })).toBeVisible();
   await expect(page.getByTestId("note-markdown-workbench")).toBeVisible();
+  await expect(page.getByTestId("note-editor-mode-switcher")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Edit" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("button", { name: "Preview" })).toHaveAttribute("aria-pressed", "false");
   await expect(page.getByTestId("note-markdown-input")).toBeVisible();
+  await expect(page.getByTestId("note-editor-preview-pane")).toBeHidden();
   await expect(page.locator(".note-editor-statusbar")).toContainText("chars");
   await expectWorkbenchHierarchy(page, "mobile");
   await expectAccessibleStructure(page);

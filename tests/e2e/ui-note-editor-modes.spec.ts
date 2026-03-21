@@ -288,17 +288,49 @@ test("@ui-note-editor-modes desktop split mode reads as one workbench", async ({
   });
 });
 
-test("@ui-note-editor-modes mobile keeps the split workbench stacked without desktop mode chrome", async ({ page }) => {
+test("@ui-note-editor-modes mobile uses an edit and preview workflow without split-pane compression", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await signIn(page);
   await page.goto(`/app/notes/${seededNoteId}/edit`);
 
+  const editor = page.getByTestId("note-markdown-input");
+  const modeSwitcher = page.getByTestId("note-editor-mode-switcher");
+  const editButton = modeSwitcher.getByRole("button", { name: "Edit" });
+  const previewButton = modeSwitcher.getByRole("button", { name: "Preview" });
+  const sourcePane = page.getByTestId("note-editor-source-pane");
+  const previewPane = page.getByTestId("note-editor-preview-pane");
+
   await expect(page.getByRole("heading", { name: "Edit draft note" })).toBeVisible();
-  await expect(page.getByTestId("note-editor-mode-switcher")).toBeHidden();
-  await expect(page.getByTestId("note-editor-source-pane")).toBeVisible();
-  await expect(page.getByTestId("note-editor-preview-pane")).toBeVisible();
-  await expect(page.getByTestId("note-markdown-preview")).toContainText("Keep preview continuity");
-  await expectSplitWorkbenchLayout(page, "mobile");
+  await expect(modeSwitcher).toBeVisible();
+  await expect(editButton).toHaveAttribute("aria-pressed", "true");
+  await expect(sourcePane).toBeVisible();
+  await expect(previewPane).toBeHidden();
+
+  await editor.click();
+  await editor.press("End");
+  await editor.press("Enter");
+  await editor.type("Mobile keeps the workbench readable");
+  await expect(editor).toHaveValue(/Mobile keeps the workbench readable/);
+
+  await previewButton.click();
+  await expect(previewButton).toHaveAttribute("aria-pressed", "true");
+  await expect(sourcePane).toBeHidden();
+  await expect(previewPane).toBeVisible();
+  await expect(page.getByTestId("note-markdown-preview")).toContainText("Mobile keeps the workbench readable");
+
+  await editButton.click();
+  await expect(editButton).toHaveAttribute("aria-pressed", "true");
+  await expect(sourcePane).toBeVisible();
+  await expect(previewPane).toBeHidden();
+  await expect(editor).toBeFocused();
+  await page.keyboard.press("Enter");
+  await page.keyboard.type("Returns to editing cleanly");
+  await expect(editor).toHaveValue(/Returns to editing cleanly/);
+
+  await page.getByRole("button", { name: "Save draft" }).click();
+  await expect(page).toHaveURL(/\/app\/notes\/[^/]+\/edit\?saved=1$/);
+  await expect(page.getByText("Draft saved.")).toBeVisible();
+  await expect(page.getByTestId("note-markdown-input")).toHaveValue(/Returns to editing cleanly/);
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
 

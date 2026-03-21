@@ -3,47 +3,48 @@ Read the following repository documents before making changes:
 - docs/FRONTEND.md
 - docs/product-specs/markdown-editor-workbench.md
 - docs/design-docs/markdown-editor-workbench.md
-- docs/references/markdown-editor-patterns.md
+- docs/design-docs/responsive-ui-rules.md
 - docs/references/ui-verification-contract.md
-- docs/exec-plans/active/047-note-editor-view-modes.md
+- docs/exec-plans/active/048-note-editor-mobile-workflow.md
 
-Current task id: 047-note-editor-view-modes
-Current task title: Note editor view modes
+Current task id: 048-note-editor-mobile-workflow
+Current task title: Note editor mobile workflow
 
 Objective:
-Support clear editor modes so owners can choose between raw editing, split drafting, and preview review.
+Make the richer markdown workbench genuinely usable on mobile instead of inheriting desktop assumptions.
 
 Scope:
-- `Source`, `Split`, and `Preview` modes for desktop note editing
-- stable mode switching
-- preview continuity with the real note renderer
+- mobile `Edit` / `Preview` workflow
+- touch-friendly authoring controls
+- responsive note-editor layout behavior
 
 Out of scope:
-- mobile-specific layout rules
-- new markdown syntax support unrelated to editor modes
-- public note reading changes
+- tablet-only optimizations that do not materially affect mobile usability
+- public route responsive work
+- attachment flows
 
 Exit criteria:
-1. Desktop note editing exposes `Source`, `Split`, and `Preview` modes.
-2. Owners can switch modes without losing text or breaking the preview.
-3. Split mode is clearly usable for normal drafting work.
-4. `npm run test:e2e -- --grep @ui-note-editor-modes` passes.
+1. Phone widths use a simple, readable note-editor workflow instead of a cramped split layout.
+2. Owners can edit, preview, and save notes comfortably on mobile.
+3. Touch targets and layout hierarchy remain clear.
+4. `npm run test:e2e -- --grep @ui-note-editor-mobile` passes.
 5. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-note-editor-modes`
+- `npm run test:e2e -- --grep @ui-note-editor-mobile`
 
 Evaluator notes:
-Promote only when mode switching is stable and the split view feels like a coherent workbench rather than duplicated panels.
+Promote only when the richer editor remains practical on phones and does not regress into desktop-only UI.
 
 Required repository artifacts for this task:
 - src/features/notes/components/note-editor.tsx
+- src/app/globals.css
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-note-editor-modes
+- npm run test:e2e -- --grep @ui-note-editor-mobile
 
 Previous known gaps from the last evaluation:
 - none
