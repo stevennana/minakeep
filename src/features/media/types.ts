@@ -24,6 +24,20 @@ export function getMediaAssetPath(assetId: string) {
   return `/media/${assetId}`;
 }
 
+export function getMediaAssetIdsFromMarkdown(markdown: string) {
+  const assetIds = new Set<string>();
+
+  for (const match of markdown.matchAll(/\/media\/([a-zA-Z0-9-]+)/g)) {
+    const assetId = match[1]?.trim();
+
+    if (assetId) {
+      assetIds.add(assetId);
+    }
+  }
+
+  return [...assetIds];
+}
+
 export function isMediaAssetPubliclyVisible(asset: MediaAssetAccessRecord) {
   if (asset.kind === "note-image") {
     return Boolean(asset.note?.isPublished && asset.note.markdown.includes(getMediaAssetPath(asset.id)));

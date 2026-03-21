@@ -38,3 +38,4 @@
 - 2026-03-21T09:11:25.495Z: promoted 047-note-editor-view-modes -> 048-note-editor-mobile-workflow
 - 2026-03-21T09:23:14.790Z: promoted 048-note-editor-mobile-workflow -> 049-note-editor-hardening
 - 2026-03-21T09:33:57.028Z: promoted 049-note-editor-hardening -> NONE
+- 2026-03-21T12:39:54.740Z: promoted 050-media-storage-foundation -> 051-note-image-upload-and-embed

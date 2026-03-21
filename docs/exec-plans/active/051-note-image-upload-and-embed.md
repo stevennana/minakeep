@@ -66,4 +66,6 @@ Promote only when upload and markdown insertion feel native to the note editor i
 
 ## Progress log
 
-- Start here. Append timestamped progress notes as work lands.
+- 2026-03-21 21:54:01 KST - Added an authenticated note-image upload route, media persistence for uploaded note images, markdown image rendering, and note-save linking so uploaded draft assets attach to the saved note.
+- 2026-03-21 21:54:01 KST - Integrated a native upload control into the note editor toolbar with automatic markdown image insertion, owner-visible preview rendering, and non-blocking upload feedback.
+- 2026-03-21 21:54:01 KST - Added `@note-image-upload` E2E coverage plus markdown/editor unit coverage, refreshed the affected note-editor UI snapshots, and verified `npm run test:e2e -- --grep @note-image-upload` and `npm run verify`.

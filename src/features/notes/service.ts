@@ -1,6 +1,7 @@
 import "server-only";
 
 import { requestEnrichment, retryEnrichment } from "@/features/enrichment/service";
+import { claimNoteImageAssetsForNote } from "@/features/media/service";
 import { notesRepo } from "@/features/notes/repo";
 import { createNoteExcerpt } from "@/features/notes/markdown";
 import type { NoteDraftInput } from "@/features/notes/types";
@@ -40,12 +41,16 @@ export async function createDraftNote(ownerId: string, input: NoteDraftInput) {
   const title = normalizeTitle(input.title);
   const markdown = input.markdown;
   const existingSlugs = await notesRepo.listSlugsForOwner(ownerId);
-  return notesRepo.create(ownerId, {
+  const note = await notesRepo.create(ownerId, {
     title,
     slug: createUniqueNoteSlug(title, existingSlugs),
     markdown,
     excerpt: createNoteExcerpt(markdown, title)
   });
+
+  await claimNoteImageAssetsForNote(ownerId, note.id, markdown);
+
+  return note;
 }
 
 export async function updateDraftNote(ownerId: string, id: string, input: NoteDraftInput) {
@@ -59,12 +64,16 @@ export async function updateDraftNote(ownerId: string, id: string, input: NoteDr
   const markdown = input.markdown;
   const existingSlugs = await notesRepo.listSlugsForOwner(ownerId);
   const siblingSlugs = existingSlugs.filter((slug) => slug !== existingNote.slug);
-  return notesRepo.update(id, {
+  const note = await notesRepo.update(id, {
     title,
     slug: createUniqueNoteSlug(title, siblingSlugs),
     markdown,
     excerpt: createNoteExcerpt(markdown, title)
   });
+
+  await claimNoteImageAssetsForNote(ownerId, note.id, markdown);
+
+  return note;
 }
 
 export async function publishNote(ownerId: string, id: string) {

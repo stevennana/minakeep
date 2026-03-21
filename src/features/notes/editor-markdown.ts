@@ -207,6 +207,28 @@ export function insertMarkdownLink(markdown: string, selection: SelectionRange):
   };
 }
 
+export function insertMarkdownImage(
+  markdown: string,
+  selection: SelectionRange,
+  image: { alt: string; url: string }
+): MarkdownEditResult {
+  const replacement = `![${image.alt}](${image.url})`;
+  const before = markdown.slice(0, selection.start);
+  const after = markdown.slice(selection.end);
+  const prefix = before.length === 0 ? "" : before.endsWith("\n\n") ? "" : before.endsWith("\n") ? "\n" : "\n\n";
+  const suffix = after.length === 0 ? "" : after.startsWith("\n\n") ? "" : after.startsWith("\n") ? "\n" : "\n\n";
+  const nextMarkdown = `${before}${prefix}${replacement}${suffix}${after}`;
+  const nextCursor = before.length + prefix.length + replacement.length + suffix.length;
+
+  return {
+    nextMarkdown,
+    nextSelection: {
+      end: nextCursor,
+      start: nextCursor
+    }
+  };
+}
+
 export function toggleBlockquote(markdown: string, selection: SelectionRange): MarkdownEditResult {
   return replaceSelectedLines(markdown, selection, (lines) => {
     const hasContent = lines.some((line) => line.trim().length > 0);

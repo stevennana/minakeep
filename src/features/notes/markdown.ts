@@ -30,7 +30,7 @@ function sanitizeUrl(rawUrl: string) {
 }
 
 function renderInlineMarkdown(markdown: string): string {
-  const pattern = /(`[^`]+`)|(\[([^\]]+)\]\(([^)]+)\))|(\*\*([^*]+)\*\*)|(\*([^*]+)\*)/g;
+  const pattern = /(`[^`]+`)|(!\[([^\]]*)\]\(([^)]+)\))|(\[([^\]]+)\]\(([^)]+)\))|(\*\*([^*]+)\*\*)|(\*([^*]+)\*)/g;
   let result = "";
   let cursor = 0;
 
@@ -43,11 +43,13 @@ function renderInlineMarkdown(markdown: string): string {
     if (match[1]) {
       result += `<code>${escapeHtml(matchedText.slice(1, -1))}</code>`;
     } else if (match[2]) {
-      result += `<a href="${escapeHtml(sanitizeUrl(match[4] ?? ""))}" rel="noreferrer noopener" target="_blank">${renderInlineMarkdown(match[3] ?? "")}</a>`;
+      result += `<img alt="${escapeHtml(match[3] ?? "")}" loading="lazy" src="${escapeHtml(sanitizeUrl(match[4] ?? ""))}" />`;
     } else if (match[5]) {
-      result += `<strong>${renderInlineMarkdown(match[6] ?? "")}</strong>`;
-    } else if (match[7]) {
-      result += `<em>${renderInlineMarkdown(match[8] ?? "")}</em>`;
+      result += `<a href="${escapeHtml(sanitizeUrl(match[7] ?? ""))}" rel="noreferrer noopener" target="_blank">${renderInlineMarkdown(match[6] ?? "")}</a>`;
+    } else if (match[8]) {
+      result += `<strong>${renderInlineMarkdown(match[9] ?? "")}</strong>`;
+    } else if (match[10]) {
+      result += `<em>${renderInlineMarkdown(match[11] ?? "")}</em>`;
     }
 
     cursor = matchIndex + matchedText.length;
@@ -69,6 +71,7 @@ function isOrderedListItem(line: string) {
 function stripMarkdown(value: string) {
   return value
     .replace(/```[\s\S]*?```/g, " ")
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, "$1")
     .replace(/`([^`]+)`/g, "$1")
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1")
     .replace(/[*_>#-]/g, " ")

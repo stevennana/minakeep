@@ -24,6 +24,7 @@ import {
   continueMarkdownStructure,
   getViewportSyncedViewMode,
   indentSelectedLines,
+  insertMarkdownImage,
   insertMarkdownLink,
   toggleBlockquote,
   toggleBulletList,
@@ -39,6 +40,7 @@ import { renderMarkdownToHtml } from "@/features/notes/markdown";
 import type { SavedTag } from "@/features/tags/types";
 
 type NoteEditorProps = {
+  noteId?: string;
   initialTitle: string;
   initialMarkdown: string;
   action: (formData: FormData) => void | Promise<void>;
@@ -111,6 +113,7 @@ function RetryButton() {
 }
 
 export function NoteEditor({
+  noteId,
   initialTitle,
   initialMarkdown,
   action,
@@ -130,12 +133,18 @@ export function NoteEditor({
   const [isDesktopViewport, setIsDesktopViewport] = useState(false);
   const [editorScrollTop, setEditorScrollTop] = useState(0);
   const [cursorState, setCursorState] = useState<CursorState>(() => getCursorState(initialMarkdown, 0, 0));
+  const [imageUploadError, setImageUploadError] = useState<string | null>(null);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [imageUploadNotice, setImageUploadNotice] = useState<string | null>(null);
+  const markdownRef = useRef(initialMarkdown);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const imageInputRef = useRef<HTMLInputElement | null>(null);
   const selectionRef = useRef<SelectionRange>({
     end: 0,
     start: 0
   });
   const pendingSelectionRef = useRef<SelectionRange | null>(null);
+  const imageInsertSelectionRef = useRef<SelectionRange | null>(null);
   const shouldRestoreSelectionRef = useRef(false);
   const editorHintId = useId();
   const previewHeadingId = useId();
@@ -178,6 +187,7 @@ export function NoteEditor({
   }
 
   function updateMarkdown(nextMarkdown: string, nextSelection?: SelectionRange) {
+    markdownRef.current = nextMarkdown;
     setMarkdown(nextMarkdown);
 
     if (nextSelection) {
@@ -191,6 +201,7 @@ export function NoteEditor({
   }
 
   function handleMarkdownChange(nextMarkdown: string) {
+    markdownRef.current = nextMarkdown;
     setMarkdown(nextMarkdown);
 
     const textarea = textareaRef.current;
@@ -207,6 +218,68 @@ export function NoteEditor({
   function handleViewModeChange(nextMode: NoteEditorViewMode) {
     shouldRestoreSelectionRef.current = nextMode !== "preview";
     setViewMode(nextMode);
+  }
+
+  function triggerImagePicker() {
+    if (isUploadingImage) {
+      return;
+    }
+
+    const textarea = textareaRef.current;
+
+    imageInsertSelectionRef.current = textarea
+      ? {
+          end: textarea.selectionEnd,
+          start: textarea.selectionStart
+        }
+      : selectionRef.current;
+
+    imageInputRef.current?.click();
+  }
+
+  async function handleImageUpload(file: File) {
+    const uploadSelection = imageInsertSelectionRef.current ?? selectionRef.current;
+    const formData = new FormData();
+
+    formData.set("file", file);
+
+    if (noteId) {
+      formData.set("noteId", noteId);
+    }
+
+    setImageUploadError(null);
+    setImageUploadNotice(null);
+    setIsUploadingImage(true);
+
+    try {
+      const response = await fetch("/api/notes/images", {
+        body: formData,
+        method: "POST"
+      });
+      const payload = (await response.json()) as {
+        alt?: string;
+        error?: string;
+        fileName?: string;
+        url?: string;
+      };
+
+      if (!response.ok || !payload.url || !payload.alt) {
+        throw new Error(payload.error || "Image upload failed.");
+      }
+
+      applyEditResult(
+        insertMarkdownImage(markdownRef.current, uploadSelection, {
+          alt: payload.alt,
+          url: payload.url
+        })
+      );
+      setImageUploadNotice(`Inserted ${payload.fileName ?? "image"} into the note body.`);
+    } catch (error) {
+      setImageUploadError(error instanceof Error ? error.message : "Image upload failed.");
+    } finally {
+      setIsUploadingImage(false);
+      imageInsertSelectionRef.current = null;
+    }
   }
 
   function handleEditorKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
@@ -573,6 +646,17 @@ export function NoteEditor({
                         <span aria-hidden="true">{action.label}</span>
                       </button>
                     ))}
+                    <button
+                      aria-label="Image markdown"
+                      className="note-editor-tool"
+                      disabled={isUploadingImage}
+                      onClick={triggerImagePicker}
+                      onMouseDown={(event) => event.preventDefault()}
+                      title={isUploadingImage ? "Uploading image" : "Upload image"}
+                      type="button"
+                    >
+                      <span aria-hidden="true">{isUploadingImage ? "..." : "Img"}</span>
+                    </button>
                   </div>
                   <div aria-label="Note editor view modes" className="note-editor-mode-switcher" data-testid="note-editor-mode-switcher" role="group">
                     {viewModes.map((mode) => (
@@ -666,6 +750,27 @@ Use headings, lists, quotes, links, and code without leaving markdown source.`}
                 </section>
               </div>
             </div>
+            <input
+              accept="image/png,image/jpeg,image/gif,image/webp"
+              aria-label="Upload note image"
+              className="sr-only"
+              data-testid="note-image-upload-input"
+              onChange={(event) => {
+                const file = event.target.files?.[0];
+                event.currentTarget.value = "";
+
+                if (!file) {
+                  return;
+                }
+
+                void handleImageUpload(file);
+              }}
+              ref={imageInputRef}
+              tabIndex={-1}
+              type="file"
+            />
+            {imageUploadNotice ? <p className="status-note">{imageUploadNotice}</p> : null}
+            {imageUploadError ? <p className="status-note status-note-error">{imageUploadError}</p> : null}
           </FormField>
 
           <div className="button-row">

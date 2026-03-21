@@ -1,48 +1,48 @@
 Read the following repository documents before making changes:
 - AGENTS.md
-- ARCHITECTURE.md
 - docs/FRONTEND.md
-- docs/design-docs/minakeep-content-model.md
 - docs/design-docs/media-storage-and-serving.md
 - docs/product-specs/note-image-attachments.md
-- docs/exec-plans/active/050-media-storage-foundation.md
+- docs/product-specs/note-authoring.md
+- docs/exec-plans/active/051-note-image-upload-and-embed.md
 
-Current task id: 050-media-storage-foundation
-Current task title: Media storage foundation
+Current task id: 051-note-image-upload-and-embed
+Current task title: Note image upload and embed
 
 Objective:
-Introduce the mounted media-storage and serving boundary required for note-image uploads and cached favicons.
+Let owners upload note images from the editor and embed them into the markdown body automatically.
 
 Scope:
-- media storage root and metadata contract
-- publish-gated media visibility rules
-- server-backed media delivery boundary
+- note-image upload control in note authoring
+- automatic markdown image insertion
+- preview rendering for uploaded images
 
 Out of scope:
-- note-editor upload UI
-- card rendering
-- Docker packaging work
+- card-image derivation across list pages
+- link favicon work
+- generalized attachment manager
 
 Exit criteria:
-1. The codebase has one clear mounted-media path for uploaded note images and cached favicons.
-2. Draft-note images remain private while published-note images can render publicly.
-3. `npm run test:e2e -- --grep @media-foundation` passes.
-4. `npm run verify` passes.
+1. Owners can upload an image from the note editor.
+2. Upload inserts valid markdown image syntax into the note body automatically.
+3. Uploaded images render in the note preview and saved note content.
+4. `npm run test:e2e -- --grep @note-image-upload` passes.
+5. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @media-foundation`
+- `npm run test:e2e -- --grep @note-image-upload`
 
 Evaluator notes:
-Promote only when the media boundary is clear, mounted-storage based, and consistent with the private-vault model.
+Promote only when upload and markdown insertion feel native to the note editor instead of bolted on.
 
 Required repository artifacts for this task:
-- src
+- src/features/notes
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @media-foundation
+- npm run test:e2e -- --grep @note-image-upload
 
 Previous known gaps from the last evaluation:
 - none

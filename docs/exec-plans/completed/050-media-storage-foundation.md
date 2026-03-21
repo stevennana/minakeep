@@ -5,7 +5,7 @@
   "id": "050-media-storage-foundation",
   "title": "Media storage foundation",
   "order": 50,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "051-note-image-upload-and-embed",
   "prompt_docs": [
@@ -28,7 +28,8 @@
     "The implementation stores uploaded images inside SQLite blobs.",
     "Draft-note images become public immediately after upload.",
     "Media serving is hardcoded to a non-mounted path with no operator control."
-  ]
+  ],
+  "completed_at": "2026-03-21T12:39:54.740Z"
 }
 ```
 
@@ -70,3 +71,4 @@ Promote only when the media boundary is clear, mounted-storage based, and consis
 - 2026-03-21 21:36 KST: Added a mounted media boundary with one operator-configurable root (`MEDIA_ROOT`, defaulting to a temp-mounted path), a `MediaAsset` Prisma model shared by note images and link favicons, and a server-backed `/media/[assetId]` route that never exposes raw filesystem paths.
 - 2026-03-21 21:36 KST: Enforced publish-gated media visibility in the media service: owners can always resolve their own assets, note images become public only when the note is published and references the media URL in markdown, and link favicons become public only when the linked bookmark is published. Added `@media-foundation` Playwright coverage for draft/private note images, published/public note images, unreferenced note images, and published-link favicons.
 - 2026-03-21 21:37 KST: Required gates passed locally: `npm run test:e2e -- --grep @media-foundation` and `npm run verify` both completed successfully against the updated Prisma schema and mounted media route.
+- 2026-03-21T12:39:54.740Z: automatically promoted after deterministic checks and evaluator approval.

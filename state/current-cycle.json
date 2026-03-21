@@ -1,8 +1,8 @@
 {
-  "task_id": "050-media-storage-foundation",
-  "started_at": "2026-03-21T21:29:03+09:00",
-  "artifact_dir": "state/artifacts/20260321T212903-050-media-storage-foundation",
+  "task_id": "051-note-image-upload-and-embed",
+  "started_at": "2026-03-21T21:40:24+09:00",
+  "artifact_dir": "state/artifacts/20260321T214024-051-note-image-upload-and-embed",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-03-21T12:39:54.563Z"
+  "updated_at": "2026-03-21T12:56:44.284Z"
 }

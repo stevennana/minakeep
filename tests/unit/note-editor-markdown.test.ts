@@ -5,6 +5,7 @@ import {
   continueMarkdownStructure,
   getViewportSyncedViewMode,
   indentSelectedLines,
+  insertMarkdownImage,
   insertMarkdownLink,
   toggleBlockquote,
   toggleBulletList,
@@ -38,6 +39,10 @@ test("inline markdown transforms stay reversible without introducing a second do
   const unlinked = insertMarkdownLink(linked.nextMarkdown, selectAll(linked.nextMarkdown));
   assert.equal(unlinked.nextMarkdown, "gamma");
   assert.deepEqual(unlinked.nextSelection, { end: 5, start: 0 });
+
+  const imageInserted = insertMarkdownImage("Alpha paragraph", { end: 15, start: 15 }, { alt: "Desk shot", url: "/media/asset-1" });
+  assert.equal(imageInserted.nextMarkdown, "Alpha paragraph\n\n![Desk shot](/media/asset-1)");
+  assert.deepEqual(imageInserted.nextSelection, { end: 45, start: 45 });
 });
 
 test("line-oriented toolbar transforms add and remove markdown markers predictably", () => {

@@ -37,6 +37,7 @@ export default async function EditNotePage({ params, searchParams }: EditNotePag
       generatedTags={note.tags}
       initialMarkdown={note.markdown}
       initialTitle={note.title}
+      noteId={note.id}
       publication={{
         isPublished: note.isPublished,
         publicHref: `/notes/${note.slug}`,

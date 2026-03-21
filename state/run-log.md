@@ -766,3 +766,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T212903-050-media-storage-foundation/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T212903-050-media-storage-foundation/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 050-media-storage-foundation -> 051-note-image-upload-and-embed
+- backlog: rendered current=051-note-image-upload-and-embed
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxoooo
+- cycle: finished
+
+### cycle 2026-03-21T21:40:24+09:00 task=051-note-image-upload-and-embed
+- artifacts: state/artifacts/20260321T214024-051-note-image-upload-and-embed
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T214024-051-note-image-upload-and-embed/worker.jsonl
+- worker-summary: Implemented task 051. [note-editor.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/components/note-editor.tsx#L223) now adds a native image upload control in the editor workbench, uploads through [route.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/api/notes/images/route.ts#L6), inserts markdown image syntax automatically, and shows non-blocking upload feedback. [service.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/media/service.ts#L48) persists note images in the existing media store and links referenced uploads to the saved note, while [markdown.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/markdown.ts#L32) renders `![...]()` in preview and saved note content. I also added focused coverage in [note-image-upload.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/note-image-upload.spec.ts#L85) and refreshed the affected note-editor UI baselines.
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T214024-051-note-image-upload-and-embed/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T214024-051-note-image-upload-and-embed/npm-run-verify-next-server.log
