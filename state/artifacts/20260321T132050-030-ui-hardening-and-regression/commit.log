@@ -1,0 +1,12 @@
+[main 3ca4ced] ralph: 030-ui-hardening-and-regression 2026-03-21T13:30:04+09:00
+ 38 files changed, 632 insertions(+), 102 deletions(-)
+ rename docs/exec-plans/{active => completed}/029-mobile-responsive-polish.md (92%)
+ create mode 100644 state/artifacts/20260321T130341-029-mobile-responsive-polish/backlog.log
+ create mode 100644 state/artifacts/20260321T130341-029-mobile-responsive-polish/promote.log
+ create mode 100644 state/artifacts/20260321T132050-030-ui-hardening-and-regression/commit.log
+ create mode 100644 state/artifacts/20260321T132050-030-ui-hardening-and-regression/evaluator.log
+ create mode 100644 state/artifacts/20260321T132050-030-ui-hardening-and-regression/npm-run-test-e2e-grep-ui-regression-next-server.log
+ create mode 100644 state/artifacts/20260321T132050-030-ui-hardening-and-regression/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260321T132050-030-ui-hardening-and-regression/task-prompt.log
+ create mode 100644 state/artifacts/20260321T132050-030-ui-hardening-and-regression/worker.jsonl
+commit: created

@@ -20,5 +20,5 @@
 - [x] 027-editor-and-form-density — Editor and form density
 - [x] 028-secondary-owner-surface-pass — Secondary owner surface pass
 - [x] 029-mobile-responsive-polish — Mobile responsive polish
-- [ ] 030-ui-hardening-and-regression — UI hardening and regression ← current
+- [x] 030-ui-hardening-and-regression — UI hardening and regression
 
