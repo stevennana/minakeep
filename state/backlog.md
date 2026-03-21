@@ -10,5 +10,5 @@
 - [x] 017-note-ai-enrichment — Note AI enrichment
 - [x] 018-link-ai-enrichment — Link AI enrichment
 - [x] 019-knowledge-studio-ui-refresh — Knowledge studio UI refresh
-- [ ] 020-ai-ui-hardening — AI and UI hardening ← current
+- [x] 020-ai-ui-hardening — AI and UI hardening
 
