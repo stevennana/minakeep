@@ -24,6 +24,7 @@ A scoped Karakeep-inspired product can deliver the useful core without dragging 
 - automatic AI-generated summary and tags after save
 - selective public publishing for both notes and links
 - a clean public showroom that exposes real published items in the first screen, with optional title-only search kept compact until needed and a calmer, less aggressive hierarchy
+- a stronger markdown authoring workbench that keeps markdown as the source of truth while making writing faster and easier
 
 ## Non-Goals for v1
 - multi-user collaboration or invite flows
@@ -31,6 +32,7 @@ A scoped Karakeep-inspired product can deliver the useful core without dragging 
 - AI chat or ask-your-vault conversations
 - provider abstraction beyond the Mina-hosted OpenAI-compatible endpoint
 - public full-text search or public link detail pages
+- Notion-style rich-text document storage or collaborative block editing
 
 ## v1 Success Signals
 - owners can publish notes and links into one coherent public showroom without exposing private content
@@ -38,9 +40,11 @@ A scoped Karakeep-inspired product can deliver the useful core without dragging 
 - the public homepage shows real showroom content in the first screen instead of spending that space on explanatory chrome
 - public links open externally in a new tab and behave like lightweight reference items
 - the public hierarchy feels calmer, with less oversized `h1` and `strong` emphasis
+- owners can draft longer notes comfortably using source-first markdown editing, preview modes, and compact authoring aids
 
 ## Product Risks
 - mixed public content can become confusing if note and link cards are not differentiated clearly
 - public search can feel noisy if title filtering is not immediate and predictable, or too hidden when collapsed
 - adding public links can accidentally leak private link states if publishing boundaries are not explicit
 - toning down hierarchy can flatten the UI if not balanced carefully
+- a richer editor can accidentally break markdown fidelity or overload the note workflow if it behaves like a second document model

@@ -35,9 +35,3 @@
 - [x] 042-public-showroom-first-screen-priority — Public showroom first-screen priority
 - [x] 043-public-home-density-regression-pass — Public home density regression pass
 - [x] 044-public-home-wave-hardening — Public home wave hardening
-- [ ] 045-markdown-editor-foundation — Markdown editor foundation ← current
-- [ ] 046-note-editor-toolbar-and-shortcuts — Note editor toolbar and shortcuts
-- [ ] 047-note-editor-view-modes — Note editor view modes
-- [ ] 048-note-editor-mobile-workflow — Note editor mobile workflow
-- [ ] 049-note-editor-hardening — Note editor hardening
-

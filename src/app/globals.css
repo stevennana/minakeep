@@ -707,6 +707,15 @@ textarea {
   overflow: hidden;
 }
 
+.note-editor-intro .ui-intro-block {
+  gap: 0.65rem;
+}
+
+.note-editor-intro .ui-support-grid .ui-detail-block,
+.note-editor-intro .ui-support-grid .detail-block {
+  padding: 0.72rem 0.8rem;
+}
+
 .public-home-shell-head,
 .public-home-shell-copy {
   display: grid;
@@ -931,6 +940,7 @@ textarea {
 
 .text-input,
 .note-textarea,
+.note-editor-input,
 .sign-in-form input {
   background: rgba(248, 250, 252, 0.9);
   border: 1px solid rgba(100, 116, 139, 0.2);
@@ -946,6 +956,7 @@ textarea {
 
 .text-input:focus,
 .note-textarea:focus,
+.note-editor-input:focus,
 .sign-in-form input:focus {
   background: #ffffff;
   border-color: rgba(50, 72, 99, 0.34);
@@ -956,6 +967,221 @@ textarea {
 .note-textarea {
   min-height: clamp(18rem, 45vh, 22rem);
   resize: vertical;
+}
+
+.note-editor-workbench {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(241, 245, 249, 0.94)),
+    rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(100, 116, 139, 0.18);
+  border-radius: var(--radius-3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.82),
+    0 1rem 2.4rem rgba(15, 23, 42, 0.08);
+  display: grid;
+  gap: 0;
+  overflow: hidden;
+}
+
+.note-editor-toolbar,
+.note-editor-statusbar,
+.note-editor-toolbar-copy {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.note-editor-toolbar {
+  border-bottom: 1px solid rgba(100, 116, 139, 0.14);
+  justify-content: space-between;
+  padding: 0.9rem 1rem 0.85rem;
+}
+
+.note-editor-toolbar-copy {
+  align-items: baseline;
+}
+
+.note-editor-toolbar-copy strong {
+  color: var(--accent-strong);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.note-editor-toolbar-copy .field-note {
+  font-size: var(--text-sm);
+}
+
+.note-editor-statusbar {
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  justify-content: flex-end;
+  letter-spacing: 0.02em;
+}
+
+.note-editor-statusbar span {
+  background: rgba(255, 255, 255, 0.74);
+  border: 1px solid rgba(100, 116, 139, 0.12);
+  border-radius: var(--radius-pill);
+  min-height: 2rem;
+  padding: 0.35rem 0.65rem;
+}
+
+.note-editor-surface {
+  background:
+    linear-gradient(180deg, rgba(248, 250, 252, 0.86), rgba(241, 245, 249, 0.98)),
+    rgba(248, 250, 252, 0.96);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  min-height: clamp(21rem, 48vh, 28rem);
+}
+
+.note-editor-gutter {
+  background:
+    linear-gradient(180deg, rgba(226, 232, 240, 0.66), rgba(226, 232, 240, 0.38)),
+    rgba(226, 232, 240, 0.72);
+  border-right: 1px solid rgba(100, 116, 139, 0.14);
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.03em;
+  min-width: 3.45rem;
+  overflow: hidden;
+  padding: 1rem 0.55rem 1.15rem 0.7rem;
+  text-align: right;
+}
+
+.note-editor-gutter-track {
+  display: grid;
+  gap: 0;
+  line-height: 1.65;
+}
+
+.note-editor-stage {
+  min-height: inherit;
+  position: relative;
+}
+
+.note-editor-highlight,
+.note-editor-input {
+  font-family: var(--font-mono);
+  font-size: 0.93rem;
+  letter-spacing: 0;
+  line-height: 1.65;
+  margin: 0;
+  min-height: inherit;
+  padding: 1rem 1.1rem 1.15rem;
+  tab-size: 2;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.note-editor-highlight {
+  color: var(--ink-soft);
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+}
+
+.note-editor-highlight-content {
+  display: block;
+  min-height: 100%;
+  transform: translate(calc(var(--editor-scroll-left) * -1), calc(var(--editor-scroll-top) * -1));
+}
+
+.note-editor-input {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  caret-color: var(--accent-strong);
+  color: transparent;
+  display: block;
+  min-width: 0;
+  outline: none;
+  overflow: auto;
+  position: relative;
+  resize: vertical;
+  width: 100%;
+  -webkit-text-fill-color: transparent;
+}
+
+.note-editor-input::selection {
+  background: rgba(50, 72, 99, 0.18);
+}
+
+.note-editor-input:focus {
+  background: transparent;
+  box-shadow: none;
+}
+
+.note-editor-workbench:focus-within {
+  border-color: rgba(50, 72, 99, 0.24);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.88),
+    0 0 0 0.2rem rgba(50, 72, 99, 0.08),
+    0 1rem 2.4rem rgba(15, 23, 42, 0.09);
+}
+
+.md-line {
+  display: block;
+  min-height: 1.65em;
+}
+
+.md-line-placeholder {
+  color: var(--ink-faint);
+}
+
+.md-token-placeholder {
+  color: rgba(71, 85, 105, 0.74);
+}
+
+.md-token-heading-marker,
+.md-token-list-marker,
+.md-token-quote-marker,
+.md-token-rule,
+.md-token-fence-marker,
+.md-token-code-marker,
+.md-token-link-marker,
+.md-token-strong-marker,
+.md-token-emphasis-marker {
+  color: #7c8ea7;
+}
+
+.md-token-heading,
+.md-token-strong {
+  color: #1f3652;
+  font-weight: 600;
+}
+
+.md-token-link-label,
+.md-token-link-url {
+  color: #245c8f;
+}
+
+.md-token-link-url,
+.md-token-code,
+.md-line-code,
+.md-token-fence-language {
+  color: #6e3f71;
+}
+
+.md-token-emphasis,
+.md-token-list,
+.md-token-quote {
+  color: var(--ink-soft);
+}
+
+.md-line-code {
+  background: rgba(226, 232, 240, 0.34);
+  color: #5f4764;
+}
+
+.md-line-fence {
+  background: rgba(226, 232, 240, 0.26);
 }
 
 .summary-textarea {

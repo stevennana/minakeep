@@ -38,7 +38,7 @@ Simple credentials screen with reduced visual bulk and cleaner desktop/mobile ba
 Compact professional workspace with slimmer navigation, tighter lists, and more visible note content above the fold on desktop.
 
 ### Note editor and owner forms
-Smaller typographic hierarchy, reduced padding, and reusable form/layout primitives without changing existing logic flows.
+Smaller typographic hierarchy, reduced padding, and reusable form/layout primitives without changing existing logic flows. The note editor should evolve into a source-first markdown workbench with syntax-aware editing, a compact formatting toolbar, `Source / Split / Preview` modes on desktop, and a cleaner `Edit / Preview` toggle on mobile.
 
 ### Links, tags, and search
 Secondary owner surfaces should inherit the same density and responsive behavior as the dashboard rather than looking like oversized standalone cards.
@@ -54,6 +54,7 @@ Secondary owner surfaces should inherit the same density and responsive behavior
 - keep the owner workspace compact and professional on desktop
 - build reusable design primitives and CSS tokens so style changes do not require route-level logic edits
 - make mobile layouts easy to scan and operate with one hand
+- keep note authoring markdown-native; richer editor controls should still save one markdown string, not a separate rich-text document model
 
 ## Search / Share / Admin Notes
 - public search is homepage-only and title-only

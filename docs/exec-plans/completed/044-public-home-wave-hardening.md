@@ -5,7 +5,7 @@
   "id": "044-public-home-wave-hardening",
   "title": "Public home wave hardening",
   "order": 44,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "NONE",
   "prompt_docs": [
@@ -26,7 +26,8 @@
   "human_review_triggers": [
     "Docs and shipped homepage behavior drift apart.",
     "The public-home copy or search chrome still leaves unresolved density debt."
-  ]
+  ],
+  "completed_at": "2026-03-21T07:49:52.076Z"
 }
 ```
 
@@ -66,3 +67,4 @@ Promote only when the docs and task history match the shipped public-home behavi
 - 2026-03-21 16:45 KST: Audited the shipped public homepage against the current specs, design doc, tech-debt tracker, and Playwright coverage. Confirmed the compact shell and collapsed-search behavior already match the density slices in code, with remaining drift limited to under-specific docs and debt wording.
 - 2026-03-21 16:47 KST: Updated `docs/FRONTEND.md`, the public-home/showroom-search specs, and the first-screen density design doc to describe the shipped compact archive header, collapsed search summary row, and clear search-reset behavior. Narrowed the debt tracker note so the remaining mixed-public copy debt is explicitly off-homepage.
 - 2026-03-21 16:47 KST: Ran `npm run verify` successfully. The full gate passed through lint, db prepare, typecheck, build, unit tests, Playwright, and startup smoke with the compact public-home shell unchanged in code.
+- 2026-03-21T07:49:52.076Z: automatically promoted after deterministic checks and evaluator approval.

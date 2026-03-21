@@ -1,0 +1,11 @@
+[main c39061f] ralph: 044-public-home-wave-hardening 2026-03-21T16:49:51+09:00
+ 24 files changed, 481 insertions(+), 67 deletions(-)
+ rename docs/exec-plans/{active => completed}/043-public-home-density-regression-pass.md (91%)
+ create mode 100644 state/artifacts/20260321T163712-043-public-home-density-regression-pass/backlog.log
+ create mode 100644 state/artifacts/20260321T163712-043-public-home-density-regression-pass/promote.log
+ create mode 100644 state/artifacts/20260321T164319-044-public-home-wave-hardening/commit.log
+ create mode 100644 state/artifacts/20260321T164319-044-public-home-wave-hardening/evaluator.log
+ create mode 100644 state/artifacts/20260321T164319-044-public-home-wave-hardening/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260321T164319-044-public-home-wave-hardening/task-prompt.log
+ create mode 100644 state/artifacts/20260321T164319-044-public-home-wave-hardening/worker.jsonl
+commit: created

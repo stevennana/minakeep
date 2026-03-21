@@ -10,6 +10,7 @@ The owner signs in and opens the notes-first private dashboard.
 - The owner can create a draft note with a title and markdown body.
 - The owner can edit an existing draft note.
 - The private note editor shows markdown preview alongside editing.
+- The private note editor remains markdown-native even as richer editor controls are added.
 - After save, the note shows visible AI enrichment status and generated summary/tags when available.
 - Draft notes remain private by default.
 

@@ -1,45 +1,50 @@
 Read the following repository documents before making changes:
 - AGENTS.md
 - docs/FRONTEND.md
-- docs/product-specs/public-home-showroom.md
-- docs/product-specs/public-showroom-search.md
-- docs/design-docs/public-home-first-screen-density.md
-- docs/exec-plans/active/044-public-home-wave-hardening.md
+- docs/product-specs/markdown-editor-workbench.md
+- docs/design-docs/markdown-editor-workbench.md
+- docs/references/markdown-editor-patterns.md
+- docs/references/ui-verification-contract.md
+- docs/exec-plans/active/045-markdown-editor-foundation.md
 
-Current task id: 044-public-home-wave-hardening
-Current task title: Public home wave hardening
+Current task id: 045-markdown-editor-foundation
+Current task title: Markdown editor foundation
 
 Objective:
-Reconcile docs, debt tracking, and any remaining public-home polish after the narrow density slices land.
+Establish a source-first markdown editor foundation that feels materially better than a plain textarea while preserving markdown as the saved note body.
 
 Scope:
-- docs alignment for the refined public-home behavior
-- debt cleanup related to homepage density and chrome
-- final regression check for the compact public-home shell
+- source-first editor-surface upgrade for note authoring
+- syntax-aware editing behavior
+- compatibility with existing note save and preview flows
 
 Out of scope:
-- new publishing features
-- owner-workspace redesign
-- broader search-product changes
+- toolbar richness beyond the minimum needed to prove the editor foundation
+- advanced mobile mode design
+- collaboration features or rich-text storage
 
 Exit criteria:
-1. The docs describe the shipped collapsed-search and first-screen-showroom behavior accurately.
-2. Remaining public-home density debt is either resolved or explicitly tracked.
-3. `npm run verify` passes.
+1. The note editor no longer feels like a plain textarea.
+2. Note content still saves as markdown text and renders correctly in preview.
+3. Existing note create/edit flows remain intact.
+4. `npm run test:e2e -- --grep @ui-note-editor-foundation` passes.
+5. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
+- `npm run test:e2e -- --grep @ui-note-editor-foundation`
 
 Evaluator notes:
-Promote only when the docs and task history match the shipped public-home behavior and no hidden homepage density drift remains.
+Promote only when the richer editor foundation is clearly in place without changing the note data model.
 
 Required repository artifacts for this task:
-- docs
-- src/app/page.tsx
+- src/features/notes/components/note-editor.tsx
+- src/app/globals.css
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
+- npm run test:e2e -- --grep @ui-note-editor-foundation
 
 Previous known gaps from the last evaluation:
 - none

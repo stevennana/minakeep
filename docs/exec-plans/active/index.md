@@ -5,12 +5,13 @@ This queue is the task-level promotion source of truth for minakeep.
 Only task files in this directory that contain a `taskmeta` JSON block are eligible for automatic selection, evaluation, and promotion.
 
 ## Current recommended sequence
-1. `041-public-search-collapsed-default.md` -> collapse the public title-search control by default so showroom content stays in the first screen
-2. `042-public-showroom-first-screen-priority.md` -> remove non-essential explanatory copy and tighten the public-home shell around the showroom
-3. `043-public-home-density-regression-pass.md` -> prove the collapsed-search and first-screen showroom behavior across desktop and mobile UI checks
-4. `044-public-home-wave-hardening.md` -> reconcile docs, debt tracking, and any remaining public-home polish after the narrow slices land
+1. `045-markdown-editor-foundation.md` -> replace the plain textarea feel with a source-first markdown workbench foundation
+2. `046-note-editor-toolbar-and-shortcuts.md` -> add compact formatting controls and markdown authoring aids without breaking raw editing
+3. `047-note-editor-view-modes.md` -> add desktop source/split/preview modes and stable mode switching
+4. `048-note-editor-mobile-workflow.md` -> adapt the editor into a usable mobile edit/preview workflow
+5. `049-note-editor-hardening.md` -> reconcile docs, regression coverage, and markdown-fidelity protection for the richer editor wave
 
-Tasks `031` through `040` are preserved in completed history as the previous public-wave tranche.
+Tasks `041` through `044` are preserved in completed history as the completed public-home density tranche.
 
 ## Operating rule
 
