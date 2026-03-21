@@ -565,3 +565,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260321T153602-038-public-showroom-responsive-polish/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T153602-038-public-showroom-responsive-polish/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 038-public-showroom-responsive-polish -> 039-public-publishing-regression-pass
+- backlog: rendered current=039-public-publishing-regression-pass
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxoooooo
+- cycle: finished
+
+### cycle 2026-03-21T15:44:39+09:00 task=039-public-publishing-regression-pass
+- artifacts: state/artifacts/20260321T154439-039-public-publishing-regression-pass
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260321T154439-039-public-publishing-regression-pass/worker.jsonl
+- worker-summary: Task 039 did not require product code changes. I verified the existing mixed public model against the requested docs, audited the relevant implementation and E2E coverage, and recorded the result in [039-public-publishing-regression-pass.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/039-public-publishing-regression-pass.md#L60) and [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt#L1).
+- evaluator: started
+- evaluator: status=done promotion=true Task 039 is complete in substance. The current implementation exposes a single mixed public model: `/` loads published notes and links through a shared public-content service, sorts them together, filters homepage results by title only, hides unpublished records from public routes, and suppresses unsafe public link URLs. Owner publish/unpublish actions revalidate the public and private routes that depend on this state, published notes resolve on `/notes/[slug]` only while published, and published links open the saved external URL in a new tab. The audited unit/E2E coverage matches the task scope, and the recorded `npm run verify` pass satisfies the required gate. -> state/artifacts/20260321T154439-039-public-publishing-regression-pass/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260321T154439-039-public-publishing-regression-pass/npm-run-verify-next-server.log

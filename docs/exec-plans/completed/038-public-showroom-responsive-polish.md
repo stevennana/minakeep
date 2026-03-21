@@ -5,7 +5,7 @@
   "id": "038-public-showroom-responsive-polish",
   "title": "Public showroom responsive polish",
   "order": 38,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "039-public-publishing-regression-pass",
   "prompt_docs": [
@@ -23,7 +23,8 @@
     "src/app/page.tsx",
     "tests/e2e"
   ],
-  "human_review_triggers": []
+  "human_review_triggers": [],
+  "completed_at": "2026-03-21T06:44:09.168Z"
 }
 ```
 
@@ -66,3 +67,4 @@ Promote when the deterministic UI checks pass and the public showroom/search rem
 - 2026-03-21 15:46 KST: Added a stable homepage test hook and a small responsive hardening rule (`min-width: 0` on the public homepage/search shell children) to prevent long copy from forcing overflow while keeping the current layout intact.
 - 2026-03-21 15:50 KST: Added `tests/e2e/ui-public-showroom.spec.ts` with deterministic desktop/mobile coverage for the mixed note+link feed, unified search bar, overflow checks, accessibility checks, and screenshot baselines under the required `@ui-public-showroom` tag.
 - 2026-03-21 15:52 KST: Required checks passed locally: `npm run test:e2e -- --grep @ui-public-showroom` and `npm run verify`.
+- 2026-03-21T06:44:09.168Z: automatically promoted after deterministic checks and evaluator approval.

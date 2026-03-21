@@ -1,0 +1,15 @@
+[main 5374f05] ralph: 038-public-showroom-responsive-polish 2026-03-21T15:44:09+09:00
+ 25 files changed, 798 insertions(+), 47 deletions(-)
+ rename docs/exec-plans/{active => completed}/037-ui-hierarchy-softening.md (90%)
+ create mode 100644 state/artifacts/20260321T152355-037-ui-hierarchy-softening/backlog.log
+ create mode 100644 state/artifacts/20260321T152355-037-ui-hierarchy-softening/promote.log
+ create mode 100644 state/artifacts/20260321T153602-038-public-showroom-responsive-polish/commit.log
+ create mode 100644 state/artifacts/20260321T153602-038-public-showroom-responsive-polish/evaluator.log
+ create mode 100644 state/artifacts/20260321T153602-038-public-showroom-responsive-polish/npm-run-test-e2e-grep-ui-public-showroom-next-server.log
+ create mode 100644 state/artifacts/20260321T153602-038-public-showroom-responsive-polish/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260321T153602-038-public-showroom-responsive-polish/task-prompt.log
+ create mode 100644 state/artifacts/20260321T153602-038-public-showroom-responsive-polish/worker.jsonl
+ create mode 100644 tests/e2e/ui-public-showroom.spec.ts
+ create mode 100644 tests/e2e/ui-public-showroom.spec.ts-snapshots/ui-public-showroom-desktop-darwin.png
+ create mode 100644 tests/e2e/ui-public-showroom.spec.ts-snapshots/ui-public-showroom-mobile-darwin.png
+commit: created

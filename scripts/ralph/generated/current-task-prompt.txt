@@ -1,47 +1,43 @@
 Read the following repository documents before making changes:
 - AGENTS.md
 - docs/FRONTEND.md
-- docs/product-specs/public-home-showroom.md
+- docs/product-specs/public-note-publishing.md
+- docs/product-specs/public-link-publishing.md
 - docs/product-specs/public-showroom-search.md
-- docs/references/ui-verification-contract.md
-- docs/exec-plans/active/038-public-showroom-responsive-polish.md
+- docs/exec-plans/active/039-public-publishing-regression-pass.md
 
-Current task id: 038-public-showroom-responsive-polish
-Current task title: Public showroom responsive polish
+Current task id: 039-public-publishing-regression-pass
+Current task title: Public publishing regression pass
 
 Objective:
-Keep the mixed public showroom and unified search clean on both desktop and mobile.
+Verify note publishing, link publishing, public mixed feed behavior, and public title search together as one coherent public model.
 
 Scope:
-- responsive mixed feed behavior
-- responsive search bar behavior
-- no overflow or collapsed-layout regressions on the public homepage
+- note publishing regression checks
+- link publishing regression checks
+- mixed public showroom behavior
+- public title-search regression checks
 
 Out of scope:
-- owner workspace redesign
-- new public route additions
-- additional search capabilities
+- further visual redesign beyond bug-fix level polish
+- owner workflow redesign unrelated to public publishing/search
 
 Exit criteria:
-1. The mixed public showroom remains easy to scan on desktop and mobile.
-2. The unified title-only search bar remains usable and visually clear on mobile.
-3. `npm run test:e2e -- --grep @ui-public-showroom` passes with desktop/mobile screenshots and accessibility checks.
-4. `npm run verify` passes.
+1. Existing note publishing still works.
+2. Link publishing, public search, and public navigation all behave coherently together.
+3. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-public-showroom`
 
 Evaluator notes:
-Promote when the deterministic UI checks pass and the public showroom/search remain clean across breakpoints.
+Promote only when the new public model works as one coherent system instead of a stack of independent tweaks.
 
 Required repository artifacts for this task:
-- src/app/page.tsx
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-public-showroom
 
 Previous known gaps from the last evaluation:
 - none
