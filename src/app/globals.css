@@ -434,6 +434,51 @@ textarea {
   margin-bottom: 0.4rem;
 }
 
+.ui-disclosure {
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 0.95rem;
+  color: var(--ink-muted);
+  margin: 0;
+  padding: 0.68rem 0.8rem;
+}
+
+.ui-disclosure summary {
+  align-items: center;
+  color: var(--ink-soft);
+  cursor: pointer;
+  display: flex;
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: 700;
+  gap: 0.6rem;
+  letter-spacing: 0.14em;
+  list-style: none;
+  text-transform: uppercase;
+}
+
+.ui-disclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.ui-disclosure summary::after {
+  color: var(--ink-faint);
+  content: "+";
+  font-size: 0.9rem;
+  margin-left: auto;
+}
+
+.ui-disclosure[open] summary::after {
+  content: "−";
+}
+
+.ui-disclosure-body {
+  margin-top: 0.55rem;
+}
+
+.ui-disclosure-body p {
+  margin: 0;
+}
+
 .hero-card h1,
 .feature-card h1,
 .note-preview-panel h2,
@@ -871,7 +916,7 @@ textarea {
 
 .public-search-collapsed-row,
 .public-search-header {
-  align-items: center;
+  align-items: start;
   display: grid;
   gap: 0.8rem;
 }
@@ -896,7 +941,11 @@ textarea {
 }
 
 .public-search-field {
-  gap: 0.55rem;
+  min-width: 0;
+}
+
+.public-search-field .text-input {
+  width: 100%;
 }
 
 .public-search-summary {
@@ -1838,6 +1887,11 @@ textarea {
   overflow: hidden;
 }
 
+.secondary-route-meta,
+.note-editor-intro-meta {
+  margin-top: 0.15rem;
+}
+
 .secondary-route-hero .ui-intro-block h1 {
   font-size: clamp(1.34rem, 2.35vw, 1.8rem);
   line-height: 1.02;
@@ -2632,9 +2686,12 @@ textarea {
     grid-template-columns: minmax(0, 1fr) auto;
   }
 
-  .public-search-collapsed-row,
-  .public-search-header {
+  .public-search-collapsed-row {
     grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .public-search-header {
+    grid-template-columns: minmax(0, 1fr) auto;
   }
 
   .public-search-controls {

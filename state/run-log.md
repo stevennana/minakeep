@@ -1010,3 +1010,14 @@ No remaining task. Stopping loop.
 - health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xoooooooooo
 - cycle: finished
 No remaining task. Stopping loop.
+## loop start 2026-03-22T11:43:50+09:00
+
+### cycle 2026-03-22T11:43:50+09:00 task=067-ui-information-density-reset
+- artifacts: state/artifacts/20260322T114350-067-ui-information-density-reset
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260322T114350-067-ui-information-density-reset/worker.jsonl
+- worker-summary: Reduced the explanatory UI across the owner and public surfaces and moved the remaining guidance into lighter disclosure. The main changes are in [primitives.tsx](/Users/stevenna/WebstormProjects/minakeep/src/components/ui/primitives.tsx), [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css), [login/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/login/page.tsx), [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/page.tsx), [links/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/links/page.tsx), [search/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/search/page.tsx), [tags/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/tags/page.tsx), [note-editor.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/components/note-editor.tsx), and [public-showroom.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/public-content/components/public-showroom.tsx). Seed/setup and route-structure copy is removed from user-facing UI, obvious actions no longer sit inside repeated helper text, and scope/post-save guidance now uses compact disclosure.
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T114350-067-ui-information-density-reset/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T114350-067-ui-information-density-reset/npm-run-verify-next-server.log

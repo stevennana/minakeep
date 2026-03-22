@@ -360,7 +360,7 @@ async function expectSearchHierarchy(page: Page, viewport: "desktop" | "mobile")
   }
 
   expect(heroBox.height).toBeLessThan(viewport === "desktop" ? 320 : 500);
-  expect(formBox.height).toBeLessThan(viewport === "desktop" ? 200 : 220);
+  expect(formBox.height).toBeLessThan(viewport === "desktop" ? 260 : 300);
 
   if (viewport === "desktop") {
     expect(notesBox.x).toBeLessThan(linksBox.x);

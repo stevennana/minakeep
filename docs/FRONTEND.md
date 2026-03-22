@@ -33,7 +33,7 @@ Prioritizes reading comfort with narrower measure, calmer human-made typography,
 Appear in the public showroom alongside note cards, with a cached favicon head image, title, summary, and tags, and open the external destination in a new tab.
 
 ### Owner login
-Simple credentials screen with reduced visual bulk and cleaner desktop/mobile balance.
+Simple credentials screen with reduced visual bulk and cleaner desktop/mobile balance. Public navigation should preserve owner continuity when an authenticated owner moves between public and private routes.
 
 ### Private dashboard
 Compact professional workspace with slimmer navigation, tighter lists, and more visible note content above the fold on desktop. Secondary route-promoting blocks should not steal prime desktop width from the Notes section.
@@ -47,10 +47,13 @@ Secondary owner surfaces should inherit the same density and responsive behavior
 ## UI Rules
 - keep public reading calm, clear, and note-first
 - make the published content visually dominant; topbar chrome, archive counters, and search affordances should feel recessive
+- reduce non-essential informational copy across public and owner screens; obvious controls should not require explanatory paragraphs
+- reserve persistent helper text for guidance that materially changes user action or trust, and prefer lighter disclosure such as tooltip-style help for optional guidance
 - the public homepage no longer needs a separate “Owner entrance” or “Private origin” section
 - use one unified title-only public search bar without a type selector
 - keep the public search control compact or collapsed on first load so the showroom remains visible in the first screen
 - when expanded, the public search panel should sit on its own row beneath the archive header rather than as a competing right-side tile beside the archive count
+- expanded public search should use minimal labeling rather than repeating obvious “search” language around the field
 - do not spend first-screen space on multi-paragraph explanatory copy above the public showroom
 - prefer a masonry-style desktop archive with 3 to 4 columns depending on width, then fall back aggressively to 2 columns on tablet and 1 column on narrow mobile
 - if masonry behavior is implemented with CSS multi-columns, child cards must use `break-inside: avoid` and mobile must collapse back to a strict ordered stack
@@ -63,6 +66,10 @@ Secondary owner surfaces should inherit the same density and responsive behavior
 - prefer premium sans typography for public surfaces over generic system-feel headings; the public site should feel bespoke without drifting into ornamental serif theatrics
 - keep the owner workspace compact and professional on desktop
 - on the owner dashboard, prioritize the Notes section over route-promotion tiles or owner-tool explainer panels
+- do not repeat `Links`, `Tags`, and `Search` as in-panel shortcuts inside the Notes section when the left sidebar already exposes those routes
+- on the owner links screen, do not pin the growing saved-links list beside a short static capture form; the growing list should take the dominant continuous space
+- avoid exposing internal implementation details such as DB seeding or route structure as user-facing informational copy
+- public navigation should not leave an authenticated owner appearing logged out or force an unnecessary re-login
 - build reusable design primitives and CSS tokens so style changes do not require route-level logic edits
 - make mobile layouts easy to scan and operate with one hand
 - keep note authoring markdown-native; richer editor controls should still save one markdown string, not a separate rich-text document model

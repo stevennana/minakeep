@@ -7,7 +7,7 @@ import {
 } from "@/app/app/links/actions";
 import {
   Button,
-  DetailBlock,
+  Disclosure,
   FormField,
   IntroBlock,
   MetadataRow,
@@ -72,25 +72,15 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
       <Surface className="secondary-route-hero" density="compact" tone="hero">
         <IntroBlock
           compact
-          description="Save the URL and title first, then let Minakeep generate the AI summary and shared tags. Links stay private until the owner explicitly publishes them to the public showroom."
+          description="Save a URL and title."
           eyebrow="Private links"
           title="Reference shelf"
         >
-          <div aria-label="Links overview" className="ui-support-grid secondary-summary-grid">
-            <DetailBlock title="Saved links">
-              <p>{links.length} private reference{links.length === 1 ? "" : "s"}</p>
-            </DetailBlock>
-            <DetailBlock title="AI queue">
-              <p>{pendingLinks === 0 ? "No pending enrichment" : `${pendingLinks} link${pendingLinks === 1 ? "" : "s"} pending`}</p>
-            </DetailBlock>
-            <DetailBlock title="Visibility">
-              <p>
-                {publishedLinks === 0
-                  ? "All links are private until explicitly published."
-                  : `${publishedLinks} link${publishedLinks === 1 ? "" : "s"} visible on the public showroom.`}
-              </p>
-            </DetailBlock>
-          </div>
+          <MetadataRow aria-label="Links overview" className="secondary-route-meta" leading>
+            <span>{links.length} saved</span>
+            <span>{pendingLinks === 0 ? "AI clear" : `${pendingLinks} pending`}</span>
+            <span>{publishedLinks === 0 ? "All private" : `${publishedLinks} public`}</span>
+          </MetadataRow>
         </IntroBlock>
         {statusMessage ? (
           <p className={resolvedSearchParams.error ? "status-note status-note-error" : "status-note"}>{statusMessage}</p>
@@ -120,7 +110,9 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
               type="text"
             />
           </FormField>
-          <p className="field-note">AI summary and shared tags are generated automatically after save.</p>
+          <Disclosure summary="After save">
+            <p>AI summary and tags are added automatically. Links stay private until you publish them.</p>
+          </Disclosure>
           <div className="button-row">
             <Button type="submit">Save link</Button>
           </div>
@@ -129,7 +121,7 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
         <Surface className="link-list-panel secondary-list-panel secondary-link-panel" density="compact" tone="panel">
           <SectionHeading meta={`${links.length} saved`} title="Saved links" />
           {links.length === 0 ? (
-            <p>No saved links yet. Capture the first private bookmark from this page.</p>
+            <p>No saved links yet.</p>
           ) : (
             <div className="link-list">
               {links.map((link) => (
@@ -176,14 +168,14 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
                           {link.summary}
                         </p>
                       ) : (
-                        <p className="field-note">A generated summary will appear here after a successful enrichment run.</p>
+                        <p className="field-note">Waiting for AI summary.</p>
                       )}
                     </div>
                     <div className="note-generated-copy secondary-generated-copy">
                       <strong>AI tags</strong>
                       <TagList aria-label="Link tags" data-testid="link-ai-tags">
                         {link.tags.length === 0 ? (
-                          <TagChip muted>No generated tags yet</TagChip>
+                          <TagChip muted>No AI tags yet</TagChip>
                         ) : (
                           link.tags.map((tag) => (
                             <TagChip key={tag.id}>

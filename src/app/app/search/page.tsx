@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import {
   Button,
-  DetailBlock,
+  Disclosure,
   FormField,
   IntroBlock,
   MetadataRow,
@@ -41,21 +41,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       <Surface className="secondary-route-hero" density="compact" tone="hero">
         <IntroBlock
           compact
-          description="This search stays inside the owner area. Public readers do not get a search interface in v1."
+          description="Titles, URLs, and tags."
           eyebrow="Owner search"
           title="Search the private vault"
         >
-          <div aria-label="Search overview" className="ui-support-grid secondary-summary-grid">
-            <DetailBlock title="Scope">
-              <p>Titles, URLs, and shared tag names.</p>
-            </DetailBlock>
-            <DetailBlock title="Body search">
-              <p>Note bodies and link summaries stay out of scope in v1.</p>
-            </DetailBlock>
-            <DetailBlock title="Current results">
-              <p>{results.query ? `${resultCount} match${resultCount === 1 ? "" : "es"}` : "Run a query to inspect the vault."}</p>
-            </DetailBlock>
-          </div>
+          <MetadataRow aria-label="Search overview" className="secondary-route-meta" leading>
+            <span>{results.query ? `${resultCount} match${resultCount === 1 ? "" : "es"}` : "Run a query"}</span>
+            <span>Titles, URLs, tags</span>
+          </MetadataRow>
         </IntroBlock>
       </Surface>
 
@@ -67,7 +60,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         role="search"
         tone="panel"
       >
-        <SectionHeading meta="Owner-only retrieval" title="Query" />
+        <SectionHeading meta="Owner-only" title="Query" />
         <div className="secondary-search-controls">
           <FormField className="secondary-search-field" label="Query">
             <input
@@ -83,6 +76,9 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             <Button type="submit">Search</Button>
           </div>
         </div>
+        <Disclosure summary="Search scope">
+          <p>Matches note titles, link titles, link URLs, and shared tags. Note bodies and link summaries are excluded.</p>
+        </Disclosure>
       </Surface>
 
       {results.query ? (
@@ -146,14 +142,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                         {link.summary ? (
                           <p className="link-summary">{link.summary}</p>
                         ) : (
-                          <p className="field-note">A generated summary will appear here after a successful enrichment run.</p>
+                          <p className="field-note">Waiting for AI summary.</p>
                         )}
                       </div>
                       <div className="note-generated-copy secondary-generated-copy">
                         <strong>AI tags</strong>
                         <TagList aria-label="Link tags">
                           {link.tags.length === 0 ? (
-                            <TagChip muted>No generated tags yet</TagChip>
+                            <TagChip muted>No AI tags yet</TagChip>
                           ) : (
                             link.tags.map((tag) => (
                               <TagChip key={tag.id}>
@@ -170,12 +166,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             )}
           </Surface>
         </div>
-      ) : (
-        <Surface className="secondary-list-panel" density="compact" tone="panel">
-          <SectionHeading meta="v1 boundaries" title="Search scope" />
-          <p>Search matches note titles, link titles, link URLs, and shared tag names. Note bodies and link summaries stay out of scope in v1.</p>
-        </Surface>
-      )}
+      ) : null}
     </div>
   );
 }

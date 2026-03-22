@@ -179,3 +179,16 @@ export function FormField({ children, className, hint, label, ...props }: FormFi
     </label>
   );
 }
+
+type DisclosureProps = ComponentPropsWithoutRef<"details"> & {
+  summary: ReactNode;
+};
+
+export function Disclosure({ children, className, summary, ...props }: DisclosureProps) {
+  return (
+    <details className={cx("ui-disclosure", className)} {...props}>
+      <summary>{summary}</summary>
+      <div className="ui-disclosure-body">{children}</div>
+    </details>
+  );
+}

@@ -151,7 +151,7 @@ This note should appear on the public site when published.`;
 
   await expect(page).toHaveURL(/\/app\/notes\/.+\/edit\?saved=1$/);
   await expect(page.getByText("Draft saved.")).toBeVisible();
-  await expect(page.getByText("Private draft")).toBeVisible();
+  await expect(page.locator(".publication-panel").getByText("Private draft")).toBeVisible();
 
   await page.getByRole("button", { name: "Publish note" }).click();
 

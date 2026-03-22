@@ -1,7 +1,7 @@
 import type { Route } from "next";
 import Link from "next/link";
 
-import { DetailBlock, IntroBlock, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
+import { IntroBlock, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
 import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pending-refresh";
 import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
 import { LinkFavicon } from "@/features/links/components/link-favicon";
@@ -35,21 +35,15 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
       <Surface className="secondary-route-hero" density="compact" tone="hero">
         <IntroBlock
           compact
-          description="Shared tags stay owner-only in v1. Pick a tag to narrow private notes and saved links without exposing retrieval on the public site."
+          description="Filter notes and links by tag."
           eyebrow="Shared tags"
           title="Browse one private taxonomy"
         >
-          <div aria-label="Tags overview" className="ui-support-grid secondary-summary-grid">
-            <DetailBlock title="Tag library">
-              <p>{tags.length} shared tag{tags.length === 1 ? "" : "s"}</p>
-            </DetailBlock>
-            <DetailBlock title="Selection">
-              <p>{selectedTag ?? "All private content"}</p>
-            </DetailBlock>
-            <DetailBlock title="Boundary">
-              <p>Tag exploration stays inside the owner area.</p>
-            </DetailBlock>
-          </div>
+          <MetadataRow aria-label="Tags overview" className="secondary-route-meta" leading>
+            <span>{tags.length} tag{tags.length === 1 ? "" : "s"}</span>
+            <span>{selectedTag ?? "All content"}</span>
+            <span>Owner only</span>
+          </MetadataRow>
         </IntroBlock>
       </Surface>
 
@@ -145,14 +139,14 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
                       {link.summary ? (
                         <p className="link-summary">{link.summary}</p>
                       ) : (
-                        <p className="field-note">A generated summary will appear here after a successful enrichment run.</p>
+                        <p className="field-note">Waiting for AI summary.</p>
                       )}
                     </div>
                     <div className="note-generated-copy secondary-generated-copy">
                       <strong>AI tags</strong>
                       <TagList aria-label="Link tags">
                         {link.tags.length === 0 ? (
-                          <TagChip muted>No generated tags yet</TagChip>
+                          <TagChip muted>No AI tags yet</TagChip>
                         ) : (
                           link.tags.map((tag) => (
                             <TagChip key={tag.id}>

@@ -1,50 +1,50 @@
 Read the following repository documents before making changes:
 - AGENTS.md
+- docs/PRODUCT_SENSE.md
 - docs/FRONTEND.md
-- docs/product-specs/public-showroom-search.md
-- docs/product-specs/owner-workspace-density.md
-- docs/design-docs/public-home-first-screen-density.md
-- docs/design-docs/owner-workspace-density.md
-- docs/references/ui-verification-contract.md
-- docs/exec-plans/active/063-ui-refinement-hardening.md
+- docs/product-specs/ui-progressive-disclosure.md
+- docs/design-docs/progressive-disclosure-rules.md
+- docs/exec-plans/active/067-ui-information-density-reset.md
 
-Current task id: 063-ui-refinement-hardening
-Current task title: UI refinement hardening
+Current task id: 067-ui-information-density-reset
+Current task title: UI information density reset
 
 Objective:
-Reconcile docs, screenshots, and regression coverage after the public-search and owner-dashboard layout refinements land.
+Reduce redundant explanatory UI across the product and move truly necessary guidance into lighter disclosure patterns.
 
 Scope:
-- doc alignment
-- focused screenshot and responsive regression protection
-- remaining UI refinement cleanup for the two targeted layout fixes
+- owner and public helper-copy reduction
+- intro-panel and section-copy simplification
+- tooltip or lighter-disclosure treatment where guidance is still necessary
 
 Out of scope:
-- new public search features
-- broader owner dashboard redesign beyond notes-priority reclaim
+- public search row placement
+- owner links page structural layout
+- auth/session behavior
 
 Exit criteria:
-1. Docs match the shipped search-row and owner-dashboard layout behavior.
-2. The targeted layout refinements are covered by deterministic regression checks.
-3. Desktop and mobile screenshots are stable after the fixes.
-4. `npm run test:e2e -- --grep @ui-refinement-hardening` passes.
+1. Obvious actions are no longer surrounded by repetitive explanatory text.
+2. Internal implementation details are removed from user-facing UI.
+3. Necessary guidance remains available in a lighter form where appropriate.
+4. `npm run test:e2e -- --grep @ui-information-density` passes.
 5. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-refinement-hardening`
+- `npm run test:e2e -- --grep @ui-information-density`
 
 Evaluator notes:
-Promote only when the layout fixes are protected by stable regression coverage and the docs reflect the new truth.
+Promote only when the product feels more intuitive and less talkative without becoming ambiguous.
 
 Required repository artifacts for this task:
-- docs
-- src
+- src/app
+- src/features
+- src/app/globals.css
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-refinement-hardening
+- npm run test:e2e -- --grep @ui-information-density
 
 Previous known gaps from the last evaluation:
 - none

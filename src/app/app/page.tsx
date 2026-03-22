@@ -34,10 +34,6 @@ export default async function PrivateDashboardPage() {
           <div className="dashboard-hero-copy">
             <p className="eyebrow">Private dashboard</p>
             <h1 className="dashboard-hero-title">{owner.name}&rsquo;s notes</h1>
-            <p className="lede dashboard-hero-lede">
-              Reopen drafts quickly, keep published notes in rotation, and review generated metadata without turning
-              the dashboard into a card wall.
-            </p>
           </div>
           <div className="button-row dashboard-hero-actions">
             <ButtonLink href="/app/notes/new">New note</ButtonLink>
@@ -52,19 +48,17 @@ export default async function PrivateDashboardPage() {
           <div className="dashboard-stat">
             <span className="dashboard-stat-value">{notes.length}</span>
             <strong>Total notes</strong>
-            <span>Private and published notes combined</span>
+            <span>All notes</span>
           </div>
           <div className="dashboard-stat">
             <span className="dashboard-stat-value">{publishedNotes}</span>
             <strong>Published</strong>
-            <span>Visible on public routes</span>
+            <span>On the public site</span>
           </div>
           <div className="dashboard-stat">
             <span className="dashboard-stat-value">{pendingNotes}</span>
             <strong>AI queue</strong>
-            <span>
-              {pendingNotes === 0 ? "No note enrichment is waiting" : `${pendingNotes} note${pendingNotes === 1 ? "" : "s"} waiting`}
-            </span>
+            <span>{pendingNotes === 0 ? "Clear" : `${pendingNotes} waiting`}</span>
           </div>
         </div>
       </Surface>
@@ -85,11 +79,8 @@ export default async function PrivateDashboardPage() {
               </Link>
             </nav>
           </div>
-          <p className="field-note owner-dashboard-shortcut-note">
-            Links, tags, and search remain in the owner shell and stay available here as quick jumps.
-          </p>
           {notes.length === 0 ? (
-            <p>No drafts yet. Create the first note to start the private vault.</p>
+            <p>No notes yet. Create your first draft.</p>
           ) : (
             <div className="note-list owner-dashboard-note-list" data-testid="owner-dashboard-note-list">
               {notes.map((note) => (

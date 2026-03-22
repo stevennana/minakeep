@@ -6,7 +6,6 @@ import { useFormStatus } from "react-dom";
 import {
   Button,
   ButtonLink,
-  DetailBlock,
   FormField,
   IntroBlock,
   MetadataRow,
@@ -597,17 +596,11 @@ export function NoteEditor({
       <EnrichmentPendingRefresh enabled={enrichment?.status === "pending"} />
       <Surface className="note-editor-intro" density="compact" tone="hero">
         <IntroBlock compact description={formDescription} eyebrow="Private note authoring" title={formTitle}>
-          <div className="ui-support-grid ui-support-grid-balanced">
-            <DetailBlock title="Drafting surface">
-              <p>Source-first markdown workbench with syntax-aware editing, live preview, and smarter list handling.</p>
-            </DetailBlock>
-            <DetailBlock title="Publishing">
-              <p>{publication?.isPublished ? "Currently visible on public routes." : "Private until explicitly published."}</p>
-            </DetailBlock>
-            <DetailBlock title="AI metadata">
-              <p>{enrichment ? getEnrichmentStatusLabel(enrichment.status) : "Available after the first save."}</p>
-            </DetailBlock>
-          </div>
+          <MetadataRow aria-label="Note editor overview" className="note-editor-intro-meta" leading>
+            <span>Markdown-first</span>
+            <span>{publication?.isPublished ? "Published" : "Private draft"}</span>
+            <span>{enrichment ? `AI ${getEnrichmentStatusLabel(enrichment.status)}` : "AI after first save"}</span>
+          </MetadataRow>
         </IntroBlock>
         {publication ? (
           <Surface className="publication-panel" tone="inset">
@@ -645,14 +638,14 @@ export function NoteEditor({
             {generatedSummary ? (
               <p data-testid="note-ai-summary">{generatedSummary}</p>
             ) : (
-              <p className="field-note">A generated summary will appear here after a successful enrichment run.</p>
+              <p className="field-note">Waiting for AI summary.</p>
             )}
           </div>
           <div className="note-generated-copy">
             <strong>AI tags</strong>
             <TagList data-testid="note-ai-tags">
               {generatedTags.length === 0 ? (
-                <TagChip muted>No generated tags yet</TagChip>
+                <TagChip muted>No AI tags yet</TagChip>
               ) : (
                 generatedTags.map((tag) => (
                   <TagChip key={tag.id}>

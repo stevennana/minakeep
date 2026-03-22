@@ -18,11 +18,13 @@ An anonymous visitor types into the public homepage search bar.
 - Closing the expanded search clears the active query and returns the control to its collapsed state.
 - There is no type selector and no separate public results route in this wave.
 - Search updates the homepage showroom in place.
+- Expanded search labeling stays minimal and should not repeat obvious “search” language around the field.
 
 ## Validation
 - The homepage does not default to a large open search area that pushes the showroom down.
 - Visitors can explicitly expand the search control and then filter the mixed public feed by title.
 - The expanded search layout stays readable on desktop and does not crowd the archive header or shove controls into awkward side-by-side tiles.
+- The expanded search state feels obvious without long helper copy.
 - Dismissing the expanded search returns the homepage to the compact collapsed-search state without preserving stale filters.
 - Title matches for published notes and published links appear in one filtered homepage feed.
 - Non-matching public content is removed from the current view as the query changes.

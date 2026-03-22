@@ -333,7 +333,7 @@ test("@ui-regression @ui-refinement-hardening @ui-owner-dashboard @ui-responsive
   await expect(page.getByRole("heading", { name: /owner.?.s notes/i })).toBeVisible();
   await expect(page.getByLabel("Dashboard overview")).toBeVisible();
   await expect(page.getByRole("navigation", { name: "Dashboard route shortcuts" })).toBeVisible();
-  await expect(page.getByText("AI summary")).toHaveCount(seededNotes.length);
+  await expect(page.locator(".dashboard-note-item .dashboard-note-ai > strong")).toHaveCount(seededNotes.length);
   await expect(page.locator(".dashboard-note-item")).toHaveCount(seededNotes.length);
   await expectDesktopDashboardHierarchy(page);
   await expectTypographyHierarchy(page);

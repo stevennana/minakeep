@@ -30,7 +30,7 @@ export default async function EditNotePage({ params, searchParams }: EditNotePag
   return (
     <NoteEditor
       action={updateNoteAction.bind(null, note.id)}
-      formDescription="Edit the note, confirm the rendered output, and explicitly choose when it should appear on the public site."
+      formDescription="Edit in markdown. Review and publish when ready."
       formTitle="Edit draft note"
       enrichment={note.enrichment}
       generatedSummary={note.summary}

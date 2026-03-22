@@ -1,8 +1,8 @@
 {
-  "task_id": "063-ui-refinement-hardening",
-  "started_at": "2026-03-22T11:14:49+09:00",
-  "artifact_dir": "state/artifacts/20260322T111449-063-ui-refinement-hardening",
-  "phase": "finished",
-  "status": "finished",
-  "updated_at": "2026-03-22T02:21:47.959Z"
+  "task_id": "067-ui-information-density-reset",
+  "started_at": "2026-03-22T11:43:50+09:00",
+  "artifact_dir": "state/artifacts/20260322T114350-067-ui-information-density-reset",
+  "phase": "commit",
+  "status": "running",
+  "updated_at": "2026-03-22T02:58:50.845Z"
 }

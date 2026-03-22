@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-import { Button, FormField, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
+import { Button, Disclosure, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
 import { LinkFavicon } from "@/features/links/components/link-favicon";
 import { NoteCardImage } from "@/features/notes/components/note-card-image";
 import type { NoteCardImage as NoteCardImageData } from "@/features/notes/types";
@@ -173,10 +173,10 @@ function getSearchSummary(query: string, visibleCount: number, totalCount: numbe
 
 function getCollapsedSearchSummary(totalCount: number) {
   if (totalCount === 0) {
-    return "Search becomes available once something is published.";
+    return "No published titles yet.";
   }
 
-  return `Title-only filter across ${totalCount} public item${totalCount === 1 ? "" : "s"}.`;
+  return `${totalCount} public item${totalCount === 1 ? "" : "s"}.`;
 }
 
 export function PublicShowroom({
@@ -203,7 +203,7 @@ export function PublicShowroom({
   const showroomHeading = hasPublishedLinks ? "Published notes and links" : "Published notes";
   const emptyStateMessage =
     items.length === 0
-      ? "No published notes or links yet. The public site stays empty until the owner explicitly publishes one."
+      ? "No published notes or links yet."
       : hasPublishedLinks
         ? "No published notes or links match this title."
         : "No published notes match this title.";
@@ -244,7 +244,9 @@ export function PublicShowroom({
               {isSearchExpanded ? (
                 <>
                   <div className="public-search-header">
-                    <SectionHeading className="public-search-section-heading" meta="Title-only live filter" title="Search public titles" />
+                    <Disclosure className="public-search-disclosure" summary="Title only">
+                      <p>Matches published note and link titles.</p>
+                    </Disclosure>
                     <Button
                       aria-controls={searchPanelId}
                       aria-expanded={isSearchExpanded}
@@ -259,11 +261,7 @@ export function PublicShowroom({
                     </Button>
                   </div>
                   <div className="public-search-controls" id={searchPanelId}>
-                    <FormField
-                      className="public-search-field"
-                      hint="Matches published note and link titles only."
-                      label="Title filter"
-                    >
+                    <div className="public-search-field">
                       <input
                         aria-label="Search public titles"
                         autoComplete="off"
@@ -276,12 +274,12 @@ export function PublicShowroom({
                             closeSearch();
                           }
                         }}
-                        placeholder={hasPublishedLinks ? "Filter published notes and links by title" : "Filter published notes by title"}
+                        placeholder={hasPublishedLinks ? "Filter public titles" : "Filter published note titles"}
                         ref={searchInputRef}
                         type="search"
                         value={query}
                       />
-                    </FormField>
+                    </div>
                     <p className="field-note public-search-summary" data-testid="public-home-search-summary">
                       {getSearchSummary(query.trim(), filteredItems.length, items.length)}
                     </p>

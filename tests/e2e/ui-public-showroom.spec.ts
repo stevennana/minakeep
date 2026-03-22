@@ -372,7 +372,7 @@ test("@ui-regression @ui-refinement-hardening @ui-public-showroom @ui-public-sho
   await expect(page.getByRole("link", { name: seededPublishedNotes[0].title })).toBeVisible();
   await expect(page.getByRole("link", { name: seededPublishedLinks[0].title })).toBeVisible();
   await expect(page.getByText("Opens in new tab")).toHaveCount(seededPublishedLinks.length);
-  await expect(page.getByTestId("public-home-search-summary")).toHaveText("Title-only filter across 4 public items.");
+  await expect(page.getByTestId("public-home-search-summary")).toHaveText("4 public items.");
   await expectShowroomColumns(page, "desktop");
   await expectMixedFeedRhythm(page, "desktop");
   await expectCollapsedSearchLayout(page, "desktop");
@@ -415,7 +415,7 @@ test("@ui-regression @ui-refinement-hardening @ui-public-showroom @ui-public-sho
   await expect(page.getByRole("link", { name: seededPublishedLinks[0].title })).toBeVisible();
   await expectShowroomColumns(page, "mobile");
   await expectMixedFeedRhythm(page, "mobile");
-  await expect(page.getByTestId("public-home-search-summary")).toHaveText("Title-only filter across 4 public items.");
+  await expect(page.getByTestId("public-home-search-summary")).toHaveText("4 public items.");
   await expectCollapsedSearchLayout(page, "mobile");
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);

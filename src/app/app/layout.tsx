@@ -10,9 +10,6 @@ export default function PrivateVaultLayout({ children }: Readonly<{ children: Re
             <div className="vault-frame-copy">
               <p className="eyebrow">Owner workspace</p>
               <p className="vault-frame-title">Private vault</p>
-              <p className="vault-frame-note">
-                Notes, links, shared tags, and search stay grouped inside one tighter owner-only shell.
-              </p>
             </div>
             <div className="vault-nav-block">
               <p className="vault-nav-label">Sections</p>

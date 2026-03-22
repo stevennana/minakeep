@@ -54,4 +54,10 @@
 - [x] 061-public-search-expanded-row-reset — Public search expanded row reset
 - [x] 062-owner-dashboard-notes-priority-reset — Owner dashboard notes priority reset
 - [x] 063-ui-refinement-hardening — UI refinement hardening
+- [ ] 067-ui-information-density-reset — UI information density reset ← current
+- [ ] 068-public-search-expanded-row-reset — Public search expanded row reset
+- [ ] 069-owner-dashboard-notes-priority-reset — Owner dashboard notes priority reset
+- [ ] 070-owner-links-layout-reset — Owner links layout reset
+- [ ] 071-owner-session-continuity — Owner session continuity
+- [ ] 072-ui-refinement-hardening — UI refinement hardening
 

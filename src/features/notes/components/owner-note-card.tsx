@@ -45,7 +45,7 @@ export function OwnerNoteCard({ href, note, secondary = false, updatedAtLabel }:
           {note.summary ? (
             <p className="note-generated-summary dashboard-note-ai-summary">{note.summary}</p>
           ) : (
-            <p className="field-note dashboard-note-ai-empty">A generated summary will appear here after a successful enrichment run.</p>
+            <p className="field-note dashboard-note-ai-empty">Waiting for AI summary.</p>
           )}
         </div>
         <EnrichmentStatusBlock detailClassName="dashboard-note-ai-detail" state={note.enrichment} />
