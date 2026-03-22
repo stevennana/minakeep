@@ -5,7 +5,14 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { env } from "@/lib/config/env";
 import { prisma } from "@/lib/prisma";
-import type { WorkspaceRole } from "./roles";
+import { isReadOnlyWorkspaceRole, type WorkspaceRole } from "./roles";
+
+export class ReadOnlyWorkspaceMutationError extends Error {
+  constructor() {
+    super("Read-only demo users cannot mutate workspace data.");
+    this.name = "ReadOnlyWorkspaceMutationError";
+  }
+}
 
 export async function getOwnerSession() {
   const session = await getWorkspaceSession();
@@ -74,4 +81,22 @@ export async function requireWorkspaceSession() {
   }
 
   return session;
+}
+
+export async function requireWritableOwnerSession() {
+  const session = await requireWorkspaceSession();
+
+  if (isReadOnlyWorkspaceRole(session.actor.role)) {
+    throw new ReadOnlyWorkspaceMutationError();
+  }
+
+  return {
+    id: session.owner.id,
+    name: session.owner.name,
+    role: session.actor.role
+  };
+}
+
+export function isReadOnlyWorkspaceMutationError(error: unknown): error is ReadOnlyWorkspaceMutationError {
+  return error instanceof ReadOnlyWorkspaceMutationError;
 }

@@ -1128,3 +1128,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T141343-074-demo-workspace-read-only-shell/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T141343-074-demo-workspace-read-only-shell/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 074-demo-workspace-read-only-shell -> 075-demo-write-protection
+- backlog: rendered current=075-demo-write-protection
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xoooooooooooooooooo
+- cycle: finished
+
+### cycle 2026-03-22T14:37:47+09:00 task=075-demo-write-protection
+- artifacts: state/artifacts/20260322T143747-075-demo-write-protection
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260322T143747-075-demo-write-protection/worker.jsonl
+- worker-summary: Implemented demo write protection at the server boundary. The shared auth guard in [owner-session.ts](/Users/stevenna/WebstormProjects/minakeep/src/lib/auth/owner-session.ts) now rejects demo-authenticated writes explicitly, and the note/link mutation entry points in [notes/actions.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/app/notes/actions.ts) and [links/actions.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/app/links/actions.ts) route those attempts away before any create, update, publish, unpublish, retry, or favicon-refresh work runs. The note-image upload route in [route.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/api/notes/images/route.ts) now returns `403` for demo uploads.
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T143747-075-demo-write-protection/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T143747-075-demo-write-protection/npm-run-verify-next-server.log

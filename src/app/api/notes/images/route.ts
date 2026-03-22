@@ -1,18 +1,30 @@
 import { NextResponse } from "next/server";
 
 import { uploadNoteImage } from "@/features/media/service";
-import { getOwnerSession } from "@/lib/auth/owner-session";
+import { getWorkspaceSession } from "@/lib/auth/owner-session";
+import { isReadOnlyWorkspaceRole } from "@/lib/auth/roles";
 
 export async function POST(request: Request) {
-  const session = await getOwnerSession();
+  const session = await getWorkspaceSession();
 
-  if (!session?.id) {
+  if (!session?.owner.id) {
     return NextResponse.json(
       {
         error: "Sign in to upload note images."
       },
       {
         status: 401
+      }
+    );
+  }
+
+  if (isReadOnlyWorkspaceRole(session.actor.role)) {
+    return NextResponse.json(
+      {
+        error: "Read-only demo users cannot upload note images."
+      },
+      {
+        status: 403
       }
     );
   }
@@ -37,7 +49,7 @@ export async function POST(request: Request) {
     const uploadedImage = await uploadNoteImage({
       file,
       noteId,
-      ownerId: session.id
+      ownerId: session.owner.id
     });
 
     return NextResponse.json(uploadedImage, {

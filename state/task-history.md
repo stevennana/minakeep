@@ -59,3 +59,4 @@
 - 2026-03-22T03:30:44.626Z: promoted 071-owner-session-continuity -> 072-ui-refinement-hardening
 - 2026-03-22T03:38:49.984Z: promoted 072-ui-refinement-hardening -> NONE
 - 2026-03-22T05:13:13.210Z: promoted 073-demo-user-auth-foundation -> 074-demo-workspace-read-only-shell
+- 2026-03-22T05:37:17.112Z: promoted 074-demo-workspace-read-only-shell -> 075-demo-write-protection

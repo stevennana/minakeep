@@ -16,7 +16,7 @@ import {
   startLinkEnrichment,
   unpublishLink
 } from "@/features/links/service";
-import { requireOwnerSession } from "@/lib/auth/owner-session";
+import { isReadOnlyWorkspaceMutationError, requireWritableOwnerSession } from "@/lib/auth/owner-session";
 
 function getLinkInput(formData: FormData) {
   return {
@@ -56,11 +56,26 @@ async function queueLinkEnrichment(linkId: string) {
   return link;
 }
 
-export async function createLinkAction(formData: FormData) {
-  const owner = await requireOwnerSession();
+function appendReadOnlyError(path: string) {
+  return `${path}${path.includes("?") ? "&" : "?"}error=read-only`;
+}
 
+async function withWritableOwnerSession<T>(redirectPath: string, run: (owner: Awaited<ReturnType<typeof requireWritableOwnerSession>>) => Promise<T>) {
   try {
-    const link = await createSavedLink(owner.id, getLinkInput(formData));
+    const owner = await requireWritableOwnerSession();
+    return await run(owner);
+  } catch (error) {
+    if (isReadOnlyWorkspaceMutationError(error)) {
+      redirect(appendReadOnlyError(redirectPath) as Parameters<typeof redirect>[0]);
+    }
+
+    throw error;
+  }
+}
+
+export async function createLinkAction(formData: FormData) {
+  try {
+    const link = await withWritableOwnerSession("/app/links", (owner) => createSavedLink(owner.id, getLinkInput(formData)));
     await queueLinkEnrichment(link.id);
     scheduleLinkFaviconRefresh(link.id);
   } catch (error) {
@@ -80,8 +95,7 @@ export async function createLinkAction(formData: FormData) {
 }
 
 export async function refreshLinkFaviconAction(linkId: string) {
-  const owner = await requireOwnerSession();
-  const link = await refreshLinkFavicon(owner.id, linkId);
+  const link = await withWritableOwnerSession("/app/links", (owner) => refreshLinkFavicon(owner.id, linkId));
 
   if (!link) {
     notFound();
@@ -93,8 +107,7 @@ export async function refreshLinkFaviconAction(linkId: string) {
 }
 
 export async function retryLinkEnrichmentAction(linkId: string) {
-  const owner = await requireOwnerSession();
-  const link = await retryLinkEnrichment(owner.id, linkId);
+  const link = await withWritableOwnerSession("/app/links", (owner) => retryLinkEnrichment(owner.id, linkId));
 
   if (!link) {
     notFound();
@@ -109,8 +122,7 @@ export async function retryLinkEnrichmentAction(linkId: string) {
 }
 
 export async function publishLinkAction(linkId: string) {
-  const owner = await requireOwnerSession();
-  const link = await publishLink(owner.id, linkId);
+  const link = await withWritableOwnerSession("/app/links", (owner) => publishLink(owner.id, linkId));
 
   if (!link) {
     notFound();
@@ -121,8 +133,7 @@ export async function publishLinkAction(linkId: string) {
 }
 
 export async function unpublishLinkAction(linkId: string) {
-  const owner = await requireOwnerSession();
-  const link = await unpublishLink(owner.id, linkId);
+  const link = await withWritableOwnerSession("/app/links", (owner) => unpublishLink(owner.id, linkId));
 
   if (!link) {
     notFound();
