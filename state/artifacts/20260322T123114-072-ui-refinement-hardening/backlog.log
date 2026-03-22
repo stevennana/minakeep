@@ -60,8 +60,3 @@
 - [x] 070-owner-links-layout-reset — Owner links layout reset
 - [x] 071-owner-session-continuity — Owner session continuity
 - [x] 072-ui-refinement-hardening — UI refinement hardening
-- [ ] 073-demo-user-auth-foundation — Demo user auth foundation ← current
-- [ ] 074-demo-workspace-read-only-shell — Demo workspace read-only shell
-- [ ] 075-demo-write-protection — Demo write protection
-- [ ] 076-demo-docker-and-hardening — Demo Docker and hardening
-

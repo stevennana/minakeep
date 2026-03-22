@@ -6,7 +6,7 @@ import { Button, ButtonLink, SectionHeading, Surface } from "@/components/ui/pri
 import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pending-refresh";
 import { OwnerNoteCard } from "@/features/notes/components/owner-note-card";
 import { listOwnerNotes } from "@/features/notes/service";
-import { requireOwnerSession } from "@/lib/auth/owner-session";
+import { requireWorkspaceSession } from "@/lib/auth/owner-session";
 
 async function signOutAction() {
   "use server";
@@ -19,8 +19,8 @@ async function signOutAction() {
 export default async function PrivateDashboardPage() {
   noStore();
 
-  const owner = await requireOwnerSession();
-  const notes = await listOwnerNotes(owner.id);
+  const workspace = await requireWorkspaceSession();
+  const notes = await listOwnerNotes(workspace.owner.id);
   const publishedNotes = notes.filter((note) => note.isPublished).length;
   const pendingNotes = notes.filter((note) => note.enrichment.status === "pending").length;
   const dateFormatter = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
@@ -32,7 +32,7 @@ export default async function PrivateDashboardPage() {
         <div className="dashboard-hero-head">
           <div className="dashboard-hero-copy">
             <p className="eyebrow">Private dashboard</p>
-            <h1 className="dashboard-hero-title">{owner.name}&rsquo;s notes</h1>
+            <h1 className="dashboard-hero-title">{workspace.owner.name}&rsquo;s notes</h1>
           </div>
           <div className="button-row dashboard-hero-actions">
             <ButtonLink href="/app/notes/new">New note</ButtonLink>

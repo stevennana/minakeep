@@ -5,14 +5,12 @@ This queue is the task-level promotion source of truth for minakeep.
 Only task files in this directory that contain a `taskmeta` JSON block are eligible for automatic selection, evaluation, and promotion.
 
 ## Current recommended sequence
-1. `067-ui-information-density-reset.md` -> remove redundant explanatory chrome and shift necessary guidance to lighter disclosure patterns
-2. `068-public-search-expanded-row-reset.md` -> move expanded public search into its own clean row under the archive header and minimize redundant labels
-3. `069-owner-dashboard-notes-priority-reset.md` -> remove the competing owner-tools block plus redundant route shortcuts and reclaim desktop space for Notes
-4. `070-owner-links-layout-reset.md` -> stop pinning the short capture form beside the growing saved-links list
-5. `071-owner-session-continuity.md` -> preserve authenticated owner continuity when moving between public and private routes
-6. `072-ui-refinement-hardening.md` -> reconcile docs, screenshots, and responsive regressions after the refinement wave lands
+1. `073-demo-user-auth-foundation.md` -> add the demo-user role and environment contract across auth, runtime, and Docker docs
+2. `074-demo-workspace-read-only-shell.md` -> expose owner workspace routes to the demonstration user with clear read-only UI treatment
+3. `075-demo-write-protection.md` -> block all note, link, publish, retry, and upload mutations server-side for the demonstration user
+4. `076-demo-docker-and-hardening.md` -> align Docker/env docs and regression coverage for the demo-user wave
 
-Tasks `056` through `060` are preserved in completed history as the completed public-surface taste tranche. Tasks `045` through `055` remain preserved as the earlier markdown-editor, media, and container tranches.
+Tasks `067` through `072` are preserved in completed history as the completed refinement tranche. Earlier completed tranches remain preserved as history.
 
 ## Operating rule
 

@@ -15,10 +15,12 @@ The owner signs in and opens the notes-first private dashboard.
 - The private note editor remains markdown-native even as richer editor controls are added.
 - After save, the note shows visible AI enrichment status and generated summary/tags when available.
 - Draft notes remain private by default.
+- A demonstration user may open the same note-authoring surfaces in read-only mode but cannot save or otherwise alter note data.
 
 ## Validation
 - Owner sign-in succeeds and protected note routes are reachable only after authentication.
 - A created draft note persists and can be reopened for editing.
+- Demonstration users cannot persist note changes even if they can open note-edit routes.
 - Markdown preview reflects saved content accurately enough for normal note writing.
 - Desktop and mobile mode changes keep the same markdown body intact.
 - When AI env vars are configured, a saved note completes a real-endpoint enrichment flow before the related AI task can promote.

@@ -1,8 +1,8 @@
 {
-  "task_id": "072-ui-refinement-hardening",
-  "started_at": "2026-03-22T12:31:14+09:00",
-  "artifact_dir": "state/artifacts/20260322T123114-072-ui-refinement-hardening",
-  "phase": "finished",
-  "status": "finished",
-  "updated_at": "2026-03-22T03:38:50.081Z"
+  "task_id": "073-demo-user-auth-foundation",
+  "started_at": "2026-03-22T14:02:13+09:00",
+  "artifact_dir": "state/artifacts/20260322T140213-073-demo-user-auth-foundation",
+  "phase": "commit",
+  "status": "running",
+  "updated_at": "2026-03-22T05:13:13.030Z"
 }

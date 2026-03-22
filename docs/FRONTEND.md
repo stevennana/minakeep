@@ -14,6 +14,7 @@ Describe the user-facing structure of Minakeep so an agent can implement the UI 
 - `/` -> public showroom of published notes and published links
 - `/notes/[slug]` -> public published-note reading page
 - `/login` -> owner sign-in
+- `/login` may also admit a read-only demonstration user when demo credentials are configured
 - `/app` -> private notes-first dashboard shell
 - `/app/notes/new` -> create note
 - `/app/notes/[id]/edit` -> edit note and preview markdown
@@ -33,10 +34,13 @@ Prioritizes reading comfort with narrower measure, calmer human-made typography,
 Appear in the public showroom alongside note cards, with a cached favicon head image, title, summary, and tags, and open the external destination in a new tab.
 
 ### Owner login
-Simple credentials screen with reduced visual bulk and cleaner desktop/mobile balance. Public navigation should preserve owner continuity when an authenticated owner moves between public and private routes.
+Simple credentials screen with reduced visual bulk and cleaner desktop/mobile balance. Public navigation should preserve owner continuity when an authenticated owner moves between public and private routes. When demo credentials are configured, the login surface should also admit the demonstration user without implying write access.
 
 ### Private dashboard
 Compact professional workspace with slimmer navigation, tighter lists, and more visible note content above the fold on desktop. Secondary route-promoting blocks should not steal prime desktop width from the Notes section.
+
+### Demonstration workspace mode
+The demonstration user should see the same owner workspace routes and content model, but all mutating actions must be unavailable or clearly disabled. The demo experience is for product inspection, not content editing.
 
 ### Note editor and owner forms
 Smaller typographic hierarchy, reduced padding, and reusable form/layout primitives without changing existing logic flows. The note editor should evolve into a source-first markdown workbench with syntax-aware editing, a compact formatting toolbar, `Source / Split / Preview` modes on desktop, a cleaner `Edit / Preview` toggle on mobile, and an upload path that inserts note images into markdown automatically.
@@ -70,6 +74,8 @@ Secondary owner surfaces should inherit the same density and responsive behavior
 - on the owner links screen, do not pin the growing saved-links list beside a short static capture form; the growing list should take the dominant continuous space
 - avoid exposing internal implementation details such as DB seeding or route structure as user-facing informational copy
 - public navigation should not leave an authenticated owner appearing logged out or force an unnecessary re-login
+- demo users may browse owner routes, but all write controls must be disabled, hidden, or replaced with read-only status treatment
+- server-side actions must still reject demo-user writes even if a client bypasses the UI
 - build reusable design primitives and CSS tokens so style changes do not require route-level logic edits
 - make mobile layouts easy to scan and operate with one hand
 - keep note authoring markdown-native; richer editor controls should still save one markdown string, not a separate rich-text document model
@@ -84,6 +90,7 @@ Secondary owner surfaces should inherit the same density and responsive behavior
 - published links open the saved destination in a new tab
 - AI metadata remains visible but visually secondary to authored content
 - uploaded note images remain owner-visible immediately but should reach public routes only through published-note surfaces
+- demo mode is read-only across note save, link save, publish, unpublish, retry, upload, and other mutation paths
 
 ## Frontend Non-Goals for v1
 - public search filters by type

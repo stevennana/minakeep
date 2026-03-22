@@ -10,6 +10,12 @@ Define the stable content concepts for v1 so note, publish, link, retrieval, and
 - the owner authenticates with credentials seeded into SQLite
 - all private content belongs to that owner
 
+### Demonstration User
+- there may be one optional demonstration user account
+- the demonstration user authenticates with separate configured credentials
+- the demonstration user does not own content and cannot mutate stored data
+- the demonstration user exists only to inspect the private workspace in read-only mode
+
 ### Note
 - a note has `title`, `slug`, `markdown`, `excerpt`, and shared tags
 - a note is draft by default

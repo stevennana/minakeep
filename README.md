@@ -74,6 +74,15 @@ MINA_AI_TIMEOUT_MS=15000
 
 Without `LLM_BASE`, `TOKEN`, and `MODEL`, the app still works for note and bookmark capture, but AI enrichment will stay disabled and saves will continue without generated metadata.
 
+Optional demo-workspace credentials use the same local env file:
+
+```bash
+DEMO_USERNAME="demo"
+DEMO_PASSWORD="replace-with-a-long-demo-password"
+```
+
+Set both demo vars or leave both unset. The app still seeds only the owner account into SQLite; the demo account is an env-backed runtime role for read-only workspace access.
+
 Start the app:
 
 ```bash
@@ -130,6 +139,15 @@ OWNER_USERNAME="owner"
 OWNER_PASSWORD="replace-with-a-long-password"
 ```
 
+Optional demo-workspace env vars follow the same both-or-neither rule:
+
+```bash
+DEMO_USERNAME="demo"
+DEMO_PASSWORD="replace-with-a-long-demo-password"
+```
+
+Compose passes demo credentials through to the container when configured, but `npm run db:prepare` still persists only the owner password hash in SQLite.
+
 Optional AI env vars use the same local contract as direct Node runs:
 
 ```bash
@@ -167,6 +185,12 @@ Run the real-endpoint AI check when the AI env vars are configured:
 
 ```bash
 npm run test:e2e -- --grep @ai-real
+```
+
+Run the demo-auth foundation coverage:
+
+```bash
+npm run test:e2e -- --grep @demo-user
 ```
 
 ## Project structure

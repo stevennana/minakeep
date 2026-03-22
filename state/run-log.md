@@ -1102,3 +1102,14 @@ No remaining task. Stopping loop.
 - health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xoooooooooooooooo
 - cycle: finished
 No remaining task. Stopping loop.
+## loop start 2026-03-22T14:02:13+09:00
+
+### cycle 2026-03-22T14:02:13+09:00 task=073-demo-user-auth-foundation
+- artifacts: state/artifacts/20260322T140213-073-demo-user-auth-foundation
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260322T140213-073-demo-user-auth-foundation/worker.jsonl
+- worker-summary: Implemented task 073 by adding a real `owner | demo` runtime role in [src/auth.ts](/Users/stevenna/WebstormProjects/minakeep/src/auth.ts), optional both-or-neither demo credential parsing in [src/lib/config/env.ts](/Users/stevenna/WebstormProjects/minakeep/src/lib/config/env.ts), and workspace-aware session helpers in [src/lib/auth/owner-session.ts](/Users/stevenna/WebstormProjects/minakeep/src/lib/auth/owner-session.ts) plus [src/lib/auth/roles.ts](/Users/stevenna/WebstormProjects/minakeep/src/lib/auth/roles.ts). The demo account stays env-backed only, while SQLite seeding remains owner-only. I also let demo auth land on the dashboard route in [src/app/app/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/page.tsx) without changing owner-only startup when demo env vars are absent.
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T140213-073-demo-user-auth-foundation/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T140213-073-demo-user-auth-foundation/npm-run-verify-next-server.log

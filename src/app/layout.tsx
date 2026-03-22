@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { getOwnerSession } from "@/lib/auth/owner-session";
+import { getWorkspaceSession } from "@/lib/auth/owner-session";
 
 import "./globals.css";
 
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const ownerSession = await getOwnerSession();
+  const workspaceSession = await getWorkspaceSession();
 
   return (
     <html lang="en">
@@ -26,7 +26,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
             </div>
             <nav aria-label="Primary" className="site-nav" data-ui-nav="primary">
               <Link href="/">Published notes</Link>
-              <Link href={ownerSession ? "/app" : "/login"}>{ownerSession ? "Owner workspace" : "Owner login"}</Link>
+              <Link href={workspaceSession ? "/app" : "/login"}>{workspaceSession ? "Owner workspace" : "Owner login"}</Link>
             </nav>
           </header>
           <main className="site-main">{children}</main>

@@ -24,6 +24,7 @@ If a UI or API behavior is visible to users, it should be defined here before im
 | `public-note-reading.md` | confirmed | Public note reading polish and metadata hierarchy |
 | `owner-workspace-density.md` | confirmed | Tighter professional owner layout for desktop and mobile |
 | `owner-session-continuity.md` | confirmed | Preserve owner continuity across public and private route switching |
+| `demo-workspace-user.md` | confirmed | Read-only demonstration access to the owner workspace |
 | `responsive-ui-behavior.md` | confirmed | Cross-surface responsive collapse and mobile scanning behavior |
 | `public-link-publishing.md` | confirmed | Publish/unpublish links into the public showroom |
 | `public-showroom-search.md` | confirmed | Unified title-only public homepage search |

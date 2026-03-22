@@ -14,6 +14,7 @@ Define the reliability expectations and failure-handling rules for Minakeep.
 
 ## Verification
 - `npm run db:prepare` prepares SQLite state and owner seed deterministically
+- demo credentials should seed deterministically when configured, without breaking owner-only startup when they are absent
 - `npm run start:smoke` boots the production-style server and probes a health endpoint
 - `npm run verify` includes startup proof alongside code-level checks
 - Ralph status and backlog rendering must work without hand-editing state files
@@ -60,3 +61,5 @@ Because the Playwright suite shares one mutable SQLite runtime state, the harnes
 ## Environment-Specific Verification Blockers
 If the direct operator path passes but the current sandboxed or wrapped runner still fails, record that separately from normal product bugs and escalate it explicitly instead of hiding it inside generic “not done” wording.
 Do the same when `@ai-real` cannot run because `LLM_BASE`, `TOKEN`, and `MODEL` are missing or the Mina endpoint is unavailable: record that as an external-env blocker, not as a silent product regression.
+
+For the demo-user wave, E2E must prove both that demonstration login can reach the private workspace and that all write attempts are denied server-side.

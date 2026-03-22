@@ -1,7 +1,7 @@
 # PRODUCT_SENSE.md
 
 ## One-Line Product Definition
-Minakeep is a self-hosted knowledge vault for private markdown notes and saved links, with selectively published public notes and links, automatic AI enrichment, and a polished knowledge-studio interface.
+Minakeep is a self-hosted knowledge vault for private markdown notes and saved links, with selectively published public notes and links, automatic AI enrichment, a polished knowledge-studio interface, and a read-only demonstration workspace mode.
 
 ## Who It Is For
 ### Primary user
@@ -29,6 +29,7 @@ A scoped Karakeep-inspired product can deliver the useful core without dragging 
 - a stronger markdown authoring workbench that keeps markdown as the source of truth while making writing faster and easier
 - image-rich notes with uploadable markdown images and cached link favicons that improve list-card scanning
 - a documented Docker deployment path with mounted data and env-driven runtime configuration
+- a demonstration user mode that lets GitHub visitors inspect the real owner workspace without being able to change stored data
 
 ## Non-Goals for v1
 - multi-user collaboration or invite flows
@@ -41,6 +42,7 @@ A scoped Karakeep-inspired product can deliver the useful core without dragging 
 
 ## v1 Success Signals
 - owners can publish notes and links into one coherent public showroom without exposing private content
+- demo users can enter the private workspace safely to inspect real product surfaces without being able to mutate notes, links, tags, media, or publication state
 - public visitors can find published items quickly through title-only search
 - the public homepage shows real showroom content in the first screen instead of spending that space on explanatory chrome
 - public visitors encounter a bespoke-looking published surface instead of a generic AI-generated card grid
@@ -62,3 +64,4 @@ A scoped Karakeep-inspired product can deliver the useful core without dragging 
 - a richer editor can accidentally break markdown fidelity or overload the note workflow if it behaves like a second document model
 - uploaded media can weaken the private-vault model if image visibility does not stay aligned with note publish state
 - favicon fetching can add network fragility unless failure paths fall back cleanly and cached assets stay bounded
+- a demo account can become a security footgun if server-side write protection is incomplete and only the UI is locked down

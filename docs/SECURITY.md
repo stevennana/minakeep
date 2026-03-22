@@ -5,9 +5,11 @@ Define the security posture for Minakeep's current shipped slice.
 
 ## Core Security Rules
 - keep `/app` routes private to the owner account
+- when enabled, keep `/app` routes accessible to the demonstration user in read-only mode only
 - expose only explicitly published notes and explicitly published links on public routes
 - do not log secrets, passwords, session tokens, or full private note/link payloads
 - validate owner credentials on the server only
+- validate demonstration credentials on the server only
 - store only the owner password hash in SQLite
 - accept saved-link URLs only for `http` and `https`
 - keep AI provider tokens and base URLs server-only
@@ -20,6 +22,7 @@ Define the security posture for Minakeep's current shipped slice.
 
 ## Secrets and Config
 - keep `AUTH_SECRET`, `DATABASE_URL`, `OWNER_USERNAME`, and `OWNER_PASSWORD` in environment configuration only
+- keep any `DEMO_USERNAME` and `DEMO_PASSWORD` values in environment configuration only
 - keep `LLM_BASE`, `TOKEN`, and `MODEL` in shell or local environment only
 - never commit seeded credentials or secret values
 - document required environment variables in `.env.example` and runtime docs
@@ -41,6 +44,7 @@ Define the security posture for Minakeep's current shipped slice.
 
 ## Verification
 - private routes redirect unauthenticated users to `/login`
+- private mutating actions must reject the demonstration user explicitly
 - unpublished notes and unpublished links never render on public routes
 - unsafe saved-link URL schemes are rejected before persistence
 - no secrets appear in logs, docs examples, or test fixtures

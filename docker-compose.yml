@@ -14,6 +14,8 @@ services:
       DATABASE_URL: file:/app/data/minakeep.db
       OWNER_USERNAME: ${OWNER_USERNAME:-owner}
       OWNER_PASSWORD: ${OWNER_PASSWORD:-replace-with-a-long-password}
+      DEMO_USERNAME: ${DEMO_USERNAME:-}
+      DEMO_PASSWORD: ${DEMO_PASSWORD:-}
       MEDIA_ROOT: /app/media
       LOG_LEVEL: ${LOG_LEVEL:-info}
       LLM_BASE: ${LLM_BASE:-}
