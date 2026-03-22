@@ -1334,3 +1334,9 @@ Worker stalled. Stopping loop for RCA.
 - evaluator: started
 - evaluator: status=done promotion=true Task 079 is complete. The shipped boundary in src/app/api/open/notes/route.ts and src/lib/external-note-api/auth.ts matches the documented static-key server-to-server contract: 503 when API_KEY is unset, 401 for missing/invalid X-API-Key, private-by-default create when isPublished is omitted, publish-on-create when isPublished is true, and publicUrl null for private notes. Docs are aligned across SECURITY, RELIABILITY, external-note-api spec, boundary design doc, public publishing spec, note enrichment spec, ARCHITECTURE.md, and both env examples. Regression coverage is substantive: unit tests protect disabled and auth-failure behavior, and tests/e2e/note-api.spec.ts covers private create, publish-on-create, missing key, invalid key, and request-shape rejection. The provided required command results for npm run test:e2e -- --grep @note-api and npm run verify are consistent with the inspected implementation. -> state/artifacts/20260322T181031-079-external-note-api-hardening/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T181031-079-external-note-api-hardening/npm-run-test-e2e-grep-note-api-next-server.log
+- commit: commit: created
+- promote: Promoted 079-external-note-api-hardening -> NONE
+- backlog: rendered current=NONE
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxoo
+- cycle: finished
+No remaining task. Stopping loop.
