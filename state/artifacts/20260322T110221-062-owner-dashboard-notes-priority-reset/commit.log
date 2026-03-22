@@ -1,0 +1,12 @@
+[main 98ade6f] ralph: 062-owner-dashboard-notes-priority-reset 2026-03-22T11:14:18+09:00
+ 29 files changed, 773 insertions(+), 96 deletions(-)
+ rename docs/exec-plans/{active => completed}/061-public-search-expanded-row-reset.md (93%)
+ create mode 100644 state/artifacts/20260322T105455-061-public-search-expanded-row-reset/backlog.log
+ create mode 100644 state/artifacts/20260322T105455-061-public-search-expanded-row-reset/promote.log
+ create mode 100644 state/artifacts/20260322T110221-062-owner-dashboard-notes-priority-reset/commit.log
+ create mode 100644 state/artifacts/20260322T110221-062-owner-dashboard-notes-priority-reset/evaluator.log
+ create mode 100644 state/artifacts/20260322T110221-062-owner-dashboard-notes-priority-reset/npm-run-test-e2e-grep-ui-owner-notes-priority-next-server.log
+ create mode 100644 state/artifacts/20260322T110221-062-owner-dashboard-notes-priority-reset/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260322T110221-062-owner-dashboard-notes-priority-reset/task-prompt.log
+ create mode 100644 state/artifacts/20260322T110221-062-owner-dashboard-notes-priority-reset/worker.jsonl
+commit: created

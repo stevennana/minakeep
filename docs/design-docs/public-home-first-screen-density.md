@@ -7,6 +7,7 @@ Keep the public homepage centered on published content by default, with optional
 - the first viewport should show the public header and at least part of the showroom grid without scrolling
 - search starts as a compact collapsed affordance rather than a fully expanded field block
 - the collapsed search row should carry both the trigger and a short scope summary without becoming a second hero strip
+- the collapsed search row may place the trigger and summary side by side on desktop, but it should still read as a small support strip rather than a feature panel
 - expanding search should still leave the first row of showroom cards visibly present in the opening viewport
 - when expanded, search should claim one clean full-width row beneath the archive header instead of becoming a narrow tile beside the archive count
 - supporting copy above the grid should be omitted unless it adds real utility; decorative explanation is not enough
@@ -17,6 +18,7 @@ Keep the public homepage centered on published content by default, with optional
 - search expansion should be explicit and reversible
 - expanded search should not trap the visitor in a header-only state before they can return to content
 - the collapsed search row and archive count should stack cleanly without forcing the first card below the fold
+- when the collapsed summary wraps beneath the search trigger, the shell should still feel compact and visually subordinate to the showroom cards
 
 ## Copy Rules
 - do not restate obvious publishing model details in a long paragraph above the grid

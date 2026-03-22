@@ -9,8 +9,10 @@ An anonymous visitor types into the public homepage search bar.
 ## User-Visible Behavior
 - One public title-only search control appears on the homepage.
 - The control is collapsed or compact by default on first load as a small row with a search button and a short title-only scope summary.
+- On desktop, that collapsed row stays visually compact so the first row of showroom cards remains visible without treating search like a second hero strip.
 - The full search input appears only after explicit user expansion.
 - The expanded search panel sits on its own horizontal row beneath the archive title/count instead of sharing that row as a right-side tile.
+- On mobile, the collapsed summary can stack beneath the trigger, but it should still stay inside the same compact search shell without pushing the visitor into a header-only state.
 - The search bar filters published notes and published links together.
 - Search matches titles only.
 - Closing the expanded search clears the active query and returns the control to its collapsed state.

@@ -5,7 +5,7 @@
   "id": "062-owner-dashboard-notes-priority-reset",
   "title": "Owner dashboard notes priority reset",
   "order": 62,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "063-ui-refinement-hardening",
   "prompt_docs": [
@@ -27,7 +27,8 @@
     "The owner dashboard still spends prime desktop width on a route-promotion or owner-tools block instead of Notes.",
     "Removing the block makes navigation or adjacent routes unclear.",
     "The Notes surface does not materially gain usable space."
-  ]
+  ],
+  "completed_at": "2026-03-22T02:14:18.920Z"
 }
 ```
 
@@ -69,3 +70,4 @@ Promote only when the dashboard feels more note-first without reducing owner cla
 - Start here. Append timestamped progress notes as work lands.
 - 2026-03-22 11:04 KST: Removed the standalone owner-tools aside from `/app`, moved links/tags/search access into a compact dashboard shortcut row inside the Notes panel, and widened the desktop note-row content split so Notes owns the main dashboard lane.
 - 2026-03-22 11:11 KST: Added `@ui-owner-notes-priority` coverage, refreshed the affected owner dashboard and owner-shell snapshots, and passed `npm run test:e2e -- --grep @ui-owner-notes-priority` plus `npm run verify`.
+- 2026-03-22T02:14:18.920Z: automatically promoted after deterministic checks and evaluator approval.

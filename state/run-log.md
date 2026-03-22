@@ -989,3 +989,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T110221-062-owner-dashboard-notes-priority-reset/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T110221-062-owner-dashboard-notes-priority-reset/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 062-owner-dashboard-notes-priority-reset -> 063-ui-refinement-hardening
+- backlog: rendered current=063-ui-refinement-hardening
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooo
+- cycle: finished
+
+### cycle 2026-03-22T11:14:49+09:00 task=063-ui-refinement-hardening
+- artifacts: state/artifacts/20260322T111449-063-ui-refinement-hardening
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260322T111449-063-ui-refinement-hardening/worker.jsonl
+- worker-summary: Aligned the docs for the shipped compact public search row and inline owner-dashboard shortcuts in [public-showroom-search.md](/Users/stevenna/WebstormProjects/minakeep/docs/product-specs/public-showroom-search.md), [owner-workspace-density.md](/Users/stevenna/WebstormProjects/minakeep/docs/product-specs/owner-workspace-density.md), [public-home-first-screen-density.md](/Users/stevenna/WebstormProjects/minakeep/docs/design-docs/public-home-first-screen-density.md), [owner-workspace-density.md](/Users/stevenna/WebstormProjects/minakeep/docs/design-docs/owner-workspace-density.md), and [ui-verification-contract.md](/Users/stevenna/WebstormProjects/minakeep/docs/references/ui-verification-contract.md). I tagged the existing deterministic screenshot/regression specs for this task in [ui-public-showroom.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-public-showroom.spec.ts) and [ui-owner-dashboard.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-owner-dashboard.spec.ts), and updated the progress log in [063-ui-refinement-hardening.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/063-ui-refinement-hardening.md). No `src` change was needed after confirming the shipped layouts already matched the intended fixes.
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T111449-063-ui-refinement-hardening/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T111449-063-ui-refinement-hardening/npm-run-verify-next-server.log

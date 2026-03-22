@@ -1,48 +1,50 @@
 Read the following repository documents before making changes:
 - AGENTS.md
 - docs/FRONTEND.md
+- docs/product-specs/public-showroom-search.md
 - docs/product-specs/owner-workspace-density.md
+- docs/design-docs/public-home-first-screen-density.md
 - docs/design-docs/owner-workspace-density.md
-- docs/exec-plans/active/062-owner-dashboard-notes-priority-reset.md
+- docs/references/ui-verification-contract.md
+- docs/exec-plans/active/063-ui-refinement-hardening.md
 
-Current task id: 062-owner-dashboard-notes-priority-reset
-Current task title: Owner dashboard notes priority reset
+Current task id: 063-ui-refinement-hardening
+Current task title: UI refinement hardening
 
 Objective:
-Reclaim prime desktop dashboard space for the Notes section by removing or demoting the competing owner-tools block.
+Reconcile docs, screenshots, and regression coverage after the public-search and owner-dashboard layout refinements land.
 
 Scope:
-- owner dashboard composition on desktop
-- note-list space allocation
-- supporting route-entry placement after the block is removed or demoted
+- doc alignment
+- focused screenshot and responsive regression protection
+- remaining UI refinement cleanup for the two targeted layout fixes
 
 Out of scope:
-- owner shell navigation changes
-- note editor changes
-- public showroom layout
+- new public search features
+- broader owner dashboard redesign beyond notes-priority reclaim
 
 Exit criteria:
-1. The Notes section gains visibly more prime desktop space.
-2. The removed/demoted owner-tools block no longer competes with Notes in the main dashboard view.
-3. Navigation to links, tags, and search remains clear.
-4. `npm run test:e2e -- --grep @ui-owner-notes-priority` passes.
+1. Docs match the shipped search-row and owner-dashboard layout behavior.
+2. The targeted layout refinements are covered by deterministic regression checks.
+3. Desktop and mobile screenshots are stable after the fixes.
+4. `npm run test:e2e -- --grep @ui-refinement-hardening` passes.
 5. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-owner-notes-priority`
+- `npm run test:e2e -- --grep @ui-refinement-hardening`
 
 Evaluator notes:
-Promote only when the dashboard feels more note-first without reducing owner clarity.
+Promote only when the layout fixes are protected by stable regression coverage and the docs reflect the new truth.
 
 Required repository artifacts for this task:
-- src/app/app/page.tsx
-- src/app/globals.css
+- docs
+- src
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-owner-notes-priority
+- npm run test:e2e -- --grep @ui-refinement-hardening
 
 Previous known gaps from the last evaluation:
 - none

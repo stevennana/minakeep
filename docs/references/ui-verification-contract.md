@@ -9,6 +9,7 @@
   - `npm run test:e2e -- --grep @ui-<surface>`
 - public-surface hardening should require `npm run test:e2e -- --grep @ui-public-taste-regression` so one deterministic command replays the shipped public chrome, homepage, and public note checks
 - final UI hardening should also support `npm run test:e2e -- --grep @ui-regression` so one deterministic command replays the full redesigned public/private wave
+- refinement follow-up tasks may introduce a narrower task tag when a small pair of shipped layout fixes needs dedicated regression replay without rerunning the whole wave
 - UI task metadata should set `promotion_mode` to `deterministic_only`
 - the tagged UI test should prove:
   - desktop `1440x900`
@@ -29,4 +30,5 @@
 - `@ui-forms`
 - `@ui-owner-secondary`
 - `@ui-responsive`
+- `@ui-refinement-hardening`
 - `@ui-regression`

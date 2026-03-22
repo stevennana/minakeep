@@ -326,7 +326,7 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-regression @ui-owner-dashboard @ui-responsive owner dashboard stays compact on desktop", async ({ page }) => {
+test("@ui-regression @ui-refinement-hardening @ui-owner-dashboard @ui-responsive owner dashboard stays compact on desktop", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await signIn(page);
 
@@ -345,7 +345,7 @@ test("@ui-regression @ui-owner-dashboard @ui-responsive owner dashboard stays co
   });
 });
 
-test("@ui-regression @ui-owner-dashboard @ui-responsive owner dashboard stays usable on mobile", async ({ page }) => {
+test("@ui-regression @ui-refinement-hardening @ui-owner-dashboard @ui-responsive owner dashboard stays usable on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await signIn(page);
 
@@ -363,7 +363,7 @@ test("@ui-regression @ui-owner-dashboard @ui-responsive owner dashboard stays us
   });
 });
 
-test("@ui-regression @ui-owner-notes-priority owner dashboard gives notes the prime desktop lane", async ({ page }) => {
+test("@ui-regression @ui-refinement-hardening @ui-owner-notes-priority owner dashboard gives notes the prime desktop lane", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await signIn(page);
 
