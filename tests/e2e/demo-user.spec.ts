@@ -252,6 +252,11 @@ test.afterAll(async () => {
 });
 
 test("@demo-user demo credentials authenticate a runtime demo session and reach the dashboard", async ({ page }) => {
+  await page.goto("/login");
+  await expect(page.getByText("Owner editing access and read-only demo access to notes, links, tags, and search.")).toBeVisible();
+  await expect(page.getByText("Workspace access")).toBeVisible();
+  await expect(page.getByText("Owner or demo")).toBeVisible();
+
   const username = await signInAsDemo(page);
   const ownerUsername = process.env.OWNER_USERNAME ?? "owner";
   const primaryNav = page.getByRole("navigation", { name: "Primary" });
@@ -314,6 +319,14 @@ test("@demo-user demo workspace routes stay browsable while mutation controls ar
   await expect(page.getByRole("button", { name: "Save unavailable" })).toBeDisabled();
   await expect(page.getByRole("button", { name: "Publish unavailable" })).toBeDisabled();
   await expect(page.getByRole("button", { name: "Retry unavailable" })).toBeDisabled();
+
+  await page.goto("/app/notes/new");
+  await expect(page.getByRole("heading", { name: "New draft note" })).toBeVisible();
+  await expect(page.getByRole("textbox", { name: /^Title$/ })).toHaveValue("");
+  await expect(page.getByRole("textbox", { name: /^Title$/ })).toHaveJSProperty("readOnly", true);
+  await expect(page.getByLabel("Markdown body")).toHaveValue("");
+  await expect(page.getByLabel("Markdown body")).toHaveJSProperty("readOnly", true);
+  await expect(page.getByRole("button", { name: "Save unavailable" })).toBeDisabled();
 
   await page.goto(`/app/notes/${seededFixture.publishedNoteId}/edit`);
   await expect(page.getByRole("heading", { name: "Edit draft note" })).toBeVisible();

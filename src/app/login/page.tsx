@@ -16,14 +16,14 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
       <Surface className="login-intro-card" density="compact" tone="hero">
         <IntroBlock
           compact
-          description="Owner-only access to notes, links, tags, and search."
-          eyebrow="Owner access"
-          title="Sign in to the private vault."
+          description="Owner editing access and read-only demo access to notes, links, tags, and search."
+          eyebrow="Workspace access"
+          title="Sign in to the private vault"
         />
       </Surface>
 
       <Surface className="login-form-card" density="compact" tone="panel">
-        <SectionHeading meta="Owner-only" title="Credentials" />
+        <SectionHeading meta="Owner or demo" title="Credentials" />
         <form action={loginAction} className="sign-in-form ui-form-stack">
           <FormField label="Username">
             <input autoComplete="username" name="username" placeholder="owner" required type="text" />
