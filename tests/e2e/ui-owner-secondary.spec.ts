@@ -383,7 +383,7 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-regression @ui-owner-secondary @ui-owner-links-layout links surface gives the saved list the dominant desktop lane", async ({ page }) => {
+test("@ui-regression @ui-refinement-hardening @ui-owner-secondary @ui-owner-links-layout links surface gives the saved list the dominant desktop lane", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await signIn(page);
   await page.goto("/app/links");
@@ -399,9 +399,13 @@ test("@ui-regression @ui-owner-secondary @ui-owner-links-layout links surface gi
   await expectLinksHierarchy(page, "desktop");
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
+
+  await expect(page.locator(".feature-layout")).toHaveScreenshot("ui-owner-secondary-links-desktop.png", {
+    animations: "disabled"
+  });
 });
 
-test("@ui-regression @ui-owner-secondary @ui-owner-links-layout @ui-responsive links surface stays straightforward on mobile", async ({ page }) => {
+test("@ui-regression @ui-refinement-hardening @ui-owner-secondary @ui-owner-links-layout @ui-responsive links surface stays straightforward on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await signIn(page);
   await page.goto("/app/links");
@@ -414,6 +418,10 @@ test("@ui-regression @ui-owner-secondary @ui-owner-links-layout @ui-responsive l
   await expectLinksHierarchy(page, "mobile");
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
+
+  await expect(page.locator(".feature-layout")).toHaveScreenshot("ui-owner-secondary-links-mobile.png", {
+    animations: "disabled"
+  });
 });
 
 test("@ui-regression @ui-owner-secondary tags surface keeps retrieval anchors on desktop", async ({ page }) => {

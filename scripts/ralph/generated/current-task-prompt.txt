@@ -1,48 +1,50 @@
 Read the following repository documents before making changes:
 - AGENTS.md
 - docs/FRONTEND.md
+- docs/product-specs/ui-progressive-disclosure.md
+- docs/product-specs/public-showroom-search.md
+- docs/product-specs/owner-workspace-density.md
 - docs/product-specs/owner-session-continuity.md
-- docs/design-docs/minakeep-information-architecture.md
-- docs/exec-plans/active/071-owner-session-continuity.md
+- docs/references/ui-verification-contract.md
+- docs/exec-plans/active/072-ui-refinement-hardening.md
 
-Current task id: 071-owner-session-continuity
-Current task title: Owner session continuity
+Current task id: 072-ui-refinement-hardening
+Current task title: UI refinement hardening
 
 Objective:
-Preserve authenticated owner continuity across public and private route switching.
+Reconcile docs, screenshots, and regression coverage after the refinement wave lands.
 
 Scope:
-- public-topbar authenticated-state behavior
-- owner return path from public routes back to the private workspace
-- regression coverage for session continuity
+- doc alignment
+- screenshot and responsive regression protection
+- final cleanup for information density, owner layout, links layout, and session continuity
 
 Out of scope:
-- auth provider changes
-- multi-user account work
-- owner dashboard layout beyond session continuity affordances
+- new product features beyond the agreed refinements
+- major redesign beyond the targeted fixes
 
 Exit criteria:
-1. An authenticated owner can move between `/app`, `/`, and public note routes without an unnecessary re-login.
-2. Public navigation reflects owner continuity appropriately.
-3. Anonymous users still do not see private controls.
-4. `npm run test:e2e -- --grep @owner-session` passes.
+1. Docs match the shipped refinement behavior accurately.
+2. The targeted refinements are covered by deterministic regression checks.
+3. Desktop and mobile screenshots remain stable after the wave.
+4. `npm run test:e2e -- --grep @ui-refinement-hardening` passes.
 5. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @owner-session`
+- `npm run test:e2e -- --grep @ui-refinement-hardening`
 
 Evaluator notes:
-Promote only when session continuity improves owner experience without weakening privacy boundaries.
+Promote only when the refinement wave is protected by regression coverage and the product truth is updated.
 
 Required repository artifacts for this task:
-- src/app/layout.tsx
-- src/lib/auth
+- docs
+- src
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @owner-session
+- npm run test:e2e -- --grep @ui-refinement-hardening
 
 Previous known gaps from the last evaluation:
 - none

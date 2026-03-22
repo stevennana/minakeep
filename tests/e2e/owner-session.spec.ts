@@ -84,7 +84,7 @@ test.afterAll(async () => {
 
 // Protect the public/private split: anonymous visitors keep the login affordance,
 // while an authenticated owner keeps a direct path back into the workspace.
-test("@owner-session anonymous public routes keep owner controls hidden", async ({ page }) => {
+test("@owner-session @ui-refinement-hardening anonymous public routes keep owner controls hidden", async ({ page }) => {
   await page.goto("/");
 
   const primaryNav = page.getByRole("navigation", { name: "Primary" });
@@ -98,7 +98,7 @@ test("@owner-session anonymous public routes keep owner controls hidden", async 
   await expect(primaryNav.getByRole("link", { name: "Owner workspace" })).toHaveCount(0);
 });
 
-test("@owner-session authenticated owner keeps continuity across app and public routes", async ({ page }) => {
+test("@owner-session @ui-refinement-hardening authenticated owner keeps continuity across app and public routes", async ({ page }) => {
   await signInAsOwner(page);
 
   const primaryNav = page.getByRole("navigation", { name: "Primary" });

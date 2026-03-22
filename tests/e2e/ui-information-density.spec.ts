@@ -126,7 +126,7 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-information-density login and dashboard remove implementation-heavy helper copy", async ({ page }) => {
+test("@ui-information-density @ui-refinement-hardening login and dashboard remove implementation-heavy helper copy", async ({ page }) => {
   await page.goto("/login");
 
   await expect(page.getByRole("heading", { name: "Sign in to the private vault." })).toBeVisible();
@@ -143,7 +143,7 @@ test("@ui-information-density login and dashboard remove implementation-heavy he
   await expect(page.getByLabel("Dashboard overview")).toContainText("On the public site");
 });
 
-test("@ui-information-density public search keeps title scope obvious without redundant disclosure copy", async ({ page }) => {
+test("@ui-information-density @ui-refinement-hardening public search keeps title scope obvious without redundant disclosure copy", async ({ page }) => {
   await page.goto("/");
 
   await expect(page.getByTestId("public-home-search-summary")).toHaveText("2 public items.");
@@ -157,7 +157,7 @@ test("@ui-information-density public search keeps title scope obvious without re
   await expect(page.getByRole("button", { name: "Close public title search" })).toBeVisible();
 });
 
-test("@ui-information-density owner secondary surfaces move guidance into compact disclosures", async ({ page }) => {
+test("@ui-information-density @ui-refinement-hardening owner secondary surfaces move guidance into compact disclosures", async ({ page }) => {
   await signIn(page);
 
   await page.goto("/app/search");
