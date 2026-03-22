@@ -5,7 +5,7 @@
   "id": "075-demo-write-protection",
   "title": "Demo write protection",
   "order": 75,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "076-demo-docker-and-hardening",
   "prompt_docs": [
@@ -30,7 +30,8 @@
     "Any server-side mutation path still succeeds for the demonstration user.",
     "The implementation depends on hidden buttons alone rather than authz checks.",
     "Read-only protection weakens owner or public behavior."
-  ]
+  ],
+  "completed_at": "2026-03-22T05:51:53.515Z"
 }
 ```
 
@@ -71,3 +72,4 @@ Promote only when the demo mode is genuinely read-only even under direct request
 - Start here. Append timestamped progress notes as work lands.
 - 2026-03-22 14:47:51 KST: Added a shared writable-session guard for note and link server actions so demo-authenticated mutation attempts are rejected before any repository or enrichment work runs.
 - 2026-03-22 14:47:51 KST: Tightened `/api/notes/images` to return `403` for demo uploads and expanded `@demo-user` E2E coverage to replay real server-action payloads for note/link create, update, publish, unpublish, retry, favicon refresh, and note-image upload without allowing stored data to change.
+- 2026-03-22T05:51:53.515Z: automatically promoted after deterministic checks and evaluator approval.

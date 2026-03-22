@@ -289,6 +289,10 @@ test("@demo-user demo workspace routes stay browsable while mutation controls ar
   await expect(seededLinkCard.getByRole("button", { name: "Refresh favicon unavailable" })).toBeDisabled();
   await expect(seededLinkCard.getByRole("button", { name: "Publish unavailable" })).toBeDisabled();
   await expect(seededLinkCard.getByRole("button", { name: "Retry unavailable" })).toBeDisabled();
+  const publishedLinkCard = page
+    .getByRole("article")
+    .filter({ has: page.getByRole("link", { name: seededPublishedLink.title }) });
+  await expect(publishedLinkCard.getByRole("button", { name: "Unpublish unavailable" })).toBeDisabled();
 
   await page.goto("/app/tags");
   await expect(page.getByRole("heading", { name: "Browse one private taxonomy" })).toBeVisible();
@@ -310,6 +314,15 @@ test("@demo-user demo workspace routes stay browsable while mutation controls ar
   await expect(page.getByRole("button", { name: "Save unavailable" })).toBeDisabled();
   await expect(page.getByRole("button", { name: "Publish unavailable" })).toBeDisabled();
   await expect(page.getByRole("button", { name: "Retry unavailable" })).toBeDisabled();
+
+  await page.goto(`/app/notes/${seededFixture.publishedNoteId}/edit`);
+  await expect(page.getByRole("heading", { name: "Edit draft note" })).toBeVisible();
+  await expect(page.getByLabel("Title")).toHaveValue(seededPublishedNote.title);
+  await expect(page.getByLabel("Title")).toHaveJSProperty("readOnly", true);
+  await expect(page.getByLabel("Markdown body")).toHaveValue(seededPublishedNote.markdown);
+  await expect(page.getByLabel("Markdown body")).toHaveJSProperty("readOnly", true);
+  await expect(page.getByRole("button", { name: "Save unavailable" })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "Unpublish unavailable" })).toBeDisabled();
 });
 
 test("@demo-user direct demo mutation attempts are rejected at the server boundary", async ({ browser }) => {

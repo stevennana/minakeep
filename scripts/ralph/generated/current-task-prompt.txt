@@ -1,50 +1,53 @@
 Read the following repository documents before making changes:
 - AGENTS.md
 - docs/SECURITY.md
+- docs/RELIABILITY.md
 - docs/product-specs/demo-workspace-user.md
+- docs/product-specs/docker-packaging.md
 - docs/design-docs/workspace-auth-roles.md
-- docs/product-specs/note-authoring.md
-- docs/product-specs/link-capture.md
-- docs/exec-plans/active/075-demo-write-protection.md
+- docs/exec-plans/active/076-demo-docker-and-hardening.md
 
-Current task id: 075-demo-write-protection
-Current task title: Demo write protection
+Current task id: 076-demo-docker-and-hardening
+Current task title: Demo Docker and hardening
 
 Objective:
-Reject all data mutations for the demonstration user at the server boundary.
+Harden the demo-user wave through Docker/env documentation and regression coverage.
 
 Scope:
-- note create/update/publish/unpublish/retry protection
-- link create/publish/unpublish/retry/favicon-refresh protection
-- note-image upload and other mutation-path protection
+- Docker and env-doc alignment
+- README/operator guidance
+- demo-user regression coverage and cleanup
 
 Out of scope:
-- broader role system beyond owner vs demo
-- new public product features
+- new auth roles beyond owner/demo
+- public marketing/demo pages
 
 Exit criteria:
-1. Demo-user write attempts are rejected server-side across all covered mutation paths.
-2. Demo-user read access still works.
-3. Owner write paths remain functional.
+1. Docker and README docs explain the demo-user env contract clearly.
+2. Demo-user regression coverage protects both access and read-only enforcement.
+3. `docker compose config` passes under the shipped contract.
 4. `npm run test:e2e -- --grep @demo-user` passes.
 5. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
 - `npm run test:e2e -- --grep @demo-user`
+- `docker compose config`
 
 Evaluator notes:
-Promote only when the demo mode is genuinely read-only even under direct request attempts.
+Promote only when the demo-user feature is documented, protected, and operator-usable.
 
 Required repository artifacts for this task:
-- src/app/app
-- src/app/api
-- src/features
+- README.md
+- docker-compose.yml
+- .env.compose.example
+- docs
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
 - npm run test:e2e -- --grep @demo-user
+- docker compose config
 
 Previous known gaps from the last evaluation:
 - none

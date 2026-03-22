@@ -5,7 +5,7 @@
   "id": "076-demo-docker-and-hardening",
   "title": "Demo Docker and hardening",
   "order": 76,
-  "status": "planned",
+  "status": "active",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "NONE",
   "prompt_docs": [
@@ -72,3 +72,6 @@ Promote only when the demo-user feature is documented, protected, and operator-u
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-22 14:58:13 KST - Tightened the shipped demo-user operator contract across `README.md`, `.env.compose.example`, `docker-compose.yml`, `docs/product-specs/docker-packaging.md`, and `docs/design-docs/workspace-auth-roles.md` so Compose docs now state the both-or-neither demo env rule, the `DEMO_USERNAME != OWNER_USERNAME` requirement, the runtime-only/read-only demo identity, and that optional AI vars may remain unset in the Compose example.
+- 2026-03-22 14:58:13 KST - Hardened `tests/e2e/demo-user.spec.ts` by extending the read-only route coverage to published-state surfaces, including the published link `Unpublish unavailable` control and the published note edit surface with read-only inputs plus disabled save/unpublish actions.
+- 2026-03-22 14:58:13 KST - Verified the task contract in the current repo state: `docker compose config` passed, `npm run test:e2e -- --grep @demo-user` passed, and `npm run verify` passed.

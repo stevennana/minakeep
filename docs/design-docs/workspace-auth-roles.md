@@ -17,6 +17,7 @@ Define the authentication and authorization model for the owner and the read-onl
 ## Runtime Contract
 - demo credentials should be configured through environment variables, parallel to the owner credentials
 - `DEMO_USERNAME` and `DEMO_PASSWORD` must either both be set or both be omitted
+- `DEMO_USERNAME` must differ from `OWNER_USERNAME`
 - the demo account is a runtime-only identity; only the owner password hash is persisted in SQLite
 - if demo credentials are absent, the app behaves as owner-only
 - auth/session helpers should expose enough role information for route rendering and server-action gating

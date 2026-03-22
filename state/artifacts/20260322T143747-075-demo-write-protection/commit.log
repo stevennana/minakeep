@@ -1,0 +1,12 @@
+[main 9add759] ralph: 075-demo-write-protection 2026-03-22T14:51:53+09:00
+ 25 files changed, 1280 insertions(+), 104 deletions(-)
+ rename docs/exec-plans/{active => completed}/074-demo-workspace-read-only-shell.md (93%)
+ create mode 100644 state/artifacts/20260322T141343-074-demo-workspace-read-only-shell/backlog.log
+ create mode 100644 state/artifacts/20260322T141343-074-demo-workspace-read-only-shell/promote.log
+ create mode 100644 state/artifacts/20260322T143747-075-demo-write-protection/commit.log
+ create mode 100644 state/artifacts/20260322T143747-075-demo-write-protection/evaluator.log
+ create mode 100644 state/artifacts/20260322T143747-075-demo-write-protection/npm-run-test-e2e-grep-demo-user-next-server.log
+ create mode 100644 state/artifacts/20260322T143747-075-demo-write-protection/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260322T143747-075-demo-write-protection/task-prompt.log
+ create mode 100644 state/artifacts/20260322T143747-075-demo-write-protection/worker.jsonl
+commit: created

@@ -117,7 +117,7 @@ mkdir -p data media logs
 docker compose up --build -d
 ```
 
-The compose file fixes the container-internal runtime paths to `/app/data` and `/app/media`; the `.env` file is for auth, port, log level, and optional AI config.
+The compose file fixes the container-internal runtime paths to `/app/data`, `/app/media`, and `/app/logs`; the `.env` file is for auth, port, and optional demo-user and AI config.
 
 The Compose path keeps mutable runtime state mounted outside the image:
 
@@ -146,9 +146,9 @@ DEMO_USERNAME="demo"
 DEMO_PASSWORD="replace-with-a-long-demo-password"
 ```
 
-Compose passes demo credentials through to the container when configured, but `npm run db:prepare` still persists only the owner password hash in SQLite.
+Leave both demo vars unset to run the normal owner-only deployment. If you enable the demo workspace, keep `DEMO_USERNAME` different from `OWNER_USERNAME`; Compose passes the demo credentials through to the container at runtime, but `npm run db:prepare` still persists only the owner password hash in SQLite and the demo account remains read-only.
 
-Optional AI env vars use the same local contract as direct Node runs:
+Optional AI env vars use the same local contract as direct Node runs. Leave them unset unless you want live AI enrichment in the container:
 
 ```bash
 LLM_BASE="https://mina-host.example/v1"

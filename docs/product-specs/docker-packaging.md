@@ -12,7 +12,8 @@ An operator wants to run Minakeep in a container instead of a direct local Node 
 - The shipped Compose file binds `./data`, `./media`, and `./logs` into the fixed container paths `/app/data`, `/app/media`, and `/app/logs`.
 - Runtime configuration, including AI env vars, is supplied through environment variables or env files.
 - Optional demonstration-user credentials are supplied through environment variables or env files, parallel to the owner credentials.
-- Demo credentials follow a both-or-neither env contract and stay runtime-only rather than being seeded into SQLite.
+- Demo credentials follow a both-or-neither env contract, `DEMO_USERNAME` must differ from `OWNER_USERNAME`, and the demo identity stays runtime-only rather than being seeded into SQLite.
+- Optional AI env vars may stay unset in the shipped Compose example so owner-only boot works without placeholder endpoint values.
 - The container startup path ensures the mounted runtime directories exist, writes a timestamped server log under `/app/logs`, runs the existing `db:prepare` contract, and then serves the built app on `0.0.0.0:$PORT`.
 - The shipped Compose service includes an HTTP healthcheck against `/api/health`.
 

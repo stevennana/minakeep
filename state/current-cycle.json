@@ -1,8 +1,8 @@
 {
-  "task_id": "075-demo-write-protection",
-  "started_at": "2026-03-22T14:37:47+09:00",
-  "artifact_dir": "state/artifacts/20260322T143747-075-demo-write-protection",
+  "task_id": "076-demo-docker-and-hardening",
+  "started_at": "2026-03-22T14:52:23+09:00",
+  "artifact_dir": "state/artifacts/20260322T145223-076-demo-docker-and-hardening",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-03-22T05:51:53.337Z"
+  "updated_at": "2026-03-22T06:00:59.912Z"
 }

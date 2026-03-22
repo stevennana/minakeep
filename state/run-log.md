@@ -1143,3 +1143,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T143747-075-demo-write-protection/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T143747-075-demo-write-protection/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 075-demo-write-protection -> 076-demo-docker-and-hardening
+- backlog: rendered current=076-demo-docker-and-hardening
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooo
+- cycle: finished
+
+### cycle 2026-03-22T14:52:23+09:00 task=076-demo-docker-and-hardening
+- artifacts: state/artifacts/20260322T145223-076-demo-docker-and-hardening
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260322T145223-076-demo-docker-and-hardening/worker.jsonl
+- worker-summary: Updated the demo-user hardening slice in [README.md](/Users/stevenna/WebstormProjects/minakeep/README.md), [docker-compose.yml](/Users/stevenna/WebstormProjects/minakeep/docker-compose.yml), [.env.compose.example](/Users/stevenna/WebstormProjects/minakeep/.env.compose.example), [docker-packaging.md](/Users/stevenna/WebstormProjects/minakeep/docs/product-specs/docker-packaging.md), and [workspace-auth-roles.md](/Users/stevenna/WebstormProjects/minakeep/docs/design-docs/workspace-auth-roles.md). The shipped operator contract now states the demo both-or-neither env rule, requires `DEMO_USERNAME` to differ from `OWNER_USERNAME`, keeps demo access runtime-only/read-only, and leaves optional AI vars unset in the Compose example unless an operator really wants live AI enrichment.
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T145223-076-demo-docker-and-hardening/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T145223-076-demo-docker-and-hardening/npm-run-verify-next-server.log
