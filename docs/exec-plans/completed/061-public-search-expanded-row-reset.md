@@ -5,7 +5,7 @@
   "id": "061-public-search-expanded-row-reset",
   "title": "Public search expanded row reset",
   "order": 61,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "062-owner-dashboard-notes-priority-reset",
   "prompt_docs": [
@@ -28,7 +28,8 @@
     "The expanded search panel still appears beside the archive count instead of below the archive header.",
     "Search expansion still dominates the first screen or becomes awkward to read on desktop.",
     "The layout fix regresses collapsed-search or mobile behavior."
-  ]
+  ],
+  "completed_at": "2026-03-22T02:01:51.364Z"
 }
 ```
 
@@ -70,3 +71,4 @@ Promote only when the expanded search state looks deliberately placed instead of
 - Start here. Append timestamped progress notes as work lands.
 - 2026-03-22 10:57 KST: Updated the public showroom shell so the archive header stays single-column at the desktop breakpoint and the search shell stretches as its own row beneath the heading/count block; added stable test hooks and tightened the public showroom UI assertion to check expanded-row placement.
 - 2026-03-22 10:59 KST: Verified the focused `@ui-public-search-row` Playwright flow and the full `npm run verify` gate both pass after narrowing the desktop reflow to the expanded-search state so the collapsed shell and first-screen density stay stable.
+- 2026-03-22T02:01:51.364Z: automatically promoted after deterministic checks and evaluator approval.

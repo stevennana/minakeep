@@ -230,49 +230,60 @@ async function expectAccessibleStructure(page: Page) {
 }
 
 async function expectDesktopDashboardHierarchy(page: Page) {
+  const grid = page.locator(".owner-dashboard-grid");
   const mainPanel = page.locator(".owner-dashboard-main");
-  const sidePanel = page.locator(".owner-dashboard-side-panel");
+  const shortcuts = page.getByRole("navigation", { name: "Dashboard route shortcuts" });
   const hero = page.locator(".dashboard-hero");
   const firstNote = page.locator(".dashboard-note-item").first();
+  const sidePanel = page.locator(".owner-dashboard-side-panel");
+  const routeGrid = page.locator(".dashboard-route-grid");
 
-  const [mainBox, sideBox, heroBox, noteBox] = await Promise.all([
+  await expect(shortcuts).toBeVisible();
+  await expect(sidePanel).toHaveCount(0);
+  await expect(routeGrid).toHaveCount(0);
+
+  const [gridBox, mainBox, heroBox, noteBox] = await Promise.all([
+    grid.boundingBox(),
     mainPanel.boundingBox(),
-    sidePanel.boundingBox(),
     hero.boundingBox(),
     firstNote.boundingBox()
   ]);
 
+  expect(gridBox).not.toBeNull();
   expect(mainBox).not.toBeNull();
-  expect(sideBox).not.toBeNull();
   expect(heroBox).not.toBeNull();
   expect(noteBox).not.toBeNull();
 
-  if (!mainBox || !sideBox || !heroBox || !noteBox) {
+  if (!gridBox || !mainBox || !heroBox || !noteBox) {
     return;
   }
 
-  expect(mainBox.x).toBeLessThan(sideBox.x);
-  expect(mainBox.width).toBeGreaterThan(sideBox.width);
+  expect(mainBox.width / gridBox.width).toBeGreaterThan(0.96);
+  expect(noteBox.width / mainBox.width).toBeGreaterThan(0.92);
   expect(heroBox.height).toBeLessThan(320);
   expect(noteBox.height).toBeLessThan(300);
 }
 
 async function expectMobileDashboardHierarchy(page: Page) {
   const mainPanel = page.locator(".owner-dashboard-main");
-  const sidePanel = page.locator(".owner-dashboard-side-panel");
+  const shortcuts = page.getByRole("navigation", { name: "Dashboard route shortcuts" });
   const hero = page.locator(".dashboard-hero");
+  const sidePanel = page.locator(".owner-dashboard-side-panel");
+  const routeGrid = page.locator(".dashboard-route-grid");
 
-  const [mainBox, sideBox, heroBox] = await Promise.all([mainPanel.boundingBox(), sidePanel.boundingBox(), hero.boundingBox()]);
+  await expect(shortcuts).toBeVisible();
+  await expect(sidePanel).toHaveCount(0);
+  await expect(routeGrid).toHaveCount(0);
+
+  const [mainBox, heroBox] = await Promise.all([mainPanel.boundingBox(), hero.boundingBox()]);
 
   expect(mainBox).not.toBeNull();
-  expect(sideBox).not.toBeNull();
   expect(heroBox).not.toBeNull();
 
-  if (!mainBox || !sideBox || !heroBox) {
+  if (!mainBox || !heroBox) {
     return;
   }
 
-  expect(sideBox.y).toBeGreaterThan(mainBox.y);
   expect(heroBox.height).toBeLessThan(380);
 }
 
@@ -321,7 +332,7 @@ test("@ui-regression @ui-owner-dashboard @ui-responsive owner dashboard stays co
 
   await expect(page.getByRole("heading", { name: /owner.?.s notes/i })).toBeVisible();
   await expect(page.getByLabel("Dashboard overview")).toBeVisible();
-  await expect(page.getByText("Workspace routes")).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Dashboard route shortcuts" })).toBeVisible();
   await expect(page.getByText("AI summary")).toHaveCount(seededNotes.length);
   await expect(page.locator(".dashboard-note-item")).toHaveCount(seededNotes.length);
   await expectDesktopDashboardHierarchy(page);
@@ -340,7 +351,7 @@ test("@ui-regression @ui-owner-dashboard @ui-responsive owner dashboard stays us
 
   await expect(page.getByRole("heading", { name: /owner.?.s notes/i })).toBeVisible();
   await expect(page.getByLabel("Dashboard overview")).toBeVisible();
-  await expect(page.getByText("Workspace routes")).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Dashboard route shortcuts" })).toBeVisible();
   await expect(page.locator(".dashboard-note-item")).toHaveCount(seededNotes.length);
   await expectMobileDashboardHierarchy(page);
   await expectTypographyHierarchy(page);
@@ -350,4 +361,20 @@ test("@ui-regression @ui-owner-dashboard @ui-responsive owner dashboard stays us
   await expect(page.locator(".feature-layout")).toHaveScreenshot("ui-owner-dashboard-mobile.png", {
     animations: "disabled"
   });
+});
+
+test("@ui-regression @ui-owner-notes-priority owner dashboard gives notes the prime desktop lane", async ({ page }) => {
+  await page.setViewportSize(desktopViewport);
+  await signIn(page);
+
+  const shortcuts = page.getByRole("navigation", { name: "Dashboard route shortcuts" });
+
+  await expect(shortcuts).toBeVisible();
+  await expect(shortcuts.getByRole("link", { name: "Links" })).toBeVisible();
+  await expect(shortcuts.getByRole("link", { name: "Tags" })).toBeVisible();
+  await expect(shortcuts.getByRole("link", { name: "Search" })).toBeVisible();
+  await expect(page.locator(".owner-dashboard-side-panel")).toHaveCount(0);
+  await expect(page.locator(".dashboard-route-grid")).toHaveCount(0);
+  await expectDesktopDashboardHierarchy(page);
+  await expectNoHorizontalOverflow(page);
 });

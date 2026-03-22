@@ -1679,6 +1679,27 @@ textarea {
   min-width: 0;
 }
 
+.owner-dashboard-head {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.owner-dashboard-shortcuts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.owner-dashboard-shortcut {
+  font-size: 0.78rem;
+  min-height: 2rem;
+  padding: 0.42rem 0.72rem;
+}
+
+.owner-dashboard-shortcut-note {
+  margin-top: -0.15rem;
+}
+
 .owner-dashboard-note-list {
   gap: 0.8rem;
   margin-top: 0;
@@ -2581,7 +2602,12 @@ textarea {
   }
 
   .owner-dashboard-grid {
-    grid-template-columns: minmax(0, 1.28fr) minmax(17.5rem, 0.72fr);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .owner-dashboard-head {
+    align-items: end;
+    grid-template-columns: minmax(0, 1fr) auto;
   }
 
   .public-home-archive {
@@ -2722,7 +2748,7 @@ textarea {
   }
 
   .dashboard-note-item {
-    grid-template-columns: minmax(0, 1.22fr) minmax(16.5rem, 1.08fr);
+    grid-template-columns: minmax(0, 1.42fr) minmax(15rem, 0.78fr);
   }
 
   .dashboard-note-secondary {

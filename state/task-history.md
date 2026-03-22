@@ -49,3 +49,4 @@
 - 2026-03-22T01:13:05.738Z: promoted 058-public-note-human-reading-polish -> 059-tag-chip-and-public-type-fit
 - 2026-03-22T01:31:33.372Z: promoted 059-tag-chip-and-public-type-fit -> 060-public-surface-hardening
 - 2026-03-22T01:40:32.974Z: promoted 060-public-surface-hardening -> NONE
+- 2026-03-22T02:01:51.364Z: promoted 061-public-search-expanded-row-reset -> 062-owner-dashboard-notes-priority-reset

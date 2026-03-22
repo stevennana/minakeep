@@ -1,8 +1,8 @@
 {
-  "task_id": "061-public-search-expanded-row-reset",
-  "started_at": "2026-03-22T10:54:55+09:00",
-  "artifact_dir": "state/artifacts/20260322T105455-061-public-search-expanded-row-reset",
+  "task_id": "062-owner-dashboard-notes-priority-reset",
+  "started_at": "2026-03-22T11:02:21+09:00",
+  "artifact_dir": "state/artifacts/20260322T110221-062-owner-dashboard-notes-priority-reset",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-03-22T02:01:51.182Z"
+  "updated_at": "2026-03-22T02:14:18.733Z"
 }

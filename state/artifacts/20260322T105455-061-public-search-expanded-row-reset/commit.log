@@ -1,0 +1,15 @@
+[main 6565261] ralph: 061-public-search-expanded-row-reset 2026-03-22T11:01:51+09:00
+ 29 files changed, 859 insertions(+), 59 deletions(-)
+ create mode 100644 docs/exec-plans/active/061-public-search-expanded-row-reset.md
+ create mode 100644 docs/exec-plans/active/062-owner-dashboard-notes-priority-reset.md
+ create mode 100644 docs/exec-plans/active/063-ui-refinement-hardening.md
+ create mode 100644 screenshots/showroom-searchbar.png
+ create mode 100644 state/artifacts/20260322T103203-060-public-surface-hardening/backlog.log
+ create mode 100644 state/artifacts/20260322T103203-060-public-surface-hardening/promote.log
+ create mode 100644 state/artifacts/20260322T105455-061-public-search-expanded-row-reset/commit.log
+ create mode 100644 state/artifacts/20260322T105455-061-public-search-expanded-row-reset/evaluator.log
+ create mode 100644 state/artifacts/20260322T105455-061-public-search-expanded-row-reset/npm-run-test-e2e-grep-ui-public-search-row-next-server.log
+ create mode 100644 state/artifacts/20260322T105455-061-public-search-expanded-row-reset/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260322T105455-061-public-search-expanded-row-reset/task-prompt.log
+ create mode 100644 state/artifacts/20260322T105455-061-public-search-expanded-row-reset/worker.jsonl
+commit: created

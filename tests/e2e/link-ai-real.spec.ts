@@ -20,7 +20,7 @@ test(`owner link enrichment completes against the real Mina endpoint ${AI_REAL_T
   await page.getByRole("button", { name: "Sign in" }).click();
 
   await expect(page).toHaveURL(/\/app$/);
-  await page.getByRole("link", { name: "Links" }).click();
+  await page.getByRole("navigation", { name: "Private vault sections" }).getByRole("link", { name: "Links" }).click();
   await expect(page).toHaveURL(/\/app\/links$/);
 
   await page.getByRole("textbox", { name: /^URL$/ }).fill(url);

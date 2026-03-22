@@ -210,7 +210,7 @@ test("@ui-regression @ui-system @ui-owner-shell @ui-responsive private shell kee
   await expect(page.locator(".vault-frame-title")).toHaveText("Private vault");
   await expect(page.getByText("Sections")).toBeVisible();
   await expect(page.getByRole("link", { name: "New note" })).toBeVisible();
-  await expect(page.getByText("Workspace routes")).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Dashboard route shortcuts" })).toBeVisible();
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
 

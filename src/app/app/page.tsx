@@ -71,7 +71,23 @@ export default async function PrivateDashboardPage() {
 
       <div className="dashboard-grid owner-dashboard-grid" data-testid="owner-dashboard-grid">
         <Surface className="owner-dashboard-main" tone="panel">
-          <SectionHeading meta="Drafts and published notes" title="Notes" />
+          <div className="owner-dashboard-head">
+            <SectionHeading meta="Drafts and published notes" title="Notes" />
+            <nav aria-label="Dashboard route shortcuts" className="owner-dashboard-shortcuts">
+              <Link className="vault-nav-link owner-dashboard-shortcut" href="/app/links">
+                Links
+              </Link>
+              <Link className="vault-nav-link owner-dashboard-shortcut" href="/app/tags">
+                Tags
+              </Link>
+              <Link className="vault-nav-link owner-dashboard-shortcut" href="/app/search">
+                Search
+              </Link>
+            </nav>
+          </div>
+          <p className="field-note owner-dashboard-shortcut-note">
+            Links, tags, and search remain in the owner shell and stay available here as quick jumps.
+          </p>
           {notes.length === 0 ? (
             <p>No drafts yet. Create the first note to start the private vault.</p>
           ) : (
@@ -86,28 +102,6 @@ export default async function PrivateDashboardPage() {
               ))}
             </div>
           )}
-        </Surface>
-
-        <Surface as="aside" className="dashboard-side-panel owner-dashboard-side-panel" tone="panel">
-          <SectionHeading meta="Owner-only tools" title="Workspace routes" />
-          <div className="route-grid dashboard-route-grid">
-            <Link className="route-tile" href="/app/links">
-              <strong>Reference shelf</strong>
-              <span>Capture URLs and review generated summaries and tags.</span>
-            </Link>
-            <Link className="route-tile" href="/app/tags">
-              <strong>Shared tags</strong>
-              <span>Browse shared note and link metadata through one taxonomy.</span>
-            </Link>
-            <Link className="route-tile" href="/app/search">
-              <strong>Vault search</strong>
-              <span>Find private titles, URLs, and tags without exposing public search.</span>
-            </Link>
-          </div>
-          <p className="field-note">
-            Use tags to narrow private notes and links, and use search for title, URL, and tag retrieval inside the
-            owner area.
-          </p>
         </Surface>
       </div>
     </div>

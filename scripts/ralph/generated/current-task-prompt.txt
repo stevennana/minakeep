@@ -1,49 +1,48 @@
 Read the following repository documents before making changes:
 - AGENTS.md
 - docs/FRONTEND.md
-- docs/product-specs/public-showroom-search.md
-- docs/design-docs/public-home-first-screen-density.md
-- docs/design-docs/public-surface-taste-rules.md
-- docs/exec-plans/active/061-public-search-expanded-row-reset.md
+- docs/product-specs/owner-workspace-density.md
+- docs/design-docs/owner-workspace-density.md
+- docs/exec-plans/active/062-owner-dashboard-notes-priority-reset.md
 
-Current task id: 061-public-search-expanded-row-reset
-Current task title: Public search expanded row reset
+Current task id: 062-owner-dashboard-notes-priority-reset
+Current task title: Owner dashboard notes priority reset
 
 Objective:
-Fix the expanded public-search layout so it occupies a clear row beneath the archive heading instead of breaking as a right-side tile.
+Reclaim prime desktop dashboard space for the Notes section by removing or demoting the competing owner-tools block.
 
 Scope:
-- expanded public-search placement and shell layout
-- archive head and search-row spacing relationship
-- responsive behavior for the expanded search state
+- owner dashboard composition on desktop
+- note-list space allocation
+- supporting route-entry placement after the block is removed or demoted
 
 Out of scope:
-- title-search behavior changes
-- masonry card redesign
-- owner dashboard layout
+- owner shell navigation changes
+- note editor changes
+- public showroom layout
 
 Exit criteria:
-1. Expanded public search sits on its own readable row beneath the archive heading on desktop.
-2. The first screen remains content-first and visually stable.
-3. Collapsed search and mobile states remain clean.
-4. `npm run test:e2e -- --grep @ui-public-search-row` passes.
+1. The Notes section gains visibly more prime desktop space.
+2. The removed/demoted owner-tools block no longer competes with Notes in the main dashboard view.
+3. Navigation to links, tags, and search remains clear.
+4. `npm run test:e2e -- --grep @ui-owner-notes-priority` passes.
 5. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-public-search-row`
+- `npm run test:e2e -- --grep @ui-owner-notes-priority`
 
 Evaluator notes:
-Promote only when the expanded search state looks deliberately placed instead of squeezed into the archive header.
+Promote only when the dashboard feels more note-first without reducing owner clarity.
 
 Required repository artifacts for this task:
-- src/features/public-content/components/public-showroom.tsx
+- src/app/app/page.tsx
 - src/app/globals.css
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-public-search-row
+- npm run test:e2e -- --grep @ui-owner-notes-priority
 
 Previous known gaps from the last evaluation:
 - none

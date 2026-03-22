@@ -200,7 +200,7 @@ test("owner can save a private link, receive AI metadata, and keep it off public
     await page.getByRole("button", { name: "Sign in" }).click();
 
     await expect(page).toHaveURL(/\/app$/);
-    await page.getByRole("link", { name: "Links" }).click();
+    await page.getByRole("navigation", { name: "Private vault sections" }).getByRole("link", { name: "Links" }).click();
 
     await expect(page).toHaveURL(/\/app\/links$/);
     await page.getByRole("textbox", { name: /^URL$/ }).fill(url);
@@ -247,7 +247,7 @@ test("owner can publish and unpublish a link across the public homepage", async 
     await page.getByRole("button", { name: "Sign in" }).click();
 
     await expect(page).toHaveURL(/\/app$/);
-    await page.getByRole("link", { name: "Links" }).click();
+    await page.getByRole("navigation", { name: "Private vault sections" }).getByRole("link", { name: "Links" }).click();
     await expect(page).toHaveURL(/\/app\/links$/);
 
     await page.getByRole("textbox", { name: /^URL$/ }).fill(url);
@@ -313,7 +313,7 @@ test("link save still succeeds when the configured AI endpoint times out and exp
     await page.getByRole("button", { name: "Sign in" }).click();
 
     await expect(page).toHaveURL(/\/app$/);
-    await page.getByRole("link", { name: "Links" }).click();
+    await page.getByRole("navigation", { name: "Private vault sections" }).getByRole("link", { name: "Links" }).click();
 
     await expect(page).toHaveURL(/\/app\/links$/);
     await page.getByRole("textbox", { name: /^URL$/ }).fill(url);
@@ -350,7 +350,7 @@ test("owner cannot save a private link with an unsafe URL scheme", async ({ page
   await page.getByRole("button", { name: "Sign in" }).click();
 
   await expect(page).toHaveURL(/\/app$/);
-  await page.getByRole("link", { name: "Links" }).click();
+  await page.getByRole("navigation", { name: "Private vault sections" }).getByRole("link", { name: "Links" }).click();
 
   await expect(page).toHaveURL(/\/app\/links$/);
   await page.getByLabel("URL").fill("ftp://example.com/private-reference");

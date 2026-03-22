@@ -974,3 +974,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T105455-061-public-search-expanded-row-reset/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T105455-061-public-search-expanded-row-reset/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 061-public-search-expanded-row-reset -> 062-owner-dashboard-notes-priority-reset
+- backlog: rendered current=062-owner-dashboard-notes-priority-reset
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xoooooooo
+- cycle: finished
+
+### cycle 2026-03-22T11:02:21+09:00 task=062-owner-dashboard-notes-priority-reset
+- artifacts: state/artifacts/20260322T110221-062-owner-dashboard-notes-priority-reset
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260322T110221-062-owner-dashboard-notes-priority-reset/worker.jsonl
+- worker-summary: Reclaimed the dashboard’s desktop priority for Notes in [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/page.tsx) and [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css): the separate `Workspace routes` aside is gone, links/tags/search now live as a compact shortcut nav inside the Notes panel, and the desktop note rows give authored note content a wider lane. I updated the focused regression contract in [ui-owner-dashboard.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-owner-dashboard.spec.ts), adjusted affected selectors in [home.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/home.spec.ts), [link-ai-real.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/link-ai-real.spec.ts), and [ui-system.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-system.spec.ts), refreshed the affected snapshots, and logged progress in [062-owner-dashboard-notes-priority-reset.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/062-owner-dashboard-notes-priority-reset.md).
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T110221-062-owner-dashboard-notes-priority-reset/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T110221-062-owner-dashboard-notes-priority-reset/npm-run-verify-next-server.log
