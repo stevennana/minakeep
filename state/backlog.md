@@ -50,5 +50,5 @@
 - [x] 057-public-showroom-masonry-reset — Public showroom masonry reset
 - [x] 058-public-note-human-reading-polish — Public note human reading polish
 - [x] 059-tag-chip-and-public-type-fit — Tag chip and public type fit
-- [ ] 060-public-surface-hardening — Public surface hardening ← current
+- [x] 060-public-surface-hardening — Public surface hardening
 

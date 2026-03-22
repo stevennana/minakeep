@@ -5,7 +5,7 @@
   "id": "060-public-surface-hardening",
   "title": "Public surface hardening",
   "order": 60,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "NONE",
   "prompt_docs": [
@@ -30,7 +30,8 @@
     "The docs still describe the old public visual contract after implementation.",
     "Responsive or screenshot regressions remain unresolved in the public wave.",
     "The final public surfaces still read as generic AI-generated layouts."
-  ]
+  ],
+  "completed_at": "2026-03-22T01:40:32.974Z"
 }
 ```
 
@@ -72,3 +73,4 @@ Promote only when the new public visual language is protected by regression cove
 - 2026-03-22 10:35 KST: Audited the shipped public homepage and public note implementation against the task docs and existing Playwright coverage. Confirmed the redesign itself was already present, found repo-truth drift in the documented desktop masonry range, and found the task-gated `@ui-public-taste-regression` command was not yet wired to the relevant tests.
 - 2026-03-22 10:35 KST: Aligned the public-surface docs with the shipped masonry behavior (`3` to `4` desktop columns, `2` on tablet, `1` on narrow mobile), documented the task-specific regression tag in the UI verification contract, and tagged the existing public chrome, homepage shell, showroom, first-screen density, and public note Playwright cases so one deterministic command now replays the intended public-surface protection set.
 - 2026-03-22 10:37 KST: Validation passed locally. `npm run test:e2e -- --grep @ui-public-taste-regression` ran the task-scoped public chrome, homepage, and public note suite successfully, and `npm run verify` completed successfully afterward.
+- 2026-03-22T01:40:32.974Z: automatically promoted after deterministic checks and evaluator approval.

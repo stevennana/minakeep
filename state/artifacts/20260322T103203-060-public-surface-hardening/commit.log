@@ -1,0 +1,12 @@
+[main 1d6b9d7] ralph: 060-public-surface-hardening 2026-03-22T10:40:32+09:00
+ 28 files changed, 673 insertions(+), 62 deletions(-)
+ rename docs/exec-plans/{active => completed}/059-tag-chip-and-public-type-fit.md (94%)
+ create mode 100644 state/artifacts/20260322T101335-059-tag-chip-and-public-type-fit/backlog.log
+ create mode 100644 state/artifacts/20260322T101335-059-tag-chip-and-public-type-fit/promote.log
+ create mode 100644 state/artifacts/20260322T103203-060-public-surface-hardening/commit.log
+ create mode 100644 state/artifacts/20260322T103203-060-public-surface-hardening/evaluator.log
+ create mode 100644 state/artifacts/20260322T103203-060-public-surface-hardening/npm-run-test-e2e-grep-ui-public-taste-regression-next-server.log
+ create mode 100644 state/artifacts/20260322T103203-060-public-surface-hardening/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260322T103203-060-public-surface-hardening/task-prompt.log
+ create mode 100644 state/artifacts/20260322T103203-060-public-surface-hardening/worker.jsonl
+commit: created
