@@ -16,7 +16,7 @@ This directory contains durable design decisions that are deeper than the top-le
 | `public-surface-taste-rules.md` | confirmed | content-first public-surface design directives derived from the Taste skill and masonry references |
 | `progressive-disclosure-rules.md` | confirmed | remove redundant helper copy and reserve visible guidance for real need |
 | `workspace-auth-roles.md` | confirmed | owner vs demo-user permissions and route behavior |
-| `external-note-api-boundary.md` | proposed | static-key remote note-create boundary and server-owned note lifecycle rules |
+| `external-note-api-boundary.md` | confirmed | static-key remote note-create boundary and server-owned note lifecycle rules |
 | `homepage-showroom-rhythm.md` | confirmed | public homepage composition, dynamic grid behavior, and preview-card rhythm |
 | `media-storage-and-serving.md` | confirmed | mounted media storage, publish-gated image serving, and derived card-image rules |
 | `container-runtime-packaging.md` | confirmed | Docker image, Compose, mounted volumes, and env-driven operator packaging |

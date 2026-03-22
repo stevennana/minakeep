@@ -63,3 +63,4 @@
 - 2026-03-22T05:51:53.515Z: promoted 075-demo-write-protection -> 076-demo-docker-and-hardening
 - 2026-03-22T06:01:00.082Z: promoted 076-demo-docker-and-hardening -> NONE
 - 2026-03-22T08:43:16.033Z: promoted 077-external-note-api-auth-foundation -> 078-external-note-api-create-and-publish
+- 2026-03-22T09:10:01.221Z: promoted 078-external-note-api-create-and-publish -> 079-external-note-api-hardening

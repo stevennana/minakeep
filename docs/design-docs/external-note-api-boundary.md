@@ -17,7 +17,8 @@ Define the narrow server-side boundary for remote note creation without introduc
   - `400` when the JSON body is missing or malformed, or required fields are invalid
   - `201` when the note is created successfully
 - the request body accepts only owner-authored fields: `title`, `markdown`, and optional `isPublished`
-- the success payload includes the created note identity plus owner and public route URLs
+- `isPublished` is opt-in; omitted or `false` keeps the created note private, while `true` publishes through the existing note flow
+- the success payload includes the created note identity plus owner and public route URLs, with `publicUrl = null` for private notes
 
 ## Content ownership rules
 - the external caller provides only owner-authored note fields such as title and markdown

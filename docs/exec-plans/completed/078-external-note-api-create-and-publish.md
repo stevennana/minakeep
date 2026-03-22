@@ -5,7 +5,7 @@
   "id": "078-external-note-api-create-and-publish",
   "title": "External note API create and publish",
   "order": 78,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "standard",
   "next_task_on_success": "079-external-note-api-hardening",
   "prompt_docs": [
@@ -29,7 +29,8 @@
     "API-created notes bypass or fork the existing note slug, publish, or enrichment behavior.",
     "Publish-on-create defaults to public instead of staying opt-in.",
     "The response contract is too thin for callers to use the created note without a second lookup."
-  ]
+  ],
+  "completed_at": "2026-03-22T09:10:01.221Z"
 }
 ```
 
@@ -76,3 +77,4 @@ Promote only when the external note-create path behaves like the existing owner 
 - 2026-03-22T08:51:23Z: Replaced the authorized `501` stub with keyed note creation that validates `title` and `markdown`, supports optional `isPublished`, reuses the shared note create/enrichment/revalidation runtime, returns note identity plus owner/public URLs, and adds focused `@note-api` E2E coverage.
 - 2026-03-22T08:56:37Z: Required checks passed locally: `npm run test:e2e -- --grep @note-api` and `npm run verify`. The note-api E2E slice now deletes its created notes so repeated targeted runs do not pollute the shared SQLite state before the full suite.
 - 2026-03-22T09:03:52Z: Tightened the external note-create request validator to reject unsupported top-level fields before persistence, added a matching route unit test, and extended `@note-api` coverage to prove out-of-scope fields like `slug` return `400` and do not create notes.
+- 2026-03-22T09:10:01.221Z: automatically promoted after deterministic checks and evaluator approval.

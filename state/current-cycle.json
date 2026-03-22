@@ -1,8 +1,8 @@
 {
-  "task_id": "078-external-note-api-create-and-publish",
-  "started_at": "2026-03-22T18:02:22+09:00",
-  "artifact_dir": "state/artifacts/20260322T180222-078-external-note-api-create-and-publish",
+  "task_id": "079-external-note-api-hardening",
+  "started_at": "2026-03-22T18:10:31+09:00",
+  "artifact_dir": "state/artifacts/20260322T181031-079-external-note-api-hardening",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-03-22T09:10:01.048Z"
+  "updated_at": "2026-03-22T09:20:41.140Z"
 }

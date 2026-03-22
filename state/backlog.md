@@ -65,6 +65,6 @@
 - [x] 075-demo-write-protection — Demo write protection
 - [x] 076-demo-docker-and-hardening — Demo Docker and hardening
 - [x] 077-external-note-api-auth-foundation — External note API auth foundation
-- [ ] 078-external-note-api-create-and-publish — External note API create and publish ← current
-- [ ] 079-external-note-api-hardening — External note API hardening
+- [x] 078-external-note-api-create-and-publish — External note API create and publish
+- [ ] 079-external-note-api-hardening — External note API hardening ← current
 

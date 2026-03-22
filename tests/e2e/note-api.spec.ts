@@ -202,6 +202,73 @@ This note should be publicly reachable immediately after the keyed create reques
   }
 });
 
+test("@note-api rejects note-create requests without X-API-Key and does not persist a note", async ({ request }) => {
+  const uniqueId = `${Date.now()}`;
+  const title = `API missing key note ${uniqueId}`;
+  const markdown = `# Missing key ${uniqueId}
+
+This request should fail closed before note persistence.`;
+
+  const response = await request.post("/api/open/notes", {
+    data: {
+      markdown,
+      title
+    }
+  });
+
+  expect(response.status()).toBe(401);
+  await expect(response.json()).resolves.toEqual({
+    error: "Unauthorized."
+  });
+
+  const persistedNote = await prisma.note.findFirst({
+    where: {
+      title
+    },
+    select: {
+      id: true
+    }
+  });
+
+  expect(persistedNote).toBeNull();
+});
+
+test("@note-api rejects note-create requests with an invalid X-API-Key and does not persist a note", async ({
+  request
+}) => {
+  const uniqueId = `${Date.now()}`;
+  const title = `API invalid key note ${uniqueId}`;
+  const markdown = `# Invalid key ${uniqueId}
+
+This request should fail closed before note persistence.`;
+
+  const response = await request.post("/api/open/notes", {
+    data: {
+      markdown,
+      title
+    },
+    headers: {
+      [EXTERNAL_NOTE_API_KEY_HEADER]: `${apiKey}-wrong`
+    }
+  });
+
+  expect(response.status()).toBe(401);
+  await expect(response.json()).resolves.toEqual({
+    error: "Unauthorized."
+  });
+
+  const persistedNote = await prisma.note.findFirst({
+    where: {
+      title
+    },
+    select: {
+      id: true
+    }
+  });
+
+  expect(persistedNote).toBeNull();
+});
+
 test("@note-api rejects keyed note-create requests with unsupported top-level fields", async ({ request }) => {
   const uniqueId = `${Date.now()}`;
   const title = `API invalid shape note ${uniqueId}`;
