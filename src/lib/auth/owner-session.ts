@@ -3,6 +3,7 @@ import "server-only";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
+import { prisma } from "@/lib/prisma";
 
 export async function getOwnerSession() {
   const session = await auth();
@@ -11,9 +12,23 @@ export async function getOwnerSession() {
     return null;
   }
 
+  const owner = await prisma.user.findUnique({
+    where: {
+      id: session.user.id
+    },
+    select: {
+      id: true,
+      username: true
+    }
+  });
+
+  if (!owner) {
+    return null;
+  }
+
   return {
-    id: session.user.id,
-    name: session.user.name ?? "owner"
+    id: owner.id,
+    name: owner.username
   };
 }
 

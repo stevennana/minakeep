@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 
-import { auth } from "@/auth";
 import { uploadNoteImage } from "@/features/media/service";
+import { getOwnerSession } from "@/lib/auth/owner-session";
 
 export async function POST(request: Request) {
-  const session = await auth();
+  const session = await getOwnerSession();
 
-  if (!session?.user?.id) {
+  if (!session?.id) {
     return NextResponse.json(
       {
         error: "Sign in to upload note images."
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
     const uploadedImage = await uploadNoteImage({
       file,
       noteId,
-      ownerId: session.user.id
+      ownerId: session.id
     });
 
     return NextResponse.json(uploadedImage, {
