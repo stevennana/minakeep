@@ -1,50 +1,51 @@
 Read the following repository documents before making changes:
 - AGENTS.md
 - docs/FRONTEND.md
-- docs/product-specs/public-note-reading.md
 - docs/product-specs/public-surface-human-design-reset.md
-- docs/design-docs/public-surface-taste-rules.md
+- docs/product-specs/ui-hierarchy-softening.md
 - docs/design-docs/cool-monochrome-visual-system.md
-- docs/exec-plans/active/058-public-note-human-reading-polish.md
+- docs/design-docs/public-surface-taste-rules.md
+- docs/exec-plans/active/059-tag-chip-and-public-type-fit.md
 
-Current task id: 058-public-note-human-reading-polish
-Current task title: Public note human reading polish
+Current task id: 059-tag-chip-and-public-type-fit
+Current task title: Tag chip and public type fit
 
 Objective:
-Refine the public note page into a calmer, more bespoke reading surface that matches the upgraded showroom.
+Fix the public-facing tag-chip sizing and finish the calmer type hierarchy across the published surfaces.
 
 Scope:
-- public note title and metadata hierarchy
-- reading measure and note body presentation
-- public note image and summary placement polish
+- tag-chip fit and wrap rules
+- public-facing `h1`, `h2`, `strong`, and metadata refinement
+- shared public card typography cleanup
 
 Out of scope:
-- homepage masonry implementation
-- owner note editor or owner dashboard changes
-- new public note features
+- masonry layout behavior
+- owner-surface typography redesign
+- search behavior changes
 
 Exit criteria:
-1. Public note pages feel more human-made and reading-first than the current shipped surface.
-2. Headings, metadata, and AI summary no longer compete with the authored note body.
-3. Mobile reading remains comfortable.
-4. `npm run test:e2e -- --grep @ui-public-note-taste` passes.
+1. Public tag chips fit their content without overflow or awkward clipping.
+2. Public typography feels calmer and more refined than the current shipped state.
+3. The fixes live in shared styling primitives where practical.
+4. `npm run test:e2e -- --grep @ui-public-tag-fit` passes.
 5. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-public-note-taste`
+- `npm run test:e2e -- --grep @ui-public-tag-fit`
 
 Evaluator notes:
-Promote only when the public note page feels calmer and more intentional without becoming visually dull.
+Promote only when the small typography and chip details feel genuinely polished rather than superficially adjusted.
 
 Required repository artifacts for this task:
-- src/app/notes/[slug]
 - src/app/globals.css
+- src/components/ui
+- src/features/public-content/components/public-showroom.tsx
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-public-note-taste
+- npm run test:e2e -- --grep @ui-public-tag-fit
 
 Previous known gaps from the last evaluation:
 - none

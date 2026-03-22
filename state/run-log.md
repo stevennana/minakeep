@@ -927,3 +927,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T100409-058-public-note-human-reading-polish/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T100409-058-public-note-human-reading-polish/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 058-public-note-human-reading-polish -> 059-tag-chip-and-public-type-fit
+- backlog: rendered current=059-tag-chip-and-public-type-fit
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooo
+- cycle: finished
+
+### cycle 2026-03-22T10:13:35+09:00 task=059-tag-chip-and-public-type-fit
+- artifacts: state/artifacts/20260322T101335-059-tag-chip-and-public-type-fit
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260322T101335-059-tag-chip-and-public-type-fit/worker.jsonl
+- worker-summary: Implemented the 059 slice in the shared public primitives and public surface CSS. In [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css) I tightened tag-chip fit behavior so labels wrap safely inside the chip, then softened the public-only hierarchy for showroom cards, section headings, metadata, and published note `h1`/`h2`/`strong` treatment. In [primitives.tsx](/Users/stevenna/WebstormProjects/minakeep/src/components/ui/primitives.tsx) and [public-showroom.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/public-content/components/public-showroom.tsx) I added the small hooks needed to keep the chip fix shared while keeping the visual restyle scoped to public surfaces.
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T101335-059-tag-chip-and-public-type-fit/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T101335-059-tag-chip-and-public-type-fit/npm-run-verify-next-server.log

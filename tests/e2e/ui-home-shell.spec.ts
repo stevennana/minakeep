@@ -220,7 +220,7 @@ async function expectHomepageTypography(page: Page, viewport: "desktop" | "mobil
     return;
   }
 
-  expect(styles.headingSize).toBeGreaterThan(styles.eyebrowSize + 7);
+  expect(styles.headingSize).toBeGreaterThan(styles.eyebrowSize + (viewport === "desktop" ? 7 : 6));
   expect(styles.headingSize).toBeLessThan(viewport === "desktop" ? 30 : 28);
   expect(styles.archiveCountSize).toBeLessThan(styles.headingSize);
   expect(styles.archiveCountColor).toBe("rgb(51, 65, 85)");

@@ -97,7 +97,7 @@ export function TagChip({ children, className, muted = false, ...props }: TagChi
       data-ui-tag-muted={muted ? "true" : "false"}
       {...props}
     >
-      {children}
+      <span className="tag-pill-label">{children}</span>
     </span>
   );
 }

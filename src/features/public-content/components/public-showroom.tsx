@@ -133,17 +133,19 @@ function PublishedContentPreviewCard({ item }: { item: PublicShowroomItem }) {
           )}
         </div>
       </div>
-      <MetadataRow className="note-preview-card-meta">
+      <MetadataRow className="note-preview-card-meta public-card-meta">
         <span>{isNote ? "Published note" : "Published link"}</span>
         {!isNote ? <span>Opens in new tab</span> : null}
         <span>{item.publishedAtLabel}</span>
       </MetadataRow>
       <TagList aria-label={isNote ? "Published note tags" : "Published link tags"} className="note-preview-card-tags">
         {item.tags.length === 0 ? (
-          <TagChip muted>No generated tags</TagChip>
+          <TagChip className="public-card-tag" muted>
+            No generated tags
+          </TagChip>
         ) : (
           item.tags.map((tag) => (
-            <TagChip key={tag.id}>
+            <TagChip className="public-card-tag" key={tag.id} title={tag.name}>
               {tag.name}
             </TagChip>
           ))
@@ -238,7 +240,7 @@ export function PublicShowroom({
               {isSearchExpanded ? (
                 <>
                   <div className="public-search-header">
-                    <SectionHeading meta="Title-only live filter" title="Search public titles" />
+                    <SectionHeading className="public-search-section-heading" meta="Title-only live filter" title="Search public titles" />
                     <Button
                       aria-controls={searchPanelId}
                       aria-expanded={isSearchExpanded}

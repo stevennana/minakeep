@@ -213,10 +213,10 @@ async function expectSoftenedPublicType(page: Page, viewport: "desktop" | "mobil
     return;
   }
 
-  expect(styles.headingSize).toBeGreaterThan(styles.bodySize + (viewport === "desktop" ? 12 : 8));
+  expect(styles.headingSize).toBeGreaterThan(styles.bodySize + (viewport === "desktop" ? 10 : 6.5));
   expect(styles.headingSize).toBeLessThan(viewport === "desktop" ? 35 : 32);
   expect(styles.supportStrongSize).toBeLessThan(styles.bodySize);
-  expect(styles.supportStrongColor).toBe("rgb(51, 65, 85)");
+  expect(styles.supportStrongColor).toBe("rgb(100, 116, 139)");
 }
 
 async function expectPublicTagChipFit(page: Page) {

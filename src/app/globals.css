@@ -790,10 +790,10 @@ textarea {
   border: 1px solid rgba(148, 163, 184, 0.14);
   border-radius: 1.1rem;
   display: inline-grid;
-  gap: 0.12rem;
+  gap: 0.1rem;
   justify-self: start;
   min-width: 0;
-  padding: 0.58rem 0.78rem 0.62rem;
+  padding: 0.52rem 0.76rem 0.58rem;
 }
 
 .public-home-count span {
@@ -808,10 +808,10 @@ textarea {
 .public-home-count strong {
   color: var(--ink-soft);
   font-family: var(--font-display);
-  font-size: clamp(0.98rem, 1.6vw, 1.18rem);
-  font-weight: var(--weight-display);
-  letter-spacing: -0.025em;
-  line-height: 1.08;
+  font-size: clamp(0.92rem, 1.45vw, 1.08rem);
+  font-weight: 590;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
 }
 
 .public-intro-panel {
@@ -834,6 +834,29 @@ textarea {
 
 .public-search-panel {
   gap: 0.8rem;
+}
+
+.public-search-section-heading,
+.public-showroom-section-heading {
+  gap: 0.45rem 0.7rem;
+}
+
+.public-search-section-heading strong,
+.public-showroom-section-heading strong {
+  letter-spacing: 0.12em;
+}
+
+.public-search-section-heading strong {
+  color: var(--ink-muted);
+}
+
+.public-showroom-section-heading strong {
+  color: var(--ink-soft);
+}
+
+.public-search-section-heading .section-meta,
+.public-showroom-section-heading .section-meta {
+  letter-spacing: 0.09em;
 }
 
 .public-search-panel-collapsed,
@@ -881,10 +904,11 @@ textarea {
 }
 
 .public-intro-panel h1 {
-  font-size: clamp(1.18rem, 1.75vw, 1.42rem);
-  line-height: 1.08;
+  font-size: clamp(1.12rem, 1.55vw, 1.34rem);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
   margin: 0;
-  max-width: 14ch;
+  max-width: 15ch;
 }
 
 .public-showroom-section-heading {
@@ -959,18 +983,18 @@ textarea {
 
 .public-note-header h1 {
   color: var(--ink);
-  font-size: clamp(1.56rem, 4vw, 1.88rem);
-  line-height: 1.02;
-  letter-spacing: -0.042em;
+  font-size: clamp(1.46rem, 3.35vw, 1.74rem);
+  line-height: 1.06;
+  letter-spacing: -0.034em;
   margin: 0;
-  max-width: 19ch;
+  max-width: 20ch;
 }
 
 .public-note-meta {
   color: var(--ink-faint);
-  font-size: 0.62rem;
-  gap: 0.42rem 0.72rem;
-  letter-spacing: 0.14em;
+  font-size: 0.59rem;
+  gap: 0.38rem 0.62rem;
+  letter-spacing: 0.12em;
 }
 
 .public-note-back-link {
@@ -1028,17 +1052,21 @@ textarea {
   color: var(--ink-soft);
 }
 
-.public-note-body h2 {
-  font-size: clamp(1.28rem, 2.8vw, 1.42rem);
+.public-note-body.markdown-preview h2 {
+  font-size: clamp(1.18rem, 2.3vw, 1.3rem);
+  letter-spacing: -0.022em;
+  line-height: 1.16;
 }
 
-.public-note-body h3 {
-  font-size: clamp(1.08rem, 2.2vw, 1.16rem);
+.public-note-body.markdown-preview h3 {
+  font-size: clamp(1.02rem, 2vw, 1.1rem);
+  letter-spacing: -0.014em;
+  line-height: 1.2;
 }
 
 .public-note-body strong {
-  color: var(--ink);
-  font-weight: var(--weight-strong);
+  color: var(--ink-soft);
+  font-weight: 590;
 }
 
 .public-note-body blockquote {
@@ -1056,27 +1084,29 @@ textarea {
 
 .public-note-support .note-generated-summary {
   color: var(--ink-muted);
-  font-size: 0.93rem;
-  line-height: 1.72;
+  font-size: 0.9rem;
+  line-height: 1.68;
   max-width: 46ch;
 }
 
 .public-note-support strong {
-  margin-bottom: 0.18rem;
+  color: var(--ink-muted);
+  margin-bottom: 0.14rem;
 }
 
 .public-note-tags {
-  gap: 0.42rem;
+  gap: 0.45rem;
 }
 
 .public-note-tag {
   background: rgba(248, 250, 252, 0.86);
   border-color: rgba(148, 163, 184, 0.18);
   color: var(--ink-muted);
-  font-size: 0.66rem;
-  letter-spacing: 0.1em;
-  min-height: 1.9rem;
-  padding: 0.38rem 0.66rem;
+  font-size: 0.69rem;
+  font-weight: 630;
+  letter-spacing: 0.03em;
+  min-height: 1.95rem;
+  padding: 0.4rem 0.72rem;
 }
 
 .note-editor-intro,
@@ -2122,8 +2152,10 @@ textarea {
 }
 
 .note-preview-card .note-list-link {
-  font-size: clamp(1.1rem, 1.75vw, 1.3rem);
-  line-height: 1.05;
+  font-size: clamp(1.02rem, 1.5vw, 1.16rem);
+  font-weight: 620;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
   margin-top: 0;
 }
 
@@ -2134,15 +2166,15 @@ textarea {
 
 .note-preview-card-summary {
   color: var(--ink-soft);
-  font-size: 0.92rem;
-  line-height: 1.58;
+  font-size: 0.88rem;
+  line-height: 1.56;
   max-width: 36ch;
 }
 
 .note-preview-card-excerpt {
   color: var(--ink-muted);
-  font-size: 0.8rem;
-  line-height: 1.52;
+  font-size: 0.77rem;
+  line-height: 1.54;
   max-width: 38ch;
 }
 
@@ -2193,6 +2225,12 @@ textarea {
   text-transform: uppercase;
 }
 
+.public-card-meta,
+.public-note-meta {
+  font-size: 0.6rem;
+  letter-spacing: 0.11em;
+}
+
 .note-meta-leading {
   margin-bottom: 0.2rem;
 }
@@ -2207,11 +2245,13 @@ textarea {
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
+  min-width: 0;
 }
 
 .tag-pill,
 .ui-tag {
   align-items: flex-start;
+  align-self: flex-start;
   background: var(--public-chip-surface);
   border: 1px solid var(--public-chip-line);
   border-radius: var(--radius-pill);
@@ -2222,12 +2262,22 @@ textarea {
   font-weight: 700;
   letter-spacing: 0.1em;
   line-height: 1.3;
-  max-width: 100%;
+  max-inline-size: 100%;
   min-height: 1.8rem;
-  overflow-wrap: anywhere;
+  min-width: 0;
   padding: 0.34rem 0.62rem;
   text-transform: uppercase;
   white-space: normal;
+  width: fit-content;
+}
+
+.tag-pill-label {
+  display: block;
+  max-inline-size: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .tag-pill-muted,
@@ -2235,6 +2285,17 @@ textarea {
   background: rgba(255, 255, 255, 0.78);
   border-color: rgba(148, 163, 184, 0.18);
   color: var(--ink-muted);
+}
+
+.public-card-tag,
+.public-note-tag {
+  align-items: center;
+  font-size: 0.69rem;
+  font-weight: 630;
+  letter-spacing: 0.03em;
+  min-height: 1.95rem;
+  padding: 0.4rem 0.72rem;
+  text-transform: none;
 }
 
 .tag-filter-list {

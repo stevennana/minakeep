@@ -5,7 +5,7 @@
   "id": "059-tag-chip-and-public-type-fit",
   "title": "Tag chip and public type fit",
   "order": 59,
-  "status": "planned",
+  "status": "active",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "060-public-surface-hardening",
   "prompt_docs": [
@@ -70,3 +70,8 @@ Promote only when the small typography and chip details feel genuinely polished 
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-22 10:58 KST: tightened the shared `TagChip` primitive with an inner label wrapper plus fit-content, wrap-safe chip rules so long public tags can wrap without spilling past the chip background.
+- 2026-03-22 10:58 KST: softened public-only typography on the showroom and published note page by reducing card/title intensity, lowering metadata contrast, and refining public section-heading treatment without changing masonry or search behavior.
+- 2026-03-22 10:58 KST: added `tests/e2e/ui-public-tag-fit.spec.ts` to cover long-tag wrapping on the public showroom and note page plus the calmer public type thresholds for cards and note reading surfaces.
+- 2026-03-22 11:41 KST: refreshed the affected public screenshot baselines and aligned the existing public type assertions with the intentionally calmer desktop and mobile heading scale.
+- 2026-03-22 11:41 KST: verified the task contract end to end with `npm run test:e2e -- --grep @ui-public-tag-fit` and `npm run verify`; both passed locally.
