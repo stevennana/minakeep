@@ -963,3 +963,14 @@ No remaining task. Stopping loop.
 - health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooo
 - cycle: finished
 No remaining task. Stopping loop.
+## loop start 2026-03-22T10:54:55+09:00
+
+### cycle 2026-03-22T10:54:55+09:00 task=061-public-search-expanded-row-reset
+- artifacts: state/artifacts/20260322T105455-061-public-search-expanded-row-reset
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260322T105455-061-public-search-expanded-row-reset/worker.jsonl
+- worker-summary: Adjusted the public showroom shell so the desktop archive head only reflows when search is expanded: the expanded search now drops into its own full row beneath the heading/count, while the collapsed desktop layout and mobile behavior stay compact. The implementation is in [public-showroom.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/public-content/components/public-showroom.tsx), with the layout rules in [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css).
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T105455-061-public-search-expanded-row-reset/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T105455-061-public-search-expanded-row-reset/npm-run-verify-next-server.log

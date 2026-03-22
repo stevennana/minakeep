@@ -5,13 +5,11 @@ This queue is the task-level promotion source of truth for minakeep.
 Only task files in this directory that contain a `taskmeta` JSON block are eligible for automatic selection, evaluation, and promotion.
 
 ## Current recommended sequence
-1. `056-public-surface-taste-foundation.md` -> establish the content-first public visual foundation, shared primitives, and calmer typography rules
-2. `057-public-showroom-masonry-reset.md` -> rebuild the public showroom around a masonry-style archive with quieter chrome
-3. `058-public-note-human-reading-polish.md` -> refine the public note page hierarchy, rhythm, and bespoke reading presentation
-4. `059-tag-chip-and-public-type-fit.md` -> fix tag-chip sizing and tone down public heading/strong emphasis across the public surfaces
-5. `060-public-surface-hardening.md` -> reconcile docs, responsive behavior, screenshots, and regression coverage for the new public wave
+1. `061-public-search-expanded-row-reset.md` -> move expanded public search into its own clean row under the archive header and protect first-screen readability
+2. `062-owner-dashboard-notes-priority-reset.md` -> remove the competing owner-tools block and reclaim desktop space for Notes
+3. `063-ui-refinement-hardening.md` -> reconcile docs, screenshots, and responsive regressions after the dashboard/search refinements land
 
-Tasks `045` through `055` are preserved in completed history as the completed markdown-editor, media, and container tranches.
+Tasks `056` through `060` are preserved in completed history as the completed public-surface taste tranche. Tasks `045` through `055` remain preserved as the earlier markdown-editor, media, and container tranches.
 
 ## Operating rule
 

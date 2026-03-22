@@ -273,14 +273,24 @@ async function expectShowroomColumns(page: Page, viewport: "desktop" | "mobile")
 }
 
 async function expectSearchLayout(page: Page, viewport: "desktop" | "mobile") {
+  const archiveHead = page.getByTestId("public-home-archive-head");
+  const shellHead = page.getByTestId("public-home-shell-head");
+  const searchShell = page.getByTestId("public-home-search-shell");
   const field = page.locator(".public-search-field");
   const summary = page.locator("[data-testid='public-home-search-summary']");
+  const archiveHeadBox = await getBox(archiveHead);
+  const shellHeadBox = await getBox(shellHead);
+  const searchShellBox = await getBox(searchShell);
   const fieldBox = await getBox(field);
   const summaryBox = await getBox(summary);
 
   if (viewport === "desktop") {
+    expect(searchShellBox.y).toBeGreaterThan(shellHeadBox.y + shellHeadBox.height - 8);
+    expect(Math.abs(searchShellBox.x - archiveHeadBox.x)).toBeLessThanOrEqual(2);
+    expect(searchShellBox.width).toBeGreaterThanOrEqual(archiveHeadBox.width - 4);
     expect(summaryBox.x).toBeGreaterThan(fieldBox.x + fieldBox.width - 24);
   } else {
+    expect(searchShellBox.y).toBeGreaterThan(shellHeadBox.y + shellHeadBox.height - 8);
     expect(summaryBox.y).toBeGreaterThan(fieldBox.y + fieldBox.height - 8);
     expect(Math.abs(summaryBox.x - fieldBox.x)).toBeLessThanOrEqual(2);
   }
@@ -347,7 +357,7 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-regression @ui-public-showroom @ui-public-showroom-masonry @ui-public-search-collapse @ui-public-taste-foundation @ui-public-taste-regression mixed public showroom keeps search collapsed by default on desktop", async ({ page }) => {
+test("@ui-regression @ui-public-showroom @ui-public-showroom-masonry @ui-public-search-collapse @ui-public-search-row @ui-public-taste-foundation @ui-public-taste-regression mixed public showroom keeps search collapsed by default on desktop", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await page.goto("/");
 

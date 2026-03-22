@@ -8,6 +8,7 @@ Make the owner area feel compact and professional on desktop while staying clear
 - reduce oversized spacing and heading scale across dashboard, editor, links, tags, and search
 - keep more real content above the fold
 - secondary panels should support the main workflow rather than compete with it
+- if a dashboard tools/promotional block steals space from Notes on desktop, remove it or demote it below the main notes surface
 
 ## Surface Rules
 - dashboard lists should feel denser than the public homepage

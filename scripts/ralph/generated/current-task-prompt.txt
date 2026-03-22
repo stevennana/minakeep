@@ -1,50 +1,49 @@
 Read the following repository documents before making changes:
 - AGENTS.md
 - docs/FRONTEND.md
-- docs/product-specs/public-surface-human-design-reset.md
-- docs/product-specs/public-home-showroom.md
-- docs/product-specs/public-note-reading.md
+- docs/product-specs/public-showroom-search.md
+- docs/design-docs/public-home-first-screen-density.md
 - docs/design-docs/public-surface-taste-rules.md
-- docs/references/ui-verification-contract.md
-- docs/exec-plans/active/060-public-surface-hardening.md
+- docs/exec-plans/active/061-public-search-expanded-row-reset.md
 
-Current task id: 060-public-surface-hardening
-Current task title: Public surface hardening
+Current task id: 061-public-search-expanded-row-reset
+Current task title: Public search expanded row reset
 
 Objective:
-Reconcile docs, screenshots, responsive behavior, and regression coverage after the public-surface redesign lands.
+Fix the expanded public-search layout so it occupies a clear row beneath the archive heading instead of breaking as a right-side tile.
 
 Scope:
-- doc alignment
-- public-surface screenshot and responsive hardening
-- regression-proofing for homepage and public note surfaces
+- expanded public-search placement and shell layout
+- archive head and search-row spacing relationship
+- responsive behavior for the expanded search state
 
 Out of scope:
-- new public features beyond the approved redesign
-- owner-surface redesign follow-ups
+- title-search behavior changes
+- masonry card redesign
+- owner dashboard layout
 
 Exit criteria:
-1. Docs match the shipped public-surface design rules accurately.
-2. Public homepage and public note regressions are covered deterministically.
-3. The redesigned public surfaces remain stable on desktop and mobile.
-4. `npm run test:e2e -- --grep @ui-public-taste-regression` passes.
+1. Expanded public search sits on its own readable row beneath the archive heading on desktop.
+2. The first screen remains content-first and visually stable.
+3. Collapsed search and mobile states remain clean.
+4. `npm run test:e2e -- --grep @ui-public-search-row` passes.
 5. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-public-taste-regression`
+- `npm run test:e2e -- --grep @ui-public-search-row`
 
 Evaluator notes:
-Promote only when the new public visual language is protected by regression coverage and documented as the repo truth.
+Promote only when the expanded search state looks deliberately placed instead of squeezed into the archive header.
 
 Required repository artifacts for this task:
-- docs
-- src
+- src/features/public-content/components/public-showroom.tsx
+- src/app/globals.css
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-public-taste-regression
+- npm run test:e2e -- --grep @ui-public-search-row
 
 Previous known gaps from the last evaluation:
 - none

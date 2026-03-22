@@ -36,7 +36,7 @@ Appear in the public showroom alongside note cards, with a cached favicon head i
 Simple credentials screen with reduced visual bulk and cleaner desktop/mobile balance.
 
 ### Private dashboard
-Compact professional workspace with slimmer navigation, tighter lists, and more visible note content above the fold on desktop.
+Compact professional workspace with slimmer navigation, tighter lists, and more visible note content above the fold on desktop. Secondary route-promoting blocks should not steal prime desktop width from the Notes section.
 
 ### Note editor and owner forms
 Smaller typographic hierarchy, reduced padding, and reusable form/layout primitives without changing existing logic flows. The note editor should evolve into a source-first markdown workbench with syntax-aware editing, a compact formatting toolbar, `Source / Split / Preview` modes on desktop, a cleaner `Edit / Preview` toggle on mobile, and an upload path that inserts note images into markdown automatically.
@@ -50,6 +50,7 @@ Secondary owner surfaces should inherit the same density and responsive behavior
 - the public homepage no longer needs a separate “Owner entrance” or “Private origin” section
 - use one unified title-only public search bar without a type selector
 - keep the public search control compact or collapsed on first load so the showroom remains visible in the first screen
+- when expanded, the public search panel should sit on its own row beneath the archive header rather than as a competing right-side tile beside the archive count
 - do not spend first-screen space on multi-paragraph explanatory copy above the public showroom
 - prefer a masonry-style desktop archive with 3 to 4 columns depending on width, then fall back aggressively to 2 columns on tablet and 1 column on narrow mobile
 - if masonry behavior is implemented with CSS multi-columns, child cards must use `break-inside: avoid` and mobile must collapse back to a strict ordered stack
@@ -61,6 +62,7 @@ Secondary owner surfaces should inherit the same density and responsive behavior
 - tags must size to content cleanly, allow long names to wrap or clamp safely, and never let text spill outside the chip background
 - prefer premium sans typography for public surfaces over generic system-feel headings; the public site should feel bespoke without drifting into ornamental serif theatrics
 - keep the owner workspace compact and professional on desktop
+- on the owner dashboard, prioritize the Notes section over route-promotion tiles or owner-tool explainer panels
 - build reusable design primitives and CSS tokens so style changes do not require route-level logic edits
 - make mobile layouts easy to scan and operate with one hand
 - keep note authoring markdown-native; richer editor controls should still save one markdown string, not a separate rich-text document model

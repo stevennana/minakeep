@@ -223,8 +223,12 @@ export function PublicShowroom({
   return (
     <div className="public-home-grid">
       <Surface className="note-collection-panel public-home-archive" tone="panel">
-        <div className="public-home-archive-head">
-          <div className="public-home-shell-head public-hero public-intro-panel">
+        <div
+          className="public-home-archive-head"
+          data-search-expanded={isSearchExpanded ? "true" : "false"}
+          data-testid="public-home-archive-head"
+        >
+          <div className="public-home-shell-head public-hero public-intro-panel" data-testid="public-home-shell-head">
             <div className="public-home-shell-copy">
               <p className="eyebrow">Public showroom</p>
               <h1>{showroomHeading}</h1>
@@ -235,7 +239,7 @@ export function PublicShowroom({
             </div>
           </div>
 
-          <div className="public-search-shell" role="search">
+          <div className="public-search-shell" data-testid="public-home-search-shell" role="search">
             <div className={`search-form public-search-panel ${isSearchExpanded ? "public-search-panel-expanded" : "public-search-panel-collapsed"}`}>
               {isSearchExpanded ? (
                 <>

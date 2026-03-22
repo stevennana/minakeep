@@ -8,6 +8,7 @@ Keep the public homepage centered on published content by default, with optional
 - search starts as a compact collapsed affordance rather than a fully expanded field block
 - the collapsed search row should carry both the trigger and a short scope summary without becoming a second hero strip
 - expanding search should still leave the first row of showroom cards visibly present in the opening viewport
+- when expanded, search should claim one clean full-width row beneath the archive header instead of becoming a narrow tile beside the archive count
 - supporting copy above the grid should be omitted unless it adds real utility; decorative explanation is not enough
 - archive framing above the grid should stay limited to a compact label/title/count treatment rather than a large intro block
 

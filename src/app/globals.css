@@ -761,6 +761,7 @@ textarea {
 }
 
 .public-home-archive-head {
+  align-items: start;
   gap: 0.95rem;
   padding-bottom: 0.95rem;
   position: relative;
@@ -822,10 +823,13 @@ textarea {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(247, 250, 252, 0.86)),
     rgba(248, 250, 252, 0.76);
+  justify-self: stretch;
   border: 1px solid rgba(148, 163, 184, 0.16);
   border-radius: calc(var(--public-card-radius) - 0.05rem);
   box-shadow: none;
+  min-width: 0;
   padding: 0.8rem 0.85rem 0.85rem;
+  width: 100%;
 }
 
 .public-search-shell::before {
@@ -2591,8 +2595,14 @@ textarea {
     grid-template-columns: minmax(0, 1fr) minmax(18.5rem, 23rem);
   }
 
+  .public-home-archive-head[data-search-expanded="true"] {
+    gap: 0.95rem;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .public-home-shell-head {
     align-items: start;
+    gap: 0.75rem 1rem;
     grid-template-columns: minmax(0, 1fr) auto;
   }
 
