@@ -1304,3 +1304,18 @@ Worker stalled. Stopping loop for RCA.
 - evaluator: started
 - evaluator: status=not_done promotion=false The core create/publish path is implemented correctly and both required command gates passed, but the shipped API boundary is still looser than the documented contract. `POST /api/open/notes` validates types for `title`, `markdown`, and `isPublished`, yet it does not reject extra unsupported fields. The design doc says the body accepts only those fields and that non-conforming JSON is rejected before persistence. As shipped, callers can send out-of-scope fields such as `slug`, `tags`, or `summary` and still get `201`, with those fields silently ignored. That is a substantive contract mismatch for this boundary, so I would hold promotion. -> state/artifacts/20260322T174346-078-external-note-api-create-and-publish/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T174346-078-external-note-api-create-and-publish/npm-run-test-e2e-grep-note-api-next-server.log
+- commit: commit: created
+- promote: Task 078-external-note-api-create-and-publish not eligible for promotion.
+- backlog: rendered current=078-external-note-api-create-and-publish
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xox
+- cycle: finished
+
+### cycle 2026-03-22T18:02:22+09:00 task=078-external-note-api-create-and-publish
+- artifacts: state/artifacts/20260322T180222-078-external-note-api-create-and-publish
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260322T180222-078-external-note-api-create-and-publish/worker.jsonl
+- worker-summary: Tightened external note API validation in [route.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/api/open/notes/route.ts#L14) so `POST /api/open/notes` now rejects unsupported top-level fields before persistence, while keeping the existing owner note create/publish/enrichment flow untouched. Added matching boundary coverage in [external-note-api-auth.test.ts](/Users/stevenna/WebstormProjects/minakeep/tests/unit/external-note-api-auth.test.ts#L145) and [note-api.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/note-api.spec.ts#L205), and appended the task progress log in [078-external-note-api-create-and-publish.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/078-external-note-api-create-and-publish.md#L72).
+- evaluator: started
+- evaluator: status=done promotion=true The task is complete in substance. `POST /api/open/notes` accepts only `title`, `markdown`, and optional `isPublished`, authenticates with the static API key, resolves the configured single owner, and creates notes through `createOwnerNote`, which is the same shared note create/publish/enrichment/revalidation runtime used by the owner flow. The response returns note identity plus owner/public URLs, unpublished requests stay private by default, publish-on-create is opt-in, and the focused `@note-api` and full `verify` gates are both evidenced as passing. -> state/artifacts/20260322T180222-078-external-note-api-create-and-publish/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T180222-078-external-note-api-create-and-publish/npm-run-test-e2e-grep-note-api-next-server.log

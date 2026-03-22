@@ -141,3 +141,27 @@ test("POST /api/open/notes validates required note fields before persistence", a
     });
   });
 });
+
+test("POST /api/open/notes rejects unsupported top-level request fields", async () => {
+  await withApiKeyEnv("test-api-key", async () => {
+    const response = await POST(
+      new Request("http://localhost/api/open/notes", {
+        method: "POST",
+        headers: {
+          [EXTERNAL_NOTE_API_KEY_HEADER]: "test-api-key",
+          "content-type": "application/json"
+        },
+        body: JSON.stringify({
+          markdown: "# Valid markdown",
+          slug: "caller-controlled-slug",
+          title: "Valid title"
+        })
+      })
+    );
+
+    assert.equal(response.status, 400);
+    assert.deepEqual(await response.json(), {
+      error: "Unsupported field(s): slug."
+    });
+  });
+});

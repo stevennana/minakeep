@@ -11,12 +11,23 @@ type ExternalNoteCreatePayload = {
   isPublished?: boolean;
 };
 
+const EXTERNAL_NOTE_CREATE_ALLOWED_FIELDS = new Set<keyof ExternalNoteCreatePayload>(["title", "markdown", "isPublished"]);
+
 function getExternalNoteCreateValidationError(payload: unknown) {
   if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
     return "Request body must be a JSON object.";
   }
 
-  const { title, markdown, isPublished } = payload as Record<string, unknown>;
+  const record = payload as Record<string, unknown>;
+  const unsupportedFields = Object.keys(record).filter(
+    (field) => !EXTERNAL_NOTE_CREATE_ALLOWED_FIELDS.has(field as keyof ExternalNoteCreatePayload)
+  );
+
+  if (unsupportedFields.length > 0) {
+    return `Unsupported field(s): ${unsupportedFields.join(", ")}.`;
+  }
+
+  const { title, markdown, isPublished } = record;
 
   if (typeof title !== "string") {
     return "`title` must be a string.";

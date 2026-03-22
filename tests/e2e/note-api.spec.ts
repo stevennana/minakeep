@@ -201,3 +201,38 @@ This note should be publicly reachable immediately after the keyed create reques
     }
   }
 });
+
+test("@note-api rejects keyed note-create requests with unsupported top-level fields", async ({ request }) => {
+  const uniqueId = `${Date.now()}`;
+  const title = `API invalid shape note ${uniqueId}`;
+  const markdown = `# Invalid shape ${uniqueId}
+
+This request should be rejected before note persistence.`;
+
+  const response = await request.post("/api/open/notes", {
+    data: {
+      markdown,
+      slug: `caller-slug-${uniqueId}`,
+      title
+    },
+    headers: {
+      [EXTERNAL_NOTE_API_KEY_HEADER]: apiKey
+    }
+  });
+
+  expect(response.status()).toBe(400);
+  await expect(response.json()).resolves.toEqual({
+    error: "Unsupported field(s): slug."
+  });
+
+  const persistedNote = await prisma.note.findFirst({
+    where: {
+      title
+    },
+    select: {
+      id: true
+    }
+  });
+
+  expect(persistedNote).toBeNull();
+});

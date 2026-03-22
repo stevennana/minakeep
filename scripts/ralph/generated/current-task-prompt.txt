@@ -50,7 +50,8 @@ Required commands for this task:
 - npm run verify
 
 Previous known gaps from the last evaluation:
-- none
+- Make the request-shape validation strict enough to reject non-conforming JSON with unsupported top-level fields, so the route truly accepts only `title`, `markdown`, and optional `isPublished` as documented.
+- Align the automated coverage with that boundary by adding a focused test that an otherwise valid keyed request containing out-of-scope fields is rejected rather than silently persisted.
 
 
 
