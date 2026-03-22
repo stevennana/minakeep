@@ -1066,3 +1066,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T121617-070-owner-links-layout-reset/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T121617-070-owner-links-layout-reset/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 070-owner-links-layout-reset -> 071-owner-session-continuity
+- backlog: rendered current=071-owner-session-continuity
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xoooooooooooooo
+- cycle: finished
+
+### cycle 2026-03-22T12:24:14+09:00 task=071-owner-session-continuity
+- artifacts: state/artifacts/20260322T122414-071-owner-session-continuity
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260322T122414-071-owner-session-continuity/worker.jsonl
+- worker-summary: Session continuity is now handled in the shared topbar. [layout.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/layout.tsx#L13) reads the owner session on the server and swaps `Owner login` for `Owner workspace` linking back to `/app` when the owner is authenticated. [owner-session.ts](/Users/stevenna/WebstormProjects/minakeep/src/lib/auth/owner-session.ts#L7) now exposes a non-redirecting session reader so shared layouts can reflect auth state without forcing a login flow.
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T122414-071-owner-session-continuity/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T122414-071-owner-session-continuity/npm-run-verify-next-server.log

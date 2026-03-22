@@ -5,7 +5,7 @@
   "id": "071-owner-session-continuity",
   "title": "Owner session continuity",
   "order": 71,
-  "status": "planned",
+  "status": "active",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "072-ui-refinement-hardening",
   "prompt_docs": [
@@ -67,3 +67,5 @@ Promote only when session continuity improves owner experience without weakening
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-22 12:34 KST: Confirmed the continuity gap is in the shared topbar. Public routes always rendered `Owner login`, even with a valid owner session, which made the owner appear logged out.
+- 2026-03-22 12:34 KST: Added a non-redirecting owner-session helper for shared layouts, switched the topbar affordance to `Owner workspace` when authenticated, and added focused Playwright regression coverage for anonymous and authenticated public-route behavior under `@owner-session`.

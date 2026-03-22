@@ -1,49 +1,48 @@
 Read the following repository documents before making changes:
 - AGENTS.md
 - docs/FRONTEND.md
-- docs/product-specs/link-capture.md
-- docs/product-specs/owner-workspace-density.md
-- docs/design-docs/owner-workspace-density.md
-- docs/exec-plans/active/070-owner-links-layout-reset.md
+- docs/product-specs/owner-session-continuity.md
+- docs/design-docs/minakeep-information-architecture.md
+- docs/exec-plans/active/071-owner-session-continuity.md
 
-Current task id: 070-owner-links-layout-reset
-Current task title: Owner links layout reset
+Current task id: 071-owner-session-continuity
+Current task title: Owner session continuity
 
 Objective:
-Restructure the owner links page so the saved-links list gets the dominant growing layout space.
+Preserve authenticated owner continuity across public and private route switching.
 
 Scope:
-- owner links page layout composition
-- relationship between capture form and saved-links list
-- responsive behavior of the links page
+- public-topbar authenticated-state behavior
+- owner return path from public routes back to the private workspace
+- regression coverage for session continuity
 
 Out of scope:
-- link capture behavior changes
-- publishing logic
-- dashboard overview layout
+- auth provider changes
+- multi-user account work
+- owner dashboard layout beyond session continuity affordances
 
 Exit criteria:
-1. The saved-links list gets the dominant continuous space on desktop.
-2. The short capture form no longer wastes a tall adjacent column.
-3. Mobile remains straightforward and touch-friendly.
-4. `npm run test:e2e -- --grep @ui-owner-links-layout` passes.
+1. An authenticated owner can move between `/app`, `/`, and public note routes without an unnecessary re-login.
+2. Public navigation reflects owner continuity appropriately.
+3. Anonymous users still do not see private controls.
+4. `npm run test:e2e -- --grep @owner-session` passes.
 5. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-owner-links-layout`
+- `npm run test:e2e -- --grep @owner-session`
 
 Evaluator notes:
-Promote only when the links surface scales naturally as the saved-links list grows.
+Promote only when session continuity improves owner experience without weakening privacy boundaries.
 
 Required repository artifacts for this task:
-- src/app/app/links/page.tsx
-- src/app/globals.css
+- src/app/layout.tsx
+- src/lib/auth
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-owner-links-layout
+- npm run test:e2e -- --grep @owner-session
 
 Previous known gaps from the last evaluation:
 - none
