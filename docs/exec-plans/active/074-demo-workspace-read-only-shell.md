@@ -5,7 +5,7 @@
   "id": "074-demo-workspace-read-only-shell",
   "title": "Demo workspace read-only shell",
   "order": 74,
-  "status": "planned",
+  "status": "active",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "075-demo-write-protection",
   "prompt_docs": [
@@ -67,3 +67,6 @@ Promote only when the demo user can inspect the real workspace without being mis
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-22 14:25 KST: Enabled demo-role access to `/app`, `/app/links`, `/app/tags`, `/app/search`, and note edit routes while keeping owner-only write entry points unchanged.
+- 2026-03-22 14:25 KST: Added shell, login, dashboard, links, search, and note-editor read-only treatment so demo sessions are labeled clearly and mutating controls render disabled.
+- 2026-03-22 14:25 KST: Expanded `@demo-user` Playwright coverage to verify demo login, route traversal, and disabled mutation affordances across the required workspace surfaces.

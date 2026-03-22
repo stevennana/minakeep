@@ -51,6 +51,7 @@ type NoteEditorProps = {
   generatedSummary?: string | null;
   generatedTags?: SavedTag[];
   retryAction?: () => void | Promise<void>;
+  readOnly?: boolean;
   publication?: {
     isPublished: boolean;
     publicHref: `/notes/${string}`;
@@ -128,6 +129,7 @@ export function NoteEditor({
   generatedSummary,
   generatedTags = [],
   retryAction,
+  readOnly = false,
   publication
 }: NoteEditorProps) {
   const [title, setTitle] = useState(initialTitle);
@@ -166,8 +168,13 @@ export function NoteEditor({
   const toolbarHint = isDesktopViewport
     ? "Syntax-aware editing keeps the source visible and saves one markdown string."
     : "Edit in markdown, then switch to preview without compressing both panes onto the phone screen.";
+  const noteFormProps = readOnly ? ({ as: "div" as const }) : ({ action, as: "form" as const });
 
   function runEditorAction(action: (currentMarkdown: string, selection: SelectionRange) => MarkdownEditResult) {
+    if (readOnly) {
+      return;
+    }
+
     const textarea = textareaRef.current;
 
     if (!textarea) {
@@ -226,7 +233,7 @@ export function NoteEditor({
   }
 
   function triggerImagePicker() {
-    if (isUploadingImage) {
+    if (readOnly || isUploadingImage) {
       return;
     }
 
@@ -243,6 +250,10 @@ export function NoteEditor({
   }
 
   async function handleImageUpload(file: File) {
+    if (readOnly) {
+      return;
+    }
+
     const uploadSelection = imageInsertSelectionRef.current ?? selectionRef.current;
     const formData = new FormData();
 
@@ -288,6 +299,10 @@ export function NoteEditor({
   }
 
   function handleEditorKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
+    if (readOnly) {
+      return;
+    }
+
     const textarea = event.currentTarget;
     const selection = {
       end: textarea.selectionEnd,
@@ -595,13 +610,16 @@ export function NoteEditor({
     <div className="note-editor-shell">
       <EnrichmentPendingRefresh enabled={enrichment?.status === "pending"} />
       <Surface className="note-editor-intro" density="compact" tone="hero">
-        <IntroBlock compact description={formDescription} eyebrow="Private note authoring" title={formTitle}>
+        <IntroBlock compact description={formDescription} eyebrow={readOnly ? "Read-only demo" : "Private note authoring"} title={formTitle}>
           <MetadataRow aria-label="Note editor overview" className="note-editor-intro-meta" leading>
             <span>Markdown-first</span>
             <span>{publication?.isPublished ? "Published" : "Private draft"}</span>
             <span>{enrichment ? `AI ${getEnrichmentStatusLabel(enrichment.status)}` : "AI after first save"}</span>
           </MetadataRow>
         </IntroBlock>
+        {readOnly ? (
+          <p className="read-only-note">This view is for inspection only. Editing, publishing, retry, and image upload controls are disabled.</p>
+        ) : null}
         {publication ? (
           <Surface className="publication-panel" tone="inset">
             <MetadataRow leading>
@@ -609,14 +627,22 @@ export function NoteEditor({
               <span>{publication.isPublished ? "Visible on public routes" : "Hidden from public routes"}</span>
             </MetadataRow>
             <div className="button-row">
-              {publication.isPublished ? (
-                <form action={publication.unpublishAction}>
-                  <PublicationButton idleLabel="Unpublish note" pendingLabel="Unpublishing..." />
-                </form>
+              {readOnly ? (
+                <Button disabled type="button" variant="ghost">
+                  {publication.isPublished ? "Unpublish unavailable" : "Publish unavailable"}
+                </Button>
               ) : (
-                <form action={publication.publishAction}>
-                  <PublicationButton idleLabel="Publish note" pendingLabel="Publishing..." />
-                </form>
+                <>
+                  {publication.isPublished ? (
+                    <form action={publication.unpublishAction}>
+                      <PublicationButton idleLabel="Unpublish note" pendingLabel="Unpublishing..." />
+                    </form>
+                  ) : (
+                    <form action={publication.publishAction}>
+                      <PublicationButton idleLabel="Publish note" pendingLabel="Publishing..." />
+                    </form>
+                  )}
+                </>
               )}
               {publication.isPublished ? (
                 <ButtonLink href={publication.publicHref} variant="ghost">
@@ -656,16 +682,22 @@ export function NoteEditor({
             </TagList>
           </div>
           {enrichment.status === "failed" && retryAction ? (
-            <form action={retryAction}>
-              <RetryButton />
-            </form>
+            readOnly ? (
+              <Button disabled type="button" variant="ghost">
+                Retry unavailable
+              </Button>
+            ) : (
+              <form action={retryAction}>
+                <RetryButton />
+              </form>
+            )
           ) : null}
         </Surface>
       ) : null}
 
       <div className="note-editor-grid">
-        <Surface action={action} as="form" className="note-form ui-form-stack" density="compact" tone="panel">
-          <SectionHeading meta="Source-first markdown workbench" title="Draft" />
+        <Surface {...noteFormProps} className="note-form ui-form-stack" density="compact" tone="panel">
+          <SectionHeading meta={readOnly ? "Inspection only" : "Source-first markdown workbench"} title={readOnly ? "Note" : "Draft"} />
           <FormField label="Title">
             <input
               autoComplete="off"
@@ -673,6 +705,7 @@ export function NoteEditor({
               name="title"
               onChange={(event) => setTitle(event.target.value)}
               placeholder="Draft title"
+              readOnly={readOnly}
               required
               type="text"
               value={title}
@@ -686,6 +719,7 @@ export function NoteEditor({
           >
             <div
               className="note-editor-workbench"
+              data-read-only={readOnly ? "true" : "false"}
               data-editor-workflow={isDesktopViewport ? "desktop" : "mobile"}
               data-testid="note-markdown-workbench"
             >
@@ -711,6 +745,7 @@ export function NoteEditor({
                       <button
                         aria-label={`${action.name} markdown`}
                         className="note-editor-tool"
+                        disabled={readOnly}
                         key={action.name}
                         onClick={() => runEditorAction(action.run)}
                         onMouseDown={(event) => event.preventDefault()}
@@ -723,10 +758,10 @@ export function NoteEditor({
                     <button
                       aria-label="Image markdown"
                       className="note-editor-tool"
-                      disabled={isUploadingImage}
+                      disabled={readOnly || isUploadingImage}
                       onClick={triggerImagePicker}
                       onMouseDown={(event) => event.preventDefault()}
-                      title={isUploadingImage ? "Uploading image" : "Upload image"}
+                      title={readOnly ? "Image upload unavailable in read-only mode" : isUploadingImage ? "Uploading image" : "Upload image"}
                       type="button"
                     >
                       <span aria-hidden="true">{isUploadingImage ? "..." : "Img"}</span>
@@ -793,6 +828,7 @@ export function NoteEditor({
 
 Use headings, lists, quotes, links, and code without leaving markdown source.`}
                         ref={textareaRef}
+                        readOnly={readOnly}
                         spellCheck="true"
                         value={markdown}
                         wrap="soft"
@@ -841,6 +877,7 @@ Use headings, lists, quotes, links, and code without leaving markdown source.`}
               aria-label="Upload note image"
               className="sr-only"
               data-testid="note-image-upload-input"
+              disabled={readOnly}
               onChange={(event) => {
                 const file = event.target.files?.[0];
                 event.currentTarget.value = "";
@@ -860,7 +897,13 @@ Use headings, lists, quotes, links, and code without leaving markdown source.`}
           </FormField>
 
           <div className="button-row">
-            <SaveButton label={submitLabel} />
+            {readOnly ? (
+              <Button disabled type="button">
+                Save unavailable
+              </Button>
+            ) : (
+              <SaveButton label={submitLabel} />
+            )}
           </div>
         </Surface>
       </div>

@@ -5,7 +5,7 @@
   "id": "073-demo-user-auth-foundation",
   "title": "Demo user auth foundation",
   "order": 73,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "074-demo-workspace-read-only-shell",
   "prompt_docs": [
@@ -34,7 +34,8 @@
     "The demo role only exists in UI and is not represented in server-side auth or runtime config.",
     "Docker/env docs drift from the shipped auth contract.",
     "The demo role changes owner behavior when demo credentials are absent."
-  ]
+  ],
+  "completed_at": "2026-03-22T05:13:13.210Z"
 }
 ```
 
@@ -76,3 +77,4 @@ Promote only when the demo-user role is a real runtime concept, not a loose UI i
 - 2026-03-22 14:06 KST: Added an `owner | demo` auth role contract in the NextAuth session/JWT flow, made demo credentials optional env-only runtime config with both-or-neither validation, and kept owner seeding as the only SQLite credential persistence path.
 - 2026-03-22 14:06 KST: Wired the dashboard auth path to accept a demo session for the landing route, added deterministic Playwright demo credentials plus a new `@demo-user` E2E, and updated env/Compose/README/operator docs for the demo credential contract.
 - 2026-03-22 14:10 KST: `npm run test:e2e -- --grep @demo-user` passed, `npm run verify` passed, and the shipped contract still boots owner-only when demo credentials are omitted outside the Playwright test harness.
+- 2026-03-22T05:13:13.210Z: automatically promoted after deterministic checks and evaluator approval.

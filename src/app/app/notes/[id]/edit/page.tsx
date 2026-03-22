@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { publishNoteAction, retryNoteEnrichmentAction, unpublishNoteAction, updateNoteAction } from "@/app/app/notes/actions";
 import { NoteEditor } from "@/features/notes/components/note-editor";
 import { getOwnerNoteForEditor } from "@/features/notes/service";
-import { requireOwnerSession } from "@/lib/auth/owner-session";
+import { requireWorkspaceSession } from "@/lib/auth/owner-session";
+import { isReadOnlyWorkspaceRole } from "@/lib/auth/roles";
 
 type EditNotePageProps = {
   params: Promise<{
@@ -18,10 +19,11 @@ type EditNotePageProps = {
 };
 
 export default async function EditNotePage({ params, searchParams }: EditNotePageProps) {
-  const owner = await requireOwnerSession();
+  const workspace = await requireWorkspaceSession();
+  const isReadOnly = isReadOnlyWorkspaceRole(workspace.actor.role);
   const { id } = await params;
   const resolvedSearchParams = (await searchParams) ?? {};
-  const note = await getOwnerNoteForEditor(owner.id, id);
+  const note = await getOwnerNoteForEditor(workspace.owner.id, id);
 
   if (!note) {
     notFound();
@@ -38,6 +40,7 @@ export default async function EditNotePage({ params, searchParams }: EditNotePag
       initialMarkdown={note.markdown}
       initialTitle={note.title}
       noteId={note.id}
+      readOnly={isReadOnly}
       publication={{
         isPublished: note.isPublished,
         publicHref: `/notes/${note.slug}`,

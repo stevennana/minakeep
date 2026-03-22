@@ -1,1 +1,1 @@
-073-demo-user-auth-foundation
+074-demo-workspace-read-only-shell

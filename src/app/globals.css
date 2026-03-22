@@ -175,6 +175,7 @@ textarea {
 .lede,
 .field-note,
 .auth-note,
+.read-only-note,
 .signin-error,
 .status-note,
 .note-list-item p,
@@ -195,6 +196,7 @@ textarea {
 .lede,
 .field-note,
 .auth-note,
+.read-only-note,
 .signin-error,
 .status-note,
 .link-url,
@@ -1351,7 +1353,10 @@ textarea {
 }
 
 .note-editor-tool:disabled {
-  cursor: progress;
+  background: rgba(226, 232, 240, 0.82);
+  border-color: rgba(148, 163, 184, 0.22);
+  color: var(--ink-muted);
+  cursor: not-allowed;
   opacity: 0.72;
 }
 
@@ -1573,6 +1578,12 @@ textarea {
   box-shadow: none;
 }
 
+.note-editor-input[readonly] {
+  background: rgba(248, 250, 252, 0.92);
+  color: var(--ink-soft);
+  cursor: default;
+}
+
 .note-editor-line-measurements {
   left: -9999px;
   pointer-events: none;
@@ -1695,6 +1706,26 @@ textarea {
 .tag-filter-link:focus-visible {
   outline: 2px solid rgba(50, 72, 99, 0.28);
   outline-offset: 3px;
+}
+
+.primary-button:disabled,
+.ghost-button:disabled,
+.ui-button:disabled {
+  background: rgba(226, 232, 240, 0.85);
+  border: 1px solid rgba(148, 163, 184, 0.34);
+  box-shadow: none;
+  color: var(--ink-muted);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.read-only-note {
+  background: rgba(226, 232, 240, 0.5);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: var(--radius-2);
+  color: var(--ink-soft);
+  margin-top: var(--space-4);
+  padding: 0.9rem 1rem;
 }
 
 .status-note {

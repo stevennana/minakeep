@@ -1,0 +1,19 @@
+[main 0ef65e9] ralph: 073-demo-user-auth-foundation 2026-03-22T14:13:13+09:00
+ 46 files changed, 1333 insertions(+), 78 deletions(-)
+ create mode 100644 docs/design-docs/workspace-auth-roles.md
+ create mode 100644 docs/exec-plans/active/073-demo-user-auth-foundation.md
+ create mode 100644 docs/exec-plans/active/074-demo-workspace-read-only-shell.md
+ create mode 100644 docs/exec-plans/active/075-demo-write-protection.md
+ create mode 100644 docs/exec-plans/active/076-demo-docker-and-hardening.md
+ create mode 100644 docs/product-specs/demo-workspace-user.md
+ create mode 100644 src/lib/auth/roles.ts
+ create mode 100644 state/artifacts/20260322T123114-072-ui-refinement-hardening/backlog.log
+ create mode 100644 state/artifacts/20260322T123114-072-ui-refinement-hardening/promote.log
+ create mode 100644 state/artifacts/20260322T140213-073-demo-user-auth-foundation/commit.log
+ create mode 100644 state/artifacts/20260322T140213-073-demo-user-auth-foundation/evaluator.log
+ create mode 100644 state/artifacts/20260322T140213-073-demo-user-auth-foundation/npm-run-test-e2e-grep-demo-user-next-server.log
+ create mode 100644 state/artifacts/20260322T140213-073-demo-user-auth-foundation/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260322T140213-073-demo-user-auth-foundation/task-prompt.log
+ create mode 100644 state/artifacts/20260322T140213-073-demo-user-auth-foundation/worker.jsonl
+ create mode 100644 tests/e2e/demo-user.spec.ts
+commit: created

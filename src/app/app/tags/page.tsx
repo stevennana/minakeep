@@ -8,7 +8,8 @@ import { LinkFavicon } from "@/features/links/components/link-favicon";
 import { OwnerNoteCard } from "@/features/notes/components/owner-note-card";
 import { listOwnerTags, listOwnerContentByTag } from "@/features/tags/service";
 import { normalizeSingleTagName } from "@/features/tags/normalize";
-import { requireOwnerSession } from "@/lib/auth/owner-session";
+import { requireWorkspaceSession } from "@/lib/auth/owner-session";
+import { isReadOnlyWorkspaceRole } from "@/lib/auth/roles";
 
 type TagsPageProps = {
   searchParams?: Promise<{
@@ -17,13 +18,14 @@ type TagsPageProps = {
 };
 
 export default async function TagsPage({ searchParams }: TagsPageProps) {
-  const owner = await requireOwnerSession();
+  const workspace = await requireWorkspaceSession();
+  const isReadOnly = isReadOnlyWorkspaceRole(workspace.actor.role);
   const resolvedSearchParams = (await searchParams) ?? {};
   const selectedTag = normalizeSingleTagName(resolvedSearchParams.tag);
   const dateFormatter = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
   const [tags, filteredContent] = await Promise.all([
-    listOwnerTags(owner.id),
-    listOwnerContentByTag(owner.id, selectedTag)
+    listOwnerTags(workspace.owner.id),
+    listOwnerContentByTag(workspace.owner.id, selectedTag)
   ]);
   const hasPendingResults =
     filteredContent.notes.some((note) => note.enrichment.status === "pending") ||
@@ -36,13 +38,13 @@ export default async function TagsPage({ searchParams }: TagsPageProps) {
         <IntroBlock
           compact
           description="Filter notes and links by tag."
-          eyebrow="Shared tags"
+          eyebrow={isReadOnly ? "Read-only demo" : "Shared tags"}
           title="Browse one private taxonomy"
         >
           <MetadataRow aria-label="Tags overview" className="secondary-route-meta" leading>
             <span>{tags.length} tag{tags.length === 1 ? "" : "s"}</span>
             <span>{selectedTag ?? "All content"}</span>
-            <span>Owner only</span>
+            <span>{isReadOnly ? "Read-only" : "Owner only"}</span>
           </MetadataRow>
         </IntroBlock>
       </Surface>

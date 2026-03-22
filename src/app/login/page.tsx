@@ -35,7 +35,11 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             <Button type="submit">Sign in</Button>
           </div>
         </form>
-        {hasError ? <p className="signin-error">Credentials were rejected. Try the owner username and password again.</p> : null}
+        {hasError ? (
+          <p className="signin-error">
+            Credentials were rejected. Try the configured owner or demo username and password again.
+          </p>
+        ) : null}
       </Surface>
     </div>
   );

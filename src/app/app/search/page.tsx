@@ -17,7 +17,8 @@ import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-b
 import { LinkFavicon } from "@/features/links/components/link-favicon";
 import { OwnerNoteCard } from "@/features/notes/components/owner-note-card";
 import { searchOwnerContent } from "@/features/search/service";
-import { requireOwnerSession } from "@/lib/auth/owner-session";
+import { requireWorkspaceSession } from "@/lib/auth/owner-session";
+import { isReadOnlyWorkspaceRole } from "@/lib/auth/roles";
 
 type SearchPageProps = {
   searchParams?: Promise<{
@@ -26,9 +27,10 @@ type SearchPageProps = {
 };
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
-  const owner = await requireOwnerSession();
+  const workspace = await requireWorkspaceSession();
+  const isReadOnly = isReadOnlyWorkspaceRole(workspace.actor.role);
   const resolvedSearchParams = (await searchParams) ?? {};
-  const results = await searchOwnerContent(owner.id, resolvedSearchParams.q);
+  const results = await searchOwnerContent(workspace.owner.id, resolvedSearchParams.q);
   const resultCount = results.notes.length + results.links.length;
   const dateFormatter = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
   const hasPendingResults =
@@ -42,12 +44,13 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         <IntroBlock
           compact
           description="Titles, URLs, and tags."
-          eyebrow="Owner search"
+          eyebrow={isReadOnly ? "Read-only demo" : "Owner search"}
           title="Search the private vault"
         >
           <MetadataRow aria-label="Search overview" className="secondary-route-meta" leading>
             <span>{results.query ? `${resultCount} match${resultCount === 1 ? "" : "es"}` : "Run a query"}</span>
             <span>Titles, URLs, tags</span>
+            {isReadOnly ? <span>Read-only</span> : null}
           </MetadataRow>
         </IntroBlock>
       </Surface>
@@ -60,7 +63,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         role="search"
         tone="panel"
       >
-        <SectionHeading meta="Owner-only" title="Query" />
+        <SectionHeading meta={isReadOnly ? "Read-only demo" : "Owner-only"} title="Query" />
         <div className="secondary-search-controls">
           <FormField className="secondary-search-field" label="Query">
             <input

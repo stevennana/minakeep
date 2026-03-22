@@ -20,7 +20,8 @@ import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pendi
 import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
 import { LinkFavicon } from "@/features/links/components/link-favicon";
 import { listOwnerLinks } from "@/features/links/service";
-import { requireOwnerSession } from "@/lib/auth/owner-session";
+import { requireWorkspaceSession } from "@/lib/auth/owner-session";
+import { isReadOnlyWorkspaceRole } from "@/lib/auth/roles";
 
 type LinksPageProps = {
   searchParams?: Promise<{
@@ -47,9 +48,11 @@ function getStatusMessage(error?: string) {
 }
 
 export default async function LinksPage({ searchParams }: LinksPageProps) {
-  const owner = await requireOwnerSession();
+  const workspace = await requireWorkspaceSession();
+  const isReadOnly = isReadOnlyWorkspaceRole(workspace.actor.role);
+  const captureSurfaceProps = isReadOnly ? ({ as: "div" as const }) : ({ action: createLinkAction, as: "form" as const });
   const resolvedSearchParams = (await searchParams) ?? {};
-  const links = await listOwnerLinks(owner.id);
+  const links = await listOwnerLinks(workspace.owner.id);
   const pendingLinks = links.filter((link) => link.enrichment.status === "pending").length;
   const publishedLinks = links.filter((link) => link.isPublished).length;
   const dateFormatter = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
@@ -72,29 +75,33 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
       <Surface className="secondary-route-hero" density="compact" tone="hero">
         <IntroBlock
           compact
-          description="Save a URL and title."
-          eyebrow="Private links"
+          description={isReadOnly ? "Inspect saved links, AI metadata, and publish state." : "Save a URL and title."}
+          eyebrow={isReadOnly ? "Read-only demo" : "Private links"}
           title="Reference shelf"
         >
           <MetadataRow aria-label="Links overview" className="secondary-route-meta" leading>
             <span>{links.length} saved</span>
             <span>{pendingLinks === 0 ? "AI clear" : `${pendingLinks} pending`}</span>
-            <span>{publishedLinks === 0 ? "All private" : `${publishedLinks} public`}</span>
+            <span>{isReadOnly ? "Read-only" : publishedLinks === 0 ? "All private" : `${publishedLinks} public`}</span>
           </MetadataRow>
         </IntroBlock>
         {statusMessage ? (
           <p className={resolvedSearchParams.error ? "status-note status-note-error" : "status-note"}>{statusMessage}</p>
         ) : null}
+        {isReadOnly ? (
+          <p className="read-only-note">Link capture, publishing, favicon refresh, and AI retry stay disabled in the demo workspace.</p>
+        ) : null}
       </Surface>
 
       <div className="link-manager-grid secondary-route-grid">
-        <Surface action={createLinkAction} as="form" className="link-form secondary-control-panel" density="compact" tone="panel">
-          <SectionHeading meta="Manual URL and title" title="Capture" />
+        <Surface {...captureSurfaceProps} className="link-form secondary-control-panel" density="compact" tone="panel">
+          <SectionHeading meta={isReadOnly ? "Unavailable in demo" : "Manual URL and title"} title="Capture" />
           <div className="owner-links-capture-fields">
             <FormField label="URL">
               <input
                 autoComplete="url"
                 className="text-input"
+                disabled={isReadOnly}
                 name="url"
                 placeholder="https://example.com/article"
                 required
@@ -105,6 +112,7 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
               <input
                 autoComplete="off"
                 className="text-input"
+                disabled={isReadOnly}
                 name="title"
                 placeholder="Reference title"
                 required
@@ -112,11 +120,17 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
               />
             </FormField>
             <div className="button-row owner-links-capture-actions">
-              <Button type="submit">Save link</Button>
+              <Button disabled={isReadOnly} type="submit">
+                {isReadOnly ? "Save link unavailable" : "Save link"}
+              </Button>
             </div>
           </div>
           <Disclosure summary="After save">
-            <p>AI summary and tags are added automatically. Links stay private until you publish them.</p>
+            <p>
+              {isReadOnly
+                ? "The demo shows the owner workflow, but link creation stays disabled."
+                : "AI summary and tags are added automatically. Links stay private until you publish them."}
+            </p>
           </Disclosure>
         </Surface>
 
@@ -137,11 +151,17 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
                           imageClassName="link-favicon-image secondary-link-favicon-image"
                           testId="owner-link-favicon"
                         />
-                        <form action={refreshLinkFaviconAction.bind(null, link.id)} className="secondary-link-favicon-refresh">
-                          <Button aria-label="Refresh favicon" title="Refresh favicon" type="submit" variant="ghost">
+                        {isReadOnly ? (
+                          <Button aria-label="Refresh favicon unavailable" disabled title="Refresh favicon unavailable in read-only mode" type="button" variant="ghost">
                             ↻
                           </Button>
-                        </form>
+                        ) : (
+                          <form action={refreshLinkFaviconAction.bind(null, link.id)} className="secondary-link-favicon-refresh">
+                            <Button aria-label="Refresh favicon" title="Refresh favicon" type="submit" variant="ghost">
+                              ↻
+                            </Button>
+                          </form>
+                        )}
                       </div>
                       <div className="secondary-link-heading-copy">
                         <MetadataRow leading>
@@ -189,24 +209,38 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
                     </div>
                   </div>
                   <div className="button-row secondary-link-actions">
-                    {link.isPublished ? (
-                      <form action={unpublishLinkAction.bind(null, link.id)}>
-                        <Button type="submit" variant="ghost">
-                          Unpublish link
-                        </Button>
-                      </form>
+                    {isReadOnly ? (
+                      <Button disabled type="button" variant="ghost">
+                        {link.isPublished ? "Unpublish unavailable" : "Publish unavailable"}
+                      </Button>
                     ) : (
-                      <form action={publishLinkAction.bind(null, link.id)}>
-                        <Button type="submit">Publish link</Button>
-                      </form>
+                      <>
+                        {link.isPublished ? (
+                          <form action={unpublishLinkAction.bind(null, link.id)}>
+                            <Button type="submit" variant="ghost">
+                              Unpublish link
+                            </Button>
+                          </form>
+                        ) : (
+                          <form action={publishLinkAction.bind(null, link.id)}>
+                            <Button type="submit">Publish link</Button>
+                          </form>
+                        )}
+                      </>
                     )}
                   </div>
                   {link.enrichment.status === "failed" ? (
-                    <form action={retryLinkEnrichmentAction.bind(null, link.id)} className="secondary-link-retry">
-                      <Button type="submit" variant="ghost">
-                        Retry AI enrichment
+                    isReadOnly ? (
+                      <Button disabled type="button" variant="ghost">
+                        Retry unavailable
                       </Button>
-                    </form>
+                    ) : (
+                      <form action={retryLinkEnrichmentAction.bind(null, link.id)} className="secondary-link-retry">
+                        <Button type="submit" variant="ghost">
+                          Retry AI enrichment
+                        </Button>
+                      </form>
+                    )
                   ) : null}
                 </article>
               ))}

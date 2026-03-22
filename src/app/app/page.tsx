@@ -7,6 +7,7 @@ import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pendi
 import { OwnerNoteCard } from "@/features/notes/components/owner-note-card";
 import { listOwnerNotes } from "@/features/notes/service";
 import { requireWorkspaceSession } from "@/lib/auth/owner-session";
+import { isReadOnlyWorkspaceRole } from "@/lib/auth/roles";
 
 async function signOutAction() {
   "use server";
@@ -20,6 +21,7 @@ export default async function PrivateDashboardPage() {
   noStore();
 
   const workspace = await requireWorkspaceSession();
+  const isReadOnly = isReadOnlyWorkspaceRole(workspace.actor.role);
   const notes = await listOwnerNotes(workspace.owner.id);
   const publishedNotes = notes.filter((note) => note.isPublished).length;
   const pendingNotes = notes.filter((note) => note.enrichment.status === "pending").length;
@@ -31,11 +33,17 @@ export default async function PrivateDashboardPage() {
       <Surface className="dashboard-hero" tone="hero">
         <div className="dashboard-hero-head">
           <div className="dashboard-hero-copy">
-            <p className="eyebrow">Private dashboard</p>
+            <p className="eyebrow">{isReadOnly ? "Read-only demo" : "Private dashboard"}</p>
             <h1 className="dashboard-hero-title">{workspace.owner.name}&rsquo;s notes</h1>
           </div>
           <div className="button-row dashboard-hero-actions">
-            <ButtonLink href="/app/notes/new">New note</ButtonLink>
+            {isReadOnly ? (
+              <Button disabled type="button">
+                New note unavailable
+              </Button>
+            ) : (
+              <ButtonLink href="/app/notes/new">New note</ButtonLink>
+            )}
             <form action={signOutAction}>
               <Button type="submit" variant="ghost">
                 Sign out
@@ -43,6 +51,7 @@ export default async function PrivateDashboardPage() {
             </form>
           </div>
         </div>
+        {isReadOnly ? <p className="read-only-note">This demo shows the owner&rsquo;s real notes and publication state without allowing edits.</p> : null}
         <div className="summary-row dashboard-summary-row" aria-label="Dashboard overview">
           <div className="dashboard-stat">
             <span className="dashboard-stat-value">{notes.length}</span>

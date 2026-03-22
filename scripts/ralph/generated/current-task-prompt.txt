@@ -1,32 +1,29 @@
 Read the following repository documents before making changes:
 - AGENTS.md
-- ARCHITECTURE.md
-- docs/SECURITY.md
-- docs/RELIABILITY.md
+- docs/FRONTEND.md
 - docs/product-specs/demo-workspace-user.md
 - docs/design-docs/workspace-auth-roles.md
-- docs/product-specs/docker-packaging.md
-- docs/exec-plans/active/073-demo-user-auth-foundation.md
+- docs/exec-plans/active/074-demo-workspace-read-only-shell.md
 
-Current task id: 073-demo-user-auth-foundation
-Current task title: Demo user auth foundation
+Current task id: 074-demo-workspace-read-only-shell
+Current task title: Demo workspace read-only shell
 
 Objective:
-Introduce the demonstration-user role and its environment contract across auth, runtime, and Docker/operator surfaces.
+Let the demonstration user enter the real owner workspace with read-only treatment across the shell and route surfaces.
 
 Scope:
-- auth role contract
-- env and seed contract for demo credentials
-- Docker and README contract updates
+- login flow for demo credentials
+- read-only route access across `/app`, `/app/links`, `/app/tags`, `/app/search`, and note-edit views
+- visible read-only treatment for mutating controls
 
 Out of scope:
-- read-only UI treatment across all routes
-- complete server-side write blocking for all actions
+- full server-side write blocking for every action
+- owner account behavior changes
 
 Exit criteria:
-1. Demo credentials are optional and documented.
-2. The app can authenticate a demonstration user without changing owner-only startup when demo credentials are absent.
-3. Docker/operator docs reflect the new env contract.
+1. Demo login reaches the owner workspace routes.
+2. Demo UI clearly reads as read-only.
+3. Existing owner workflow remains intact.
 4. `npm run test:e2e -- --grep @demo-user` passes.
 5. `npm run verify` passes.
 
@@ -35,15 +32,12 @@ Required checks:
 - `npm run test:e2e -- --grep @demo-user`
 
 Evaluator notes:
-Promote only when the demo-user role is a real runtime concept, not a loose UI idea.
+Promote only when the demo user can inspect the real workspace without being mistaken for the owner.
 
 Required repository artifacts for this task:
-- src/auth.ts
-- src/lib/auth
-- .env.example
-- .env.compose.example
-- docker-compose.yml
-- README.md
+- src/app/login
+- src/app/app
+- src/features
 - tests/e2e
 
 Required commands for this task:

@@ -1113,3 +1113,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T140213-073-demo-user-auth-foundation/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T140213-073-demo-user-auth-foundation/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 073-demo-user-auth-foundation -> 074-demo-workspace-read-only-shell
+- backlog: rendered current=074-demo-workspace-read-only-shell
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooo
+- cycle: finished
+
+### cycle 2026-03-22T14:13:43+09:00 task=074-demo-workspace-read-only-shell
+- artifacts: state/artifacts/20260322T141343-074-demo-workspace-read-only-shell
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260322T141343-074-demo-workspace-read-only-shell/worker.jsonl
+- worker-summary: Implemented task 074 so demo credentials can enter the real owner workspace with read-only treatment across the required surfaces. The main changes are in [src/app/app/layout.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/layout.tsx), [src/app/app/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/page.tsx), [src/app/app/links/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/links/page.tsx), [src/app/app/search/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/search/page.tsx), [src/app/app/tags/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/tags/page.tsx), [src/app/app/notes/[id]/edit/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/notes/%5Bid%5D/edit/page.tsx), [src/features/notes/components/note-editor.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/components/note-editor.tsx), and [src/app/layout.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/layout.tsx). Demo sessions now reuse workspace reads, show explicit read-only shell/dashboard cues, and see disabled mutation controls instead of live create/publish/retry/upload actions. I also expanded [tests/e2e/demo-user.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/demo-user.spec.ts) and updated the task log in [docs/exec-plans/active/074-demo-workspace-read-only-shell.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/074-demo-workspace-read-only-shell.md).
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T141343-074-demo-workspace-read-only-shell/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T141343-074-demo-workspace-read-only-shell/npm-run-verify-next-server.log
