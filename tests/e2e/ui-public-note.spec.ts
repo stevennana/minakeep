@@ -239,7 +239,7 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-regression @ui-public-note @ui-public-type @ui-responsive @ui-public-taste-foundation public note page keeps a calm desktop reading hierarchy", async ({ page }) => {
+test("@ui-regression @ui-public-note @ui-public-note-taste @ui-public-type @ui-responsive @ui-public-taste-foundation public note page keeps a calm desktop reading hierarchy", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await page.goto(`/notes/${seededNote.slug}`);
 
@@ -259,7 +259,7 @@ test("@ui-regression @ui-public-note @ui-public-type @ui-responsive @ui-public-t
   });
 });
 
-test("@ui-regression @ui-public-note @ui-public-type @ui-responsive public note page stays compact on mobile", async ({ page }) => {
+test("@ui-regression @ui-public-note @ui-public-note-taste @ui-public-type @ui-responsive public note page stays compact on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await page.goto(`/notes/${seededNote.slug}`);
 

@@ -1,53 +1,50 @@
 Read the following repository documents before making changes:
 - AGENTS.md
 - docs/FRONTEND.md
-- docs/product-specs/public-home-showroom.md
-- docs/product-specs/public-showroom-search.md
-- docs/design-docs/homepage-showroom-rhythm.md
-- docs/design-docs/public-home-first-screen-density.md
+- docs/product-specs/public-note-reading.md
+- docs/product-specs/public-surface-human-design-reset.md
 - docs/design-docs/public-surface-taste-rules.md
-- docs/references/public-surface-design-references.md
-- docs/exec-plans/active/057-public-showroom-masonry-reset.md
+- docs/design-docs/cool-monochrome-visual-system.md
+- docs/exec-plans/active/058-public-note-human-reading-polish.md
 
-Current task id: 057-public-showroom-masonry-reset
-Current task title: Public showroom masonry reset
+Current task id: 058-public-note-human-reading-polish
+Current task title: Public note human reading polish
 
 Objective:
-Rebuild the public homepage into a more dynamic masonry-style published archive with quieter top chrome.
+Refine the public note page into a calmer, more bespoke reading surface that matches the upgraded showroom.
 
 Scope:
-- homepage showroom layout and archive head
-- collapsed and expanded public search shell styling
-- note/link preview-card rhythm on the public homepage
+- public note title and metadata hierarchy
+- reading measure and note body presentation
+- public note image and summary placement polish
 
 Out of scope:
-- public note page redesign
-- owner routes
-- publishing logic or search semantics changes
+- homepage masonry implementation
+- owner note editor or owner dashboard changes
+- new public note features
 
 Exit criteria:
-1. Desktop homepage layout feels visibly more dynamic than the current two-column impression.
-2. The first screen remains content-first and scan-friendly.
-3. Mobile collapse remains readable and touch-safe.
-4. `npm run test:e2e -- --grep @ui-public-showroom-masonry` passes.
+1. Public note pages feel more human-made and reading-first than the current shipped surface.
+2. Headings, metadata, and AI summary no longer compete with the authored note body.
+3. Mobile reading remains comfortable.
+4. `npm run test:e2e -- --grep @ui-public-note-taste` passes.
 5. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-public-showroom-masonry`
+- `npm run test:e2e -- --grep @ui-public-note-taste`
 
 Evaluator notes:
-Promote only when the public showroom feels more alive without becoming chaotic or image-gallery random.
+Promote only when the public note page feels calmer and more intentional without becoming visually dull.
 
 Required repository artifacts for this task:
-- src/app/page.tsx
-- src/features/public-content/components/public-showroom.tsx
+- src/app/notes/[slug]
 - src/app/globals.css
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-public-showroom-masonry
+- npm run test:e2e -- --grep @ui-public-note-taste
 
 Previous known gaps from the last evaluation:
 - none

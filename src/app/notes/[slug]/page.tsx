@@ -24,21 +24,21 @@ export default async function PublicNotePage({ params }: PublicNotePageProps) {
   return (
     <div className="feature-layout public-note-layout">
       <Surface as="article" className="public-note-card" tone="card">
-        <div className="public-note-header">
-          <div className="public-note-header-row">
+        <header className="public-note-header">
+          <div className="public-note-header-row public-note-utility-row">
+            <ButtonLink className="public-note-back-link" href="/" variant="ghost">
+              Back to published notes
+            </ButtonLink>
             <MetadataRow leading className="public-note-meta">
               <span>Published note</span>
               <time dateTime={publishedAt.toISOString()}>{formattedPublishedAt}</time>
             </MetadataRow>
-            <ButtonLink className="public-note-back-link" href="/" variant="ghost">
-              Back to published notes
-            </ButtonLink>
           </div>
           <div className="public-note-title-block">
             <p className="eyebrow">Public note</p>
             <h1>{note.title}</h1>
           </div>
-        </div>
+        </header>
         <div
           className="markdown-preview public-note-body"
           data-testid="public-note-markdown"

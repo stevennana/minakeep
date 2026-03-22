@@ -1,0 +1,12 @@
+[main d603670] ralph: 057-public-showroom-masonry-reset 2026-03-22T10:03:39+09:00
+ 34 files changed, 908 insertions(+), 182 deletions(-)
+ rename docs/exec-plans/{active => completed}/056-public-surface-taste-foundation.md (94%)
+ create mode 100644 state/artifacts/20260322T093413-056-public-surface-taste-foundation/backlog.log
+ create mode 100644 state/artifacts/20260322T093413-056-public-surface-taste-foundation/promote.log
+ create mode 100644 state/artifacts/20260322T095041-057-public-showroom-masonry-reset/commit.log
+ create mode 100644 state/artifacts/20260322T095041-057-public-showroom-masonry-reset/evaluator.log
+ create mode 100644 state/artifacts/20260322T095041-057-public-showroom-masonry-reset/npm-run-test-e2e-grep-ui-public-showroom-masonry-next-server.log
+ create mode 100644 state/artifacts/20260322T095041-057-public-showroom-masonry-reset/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260322T095041-057-public-showroom-masonry-reset/task-prompt.log
+ create mode 100644 state/artifacts/20260322T095041-057-public-showroom-masonry-reset/worker.jsonl
+commit: created

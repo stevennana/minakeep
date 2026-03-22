@@ -912,3 +912,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T095041-057-public-showroom-masonry-reset/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T095041-057-public-showroom-masonry-reset/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 057-public-showroom-masonry-reset -> 058-public-note-human-reading-polish
+- backlog: rendered current=058-public-note-human-reading-polish
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xoooo
+- cycle: finished
+
+### cycle 2026-03-22T10:04:09+09:00 task=058-public-note-human-reading-polish
+- artifacts: state/artifacts/20260322T100409-058-public-note-human-reading-polish
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260322T100409-058-public-note-human-reading-polish/worker.jsonl
+- worker-summary: Refined the public note surface in [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/notes/[slug]/page.tsx) and [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css) into a quieter reading-first layout: the back link and metadata now recede into a lighter utility row, the title/body hierarchy is calmer, the reading measure is tighter, markdown images have a more deliberate treatment, and the AI summary/tags sit in a softer appendix-style support block instead of competing with the note body.
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T100409-058-public-note-human-reading-polish/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T100409-058-public-note-human-reading-polish/npm-run-verify-next-server.log

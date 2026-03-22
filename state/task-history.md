@@ -45,3 +45,4 @@
 - 2026-03-21T14:36:23.103Z: promoted 054-docker-packaging-and-compose -> 055-media-and-container-hardening
 - 2026-03-21T14:45:56.293Z: promoted 055-media-and-container-hardening -> NONE
 - 2026-03-22T00:50:10.825Z: promoted 056-public-surface-taste-foundation -> 057-public-showroom-masonry-reset
+- 2026-03-22T01:03:39.572Z: promoted 057-public-showroom-masonry-reset -> 058-public-note-human-reading-polish

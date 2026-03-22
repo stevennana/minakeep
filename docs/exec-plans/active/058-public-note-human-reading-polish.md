@@ -5,7 +5,7 @@
   "id": "058-public-note-human-reading-polish",
   "title": "Public note human reading polish",
   "order": 58,
-  "status": "planned",
+  "status": "active",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "059-tag-chip-and-public-type-fit",
   "prompt_docs": [
@@ -69,3 +69,5 @@ Promote only when the public note page feels calmer and more intentional without
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-22 10:09 KST: Refined the public note route into a quieter reading surface by softening the utility row, tightening the title scale, narrowing the reading measure, and moving summary/tags into a more recessive appendix treatment in `src/app/notes/[slug]` and `src/app/globals.css`.
+- 2026-03-22 10:09 KST: Added the missing `@ui-public-note-taste` tag to the dedicated Playwright spec, refreshed the public note desktop/mobile snapshots, and confirmed `npm run test:e2e -- --grep @ui-public-note-taste` passes locally.
