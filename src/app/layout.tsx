@@ -11,16 +11,16 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>
+      <body className="app-body">
         <div className="page-shell">
-          <header className="site-header">
+          <header className="site-header" data-ui-shell="topbar">
             <div className="brand-block">
               <Link className="brand" href="/">
                 Minakeep
               </Link>
               <p className="brand-caption">Private notes and saved references, with selectively public reading.</p>
             </div>
-            <nav aria-label="Primary" className="site-nav">
+            <nav aria-label="Primary" className="site-nav" data-ui-nav="primary">
               <Link href="/">Published notes</Link>
               <Link href="/login">Owner login</Link>
             </nav>

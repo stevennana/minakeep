@@ -10,9 +10,11 @@ An anonymous visitor opens `/`.
 - The homepage is led by a mixed showroom of published notes and published links, not by a dominant marketing hero.
 - The old “Owner entrance / Private origin” section is removed.
 - The homepage header stays compact: a short showroom label, one archive title, and a small archive-count badge replace the older hero-style framing.
+- Topbar and search chrome are visually quieter than the archive itself.
 - The showroom should be visibly present in the first screen on common desktop and mobile viewports.
 - Long explanatory paragraphs above the showroom are removed.
-- Note and link previews appear in a grid arrangement with varied heights rather than rigid equal rows.
+- Note and link previews appear in a masonry-style arrangement with varied heights rather than rigid equal rows.
+- Desktop widths should feel more dynamic than a simple two-column grid, while mobile collapse remains strict and readable.
 - The mixed feed sits in one shared archive surface rather than separate note and link sections.
 - The layout stays easy to scan quickly.
 - Metadata remains compact and secondary to titles and previews.
@@ -23,5 +25,6 @@ An anonymous visitor opens `/`.
 - The homepage keeps only compact framing chrome above the feed rather than a hero block or explanatory lede.
 - The homepage no longer includes the extra explanatory showroom copy block above the feed.
 - The homepage grid feels dynamic without becoming visually chaotic.
+- Desktop does not collapse back into a generic two-column app grid.
 - Mobile layouts still scan cleanly.
 - `npm run verify` passes.

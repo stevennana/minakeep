@@ -13,6 +13,7 @@ This directory contains durable design decisions that are deeper than the top-le
 | `ai-enrichment-lifecycle.md` | confirmed | automatic AI summary/tag generation, failure handling, and retry contract |
 | `knowledge-studio-visual-system.md` | confirmed | previous broad visual-system direction for the shipped tranche |
 | `cool-monochrome-visual-system.md` | confirmed | next-wave visual system, tokens, and reusable styling primitives |
+| `public-surface-taste-rules.md` | confirmed | content-first public-surface design directives derived from the Taste skill and masonry references |
 | `homepage-showroom-rhythm.md` | confirmed | public homepage composition, dynamic grid behavior, and preview-card rhythm |
 | `media-storage-and-serving.md` | confirmed | mounted media storage, publish-gated image serving, and derived card-image rules |
 | `container-runtime-packaging.md` | confirmed | Docker image, Compose, mounted volumes, and env-driven operator packaging |

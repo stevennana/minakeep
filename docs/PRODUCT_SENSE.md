@@ -24,6 +24,8 @@ A scoped Karakeep-inspired product can deliver the useful core without dragging 
 - automatic AI-generated summary and tags after save
 - selective public publishing for both notes and links
 - a clean public showroom that exposes real published items in the first screen, with optional title-only search kept compact until needed and a calmer, less aggressive hierarchy
+- a more human-made public surface whose topbar and search chrome recede behind the published content instead of competing with it
+- a masonry-style public archive that feels dynamic on desktop without losing mobile clarity
 - a stronger markdown authoring workbench that keeps markdown as the source of truth while making writing faster and easier
 - image-rich notes with uploadable markdown images and cached link favicons that improve list-card scanning
 - a documented Docker deployment path with mounted data and env-driven runtime configuration
@@ -41,8 +43,11 @@ A scoped Karakeep-inspired product can deliver the useful core without dragging 
 - owners can publish notes and links into one coherent public showroom without exposing private content
 - public visitors can find published items quickly through title-only search
 - the public homepage shows real showroom content in the first screen instead of spending that space on explanatory chrome
+- public visitors encounter a bespoke-looking published surface instead of a generic AI-generated card grid
+- desktop public pages feel content-led through masonry rhythm, quieter chrome, and calmer typography
 - public links open externally in a new tab and behave like lightweight reference items
 - the public hierarchy feels calmer, with less oversized `h1` and `strong` emphasis
+- public tag chips size to their content cleanly without text spilling past the chip background
 - owners can draft longer notes comfortably using source-first markdown editing, preview modes, and compact authoring aids
 - owners can upload note images once and see them across editor, owner lists, and published note surfaces
 - operators can run the app through a documented Docker image plus Compose path with mounted DB, media, logs, and env config
@@ -50,8 +55,10 @@ A scoped Karakeep-inspired product can deliver the useful core without dragging 
 ## Product Risks
 - mixed public content can become confusing if note and link cards are not differentiated clearly
 - public search can feel noisy if title filtering is not immediate and predictable, or too hidden when collapsed
+- a masonry archive can become visually chaotic if the desktop layout uses too many columns or treats bookmark cards like image tiles
 - adding public links can accidentally leak private link states if publishing boundaries are not explicit
 - toning down hierarchy can flatten the UI if not balanced carefully
+- pushing too much styling into topbars, pills, or decorative panels can pull attention away from the published content again
 - a richer editor can accidentally break markdown fidelity or overload the note workflow if it behaves like a second document model
 - uploaded media can weaken the private-vault model if image visibility does not stay aligned with note publish state
 - favicon fetching can add network fragility unless failure paths fall back cleanly and cached assets stay bounded

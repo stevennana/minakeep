@@ -1,51 +1,53 @@
 Read the following repository documents before making changes:
 - AGENTS.md
-- ARCHITECTURE.md
-- docs/RELIABILITY.md
-- docs/SECURITY.md
-- docs/product-specs/note-image-attachments.md
-- docs/product-specs/link-favicon-caching.md
-- docs/product-specs/docker-packaging.md
-- docs/exec-plans/active/055-media-and-container-hardening.md
+- docs/PRODUCT_SENSE.md
+- docs/FRONTEND.md
+- docs/product-specs/public-surface-human-design-reset.md
+- docs/design-docs/cool-monochrome-visual-system.md
+- docs/design-docs/public-surface-taste-rules.md
+- docs/references/public-surface-design-references.md
+- docs/exec-plans/active/056-public-surface-taste-foundation.md
 
-Current task id: 055-media-and-container-hardening
-Current task title: Media and container hardening
+Current task id: 056-public-surface-taste-foundation
+Current task title: Public surface taste foundation
 
 Objective:
-Reconcile docs, security, reliability, and regression coverage after the media and container wave lands.
+Establish the reusable public-surface design foundation for the new taste-led wave before rebuilding specific pages.
 
 Scope:
-- doc alignment
-- regression coverage for media and favicon behavior
-- remaining Docker/operator proof cleanup
+- shared public typography and spacing tokens
+- calmer public topbar and shell primitives
+- public-surface card/chip primitive cleanup
+- no route-model or feature-logic changes
 
 Out of scope:
-- new attachment types
-- object storage
-- orchestration platforms beyond the Docker/Compose path already chosen
+- full masonry showroom implementation
+- public note page layout rewrite
+- owner-workspace redesign
 
 Exit criteria:
-1. Docs reflect the shipped media and Docker behavior accurately.
-2. Media visibility and favicon fallback regressions are covered deterministically.
-3. Remaining container/operator debt is resolved or explicitly tracked.
-4. `npm run test:e2e -- --grep @media-regression` passes.
+1. Shared public-facing primitives and CSS rules reflect the calmer taste-led direction.
+2. Public chrome reads as support structure rather than the primary focal point.
+3. Typography and tag-chip primitives are ready for the later page slices.
+4. `npm run test:e2e -- --grep @ui-public-taste-foundation` passes.
 5. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @media-regression`
+- `npm run test:e2e -- --grep @ui-public-taste-foundation`
 
 Evaluator notes:
-Promote only when the media and Docker wave is documented, hardened, and consistent with the private-vault model.
+Promote only when the new public foundation is visibly different from generic AI-slop patterns and is implemented through reusable styling layers.
 
 Required repository artifacts for this task:
-- docs
-- src
+- src/app/globals.css
+- src/components/ui
+- src/app/layout.tsx
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @media-regression
+- npm run test:e2e -- --grep @ui-public-taste-foundation
 
 Previous known gaps from the last evaluation:
 - none

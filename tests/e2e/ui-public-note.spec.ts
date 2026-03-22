@@ -213,10 +213,20 @@ async function expectSoftenedPublicType(page: Page, viewport: "desktop" | "mobil
     return;
   }
 
-  expect(styles.headingSize).toBeGreaterThan(styles.bodySize + (viewport === "desktop" ? 12 : 9));
+  expect(styles.headingSize).toBeGreaterThan(styles.bodySize + (viewport === "desktop" ? 12 : 8));
   expect(styles.headingSize).toBeLessThan(viewport === "desktop" ? 35 : 32);
   expect(styles.supportStrongSize).toBeLessThan(styles.bodySize);
   expect(styles.supportStrongColor).toBe("rgb(51, 65, 85)");
+}
+
+async function expectPublicTagChipFit(page: Page) {
+  const chipOverflowCount = await page.evaluate(() => {
+    return Array.from(document.querySelectorAll<HTMLElement>(".public-note-tags .tag-pill")).filter(
+      (tag) => tag.scrollWidth > tag.clientWidth + 1 || tag.scrollHeight > tag.clientHeight + 1
+    ).length;
+  });
+
+  expect(chipOverflowCount).toBe(0);
 }
 
 test.describe.configure({ mode: "serial" });
@@ -229,7 +239,7 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-regression @ui-public-note @ui-public-type @ui-responsive public note page keeps a calm desktop reading hierarchy", async ({ page }) => {
+test("@ui-regression @ui-public-note @ui-public-type @ui-responsive @ui-public-taste-foundation public note page keeps a calm desktop reading hierarchy", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await page.goto(`/notes/${seededNote.slug}`);
 
@@ -240,6 +250,7 @@ test("@ui-regression @ui-public-note @ui-public-type @ui-responsive public note 
   await expect(page.getByRole("link", { name: "Back to published notes" })).toBeVisible();
   await expectReadingHierarchy(page, "desktop");
   await expectSoftenedPublicType(page, "desktop");
+  await expectPublicTagChipFit(page);
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
 

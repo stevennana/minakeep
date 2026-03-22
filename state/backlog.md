@@ -46,4 +46,9 @@
 - [x] 053-link-favicon-cache-and-render — Link favicon cache and render
 - [x] 054-docker-packaging-and-compose — Docker packaging and Compose
 - [x] 055-media-and-container-hardening — Media and container hardening
+- [ ] 056-public-surface-taste-foundation — Public surface taste foundation ← current
+- [ ] 057-public-showroom-masonry-reset — Public showroom masonry reset
+- [ ] 058-public-note-human-reading-polish — Public note human reading polish
+- [ ] 059-tag-chip-and-public-type-fit — Tag chip and public type fit
+- [ ] 060-public-surface-hardening — Public surface hardening
 

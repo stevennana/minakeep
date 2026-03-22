@@ -5,14 +5,13 @@ This queue is the task-level promotion source of truth for minakeep.
 Only task files in this directory that contain a `taskmeta` JSON block are eligible for automatic selection, evaluation, and promotion.
 
 ## Current recommended sequence
-1. `050-media-storage-foundation.md` -> introduce mounted media storage, upload metadata, and publish-gated serving rules
-2. `051-note-image-upload-and-embed.md` -> let owners upload note images and insert markdown references automatically
-3. `052-note-image-display-and-publish.md` -> derive the first markdown image for note cards and enforce public visibility only after publish
-4. `053-link-favicon-cache-and-render.md` -> fetch and cache favicons locally for owner and public link cards
-5. `054-docker-packaging-and-compose.md` -> ship a Docker image plus Compose path with mounted DB, media, logs, and env config
-6. `055-media-and-container-hardening.md` -> reconcile docs, security, reliability, and regression coverage after the media and container wave
+1. `056-public-surface-taste-foundation.md` -> establish the content-first public visual foundation, shared primitives, and calmer typography rules
+2. `057-public-showroom-masonry-reset.md` -> rebuild the public showroom around a masonry-style archive with quieter chrome
+3. `058-public-note-human-reading-polish.md` -> refine the public note page hierarchy, rhythm, and bespoke reading presentation
+4. `059-tag-chip-and-public-type-fit.md` -> fix tag-chip sizing and tone down public heading/strong emphasis across the public surfaces
+5. `060-public-surface-hardening.md` -> reconcile docs, responsive behavior, screenshots, and regression coverage for the new public wave
 
-Tasks `045` through `049` are preserved in completed history as the completed markdown-editor tranche.
+Tasks `045` through `055` are preserved in completed history as the completed markdown-editor, media, and container tranches.
 
 ## Operating rule
 

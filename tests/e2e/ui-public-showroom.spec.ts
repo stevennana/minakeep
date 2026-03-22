@@ -269,6 +269,43 @@ async function expectCollapsedSearchLayout(page: Page, viewport: "desktop" | "mo
   }
 }
 
+async function expectPublicTasteFoundation(page: Page) {
+  const audit = await page.evaluate(() => {
+    const searchShell = document.querySelector(".public-search-shell");
+    const homeHeading = document.querySelector(".public-intro-panel h1");
+    const cards = Array.from(document.querySelectorAll<HTMLElement>("[data-testid='public-home-showroom'] .note-preview-card"));
+    const tags = Array.from(document.querySelectorAll<HTMLElement>("[data-testid='public-home-showroom'] .tag-pill"));
+
+    if (!searchShell || !homeHeading || cards.length === 0) {
+      return null;
+    }
+
+    const firstCard = cards[0];
+    const firstCardTitle = firstCard.querySelector<HTMLElement>(".note-list-link");
+    const searchShellStyle = getComputedStyle(searchShell);
+
+    return {
+      cardRadius: Number.parseFloat(getComputedStyle(firstCard).borderTopLeftRadius),
+      chipOverflowCount: tags.filter((tag) => tag.scrollWidth > tag.clientWidth + 1 || tag.scrollHeight > tag.clientHeight + 1).length,
+      firstCardTitleSize: firstCardTitle ? Number.parseFloat(getComputedStyle(firstCardTitle).fontSize) : 0,
+      headingSize: Number.parseFloat(getComputedStyle(homeHeading).fontSize),
+      searchShellShadow: searchShellStyle.boxShadow
+    };
+  });
+
+  expect(audit).not.toBeNull();
+
+  if (!audit) {
+    return;
+  }
+
+  expect(audit.headingSize).toBeLessThan(26);
+  expect(audit.firstCardTitleSize).toBeGreaterThan(audit.headingSize - 4);
+  expect(audit.cardRadius).toBeGreaterThanOrEqual(20);
+  expect(audit.searchShellShadow).toBe("none");
+  expect(audit.chipOverflowCount).toBe(0);
+}
+
 test.describe.configure({ mode: "serial" });
 
 test.beforeEach(async () => {
@@ -279,7 +316,7 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-regression @ui-public-showroom @ui-public-search-collapse mixed public showroom keeps search collapsed by default on desktop", async ({ page }) => {
+test("@ui-regression @ui-public-showroom @ui-public-search-collapse @ui-public-taste-foundation mixed public showroom keeps search collapsed by default on desktop", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await page.goto("/");
 
@@ -297,6 +334,7 @@ test("@ui-regression @ui-public-showroom @ui-public-search-collapse mixed public
   await expect(page.getByTestId("public-home-search-summary")).toHaveText("Title-only filter across 4 public items.");
   await expectMixedFeedRhythm(page, "desktop");
   await expectCollapsedSearchLayout(page, "desktop");
+  await expectPublicTasteFoundation(page);
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
 

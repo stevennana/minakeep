@@ -18,6 +18,7 @@ If a UI or API behavior is visible to users, it should be defined here before im
 | `link-ai-enrichment.md` | confirmed | Automatic AI summary/tag generation for links |
 | `docker-packaging.md` | confirmed | Docker image, Compose path, mounted volumes, and env-driven runtime setup |
 | `knowledge-studio-ui-refresh.md` | completed | Previous broad visual redesign tranche |
+| `public-surface-human-design-reset.md` | confirmed | Content-first, bespoke public-surface redesign rules for the next wave |
 | `public-home-showroom.md` | confirmed | Mixed public showroom of published notes and links |
 | `public-note-reading.md` | confirmed | Public note reading polish and metadata hierarchy |
 | `owner-workspace-density.md` | confirmed | Tighter professional owner layout for desktop and mobile |

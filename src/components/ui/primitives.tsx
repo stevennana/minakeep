@@ -34,7 +34,12 @@ export function Surface<T extends ElementType = "section">({
   const Component = as ?? "section";
 
   return (
-    <Component className={cx(surfaceToneClasses[tone], density === "compact" && "ui-surface-compact", className)} {...props}>
+    <Component
+      className={cx(surfaceToneClasses[tone], density === "compact" && "ui-surface-compact", className)}
+      data-ui-density={density}
+      data-ui-surface={tone}
+      {...props}
+    >
       {children}
     </Component>
   );
@@ -48,7 +53,7 @@ type SectionHeadingProps = {
 
 export function SectionHeading({ title, meta, className }: SectionHeadingProps) {
   return (
-    <div className={cx("section-heading ui-section-heading", className)}>
+    <div className={cx("section-heading ui-section-heading", className)} data-ui-section-heading="true">
       <strong>{title}</strong>
       {meta ? <span className="section-meta">{meta}</span> : null}
     </div>
@@ -61,7 +66,11 @@ type MetadataRowProps = ComponentPropsWithoutRef<"div"> & {
 
 export function MetadataRow({ children, className, leading = false, ...props }: MetadataRowProps) {
   return (
-    <div className={cx("note-meta ui-metadata-row", leading && "note-meta-leading", className)} {...props}>
+    <div
+      className={cx("note-meta ui-metadata-row", leading && "note-meta-leading", className)}
+      data-ui-leading={leading ? "true" : "false"}
+      {...props}
+    >
       {children}
     </div>
   );
@@ -71,7 +80,7 @@ type TagListProps = ComponentPropsWithoutRef<"div">;
 
 export function TagList({ children, className, ...props }: TagListProps) {
   return (
-    <div className={cx("tag-list ui-tag-list", className)} {...props}>
+    <div className={cx("tag-list ui-tag-list", className)} data-ui-tag-list="true" {...props}>
       {children}
     </div>
   );
@@ -83,7 +92,11 @@ type TagChipProps = ComponentPropsWithoutRef<"span"> & {
 
 export function TagChip({ children, className, muted = false, ...props }: TagChipProps) {
   return (
-    <span className={cx("tag-pill ui-tag", muted && "tag-pill-muted ui-tag-muted", className)} {...props}>
+    <span
+      className={cx("tag-pill ui-tag", muted && "tag-pill-muted ui-tag-muted", className)}
+      data-ui-tag-muted={muted ? "true" : "false"}
+      {...props}
+    >
       {children}
     </span>
   );
@@ -97,7 +110,7 @@ type ButtonProps = ComponentPropsWithoutRef<"button"> & {
 
 export function Button({ children, className, variant = "primary", ...props }: ButtonProps) {
   return (
-    <button className={cx(`${variant}-button`, "ui-button", `ui-button-${variant}`, className)} {...props}>
+    <button className={cx(`${variant}-button`, "ui-button", `ui-button-${variant}`, className)} data-ui-button={variant} {...props}>
       {children}
     </button>
   );
@@ -112,6 +125,7 @@ export function ButtonLink({ children, className, href, variant = "primary", ...
   return (
     <Link
       className={cx(`${variant}-button`, "ui-button", `ui-button-${variant}`, className)}
+      data-ui-button={variant}
       href={href as unknown as ComponentPropsWithoutRef<typeof Link>["href"]}
       {...props}
     >
