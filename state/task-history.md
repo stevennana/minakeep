@@ -61,3 +61,4 @@
 - 2026-03-22T05:13:13.210Z: promoted 073-demo-user-auth-foundation -> 074-demo-workspace-read-only-shell
 - 2026-03-22T05:37:17.112Z: promoted 074-demo-workspace-read-only-shell -> 075-demo-write-protection
 - 2026-03-22T05:51:53.515Z: promoted 075-demo-write-protection -> 076-demo-docker-and-hardening
+- 2026-03-22T06:01:00.082Z: promoted 076-demo-docker-and-hardening -> NONE

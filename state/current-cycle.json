@@ -2,7 +2,7 @@
   "task_id": "076-demo-docker-and-hardening",
   "started_at": "2026-03-22T14:52:23+09:00",
   "artifact_dir": "state/artifacts/20260322T145223-076-demo-docker-and-hardening",
-  "phase": "commit",
-  "status": "running",
-  "updated_at": "2026-03-22T06:00:59.912Z"
+  "phase": "finished",
+  "status": "finished",
+  "updated_at": "2026-03-22T06:01:00.179Z"
 }

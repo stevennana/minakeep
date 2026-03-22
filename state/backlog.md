@@ -63,5 +63,5 @@
 - [x] 073-demo-user-auth-foundation — Demo user auth foundation
 - [x] 074-demo-workspace-read-only-shell — Demo workspace read-only shell
 - [x] 075-demo-write-protection — Demo write protection
-- [ ] 076-demo-docker-and-hardening — Demo Docker and hardening ← current
+- [x] 076-demo-docker-and-hardening — Demo Docker and hardening
 

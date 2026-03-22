@@ -1,0 +1,12 @@
+[main cf2b0c7] ralph: 076-demo-docker-and-hardening 2026-03-22T15:00:59+09:00
+ 26 files changed, 827 insertions(+), 54 deletions(-)
+ rename docs/exec-plans/{active => completed}/075-demo-write-protection.md (92%)
+ create mode 100644 state/artifacts/20260322T143747-075-demo-write-protection/backlog.log
+ create mode 100644 state/artifacts/20260322T143747-075-demo-write-protection/promote.log
+ create mode 100644 state/artifacts/20260322T145223-076-demo-docker-and-hardening/commit.log
+ create mode 100644 state/artifacts/20260322T145223-076-demo-docker-and-hardening/evaluator.log
+ create mode 100644 state/artifacts/20260322T145223-076-demo-docker-and-hardening/npm-run-test-e2e-grep-demo-user-next-server.log
+ create mode 100644 state/artifacts/20260322T145223-076-demo-docker-and-hardening/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260322T145223-076-demo-docker-and-hardening/task-prompt.log
+ create mode 100644 state/artifacts/20260322T145223-076-demo-docker-and-hardening/worker.jsonl
+commit: created
