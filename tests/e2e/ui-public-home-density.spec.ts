@@ -251,7 +251,7 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-regression @ui-public-home-density @ui-public-showroom-masonry public homepage keeps published cards in the first desktop screen", async ({ page }) => {
+test("@ui-regression @ui-public-home-density @ui-public-showroom-masonry @ui-public-taste-regression public homepage keeps published cards in the first desktop screen", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await page.goto("/");
 
@@ -284,7 +284,7 @@ test("@ui-regression @ui-public-home-density @ui-public-showroom-masonry public 
   await expectFirstScreenShowroomPresence(page, desktopViewport.height, 88);
 });
 
-test("@ui-regression @ui-public-home-density @ui-public-showroom-masonry @ui-responsive public homepage keeps published cards in the first mobile screen", async ({ page }) => {
+test("@ui-regression @ui-public-home-density @ui-public-showroom-masonry @ui-responsive @ui-public-taste-regression public homepage keeps published cards in the first mobile screen", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await page.goto("/");
 

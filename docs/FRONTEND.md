@@ -51,7 +51,7 @@ Secondary owner surfaces should inherit the same density and responsive behavior
 - use one unified title-only public search bar without a type selector
 - keep the public search control compact or collapsed on first load so the showroom remains visible in the first screen
 - do not spend first-screen space on multi-paragraph explanatory copy above the public showroom
-- prefer a masonry-style desktop archive with 3 to 5 columns depending on width, then fall back aggressively to 2 columns on tablet and 1 column on narrow mobile
+- prefer a masonry-style desktop archive with 3 to 4 columns depending on width, then fall back aggressively to 2 columns on tablet and 1 column on narrow mobile
 - if masonry behavior is implemented with CSS multi-columns, child cards must use `break-inside: avoid` and mobile must collapse back to a strict ordered stack
 - published link cards should look related to note cards but remain visibly distinguishable as links
 - published note cards may use the first embedded note image as their head image

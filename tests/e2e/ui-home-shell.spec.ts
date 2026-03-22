@@ -237,7 +237,7 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-regression @ui-home-shell @ui-public-home-shell @ui-public-type @ui-responsive homepage reads note-first on desktop", async ({ page }) => {
+test("@ui-regression @ui-home-shell @ui-public-home-shell @ui-public-type @ui-responsive @ui-public-taste-regression homepage reads note-first on desktop", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await page.goto("/");
 
@@ -261,7 +261,7 @@ test("@ui-regression @ui-home-shell @ui-public-home-shell @ui-public-type @ui-re
   });
 });
 
-test("@ui-regression @ui-home-shell @ui-public-home-shell @ui-public-type @ui-responsive homepage stays note-first on mobile", async ({ page }) => {
+test("@ui-regression @ui-home-shell @ui-public-home-shell @ui-public-type @ui-responsive @ui-public-taste-regression homepage stays note-first on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await page.goto("/");
 

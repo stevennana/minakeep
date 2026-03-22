@@ -942,3 +942,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T101335-059-tag-chip-and-public-type-fit/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T101335-059-tag-chip-and-public-type-fit/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 059-tag-chip-and-public-type-fit -> 060-public-surface-hardening
+- backlog: rendered current=060-public-surface-hardening
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xoooooo
+- cycle: finished
+
+### cycle 2026-03-22T10:32:03+09:00 task=060-public-surface-hardening
+- artifacts: state/artifacts/20260322T103203-060-public-surface-hardening
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260322T103203-060-public-surface-hardening/worker.jsonl
+- worker-summary: Aligned the repo truth to the shipped public redesign without changing the public UI implementation. I updated [FRONTEND.md](/Users/stevenna/WebstormProjects/minakeep/docs/FRONTEND.md), [homepage-showroom-rhythm.md](/Users/stevenna/WebstormProjects/minakeep/docs/design-docs/homepage-showroom-rhythm.md), and [ui-verification-contract.md](/Users/stevenna/WebstormProjects/minakeep/docs/references/ui-verification-contract.md) so the docs now reflect the actual homepage masonry range and the new task-scoped regression command. I also updated the active task log in [060-public-surface-hardening.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/060-public-surface-hardening.md).
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T103203-060-public-surface-hardening/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T103203-060-public-surface-hardening/npm-run-verify-next-server.log

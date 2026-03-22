@@ -347,7 +347,7 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-regression @ui-public-showroom @ui-public-showroom-masonry @ui-public-search-collapse @ui-public-taste-foundation mixed public showroom keeps search collapsed by default on desktop", async ({ page }) => {
+test("@ui-regression @ui-public-showroom @ui-public-showroom-masonry @ui-public-search-collapse @ui-public-taste-foundation @ui-public-taste-regression mixed public showroom keeps search collapsed by default on desktop", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await page.goto("/");
 
@@ -389,7 +389,7 @@ test("@ui-regression @ui-public-showroom @ui-public-showroom-masonry @ui-public-
   await expect(page.getByTestId("public-home-search-summary")).toHaveText("Showing 2 of 4 public items.");
 });
 
-test("@ui-regression @ui-public-showroom @ui-public-showroom-masonry @ui-public-search-collapse mixed public showroom search expands cleanly on mobile", async ({ page }) => {
+test("@ui-regression @ui-public-showroom @ui-public-showroom-masonry @ui-public-search-collapse @ui-public-taste-regression mixed public showroom search expands cleanly on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await page.goto("/");
 

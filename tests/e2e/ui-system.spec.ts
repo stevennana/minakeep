@@ -165,7 +165,7 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-regression @ui-system @ui-public-taste-foundation public chrome holds together on desktop", async ({ page }) => {
+test("@ui-regression @ui-system @ui-public-taste-foundation @ui-public-taste-regression public chrome holds together on desktop", async ({ page }) => {
   await seedPublicChromeContent();
   await page.setViewportSize(desktopViewport);
   await page.goto("/");

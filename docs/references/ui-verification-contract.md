@@ -7,6 +7,7 @@
 - every UI-focused exec-plan in the current wave should require:
   - `npm run verify`
   - `npm run test:e2e -- --grep @ui-<surface>`
+- public-surface hardening should require `npm run test:e2e -- --grep @ui-public-taste-regression` so one deterministic command replays the shipped public chrome, homepage, and public note checks
 - final UI hardening should also support `npm run test:e2e -- --grep @ui-regression` so one deterministic command replays the full redesigned public/private wave
 - UI task metadata should set `promotion_mode` to `deterministic_only`
 - the tagged UI test should prove:
@@ -21,6 +22,7 @@
 - `@ui-system`
 - `@ui-home-shell`
 - `@ui-home-grid`
+- `@ui-public-taste-regression`
 - `@ui-public-note`
 - `@ui-owner-shell`
 - `@ui-owner-dashboard`

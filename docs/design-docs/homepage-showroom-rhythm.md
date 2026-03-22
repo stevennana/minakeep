@@ -14,7 +14,7 @@ Make the public homepage feel like a dynamic showroom of notes rather than a pro
 
 ## Card Rhythm
 - cards may vary in height based on preview length, summary presence, tag density, and optional head image presence
-- desktop should prefer 3 to 5 columns depending on available width; tablet should step down to 2 columns; narrow mobile should collapse to 1 column
+- desktop should prefer 3 to 4 columns depending on available width; tablet should step down to 2 columns; narrow mobile should collapse to 1 column
 - masonry flow may be implemented with CSS multi-columns plus `break-inside: avoid` for cards, or another deterministic approach that preserves readability
 - equal-height rows are not the target
 - occasional emphasis cards are acceptable only if they do not break readability, keyboard flow, or mobile collapse
