@@ -111,18 +111,27 @@ npm run verify
 
 ## Docker / Compose
 
-Build the production-style image from source:
+Official Docker Hub image:
+
+```bash
+docker pull stevenna050/minakeep:1.0.1
+```
+
+The official release path is multi-arch (`linux/amd64` and `linux/arm64`) and is published from Git tags through GitHub Actions.
+
+Local build for testing:
 
 ```bash
 docker build -t minakeep:test .
 ```
 
-Run the primary operator path with Docker Compose:
+Run the primary operator path with Docker Compose against the published image:
 
 ```bash
 cp .env.compose.example .env
 mkdir -p data media logs
-docker compose up --build -d
+docker compose pull
+docker compose up -d
 ```
 
 The compose file fixes the container-internal runtime paths to `/app/data`, `/app/media`, and `/app/logs`; the `.env` file is for auth, port, and optional demo-user and AI config.
@@ -176,6 +185,12 @@ Follow operator logs:
 ```bash
 docker compose logs -f app
 ```
+
+Future image releases:
+
+- push a new Git tag such as `1.0.2`
+- GitHub Actions builds and pushes `stevenna050/minakeep:<tag>`
+- stable tags also refresh `stevenna050/minakeep:latest`
 
 ## External note API
 
