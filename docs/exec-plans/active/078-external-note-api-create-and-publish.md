@@ -5,7 +5,7 @@
   "id": "078-external-note-api-create-and-publish",
   "title": "External note API create and publish",
   "order": 78,
-  "status": "planned",
+  "status": "active",
   "promotion_mode": "standard",
   "next_task_on_success": "079-external-note-api-hardening",
   "prompt_docs": [
@@ -72,3 +72,6 @@ Promote only when the external note-create path behaves like the existing owner 
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-22T08:43:16.033Z: restored as current task after 077-external-note-api-auth-foundation promotion.
+- 2026-03-22T08:51:23Z: Replaced the authorized `501` stub with keyed note creation that validates `title` and `markdown`, supports optional `isPublished`, reuses the shared note create/enrichment/revalidation runtime, returns note identity plus owner/public URLs, and adds focused `@note-api` E2E coverage.
+- 2026-03-22T08:56:37Z: Required checks passed locally: `npm run test:e2e -- --grep @note-api` and `npm run verify`. The note-api E2E slice now deletes its created notes so repeated targeted runs do not pollute the shared SQLite state before the full suite.

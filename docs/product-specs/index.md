@@ -10,7 +10,7 @@ If a UI or API behavior is visible to users, it should be defined here before im
 | `note-authoring.md` | confirmed | Private note drafting, preview, and note-side AI metadata visibility |
 | `markdown-editor-workbench.md` | confirmed | Source-first markdown editor modes, toolbar, shortcuts, and mobile authoring behavior |
 | `note-image-attachments.md` | confirmed | Uploaded note images, markdown embedding, and derived note-card image behavior |
-| `external-note-api.md` | proposed | Server-to-server note creation through one environment API key |
+| `external-note-api.md` | confirmed | Server-to-server note creation through one environment API key |
 | `public-note-publishing.md` | confirmed | Public note visibility and note pages |
 | `link-capture.md` | confirmed | Private bookmark capture with AI-owned summary/tag metadata |
 | `link-favicon-caching.md` | confirmed | Cached favicon fetch and card rendering for saved links |

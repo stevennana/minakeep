@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -65,7 +67,7 @@ test("getExternalNoteApiAuthResult rejects missing or invalid X-API-Key headers"
 
 test("POST /api/open/notes fails closed when API_KEY is unset", async () => {
   await withApiKeyEnv(undefined, async () => {
-    const response = POST(new Request("http://localhost/api/open/notes", { method: "POST" }));
+    const response = await POST(new Request("http://localhost/api/open/notes", { method: "POST" }));
 
     assert.equal(response.status, 503);
     assert.deepEqual(await response.json(), {
@@ -76,8 +78,8 @@ test("POST /api/open/notes fails closed when API_KEY is unset", async () => {
 
 test("POST /api/open/notes rejects requests without a valid X-API-Key", async () => {
   await withApiKeyEnv("test-api-key", async () => {
-    const missingHeaderResponse = POST(new Request("http://localhost/api/open/notes", { method: "POST" }));
-    const invalidHeaderResponse = POST(
+    const missingHeaderResponse = await POST(new Request("http://localhost/api/open/notes", { method: "POST" }));
+    const invalidHeaderResponse = await POST(
       new Request("http://localhost/api/open/notes", {
         method: "POST",
         headers: {
@@ -98,20 +100,44 @@ test("POST /api/open/notes rejects requests without a valid X-API-Key", async ()
   });
 });
 
-test("POST /api/open/notes keeps the valid-key path separate from persistence work", async () => {
+test("POST /api/open/notes requires a valid JSON body after auth succeeds", async () => {
   await withApiKeyEnv("test-api-key", async () => {
-    const response = POST(
+    const response = await POST(
       new Request("http://localhost/api/open/notes", {
         method: "POST",
         headers: {
-          [EXTERNAL_NOTE_API_KEY_HEADER]: "test-api-key"
-        }
+          [EXTERNAL_NOTE_API_KEY_HEADER]: "test-api-key",
+          "content-type": "application/json"
+        },
+        body: "{"
       })
     );
 
-    assert.equal(response.status, 501);
+    assert.equal(response.status, 400);
     assert.deepEqual(await response.json(), {
-      error: "Not implemented."
+      error: "Request body must be valid JSON."
+    });
+  });
+});
+
+test("POST /api/open/notes validates required note fields before persistence", async () => {
+  await withApiKeyEnv("test-api-key", async () => {
+    const response = await POST(
+      new Request("http://localhost/api/open/notes", {
+        method: "POST",
+        headers: {
+          [EXTERNAL_NOTE_API_KEY_HEADER]: "test-api-key",
+          "content-type": "application/json"
+        },
+        body: JSON.stringify({
+          title: "Missing markdown"
+        })
+      })
+    );
+
+    assert.equal(response.status, 400);
+    assert.deepEqual(await response.json(), {
+      error: "`markdown` must be a string."
     });
   });
 });

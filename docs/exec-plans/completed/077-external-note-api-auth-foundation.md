@@ -5,7 +5,7 @@
   "id": "077-external-note-api-auth-foundation",
   "title": "External note API auth foundation",
   "order": 77,
-  "status": "planned",
+  "status": "completed",
   "promotion_mode": "standard",
   "next_task_on_success": "078-external-note-api-create-and-publish",
   "prompt_docs": [
@@ -33,7 +33,8 @@
     "The route can write notes without a valid configured API key.",
     "The implementation leaks the API key or full private note payloads through logs or error responses.",
     "The feature introduces browser-session or per-client API key management instead of one env-backed static key."
-  ]
+  ],
+  "completed_at": "2026-03-22T08:43:16.033Z"
 }
 ```
 
@@ -84,3 +85,4 @@ Promote only when the auth boundary is narrow, server-only, and clearly separate
 - 2026-03-22 17:29 KST: Re-validated the task-077 worktree against the exact required command set after the transient UI failures cleared. `npm run typecheck`, `npm run test:unit`, and `npm run verify` all passed. The shipped slice still stays narrow to one env-backed `API_KEY`, `X-API-Key` parsing, fail-closed auth responses, the `POST /api/open/notes` route skeleton, and focused unit coverage without adding CORS, browser auth, or multi-key management.
 - 2026-03-22 17:36 KST: Aligned the external note API product/design docs and note-enrichment spec with the shipped task-077 boundary so they describe the current auth-only `503`/`401`/`501` route skeleton instead of unimplemented note-create, publish-on-create, success-payload, or API-triggered enrichment behavior. Re-running the required command set next against the unchanged auth helper, route skeleton, env examples, and unit coverage.
 - 2026-03-22 17:39 KST: Re-ran the exact required command set after the docs alignment. `npm run typecheck`, `npm run test:unit`, and `npm run verify` all passed. Task 077 remains scoped to the existing server-only `API_KEY` env contract, `X-API-Key` fail-closed parsing, the `POST /api/open/notes` skeleton, and focused unit coverage, with the docs now matching the shipped `503`/`401`/`501` behavior.
+- 2026-03-22T08:43:16.033Z: automatically promoted after deterministic checks and evaluator approval.

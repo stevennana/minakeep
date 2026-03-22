@@ -1,59 +1,56 @@
 Read the following repository documents before making changes:
 - AGENTS.md
 - ARCHITECTURE.md
-- docs/SECURITY.md
-- docs/RELIABILITY.md
 - docs/product-specs/external-note-api.md
-- docs/design-docs/external-note-api-boundary.md
+- docs/product-specs/public-note-publishing.md
 - docs/product-specs/note-ai-enrichment.md
-- docs/exec-plans/active/077-external-note-api-auth-foundation.md
+- docs/design-docs/external-note-api-boundary.md
+- docs/exec-plans/active/078-external-note-api-create-and-publish.md
 
-Current task id: 077-external-note-api-auth-foundation
-Current task title: External note API auth foundation
+Current task id: 078-external-note-api-create-and-publish
+Current task title: External note API create and publish
 
 Objective:
-Establish the static-key auth boundary and env contract for server-to-server note creation.
+Create owner notes through the external API and support optional publish-on-create without inventing a second note workflow.
 
 Scope:
-- `API_KEY` env contract and docs
-- `X-API-Key` auth parsing and fail-closed behavior
-- route skeleton for `POST /api/open/notes`
-- unit coverage for the auth boundary
+- request JSON parsing for `title`, `markdown`, and optional `isPublished`
+- note creation under the single owner account
+- optional publish-on-create
+- reuse of the existing note enrichment scheduling and public/private revalidation behavior
+- success response contract with note identifiers and URLs
 
 Out of scope:
-- actual note persistence
-- publish-on-create behavior
-- full response payload polish or regression hardening
+- note updates, deletes, or list endpoints
+- image upload
+- remote-controlled slug, tags, or AI summary
 
 Exit criteria:
-1. The repo documents `API_KEY` as the only external note-create credential in this wave.
-2. The new route boundary fails closed when `API_KEY` is missing, missing from the request, or invalid.
-3. The implementation does not introduce CORS support, browser auth, or multi-key management.
-4. Unit coverage protects the header and disabled-route rules.
-5. `npm run verify` passes.
+1. A valid keyed request creates a private note when `isPublished` is omitted.
+2. A valid keyed request publishes the note immediately when `isPublished` is `true`.
+3. API-created notes enter the existing note AI enrichment lifecycle after save.
+4. The response JSON includes the created note identity plus owner/public URLs as appropriate.
+5. `npm run test:e2e -- --grep @note-api` passes.
+6. `npm run verify` passes.
 
 Required checks:
-- `npm run typecheck`
-- `npm run test:unit`
+- `npm run test:e2e -- --grep @note-api`
 - `npm run verify`
 
 Evaluator notes:
-Promote only when the auth boundary is narrow, server-only, and clearly separate from owner/demo browser-session auth.
+Promote only when the external note-create path behaves like the existing owner note flow, not like a second product.
 
 Required repository artifacts for this task:
 - src/app/api
-- src/lib
-- tests/unit
-- .env.example
-- .env.compose.example
+- src/features/notes
+- tests/e2e
 
 Required commands for this task:
-- npm run typecheck
-- npm run test:unit
+- npm run test:e2e -- --grep @note-api
 - npm run verify
 
 Previous known gaps from the last evaluation:
-- The referenced external note API product/design docs are not aligned with the shipped route skeleton: they describe successful note creation, optional publish-on-create, richer response fields, and enrichment behavior that the current `501` stub does not implement.
+- none
 
 
 

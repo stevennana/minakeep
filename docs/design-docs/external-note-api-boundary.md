@@ -11,14 +11,16 @@ Define the narrow server-side boundary for remote note creation without introduc
 
 ## Route contract
 - expose `POST /api/open/notes`
-- in the auth-foundation wave, the route only authenticates the `X-API-Key` header and returns:
+- the route authenticates the `X-API-Key` header and returns:
   - `503` when `API_KEY` is unset
   - `401` when the header is missing or invalid
-  - `501` for the authorized stub path
-- request-body parsing, note persistence, publish-on-create, and success-payload fields are deferred to the next implementation wave
+  - `400` when the JSON body is missing or malformed, or required fields are invalid
+  - `201` when the note is created successfully
+- the request body accepts only owner-authored fields: `title`, `markdown`, and optional `isPublished`
+- the success payload includes the created note identity plus owner and public route URLs
 
 ## Content ownership rules
-- when note creation ships, the external caller will provide only owner-authored note fields such as title and markdown
+- the external caller provides only owner-authored note fields such as title and markdown
 - slug generation remains server-owned and must reuse the existing note-slug rules
 - AI summary and tags remain server-owned and must follow the existing enrichment lifecycle
 - image upload, image embedding, manual tags, and manual summary injection stay out of scope
@@ -26,8 +28,8 @@ Define the narrow server-side boundary for remote note creation without introduc
 ## Failure model
 - if `API_KEY` is unset, the route fails closed with a disabled-style response rather than silently allowing anonymous writes
 - missing or invalid keys return auth failures without revealing the configured key
-- request-shape validation is deferred until note-create behavior ships
-- once note persistence ships, AI enrichment failure must not block note save, matching the existing note-save contract
+- request-shape validation rejects malformed or non-conforming JSON before persistence
+- AI enrichment failure must not block note save, matching the existing note-save contract
 
 ## Operational rules
 - this route is server-to-server only; do not add CORS support in this wave

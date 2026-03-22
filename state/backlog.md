@@ -64,7 +64,7 @@
 - [x] 074-demo-workspace-read-only-shell — Demo workspace read-only shell
 - [x] 075-demo-write-protection — Demo write protection
 - [x] 076-demo-docker-and-hardening — Demo Docker and hardening
-- [ ] 077-external-note-api-auth-foundation — External note API auth foundation ← current
-- [ ] 078-external-note-api-create-and-publish — External note API create and publish
+- [x] 077-external-note-api-auth-foundation — External note API auth foundation
+- [ ] 078-external-note-api-create-and-publish — External note API create and publish ← current
 - [ ] 079-external-note-api-hardening — External note API hardening
 

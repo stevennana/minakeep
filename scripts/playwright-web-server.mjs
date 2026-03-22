@@ -27,6 +27,7 @@ const child = spawn(npmBin, ["run", "dev", "--", "--hostname", host, "--port", p
   cwd: process.cwd(),
   env: {
     ...process.env,
+    API_KEY: process.env.API_KEY ?? "minakeep-playwright-api-key",
     DEMO_PASSWORD: process.env.DEMO_PASSWORD ?? "minakeep-demo-password",
     DEMO_USERNAME: process.env.DEMO_USERNAME ?? "demo",
     PLAYWRIGHT_AI_TEST_MODE_FILE: aiTestModeFile,

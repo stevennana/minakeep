@@ -1,18 +1,8 @@
 "use server";
 
 import { notFound, redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
-import { after } from "next/server";
-
-import { runNoteEnrichment } from "@/features/notes/enrichment";
-import {
-  createDraftNote,
-  publishNote,
-  retryNoteEnrichment,
-  startNoteEnrichment,
-  unpublishNote,
-  updateDraftNote
-} from "@/features/notes/service";
+import { createOwnerNote, queueNoteEnrichment, revalidateNotePaths, scheduleNoteEnrichment } from "@/features/notes/runtime";
+import { publishNote, retryNoteEnrichment, unpublishNote, updateDraftNote } from "@/features/notes/service";
 import { isReadOnlyWorkspaceMutationError, requireWritableOwnerSession } from "@/lib/auth/owner-session";
 
 function getNoteInput(formData: FormData) {
@@ -20,32 +10,6 @@ function getNoteInput(formData: FormData) {
     title: String(formData.get("title") ?? ""),
     markdown: String(formData.get("markdown") ?? "")
   };
-}
-
-function revalidateNotePaths(note: { id: string; slug: string }) {
-  revalidatePath("/");
-  revalidatePath("/app");
-  revalidatePath("/app/search");
-  revalidatePath("/app/tags");
-  revalidatePath(`/app/notes/${note.id}/edit`);
-  revalidatePath(`/notes/${note.slug}`);
-}
-
-function scheduleNoteEnrichment(note: { id: string; slug: string }, attempt: number) {
-  after(async () => {
-    await runNoteEnrichment(note.id, attempt);
-    revalidateNotePaths(note);
-  });
-}
-
-async function queueNoteEnrichment(note: { id: string; slug: string }) {
-  const enrichedNote = await startNoteEnrichment(note.id);
-
-  if (enrichedNote.enrichment.status === "pending") {
-    scheduleNoteEnrichment(note, enrichedNote.enrichment.attempts);
-  }
-
-  return enrichedNote;
 }
 
 function appendReadOnlyError(path: string) {
@@ -67,13 +31,9 @@ async function withWritableOwnerSession<T>(redirectPath: string, run: (owner: Aw
 
 export async function createNoteAction(formData: FormData) {
   const note = await withWritableOwnerSession("/app", async (owner) => {
-    const createdNote = await createDraftNote(owner.id, getNoteInput(formData));
-    await queueNoteEnrichment(createdNote);
-
-    return createdNote;
+    return createOwnerNote(owner.id, getNoteInput(formData));
   });
 
-  revalidateNotePaths(note);
   redirect(`/app/notes/${note.id}/edit?saved=1`);
 }
 

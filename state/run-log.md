@@ -1289,3 +1289,18 @@ Worker stalled. Stopping loop for RCA.
 - evaluator: started
 - evaluator: status=done promotion=true Task 077 is complete in substance. The repo now documents one env-backed `API_KEY` as the only credential for this wave, the `POST /api/open/notes` boundary fails closed with `503` when disabled and `401` for missing/invalid `X-API-Key`, the authorized path remains a `501` stub with no persistence or publish behavior, no CORS/browser-auth/multi-key surface was introduced, focused unit coverage exists for the auth boundary, and the provided deterministic evidence shows `npm run verify` passing. -> state/artifacts/20260322T173557-077-external-note-api-auth-foundation/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T173557-077-external-note-api-auth-foundation/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 077-external-note-api-auth-foundation -> 078-external-note-api-create-and-publish
+- backlog: rendered current=078-external-note-api-create-and-publish
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xo
+- cycle: finished
+
+### cycle 2026-03-22T17:43:46+09:00 task=078-external-note-api-create-and-publish
+- artifacts: state/artifacts/20260322T174346-078-external-note-api-create-and-publish
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260322T174346-078-external-note-api-create-and-publish/worker.jsonl
+- worker-summary: **Changes**
+- evaluator: started
+- evaluator: status=not_done promotion=false The core create/publish path is implemented correctly and both required command gates passed, but the shipped API boundary is still looser than the documented contract. `POST /api/open/notes` validates types for `title`, `markdown`, and `isPublished`, yet it does not reject extra unsupported fields. The design doc says the body accepts only those fields and that non-conforming JSON is rejected before persistence. As shipped, callers can send out-of-scope fields such as `slug`, `tags`, or `summary` and still get `201`, with those fields silently ignored. That is a substantive contract mismatch for this boundary, so I would hold promotion. -> state/artifacts/20260322T174346-078-external-note-api-create-and-publish/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T174346-078-external-note-api-create-and-publish/npm-run-test-e2e-grep-note-api-next-server.log

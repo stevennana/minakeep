@@ -1,7 +1,7 @@
 # External note API
 
 ## Goal
-Establish the server-to-server auth boundary for future owner note creation through one static environment API key, without introducing multi-user API key management.
+Let a trusted external server create owner notes through one static environment API key, without introducing multi-user API key management or a second note workflow.
 
 ## Trigger / Entry
 A trusted external server sends a note-create request to the Minakeep API with the configured `X-API-Key` header.
@@ -11,8 +11,12 @@ A trusted external server sends a note-create request to the Minakeep API with t
 - The endpoint authenticates requests with one environment-backed `API_KEY`; there is no UI for creating or rotating per-client keys in this wave.
 - If `API_KEY` is unset, the endpoint is disabled and returns a fail-closed response instead of accepting anonymous writes.
 - Missing or invalid `X-API-Key` headers are rejected.
-- A request with a valid `X-API-Key` reaches a `501 Not implemented` skeleton response in this wave.
-- This auth-foundation slice does not yet persist notes, publish notes on create, parse the request body, or start AI enrichment.
+- A valid keyed request must send JSON with `title`, `markdown`, and optional `isPublished`.
+- A valid keyed request creates a note under the configured single owner account.
+- When `isPublished` is omitted, the note stays private.
+- When `isPublished` is `true`, the note follows the existing publish flow immediately after create and becomes visible on the public routes.
+- API-created notes enter the same AI enrichment lifecycle as UI-created notes.
+- The success response returns the created note identity plus the owner edit URL and the public note URL when the note is published.
 - There is no browser-origin auth, CORS support, or multi-key management in this wave.
 
 ## Security and boundary rules
@@ -24,5 +28,7 @@ A trusted external server sends a note-create request to the Minakeep API with t
 ## Validation
 - If `API_KEY` is unset, `POST /api/open/notes` returns a disabled fail-closed response.
 - Missing or invalid `X-API-Key` requests are rejected.
-- A valid `X-API-Key` request reaches the route skeleton without persisting a note yet.
+- A valid keyed request can create a private note when `isPublished` is omitted.
+- A valid keyed request can publish a note immediately when `isPublished` is `true`.
+- API-created notes reuse the existing note enrichment lifecycle.
 - `npm run verify` passes.
