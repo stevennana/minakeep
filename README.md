@@ -35,6 +35,23 @@ Prepare the local database:
 npm run db:prepare
 ```
 
+Reset to a fresh local database state:
+
+```bash
+rm -f dev.db dev.db-shm dev.db-wal
+npm run db:prepare
+```
+
+If you also want a completely clean local media state:
+
+```bash
+rm -f dev.db dev.db-shm dev.db-wal
+rm -rf media
+npm run db:prepare
+```
+
+After a DB reset, open a fresh browser tab or do a hard reload before continuing. Old edit pages or upload forms can still hold stale note/link ids and trigger foreign-key errors against the new database.
+
 Configure AI enrichment if you want generated summaries and tags:
 
 ```bash
@@ -61,6 +78,12 @@ Start the app:
 
 ```bash
 npm run dev
+```
+
+Production-style local start:
+
+```bash
+npm run start
 ```
 
 Run the full deterministic verification suite:

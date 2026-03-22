@@ -59,5 +59,5 @@
 - [x] 069-owner-dashboard-notes-priority-reset — Owner dashboard notes priority reset
 - [x] 070-owner-links-layout-reset — Owner links layout reset
 - [x] 071-owner-session-continuity — Owner session continuity
-- [ ] 072-ui-refinement-hardening — UI refinement hardening ← current
+- [x] 072-ui-refinement-hardening — UI refinement hardening
 

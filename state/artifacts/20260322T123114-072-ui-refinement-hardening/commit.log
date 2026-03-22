@@ -1,0 +1,12 @@
+[main 54f46f1] ralph: 072-ui-refinement-hardening 2026-03-22T12:38:49+09:00
+ 26 files changed, 765 insertions(+), 57 deletions(-)
+ rename docs/exec-plans/{active => completed}/071-owner-session-continuity.md (93%)
+ create mode 100644 state/artifacts/20260322T122414-071-owner-session-continuity/backlog.log
+ create mode 100644 state/artifacts/20260322T122414-071-owner-session-continuity/promote.log
+ create mode 100644 state/artifacts/20260322T123114-072-ui-refinement-hardening/commit.log
+ create mode 100644 state/artifacts/20260322T123114-072-ui-refinement-hardening/evaluator.log
+ create mode 100644 state/artifacts/20260322T123114-072-ui-refinement-hardening/npm-run-test-e2e-grep-ui-refinement-hardening-next-server.log
+ create mode 100644 state/artifacts/20260322T123114-072-ui-refinement-hardening/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260322T123114-072-ui-refinement-hardening/task-prompt.log
+ create mode 100644 state/artifacts/20260322T123114-072-ui-refinement-hardening/worker.jsonl
+commit: created

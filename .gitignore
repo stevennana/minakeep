@@ -16,3 +16,7 @@ tsconfig.tsbuildinfo
 !logs/.gitkeep
 /screenshots/texteditor.png
 /screenshots/texteditor-newline.png
+/tmp/playwriter-check/app-dashboard.png
+/tmp/playwriter-check/app-links.png
+/tmp/playwriter-check/app-search.png
+/tmp/playwriter-check/app-tags.png

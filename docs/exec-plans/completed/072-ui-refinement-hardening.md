@@ -5,7 +5,7 @@
   "id": "072-ui-refinement-hardening",
   "title": "UI refinement hardening",
   "order": 72,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "NONE",
   "prompt_docs": [
@@ -30,7 +30,8 @@
     "Docs still describe superseded verbose UI or broken layout and session behavior.",
     "Responsive or screenshot regressions remain around the refined surfaces.",
     "The fixes are technically present but still feel cluttered or awkward in the captured UI."
-  ]
+  ],
+  "completed_at": "2026-03-22T03:38:49.984Z"
 }
 ```
 
@@ -71,3 +72,4 @@ Promote only when the refinement wave is protected by regression coverage and th
 - Start here. Append timestamped progress notes as work lands.
 - 2026-03-22 12:36 KST: Expanded `@ui-refinement-hardening` coverage to include the shipped progressive-disclosure, public-search, owner-links-layout, and owner-session-continuity surfaces instead of replaying only the owner dashboard slice.
 - 2026-03-22 12:36 KST: Restored desktop/mobile screenshot assertions for the links surface, refreshed the links snapshot baselines to the current shipped layout, updated the owner-workspace-density spec to describe the stacked capture-and-list behavior, and passed `npm run test:e2e -- --grep @ui-refinement-hardening` plus `npm run verify`.
+- 2026-03-22T03:38:49.984Z: automatically promoted after deterministic checks and evaluator approval.
