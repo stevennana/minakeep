@@ -5,7 +5,7 @@
   "id": "070-owner-links-layout-reset",
   "title": "Owner links layout reset",
   "order": 70,
-  "status": "planned",
+  "status": "active",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "071-owner-session-continuity",
   "prompt_docs": [
@@ -68,3 +68,5 @@ Promote only when the links surface scales naturally as the saved-links list gro
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-22 12:19 KST: Read the required docs, inspected the current links route, and confirmed the existing desktop layout still pinned the short capture form beside the growing saved-links list.
+- 2026-03-22 12:19 KST: Reset `/app/links` so the capture form stays compact above the list, added route-specific capture-field spacing for desktop/mobile, and tagged the owner-links Playwright coverage with `@ui-owner-links-layout`.

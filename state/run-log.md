@@ -1051,3 +1051,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T120919-069-owner-dashboard-notes-priority-reset/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T120919-069-owner-dashboard-notes-priority-reset/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 069-owner-dashboard-notes-priority-reset -> 070-owner-links-layout-reset
+- backlog: rendered current=070-owner-links-layout-reset
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooo
+- cycle: finished
+
+### cycle 2026-03-22T12:16:17+09:00 task=070-owner-links-layout-reset
+- artifacts: state/artifacts/20260322T121617-070-owner-links-layout-reset
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260322T121617-070-owner-links-layout-reset/worker.jsonl
+- worker-summary: Reset the owner links layout so the capture form stays compact and the saved-links list owns the continuous desktop lane. The form inputs and submit action were tightened in [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/links/page.tsx#L90), and the route-specific layout rules now keep the links surface stacked on desktop with a capped capture-panel width and responsive field row in [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css#L1945) and [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css#L2724).
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T121617-070-owner-links-layout-reset/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T121617-070-owner-links-layout-reset/npm-run-verify-next-server.log

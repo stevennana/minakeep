@@ -1,48 +1,49 @@
 Read the following repository documents before making changes:
 - AGENTS.md
 - docs/FRONTEND.md
+- docs/product-specs/link-capture.md
 - docs/product-specs/owner-workspace-density.md
 - docs/design-docs/owner-workspace-density.md
-- docs/exec-plans/active/069-owner-dashboard-notes-priority-reset.md
+- docs/exec-plans/active/070-owner-links-layout-reset.md
 
-Current task id: 069-owner-dashboard-notes-priority-reset
-Current task title: Owner dashboard notes priority reset
+Current task id: 070-owner-links-layout-reset
+Current task title: Owner links layout reset
 
 Objective:
-Reclaim prime desktop dashboard space for the Notes section by removing the competing owner-tools block and redundant quick-route links.
+Restructure the owner links page so the saved-links list gets the dominant growing layout space.
 
 Scope:
-- owner dashboard composition on desktop
-- note-list space allocation
-- removal of redundant `Links`, `Tags`, and `Search` shortcuts inside the Notes surface
+- owner links page layout composition
+- relationship between capture form and saved-links list
+- responsive behavior of the links page
 
 Out of scope:
-- owner shell navigation changes
-- note editor changes
-- public showroom layout
+- link capture behavior changes
+- publishing logic
+- dashboard overview layout
 
 Exit criteria:
-1. The Notes section gains visibly more prime desktop space.
-2. The removed or demoted owner-tools block no longer competes with Notes in the main dashboard view.
-3. Redundant `Links`, `Tags`, and `Search` shortcuts are removed from the Notes area.
-4. `npm run test:e2e -- --grep @ui-owner-notes-priority` passes.
+1. The saved-links list gets the dominant continuous space on desktop.
+2. The short capture form no longer wastes a tall adjacent column.
+3. Mobile remains straightforward and touch-friendly.
+4. `npm run test:e2e -- --grep @ui-owner-links-layout` passes.
 5. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-owner-notes-priority`
+- `npm run test:e2e -- --grep @ui-owner-links-layout`
 
 Evaluator notes:
-Promote only when the dashboard feels more note-first without reducing owner clarity.
+Promote only when the links surface scales naturally as the saved-links list grows.
 
 Required repository artifacts for this task:
-- src/app/app/page.tsx
+- src/app/app/links/page.tsx
 - src/app/globals.css
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-owner-notes-priority
+- npm run test:e2e -- --grep @ui-owner-links-layout
 
 Previous known gaps from the last evaluation:
 - none

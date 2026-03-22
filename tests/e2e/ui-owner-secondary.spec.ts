@@ -292,15 +292,18 @@ async function expectLinksHierarchy(page: Page, viewport: "desktop" | "mobile") 
   }
 
   expect(heroBox.height).toBeLessThan(viewport === "desktop" ? 340 : 500);
+  expect(formBox.height).toBeLessThan(viewport === "desktop" ? 320 : 420);
   expect(linkBox.height).toBeLessThan(viewport === "desktop" ? 390 : 470);
 
   if (viewport === "desktop") {
-    expect(formBox.x).toBeLessThan(listBox.x);
+    expect(formBox.y).toBeLessThan(listBox.y);
+    expect(Math.abs(formBox.x - listBox.x)).toBeLessThan(24);
     expect(listBox.width).toBeGreaterThan(formBox.width);
     return;
   }
 
   expect(listBox.y).toBeGreaterThan(formBox.y);
+  expect(Math.abs(listBox.width - formBox.width)).toBeLessThan(48);
 }
 
 async function expectTagsHierarchy(page: Page, viewport: "desktop" | "mobile") {
@@ -380,7 +383,7 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-regression @ui-owner-secondary links surface stays compact on desktop", async ({ page }) => {
+test("@ui-regression @ui-owner-secondary @ui-owner-links-layout links surface gives the saved list the dominant desktop lane", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await signIn(page);
   await page.goto("/app/links");
@@ -398,7 +401,7 @@ test("@ui-regression @ui-owner-secondary links surface stays compact on desktop"
   await expectNoHorizontalOverflow(page);
 });
 
-test("@ui-regression @ui-owner-secondary @ui-responsive links surface stays usable on mobile", async ({ page }) => {
+test("@ui-regression @ui-owner-secondary @ui-owner-links-layout @ui-responsive links surface stays straightforward on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await signIn(page);
   await page.goto("/app/links");

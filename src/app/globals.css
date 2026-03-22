@@ -1942,6 +1942,24 @@ textarea {
   margin-top: 0;
 }
 
+.link-manager-grid {
+  align-items: start;
+}
+
+.link-manager-grid .link-form {
+  max-width: 100%;
+  width: 100%;
+}
+
+.owner-links-capture-fields {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.owner-links-capture-actions {
+  margin-top: 0;
+}
+
 .secondary-link-item {
   gap: 0.75rem;
   padding: 0.85rem 0.95rem;
@@ -2704,8 +2722,20 @@ textarea {
   }
 
   .link-manager-grid {
-    align-items: start;
-    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .link-manager-grid .link-form {
+    max-width: 38rem;
+  }
+
+  .owner-links-capture-fields {
+    align-items: end;
+    grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.82fr) auto;
+  }
+
+  .owner-links-capture-actions {
+    align-self: stretch;
   }
 
   .note-editor-grid {

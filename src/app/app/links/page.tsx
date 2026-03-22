@@ -90,32 +90,34 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
       <div className="link-manager-grid secondary-route-grid">
         <Surface action={createLinkAction} as="form" className="link-form secondary-control-panel" density="compact" tone="panel">
           <SectionHeading meta="Manual URL and title" title="Capture" />
-          <FormField label="URL">
-            <input
-              autoComplete="url"
-              className="text-input"
-              name="url"
-              placeholder="https://example.com/article"
-              required
-              type="url"
-            />
-          </FormField>
-          <FormField label="Title">
-            <input
-              autoComplete="off"
-              className="text-input"
-              name="title"
-              placeholder="Reference title"
-              required
-              type="text"
-            />
-          </FormField>
+          <div className="owner-links-capture-fields">
+            <FormField label="URL">
+              <input
+                autoComplete="url"
+                className="text-input"
+                name="url"
+                placeholder="https://example.com/article"
+                required
+                type="url"
+              />
+            </FormField>
+            <FormField label="Title">
+              <input
+                autoComplete="off"
+                className="text-input"
+                name="title"
+                placeholder="Reference title"
+                required
+                type="text"
+              />
+            </FormField>
+            <div className="button-row owner-links-capture-actions">
+              <Button type="submit">Save link</Button>
+            </div>
+          </div>
           <Disclosure summary="After save">
             <p>AI summary and tags are added automatically. Links stay private until you publish them.</p>
           </Disclosure>
-          <div className="button-row">
-            <Button type="submit">Save link</Button>
-          </div>
         </Surface>
 
         <Surface className="link-list-panel secondary-list-panel secondary-link-panel" density="compact" tone="panel">
