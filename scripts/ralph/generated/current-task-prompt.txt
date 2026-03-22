@@ -53,7 +53,7 @@ Required commands for this task:
 - npm run verify
 
 Previous known gaps from the last evaluation:
-- none
+- The referenced external note API product/design docs are not aligned with the shipped route skeleton: they describe successful note creation, optional publish-on-create, richer response fields, and enrichment behavior that the current `501` stub does not implement.
 
 
 

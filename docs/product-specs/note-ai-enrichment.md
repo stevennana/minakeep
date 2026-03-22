@@ -5,11 +5,11 @@ Let Minakeep automatically generate AI-owned summary and tags for notes after sa
 
 ## Trigger / Entry
 - The owner creates or updates a note from the private note editor.
-- A trusted external note-create request also enters the same note enrichment flow after save.
+- A future trusted external note-create request will enter the same note enrichment flow after note persistence ships. The current auth-foundation wave does not persist notes or start enrichment from `/api/open/notes`.
 
 ## User-Visible Behavior
 - After note save, Minakeep starts AI enrichment automatically.
-- API-created notes follow the same enrichment lifecycle as UI-created notes.
+- API-created notes should follow the same enrichment lifecycle as UI-created notes once the create route persists notes.
 - The note editor and owner-facing lists show whether enrichment is pending, ready, or failed.
 - When enrichment succeeds, the generated summary and tags become visible across relevant owner surfaces.
 - If enrichment fails, the note still saves and the owner can retry enrichment.

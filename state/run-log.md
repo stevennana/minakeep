@@ -1274,3 +1274,18 @@ Worker stalled. Stopping loop for RCA.
 - evaluator: started
 - evaluator: status=not_done promotion=false The auth foundation itself is implemented narrowly and correctly: `API_KEY` is documented in env examples, `X-API-Key` parsing fails closed with `503` when disabled and `401` when missing or wrong, the route stays server-only with no CORS/browser auth expansion, focused unit coverage exists, and the provided `npm run verify` result is green. I am still blocking promotion because the referenced product/design docs for this task describe shipped note creation, publish-on-create, response fields, and API-triggered enrichment, while the current valid-key path is still an intentional `501 Not implemented` stub. Under the repo's documentation-as-contract rules, that is substantive drift. -> state/artifacts/20260322T172652-077-external-note-api-auth-foundation/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T172652-077-external-note-api-auth-foundation/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Task 077-external-note-api-auth-foundation not eligible for promotion.
+- backlog: rendered current=077-external-note-api-auth-foundation
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!x
+- cycle: finished
+
+### cycle 2026-03-22T17:35:57+09:00 task=077-external-note-api-auth-foundation
+- artifacts: state/artifacts/20260322T173557-077-external-note-api-auth-foundation
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260322T173557-077-external-note-api-auth-foundation/worker.jsonl
+- worker-summary: Aligned the task-077 docs to the shipped auth-only boundary in [external-note-api.md](/Users/stevenna/WebstormProjects/minakeep/docs/product-specs/external-note-api.md), [external-note-api-boundary.md](/Users/stevenna/WebstormProjects/minakeep/docs/design-docs/external-note-api-boundary.md), and [note-ai-enrichment.md](/Users/stevenna/WebstormProjects/minakeep/docs/product-specs/note-ai-enrichment.md). The implementation itself was already present and unchanged: one env-backed `API_KEY`, `X-API-Key` parsing, fail-closed `503`/`401` responses, and the valid-key `501` skeleton in [route.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/api/open/notes/route.ts). I also appended this run’s result to [077-external-note-api-auth-foundation.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/077-external-note-api-auth-foundation.md) and wrote the operator handoff to [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
+- evaluator: started
+- evaluator: status=done promotion=true Task 077 is complete in substance. The repo now documents one env-backed `API_KEY` as the only credential for this wave, the `POST /api/open/notes` boundary fails closed with `503` when disabled and `401` for missing/invalid `X-API-Key`, the authorized path remains a `501` stub with no persistence or publish behavior, no CORS/browser-auth/multi-key surface was introduced, focused unit coverage exists for the auth boundary, and the provided deterministic evidence shows `npm run verify` passing. -> state/artifacts/20260322T173557-077-external-note-api-auth-foundation/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T173557-077-external-note-api-auth-foundation/npm-run-verify-next-server.log
