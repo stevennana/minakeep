@@ -53,5 +53,5 @@
 - [x] 060-public-surface-hardening — Public surface hardening
 - [x] 061-public-search-expanded-row-reset — Public search expanded row reset
 - [x] 062-owner-dashboard-notes-priority-reset — Owner dashboard notes priority reset
-- [ ] 063-ui-refinement-hardening — UI refinement hardening ← current
+- [x] 063-ui-refinement-hardening — UI refinement hardening
 

@@ -1,0 +1,12 @@
+[main 207e941] ralph: 063-ui-refinement-hardening 2026-03-22T11:21:47+09:00
+ 27 files changed, 663 insertions(+), 52 deletions(-)
+ rename docs/exec-plans/{active => completed}/062-owner-dashboard-notes-priority-reset.md (93%)
+ create mode 100644 state/artifacts/20260322T110221-062-owner-dashboard-notes-priority-reset/backlog.log
+ create mode 100644 state/artifacts/20260322T110221-062-owner-dashboard-notes-priority-reset/promote.log
+ create mode 100644 state/artifacts/20260322T111449-063-ui-refinement-hardening/commit.log
+ create mode 100644 state/artifacts/20260322T111449-063-ui-refinement-hardening/evaluator.log
+ create mode 100644 state/artifacts/20260322T111449-063-ui-refinement-hardening/npm-run-test-e2e-grep-ui-refinement-hardening-next-server.log
+ create mode 100644 state/artifacts/20260322T111449-063-ui-refinement-hardening/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260322T111449-063-ui-refinement-hardening/task-prompt.log
+ create mode 100644 state/artifacts/20260322T111449-063-ui-refinement-hardening/worker.jsonl
+commit: created

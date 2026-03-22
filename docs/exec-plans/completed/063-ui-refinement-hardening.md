@@ -5,7 +5,7 @@
   "id": "063-ui-refinement-hardening",
   "title": "UI refinement hardening",
   "order": 63,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "NONE",
   "prompt_docs": [
@@ -30,7 +30,8 @@
     "Docs still describe the broken search/dashboard layout after the refinements ship.",
     "Responsive or screenshot regressions remain around the public search row or owner dashboard notes layout.",
     "The fixes pass narrowly but still feel visually awkward in the screenshots."
-  ]
+  ],
+  "completed_at": "2026-03-22T02:21:47.861Z"
 }
 ```
 
@@ -71,3 +72,4 @@ Promote only when the layout fixes are protected by stable regression coverage a
 - Start here. Append timestamped progress notes as work lands.
 - 2026-03-22 11:16 KST: Re-read the active task contract plus the shipped search-row and dashboard-note implementations, confirmed the layout fixes already landed, and narrowed this pass to doc alignment plus deterministic regression tagging instead of duplicating existing UI coverage.
 - 2026-03-22 11:18 KST: Updated the public-search and owner-density docs to match the shipped compact search shell and inline dashboard shortcuts, tagged the existing public showroom and owner dashboard screenshot tests with `@ui-refinement-hardening`, and passed both `npm run test:e2e -- --grep @ui-refinement-hardening` and `npm run verify`.
+- 2026-03-22T02:21:47.861Z: automatically promoted after deterministic checks and evaluator approval.
