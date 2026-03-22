@@ -4,6 +4,13 @@ Minakeep is a self-hosted notes-and-bookmarks site with private capture, selecti
 
 This bookmark site is inspired by the Karakeep project and is built as a demo for the Mina-Ralph loop skill.
 
+## Online Demo
+
+- demonstration site: https://minakeep.mina.asia/
+- demouser: `demo`
+- demopassword: `demo`
+- you can explore the website using this id and password
+
 ## What it does
 
 - private markdown note authoring
