@@ -136,6 +136,11 @@ textarea {
   max-width: var(--container-max);
 }
 
+.feature-layout,
+.note-editor-shell {
+  width: 100%;
+}
+
 .site-header {
   align-items: flex-start;
   backdrop-filter: blur(12px);
@@ -2726,7 +2731,7 @@ textarea {
   }
 
   .link-manager-grid .link-form {
-    max-width: 38rem;
+    max-width: none;
   }
 
   .owner-links-capture-fields {

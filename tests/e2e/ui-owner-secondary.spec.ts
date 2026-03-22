@@ -202,6 +202,33 @@ async function expectNoHorizontalOverflow(page: Page) {
   expect(hasOverflow).toBe(false);
 }
 
+async function expectMatchedSurfaceWidths(page: Page, selectors: string[]) {
+  const widths = await page.evaluate((targets) => {
+    return targets.map((selector) => {
+      const element = document.querySelector<HTMLElement>(selector);
+
+      if (!element) {
+        return null;
+      }
+
+      return element.getBoundingClientRect().width;
+    });
+  }, selectors);
+
+  const numericWidths = widths.filter((width): width is number => typeof width === "number");
+
+  expect(numericWidths).toHaveLength(selectors.length);
+
+  if (numericWidths.length < selectors.length) {
+    return;
+  }
+
+  const widest = Math.max(...numericWidths);
+  const narrowest = Math.min(...numericWidths);
+
+  expect(widest - narrowest).toBeLessThanOrEqual(8);
+}
+
 async function expectAccessibleStructure(page: Page) {
   const audit = await page.evaluate(() => {
     const issues: string[] = [];
@@ -298,7 +325,7 @@ async function expectLinksHierarchy(page: Page, viewport: "desktop" | "mobile") 
   if (viewport === "desktop") {
     expect(formBox.y).toBeLessThan(listBox.y);
     expect(Math.abs(formBox.x - listBox.x)).toBeLessThan(24);
-    expect(listBox.width).toBeGreaterThan(formBox.width);
+    expect(Math.abs(listBox.width - formBox.width)).toBeLessThanOrEqual(8);
     return;
   }
 
@@ -397,6 +424,7 @@ test("@ui-regression @ui-refinement-hardening @ui-owner-secondary @ui-owner-link
   await expect(page.getByRole("button", { exact: true, name: "Unpublish link" })).toHaveCount(1);
   await expect(page.getByRole("button", { name: "Retry AI enrichment" })).toBeVisible();
   await expectLinksHierarchy(page, "desktop");
+  await expectMatchedSurfaceWidths(page, [".secondary-route-hero", ".secondary-control-panel", ".secondary-link-panel"]);
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
 
@@ -436,6 +464,7 @@ test("@ui-regression @ui-owner-secondary tags surface keeps retrieval anchors on
   await expect(page.locator(".secondary-link-panel .section-heading").getByText("Links tagged studio-systems")).toBeVisible();
   await expect(page.locator(".secondary-tag-filter")).toHaveCount(1 + 4);
   await expectTagsHierarchy(page, "desktop");
+  await expectMatchedSurfaceWidths(page, [".secondary-route-hero", ".secondary-filter-panel"]);
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
 
@@ -474,6 +503,7 @@ test("@ui-regression @ui-owner-secondary search surface keeps results structured
   await expect(page.locator(".secondary-note-panel .section-heading").getByText("Matching notes")).toBeVisible();
   await expect(page.locator(".secondary-link-panel .section-heading").getByText("Matching links")).toBeVisible();
   await expectSearchHierarchy(page, "desktop");
+  await expectMatchedSurfaceWidths(page, [".secondary-route-hero", ".secondary-search-form"]);
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
 

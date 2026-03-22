@@ -162,6 +162,33 @@ async function expectNoHorizontalOverflow(page: Page) {
   expect(hasOverflow).toBe(false);
 }
 
+async function expectMatchedSurfaceWidths(page: Page, selectors: string[]) {
+  const widths = await page.evaluate((targets) => {
+    return targets.map((selector) => {
+      const element = document.querySelector<HTMLElement>(selector);
+
+      if (!element) {
+        return null;
+      }
+
+      return element.getBoundingClientRect().width;
+    });
+  }, selectors);
+
+  const numericWidths = widths.filter((width): width is number => typeof width === "number");
+
+  expect(numericWidths).toHaveLength(selectors.length);
+
+  if (numericWidths.length < selectors.length) {
+    return;
+  }
+
+  const widest = Math.max(...numericWidths);
+  const narrowest = Math.min(...numericWidths);
+
+  expect(widest - narrowest).toBeLessThanOrEqual(8);
+}
+
 async function expectAccessibleStructure(page: Page) {
   const audit = await page.evaluate(() => {
     const issues: string[] = [];
@@ -335,6 +362,7 @@ test("@ui-regression @ui-refinement-hardening @ui-owner-dashboard @ui-responsive
   await expect(page.locator(".dashboard-note-item")).toHaveCount(seededNotes.length);
   await expectDesktopDashboardHierarchy(page);
   await expectTypographyHierarchy(page);
+  await expectMatchedSurfaceWidths(page, [".dashboard-hero", ".owner-dashboard-main"]);
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
 
