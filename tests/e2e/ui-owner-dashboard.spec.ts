@@ -232,13 +232,12 @@ async function expectAccessibleStructure(page: Page) {
 async function expectDesktopDashboardHierarchy(page: Page) {
   const grid = page.locator(".owner-dashboard-grid");
   const mainPanel = page.locator(".owner-dashboard-main");
-  const shortcuts = page.getByRole("navigation", { name: "Dashboard route shortcuts" });
   const hero = page.locator(".dashboard-hero");
   const firstNote = page.locator(".dashboard-note-item").first();
   const sidePanel = page.locator(".owner-dashboard-side-panel");
   const routeGrid = page.locator(".dashboard-route-grid");
 
-  await expect(shortcuts).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Dashboard route shortcuts" })).toHaveCount(0);
   await expect(sidePanel).toHaveCount(0);
   await expect(routeGrid).toHaveCount(0);
 
@@ -266,12 +265,11 @@ async function expectDesktopDashboardHierarchy(page: Page) {
 
 async function expectMobileDashboardHierarchy(page: Page) {
   const mainPanel = page.locator(".owner-dashboard-main");
-  const shortcuts = page.getByRole("navigation", { name: "Dashboard route shortcuts" });
   const hero = page.locator(".dashboard-hero");
   const sidePanel = page.locator(".owner-dashboard-side-panel");
   const routeGrid = page.locator(".dashboard-route-grid");
 
-  await expect(shortcuts).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Dashboard route shortcuts" })).toHaveCount(0);
   await expect(sidePanel).toHaveCount(0);
   await expect(routeGrid).toHaveCount(0);
 
@@ -332,7 +330,7 @@ test("@ui-regression @ui-refinement-hardening @ui-owner-dashboard @ui-responsive
 
   await expect(page.getByRole("heading", { name: /owner.?.s notes/i })).toBeVisible();
   await expect(page.getByLabel("Dashboard overview")).toBeVisible();
-  await expect(page.getByRole("navigation", { name: "Dashboard route shortcuts" })).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Dashboard route shortcuts" })).toHaveCount(0);
   await expect(page.locator(".dashboard-note-item .dashboard-note-ai > strong")).toHaveCount(seededNotes.length);
   await expect(page.locator(".dashboard-note-item")).toHaveCount(seededNotes.length);
   await expectDesktopDashboardHierarchy(page);
@@ -351,7 +349,7 @@ test("@ui-regression @ui-refinement-hardening @ui-owner-dashboard @ui-responsive
 
   await expect(page.getByRole("heading", { name: /owner.?.s notes/i })).toBeVisible();
   await expect(page.getByLabel("Dashboard overview")).toBeVisible();
-  await expect(page.getByRole("navigation", { name: "Dashboard route shortcuts" })).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Dashboard route shortcuts" })).toHaveCount(0);
   await expect(page.locator(".dashboard-note-item")).toHaveCount(seededNotes.length);
   await expectMobileDashboardHierarchy(page);
   await expectTypographyHierarchy(page);
@@ -367,12 +365,12 @@ test("@ui-regression @ui-refinement-hardening @ui-owner-notes-priority owner das
   await page.setViewportSize(desktopViewport);
   await signIn(page);
 
-  const shortcuts = page.getByRole("navigation", { name: "Dashboard route shortcuts" });
+  const mainPanel = page.locator(".owner-dashboard-main");
 
-  await expect(shortcuts).toBeVisible();
-  await expect(shortcuts.getByRole("link", { name: "Links" })).toBeVisible();
-  await expect(shortcuts.getByRole("link", { name: "Tags" })).toBeVisible();
-  await expect(shortcuts.getByRole("link", { name: "Search" })).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Dashboard route shortcuts" })).toHaveCount(0);
+  await expect(mainPanel.getByRole("link", { name: "Links" })).toHaveCount(0);
+  await expect(mainPanel.getByRole("link", { name: "Tags" })).toHaveCount(0);
+  await expect(mainPanel.getByRole("link", { name: "Search" })).toHaveCount(0);
   await expect(page.locator(".owner-dashboard-side-panel")).toHaveCount(0);
   await expect(page.locator(".dashboard-route-grid")).toHaveCount(0);
   await expectDesktopDashboardHierarchy(page);

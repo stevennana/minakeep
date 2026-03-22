@@ -1,5 +1,4 @@
 import type { Route } from "next";
-import Link from "next/link";
 import { unstable_noStore as noStore } from "next/cache";
 
 import { signOut } from "@/auth";
@@ -65,20 +64,7 @@ export default async function PrivateDashboardPage() {
 
       <div className="dashboard-grid owner-dashboard-grid" data-testid="owner-dashboard-grid">
         <Surface className="owner-dashboard-main" tone="panel">
-          <div className="owner-dashboard-head">
-            <SectionHeading meta="Drafts and published notes" title="Notes" />
-            <nav aria-label="Dashboard route shortcuts" className="owner-dashboard-shortcuts">
-              <Link className="vault-nav-link owner-dashboard-shortcut" href="/app/links">
-                Links
-              </Link>
-              <Link className="vault-nav-link owner-dashboard-shortcut" href="/app/tags">
-                Tags
-              </Link>
-              <Link className="vault-nav-link owner-dashboard-shortcut" href="/app/search">
-                Search
-              </Link>
-            </nav>
-          </div>
+          <SectionHeading meta="Drafts and published notes" title="Notes" />
           {notes.length === 0 ? (
             <p>No notes yet. Create your first draft.</p>
           ) : (

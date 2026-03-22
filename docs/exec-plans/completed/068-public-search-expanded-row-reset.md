@@ -5,7 +5,7 @@
   "id": "068-public-search-expanded-row-reset",
   "title": "Public search expanded row reset",
   "order": 68,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "069-owner-dashboard-notes-priority-reset",
   "prompt_docs": [
@@ -28,7 +28,8 @@
     "The expanded search panel still appears beside the archive count instead of below the archive header.",
     "Search still uses redundant labels or helper copy around an obvious search field.",
     "The layout fix regresses collapsed-search or mobile behavior."
-  ]
+  ],
+  "completed_at": "2026-03-22T03:08:49.188Z"
 }
 ```
 
@@ -70,3 +71,4 @@ Promote only when the expanded search state looks deliberately placed and does n
 - Start here. Append timestamped progress notes as work lands.
 - 2026-03-22 12:06:09 KST: Removed the expanded public-search disclosure/header copy, reduced the expanded controls to a cleaner search field plus close action, and tightened the desktop/mobile row spacing so the expanded shell reads as its own row beneath the archive heading.
 - 2026-03-22 12:06:09 KST: Updated `@ui-public-search-row` and `@ui-information-density` Playwright coverage to assert the new minimal expanded state, then confirmed `npm run test:e2e -- --grep @ui-public-search-row` and `npm run verify` both pass.
+- 2026-03-22T03:08:49.188Z: automatically promoted after deterministic checks and evaluator approval.

@@ -1036,3 +1036,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T115921-068-public-search-expanded-row-reset/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T115921-068-public-search-expanded-row-reset/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 068-public-search-expanded-row-reset -> 069-owner-dashboard-notes-priority-reset
+- backlog: rendered current=069-owner-dashboard-notes-priority-reset
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xoooooooooooo
+- cycle: finished
+
+### cycle 2026-03-22T12:09:19+09:00 task=069-owner-dashboard-notes-priority-reset
+- artifacts: state/artifacts/20260322T120919-069-owner-dashboard-notes-priority-reset
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260322T120919-069-owner-dashboard-notes-priority-reset/worker.jsonl
+- worker-summary: Removed the redundant `Links`, `Tags`, and `Search` shortcut nav from the Notes surface in [src/app/app/page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/page.tsx), deleted the now-unused dashboard shortcut styles in [src/app/globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css), updated the owner dashboard/system Playwright expectations in [tests/e2e/ui-owner-dashboard.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-owner-dashboard.spec.ts) and [tests/e2e/ui-system.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-system.spec.ts), refreshed the two owner-dashboard snapshots, and logged progress in [docs/exec-plans/active/069-owner-dashboard-notes-priority-reset.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/069-owner-dashboard-notes-priority-reset.md).
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T120919-069-owner-dashboard-notes-priority-reset/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T120919-069-owner-dashboard-notes-priority-reset/npm-run-verify-next-server.log

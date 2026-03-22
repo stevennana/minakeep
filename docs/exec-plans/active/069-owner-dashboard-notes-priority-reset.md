@@ -5,7 +5,7 @@
   "id": "069-owner-dashboard-notes-priority-reset",
   "title": "Owner dashboard notes priority reset",
   "order": 69,
-  "status": "planned",
+  "status": "active",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "070-owner-links-layout-reset",
   "prompt_docs": [
@@ -67,3 +67,6 @@ Promote only when the dashboard feels more note-first without reducing owner cla
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-22 12:10 KST: Re-read the dashboard/frontend/task docs, confirmed the owner-tools side panel was already gone, and identified the remaining Notes-header shortcut nav as the scope blocker.
+- 2026-03-22 12:10 KST: Removed the in-panel `Links`, `Tags`, and `Search` shortcuts from `/app`, deleted the related dashboard shortcut CSS, and updated owner dashboard UI assertions to require a notes-only main surface.
+- 2026-03-22 12:13 KST: Verified the reset with `npm run test:e2e -- --grep @ui-owner-notes-priority`, refreshed the owner-dashboard screenshots, and passed the full `npm run verify` gate including startup smoke.
