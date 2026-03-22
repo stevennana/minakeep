@@ -14,7 +14,7 @@ while true; do
   else
     EXIT_CODE="$?"
     if [[ "$EXIT_CODE" -eq 75 ]]; then
-      echo "Worker stalled. Stopping loop for RCA." | tee -a state/run-log.md
+      echo "Worker stalled. Stopping loop for triage." | tee -a state/run-log.md
       exit "$EXIT_CODE"
     fi
     echo "run-once failed with exit code ${EXIT_CODE}. Stopping loop." | tee -a state/run-log.md

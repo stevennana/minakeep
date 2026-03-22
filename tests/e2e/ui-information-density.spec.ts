@@ -129,8 +129,8 @@ test.afterAll(async () => {
 test("@ui-information-density @ui-refinement-hardening login and dashboard remove implementation-heavy helper copy", async ({ page }) => {
   await page.goto("/login");
 
-  await expect(page.getByRole("heading", { name: "Sign in to the private vault." })).toBeVisible();
-  await expect(page.getByText("Owner-only access to notes, links, tags, and search.")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Sign in to the private vault" })).toBeVisible();
+  await expect(page.getByText("Owner editing access and read-only demo access to notes, links, tags, and search.")).toBeVisible();
   await expect(page.getByText("db:prepare")).toHaveCount(0);
   await expect(page.getByText("/app")).toHaveCount(0);
   await expect(page.getByText("seeded", { exact: false })).toHaveCount(0);

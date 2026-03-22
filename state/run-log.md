@@ -1164,3 +1164,113 @@ No remaining task. Stopping loop.
 - health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xoooooooooooooooooooo
 - cycle: finished
 No remaining task. Stopping loop.
+## loop start 2026-03-22T15:55:10+09:00
+
+### cycle 2026-03-22T15:55:10+09:00 task=077-external-note-api-auth-foundation
+- artifacts: state/artifacts/20260322T155510-077-external-note-api-auth-foundation
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260322T155510-077-external-note-api-auth-foundation/worker.jsonl
+- worker-summary: Implemented the auth foundation for task 077 in [auth.ts](/Users/stevenna/WebstormProjects/minakeep/src/lib/external-note-api/auth.ts#L1), [route.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/api/open/notes/route.ts#L1), [external-note-api-auth.test.ts](/Users/stevenna/WebstormProjects/minakeep/tests/unit/external-note-api-auth.test.ts#L1), [.env.example](/Users/stevenna/WebstormProjects/minakeep/.env.example#L14), [.env.compose.example](/Users/stevenna/WebstormProjects/minakeep/.env.compose.example#L11), and the task log in [077-external-note-api-auth-foundation.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/077-external-note-api-auth-foundation.md#L75). The route now fails closed with `503` when `API_KEY` is unset, `401` for missing/invalid `X-API-Key`, and keeps the valid-key path as a `501` stub so persistence stays in task 078. No CORS, browser auth, or multi-key behavior was added.
+- evaluator: started
+- evaluator: status=not_done promotion=false Deterministic checks failed; task is not ready for promotion. -> state/artifacts/20260322T155510-077-external-note-api-auth-foundation/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T155510-077-external-note-api-auth-foundation/npm-run-verify-next-server.log
+- commit: commit: skipped (deterministic checks not passing)
+- promote: Task 077-external-note-api-auth-foundation not eligible for promotion.
+- backlog: rendered current=077-external-note-api-auth-foundation
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xoooooooooooooooooooox
+- cycle: finished
+
+### cycle 2026-03-22T16:03:22+09:00 task=077-external-note-api-auth-foundation
+- artifacts: state/artifacts/20260322T160322-077-external-note-api-auth-foundation
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260322T160322-077-external-note-api-auth-foundation/worker.jsonl
+- worker-summary: Task 077’s auth-boundary implementation was already present in the worktree in [auth.ts](/Users/stevenna/WebstormProjects/minakeep/src/lib/external-note-api/auth.ts), [route.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/api/open/notes/route.ts), [external-note-api-auth.test.ts](/Users/stevenna/WebstormProjects/minakeep/tests/unit/external-note-api-auth.test.ts), [.env.example](/Users/stevenna/WebstormProjects/minakeep/.env.example), and [.env.compose.example](/Users/stevenna/WebstormProjects/minakeep/.env.compose.example). I validated that boundary against the required docs, then updated the task log in [077-external-note-api-auth-foundation.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/077-external-note-api-auth-foundation.md) and the operator handoff in [state/last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
+- evaluator: started
+- evaluator: status=not_done promotion=false Deterministic checks failed; task is not ready for promotion. -> state/artifacts/20260322T160322-077-external-note-api-auth-foundation/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T160322-077-external-note-api-auth-foundation/npm-run-verify-next-server.log
+- commit: commit: skipped (deterministic checks not passing)
+- promote: Task 077-external-note-api-auth-foundation not eligible for promotion.
+- backlog: rendered current=077-external-note-api-auth-foundation
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxx
+- cycle: finished
+
+### cycle 2026-03-22T16:10:03+09:00 task=077-external-note-api-auth-foundation
+- artifacts: state/artifacts/20260322T161003-077-external-note-api-auth-foundation
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260322T161003-077-external-note-api-auth-foundation/worker.jsonl
+- worker-summary: Task 077’s auth-boundary implementation was already present in the worktree in [auth.ts](/Users/stevenna/WebstormProjects/minakeep/src/lib/external-note-api/auth.ts), [route.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/api/open/notes/route.ts), [external-note-api-auth.test.ts](/Users/stevenna/WebstormProjects/minakeep/tests/unit/external-note-api-auth.test.ts), [.env.example](/Users/stevenna/WebstormProjects/minakeep/.env.example), and [.env.compose.example](/Users/stevenna/WebstormProjects/minakeep/.env.compose.example). I validated that scope against the required docs and updated the progress log in [077-external-note-api-auth-foundation.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/077-external-note-api-auth-foundation.md) plus the operator handoff in [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
+- evaluator: started
+- evaluator: status=not_done promotion=false Deterministic checks failed; task is not ready for promotion. -> state/artifacts/20260322T161003-077-external-note-api-auth-foundation/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T161003-077-external-note-api-auth-foundation/npm-run-verify-next-server.log
+- commit: commit: skipped (deterministic checks not passing)
+- promote: Task 077-external-note-api-auth-foundation not eligible for promotion.
+- backlog: rendered current=077-external-note-api-auth-foundation
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxx
+- cycle: finished
+
+### cycle 2026-03-22T16:16:45+09:00 task=077-external-note-api-auth-foundation
+- artifacts: state/artifacts/20260322T161645-077-external-note-api-auth-foundation
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260322T161645-077-external-note-api-auth-foundation/worker.jsonl
+- worker-summary: The task-077 auth boundary was already present in the worktree, so I did not broaden scope or change the implementation. I validated the existing boundary in [auth.ts](/Users/stevenna/WebstormProjects/minakeep/src/lib/external-note-api/auth.ts#L1), [route.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/api/open/notes/route.ts#L1), [external-note-api-auth.test.ts](/Users/stevenna/WebstormProjects/minakeep/tests/unit/external-note-api-auth.test.ts#L1), [.env.example](/Users/stevenna/WebstormProjects/minakeep/.env.example#L14), and [.env.compose.example](/Users/stevenna/WebstormProjects/minakeep/.env.compose.example#L11). I appended the current run result to the task log in [077-external-note-api-auth-foundation.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/077-external-note-api-auth-foundation.md#L75) and refreshed the operator handoff in [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt#L1).
+- evaluator: started
+- evaluator: status=not_done promotion=false Deterministic checks failed; task is not ready for promotion. -> state/artifacts/20260322T161645-077-external-note-api-auth-foundation/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T161645-077-external-note-api-auth-foundation/npm-run-verify-next-server.log
+- commit: commit: skipped (deterministic checks not passing)
+- promote: Task 077-external-note-api-auth-foundation not eligible for promotion.
+- backlog: rendered current=077-external-note-api-auth-foundation
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxx
+- cycle: finished
+
+### cycle 2026-03-22T16:22:57+09:00 task=077-external-note-api-auth-foundation
+- artifacts: state/artifacts/20260322T162257-077-external-note-api-auth-foundation
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260322T162257-077-external-note-api-auth-foundation/worker.jsonl
+- worker-summary: I did not broaden task 077. The external note API auth foundation already exists in the worktree, so I validated the existing boundary, re-ran the required commands, appended the current result to [077-external-note-api-auth-foundation.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/077-external-note-api-auth-foundation.md), and wrote the operator handoff summary to [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
+- evaluator: started
+- evaluator: status=not_done promotion=false Deterministic checks failed; task is not ready for promotion. -> state/artifacts/20260322T162257-077-external-note-api-auth-foundation/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T162257-077-external-note-api-auth-foundation/npm-run-verify-next-server.log
+- commit: commit: skipped (deterministic checks not passing)
+- promote: Task 077-external-note-api-auth-foundation not eligible for promotion.
+- backlog: rendered current=077-external-note-api-auth-foundation
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx
+- cycle: finished
+
+### cycle 2026-03-22T16:29:39+09:00 task=077-external-note-api-auth-foundation
+- artifacts: state/artifacts/20260322T162939-077-external-note-api-auth-foundation
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: stalled (no worker.jsonl progress for 900s) -> state/artifacts/20260322T162939-077-external-note-api-auth-foundation/worker-stall.json
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!
+Worker stalled. Stopping loop for RCA.
+## loop start 2026-03-22T16:57:16+09:00
+
+### cycle 2026-03-22T16:57:16+09:00 task=077-external-note-api-auth-foundation
+- artifacts: state/artifacts/20260322T165716-077-external-note-api-auth-foundation
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: stalled (no worker.jsonl progress for 900s) -> state/artifacts/20260322T165716-077-external-note-api-auth-foundation/worker-stall.json
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!
+Worker stalled. Stopping loop for RCA.
+## loop start 2026-03-22T17:19:36+09:00
+
+### cycle 2026-03-22T17:19:36+09:00 task=077-external-note-api-auth-foundation
+- artifacts: state/artifacts/20260322T171936-077-external-note-api-auth-foundation
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+## loop start 2026-03-22T17:26:52+09:00
+
+### cycle 2026-03-22T17:26:52+09:00 task=077-external-note-api-auth-foundation
+- artifacts: state/artifacts/20260322T172652-077-external-note-api-auth-foundation
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260322T172652-077-external-note-api-auth-foundation/worker.jsonl
+- worker-summary: Task `077-external-note-api-auth-foundation` is complete. The scoped implementation was already present in the worktree: the server-only auth helper in [auth.ts](/Users/stevenna/WebstormProjects/minakeep/src/lib/external-note-api/auth.ts), the `POST /api/open/notes` skeleton in [route.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/api/open/notes/route.ts), the focused unit coverage in [external-note-api-auth.test.ts](/Users/stevenna/WebstormProjects/minakeep/tests/unit/external-note-api-auth.test.ts), and the `API_KEY` env-contract notes in [.env.example](/Users/stevenna/WebstormProjects/minakeep/.env.example) and [.env.compose.example](/Users/stevenna/WebstormProjects/minakeep/.env.compose.example). This run updated the progress log in [077-external-note-api-auth-foundation.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/077-external-note-api-auth-foundation.md) and wrote the operator handoff to [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
+- evaluator: started
+- evaluator: status=not_done promotion=false The auth foundation itself is implemented narrowly and correctly: `API_KEY` is documented in env examples, `X-API-Key` parsing fails closed with `503` when disabled and `401` when missing or wrong, the route stays server-only with no CORS/browser auth expansion, focused unit coverage exists, and the provided `npm run verify` result is green. I am still blocking promotion because the referenced product/design docs for this task describe shipped note creation, publish-on-create, response fields, and API-triggered enrichment, while the current valid-key path is still an intentional `501 Not implemented` stub. Under the repo's documentation-as-contract rules, that is substantive drift. -> state/artifacts/20260322T172652-077-external-note-api-auth-foundation/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T172652-077-external-note-api-auth-foundation/npm-run-verify-next-server.log

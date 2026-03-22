@@ -5,12 +5,11 @@ This queue is the task-level promotion source of truth for minakeep.
 Only task files in this directory that contain a `taskmeta` JSON block are eligible for automatic selection, evaluation, and promotion.
 
 ## Current recommended sequence
-1. `073-demo-user-auth-foundation.md` -> add the demo-user role and environment contract across auth, runtime, and Docker docs
-2. `074-demo-workspace-read-only-shell.md` -> expose owner workspace routes to the demonstration user with clear read-only UI treatment
-3. `075-demo-write-protection.md` -> block all note, link, publish, retry, and upload mutations server-side for the demonstration user
-4. `076-demo-docker-and-hardening.md` -> align Docker/env docs and regression coverage for the demo-user wave
+1. `077-external-note-api-auth-foundation.md` -> define the static-key auth boundary, env contract, and route skeleton for server-to-server note creation
+2. `078-external-note-api-create-and-publish.md` -> add API note creation with optional publish-on-create and reuse the existing note enrichment/publish flow
+3. `079-external-note-api-hardening.md` -> harden docs, regression coverage, and fail-closed behavior for the external note API
 
-Tasks `067` through `072` are preserved in completed history as the completed refinement tranche. Earlier completed tranches remain preserved as history.
+Tasks `073` through `076` are preserved in completed history as the finished demo-user tranche. Earlier completed tranches remain preserved as history.
 
 ## Operating rule
 

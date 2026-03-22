@@ -10,6 +10,7 @@ Define the security posture for Minakeep's current shipped slice.
 - do not log secrets, passwords, session tokens, or full private note/link payloads
 - validate owner credentials on the server only
 - validate demonstration credentials on the server only
+- validate external note-create requests on the server only through the configured `API_KEY`
 - store only the owner password hash in SQLite
 - accept saved-link URLs only for `http` and `https`
 - keep AI provider tokens and base URLs server-only
@@ -23,6 +24,7 @@ Define the security posture for Minakeep's current shipped slice.
 ## Secrets and Config
 - keep `AUTH_SECRET`, `DATABASE_URL`, `OWNER_USERNAME`, and `OWNER_PASSWORD` in environment configuration only
 - keep any `DEMO_USERNAME` and `DEMO_PASSWORD` values in environment configuration only
+- keep `API_KEY` in environment configuration only when the external note API is enabled
 - keep `LLM_BASE`, `TOKEN`, and `MODEL` in shell or local environment only
 - never commit seeded credentials or secret values
 - document required environment variables in `.env.example` and runtime docs
@@ -36,6 +38,7 @@ Define the security posture for Minakeep's current shipped slice.
 - `/notes/[slug]` is public for published notes
 - `/login` is public but only for owner authentication
 - `/app/*` routes are private
+- `/api/open/notes` is publicly reachable but must fail closed unless a valid `X-API-Key` matches the configured `API_KEY`
 - public title search must only query published content
 - public link cards must open only the already-saved external URL in a new tab
 - API health checks must expose only non-sensitive readiness information
@@ -49,6 +52,7 @@ Define the security posture for Minakeep's current shipped slice.
 - unsafe saved-link URL schemes are rejected before persistence
 - no secrets appear in logs, docs examples, or test fixtures
 - owner auth and route protection stay covered by automated checks before promotion
+- external note-create auth must reject missing or invalid `X-API-Key` headers without leaking the configured secret
 - AI integration must prove that tokens stay server-side and that failure paths do not leak raw endpoint credentials or full private payloads
 - missing or incomplete AI env config must record a visible failed enrichment state instead of silently falling back to another endpoint
 - server logs may record HTTP status or high-level failure class for the Mina endpoint, but not request bodies, tokens, or full private note/link payloads

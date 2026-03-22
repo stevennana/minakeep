@@ -54,7 +54,7 @@ Read:
 - If a task is primarily UI/UX work, require a dedicated `@ui-*` Playwright command in addition to `npm run verify`.
 - UI-focused tasks should use `taskmeta.promotion_mode = deterministic_only` so passing screenshot, responsive, accessibility, and hierarchy checks is sufficient for promotion.
 - If a plan page is still rough or broad, improve the supporting docs and split the plan before promotion work starts.
-- If the same environment-specific blocker repeats three times, branch into a dedicated RCA/fix exec-plan and then return to the original task.
+- If the same environment-specific blocker repeats three times, auto-branch into a dedicated RCA/fix exec-plan and then return to the original task.
 
 ## When The Current Queue Is Done
 - Do not treat an empty active queue as the end of the product.

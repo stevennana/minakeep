@@ -1,56 +1,61 @@
 Read the following repository documents before making changes:
 - AGENTS.md
+- ARCHITECTURE.md
 - docs/SECURITY.md
 - docs/RELIABILITY.md
-- docs/product-specs/demo-workspace-user.md
-- docs/product-specs/docker-packaging.md
-- docs/design-docs/workspace-auth-roles.md
-- docs/exec-plans/active/076-demo-docker-and-hardening.md
+- docs/product-specs/external-note-api.md
+- docs/design-docs/external-note-api-boundary.md
+- docs/product-specs/note-ai-enrichment.md
+- docs/exec-plans/active/077-external-note-api-auth-foundation.md
 
-Current task id: 076-demo-docker-and-hardening
-Current task title: Demo Docker and hardening
+Current task id: 077-external-note-api-auth-foundation
+Current task title: External note API auth foundation
 
 Objective:
-Harden the demo-user wave through Docker/env documentation and regression coverage.
+Establish the static-key auth boundary and env contract for server-to-server note creation.
 
 Scope:
-- Docker and env-doc alignment
-- README/operator guidance
-- demo-user regression coverage and cleanup
+- `API_KEY` env contract and docs
+- `X-API-Key` auth parsing and fail-closed behavior
+- route skeleton for `POST /api/open/notes`
+- unit coverage for the auth boundary
 
 Out of scope:
-- new auth roles beyond owner/demo
-- public marketing/demo pages
+- actual note persistence
+- publish-on-create behavior
+- full response payload polish or regression hardening
 
 Exit criteria:
-1. Docker and README docs explain the demo-user env contract clearly.
-2. Demo-user regression coverage protects both access and read-only enforcement.
-3. `docker compose config` passes under the shipped contract.
-4. `npm run test:e2e -- --grep @demo-user` passes.
+1. The repo documents `API_KEY` as the only external note-create credential in this wave.
+2. The new route boundary fails closed when `API_KEY` is missing, missing from the request, or invalid.
+3. The implementation does not introduce CORS support, browser auth, or multi-key management.
+4. Unit coverage protects the header and disabled-route rules.
 5. `npm run verify` passes.
 
 Required checks:
+- `npm run typecheck`
+- `npm run test:unit`
 - `npm run verify`
-- `npm run test:e2e -- --grep @demo-user`
-- `docker compose config`
 
 Evaluator notes:
-Promote only when the demo-user feature is documented, protected, and operator-usable.
+Promote only when the auth boundary is narrow, server-only, and clearly separate from owner/demo browser-session auth.
 
 Required repository artifacts for this task:
-- README.md
-- docker-compose.yml
+- src/app/api
+- src/lib
+- tests/unit
+- .env.example
 - .env.compose.example
-- docs
-- tests/e2e
 
 Required commands for this task:
+- npm run typecheck
+- npm run test:unit
 - npm run verify
-- npm run test:e2e -- --grep @demo-user
-- docker compose config
 
 Previous known gaps from the last evaluation:
 - none
+
+
 
 Rules:
 - Work only on this task.
@@ -61,6 +66,7 @@ Rules:
 - Update this task doc's progress log with concrete notes.
 - Keep the repository in a state where the required commands can pass.
 - If the task is not done, leave the next task untouched.
+
 
 At the end of the run, write a concise operator handoff summary into state/last-result.txt via your final response:
 - what changed

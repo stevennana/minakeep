@@ -34,9 +34,12 @@ contracts and adding a separate evaluator step before promotion.
 - `scripts/ralph/evaluate-task.mjs`: run deterministic checks and either auto-promote deterministic-only tasks or fall through to a read-only evaluator
 - `scripts/ralph/promote-task.mjs`: move a finished task forward
 - `scripts/ralph/manual-promote.sh`: manually promote the current task with a recorded reason and optional artifact reference
+- `scripts/ralph/record-blocker.mjs`: record repeated deterministic or stall blocker signatures for the current task
+- `scripts/ralph/branch-rca-task.mjs`: auto-create and switch to a blocker RCA task after the repeat threshold is reached
 - `state/current-task.txt`: current task id
 - `state/current-cycle.json`: live cycle phase/status for the current run
 - `state/evaluation.json`: latest decision
+- `state/blocker-tracker.json`: repeated blocker signatures and RCA branch state
 - `state/backlog.md`: rendered queue snapshot
 - `state/artifacts/`: per-cycle raw worker/evaluator/commit artifacts
 
@@ -69,6 +72,16 @@ local work that is bound to that port.
 - server wrappers default `MINAKEEP_DEBUG_SERVER=1`, so AI-tagging failures include debug details in the Next server logs without logging note bodies or tokens
 - inspect artifact files when the compact log points to a failed phase
 - `state/run-log.md` also appends a compact health line after each cycle: `o` for promoted success, `x` for completed non-promotion/failure, and `!` for stalled worker recovery
+
+Generated Ralph loops now support a compact cycle-health line inside `state/run-log.md`:
+
+- `o` = cycle completed and task promoted
+- `x` = cycle completed but stayed not-done, failed, or auto-branched into RCA
+- `!` = worker stalled during that cycle
+
+A single `!` does not mean the blocker RCA exec-plan should be created immediately.
+It means the unattended loop preserved stall evidence and recorded the blocker signature first.
+Only repeated environment-specific blockers on the same task should branch into the RCA/fix exec-plan flow, and generated loops now auto-create that RCA task on the third identical blocker.
 
 ## Recommended usage
 
@@ -118,7 +131,7 @@ If no reason is supplied, the override records the default reason `operator manu
 - Prefer deterministic gates over “try harder” loops, and use evaluator review only when the task contract still needs semantic judgment.
 - Do not mix multiple feature fronts into one task.
 - `run-once.sh` always rewrites `state/current-cycle.json`, `state/evaluation.json`, `state/backlog.md`, and `state/last-result.txt`; treat those as loop-owned state.
-- if the worker goes silent and `worker.jsonl` stops changing past the stall timeout, the harness marks the cycle as `stalled`, writes a stall artifact, appends `!` to the health line, and stops the unattended loop for RCA
+- if the worker goes silent and `worker.jsonl` stops changing past the stall timeout, the harness marks the cycle as `stalled`, writes a stall artifact, appends `!` to the health line, and stops the unattended loop for operator triage unless that identical stall has already repeated enough times to auto-branch into RCA
 - Required commands come from each task doc’s `taskmeta.required_commands`; `evaluate-task.mjs` runs exactly those commands plus required-file checks.
 - If `taskmeta.promotion_mode` is `deterministic_only`, `evaluate-task.mjs` promotes the task based on required command and required-file results alone.
 - `manual-promote.sh` is an explicit operator override; use it only for exceptional stalled-but-done cases. If you omit `--reason`, it records `operator manual promotion`.
@@ -126,4 +139,5 @@ If no reason is supplied, the override records the default reason `operator manu
 - `ensure-e2e-port-free.sh` is intentionally aggressive and may terminate unrelated processes bound to `127.0.0.1:3100`.
 - UI hardening passes may use `npm run test:e2e -- --grep @ui-regression` as the full-wave deterministic gate once the per-surface UI specs all carry that tag.
 - If the evaluator repeatedly returns `not_done`, tighten the active task doc instead of making the prompt larger.
+- If the same environment-specific blocker repeats three times for the same task, the loop records the blocker signature first and only auto-branches into the RCA/fix plan on the third identical occurrence.
 - If a task is semantically done but not promotable, fix the contract or the deterministic checks; if you must override, use `manual-promote.sh` so the reason is recorded instead of silently skipping ahead.

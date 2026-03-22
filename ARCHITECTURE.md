@@ -7,6 +7,7 @@ Build Minakeep as an agent-legible codebase with strong boundaries, a short inst
 Minakeep is a web application with:
 - a public site for published notes and published links
 - a private owner area for notes, links, tags, and search
+- an optional server-to-server note-create API protected by one environment-backed API key
 - an automatic AI enrichment path for notes and links
 - a SQLite-backed persistence layer for content and owner identity
 - a mounted media storage path for uploaded note images and cached link favicons
@@ -31,6 +32,9 @@ The repository is intended to work well with long-running agent loops. Strict bo
 ## Primary Domains
 ### Owner access
 Single-owner authentication, route protection, and owner-session checks.
+
+### External note API
+Static-key server-to-server note creation that writes into the existing single-owner note model without adding multi-user API key management.
 
 ### Notes
 Markdown note drafts, publishing state, slugs, public rendering, and note-side enrichment state.
@@ -64,6 +68,7 @@ Prisma runtime prep, startup smoke, operator logging, Docker packaging, and Ralp
 ### Server
 - Auth.js handles owner sign-in
 - route handlers expose health and future server-backed workflows
+- the external note-create route should stay narrow, server-only, and separate from browser-session auth
 - route handlers or server-backed media endpoints should mediate owner/private media visibility instead of exposing the full media volume directly
 - Prisma access stays behind narrow server-side helpers
 - server logging stays explicit and avoids secrets or full sensitive payloads

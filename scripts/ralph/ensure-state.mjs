@@ -29,6 +29,7 @@ const defaults = [
   ["task-history.md", "# Task History\n\n"],
   ["last-result.txt", ""],
   ["evaluation.json", '{\n  "status": "not_run"\n}\n'],
+  ["blocker-tracker.json", '{\n  "version": 1,\n  "updated_at": "",\n  "tasks": {}\n}\n'],
   ["current-cycle.json", '{\n  "status": "idle"\n}\n'],
   ["backlog.md", "# Backlog\n\n"],
 ];

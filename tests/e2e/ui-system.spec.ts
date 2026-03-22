@@ -191,7 +191,7 @@ test("@ui-regression @ui-system login surface stays readable on mobile", async (
   await page.setViewportSize(mobileViewport);
   await page.goto("/login");
 
-  await expect(page.getByRole("heading", { name: "Sign in to the private vault." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Sign in to the private vault" })).toBeVisible();
   await expect(page.getByText("Credentials")).toBeVisible();
   await expect(page.getByRole("button", { name: "Sign in" })).toBeVisible();
   await expectAccessibleStructure(page);

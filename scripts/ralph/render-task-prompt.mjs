@@ -39,6 +39,22 @@ const priorGaps =
     : [];
 
 const docsToRead = Array.from(new Set(task.meta.prompt_docs ?? []));
+const rcaContext = task.meta.rca_for_task_id
+  ? `
+RCA context:
+- This is an auto-generated blocker RCA task for parent task: ${task.meta.rca_for_task_id}
+- Blocker kind: ${task.meta.blocker_kind ?? "unknown"}
+- Blocker summary: ${task.meta.blocker_summary ?? "unknown"}
+- Blocker signature: ${task.meta.blocker_signature ?? "unknown"}
+`.trim()
+  : "";
+const rcaRules = task.meta.rca_for_task_id
+  ? [
+      "- Work only on the blocker evidence described above.",
+      `- Do not resume or broaden into parent task ${task.meta.rca_for_task_id} inside this RCA task.`,
+      `- Leave the queue return path to normal promotion back to ${task.meta.rca_for_task_id}.`,
+    ]
+  : [];
 
 const prompt = `
 Read the following repository documents before making changes:
@@ -75,6 +91,8 @@ ${(task.meta.required_commands ?? []).map((cmd) => `- ${cmd}`).join("\n") || "- 
 Previous known gaps from the last evaluation:
 ${priorGaps.length ? priorGaps.map((gap) => `- ${gap}`).join("\n") : "- none"}
 
+${rcaContext ? `${rcaContext}\n` : ""}
+
 Rules:
 - Work only on this task.
 - Do not broaden scope.
@@ -84,6 +102,7 @@ Rules:
 - Update this task doc's progress log with concrete notes.
 - Keep the repository in a state where the required commands can pass.
 - If the task is not done, leave the next task untouched.
+${rcaRules.join("\n")}
 
 At the end of the run, write a concise operator handoff summary into state/last-result.txt via your final response:
 - what changed

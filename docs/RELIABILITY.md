@@ -11,6 +11,7 @@ Define the reliability expectations and failure-handling rules for Minakeep.
 - external AI verification must be explicit instead of assumed from unit tests alone
 - public rendering should fail closed when persisted public data is malformed or unsafe
 - media and favicon fetch failures must fall back cleanly instead of blocking note save, link save, or public rendering
+- external note-create auth failures must fail closed without weakening normal owner note creation
 
 ## Verification
 - `npm run db:prepare` prepares SQLite state and owner seed deterministically
@@ -41,6 +42,7 @@ When tests cover subtle or business-critical behavior, capture why those tests e
 If a user-visible behavior depends on an outside resource such as AI chat or a third-party service, require end-to-end coverage before promotion.
 For the AI enrichment wave, E2E must prove: note save with generated metadata, link save with generated metadata, and save-with-visible-failure when the endpoint fails or times out.
 For the mixed public wave, checks should also prove that stale or manually seeded invalid published-link URLs stay hidden from public routes instead of being rendered optimistically.
+For the external note API wave, E2E must prove: valid keyed private note create, valid keyed publish-on-create, and rejection of missing/invalid API key requests.
 For the media wave, E2E must prove: note image upload with markdown insertion, owner-visible draft image rendering, public image visibility only after note publish, and favicon fallback when fetch/cache fails.
 The hardening contract for that slice is tagged `@media-regression` and must keep the private draft-image boundary plus the favicon fallback-and-refresh path deterministic.
 For the UI redesign wave, the tagged `@ui-*` Playwright coverage must prove both `1440x900` desktop and `390x844` mobile behavior, stable screenshots, visible hierarchy anchors/actions, and automated accessibility scanning.

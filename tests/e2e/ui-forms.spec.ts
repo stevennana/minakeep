@@ -257,7 +257,7 @@ test("@ui-regression @ui-forms login form stays compact on desktop", async ({ pa
   await page.setViewportSize(desktopViewport);
   await page.goto("/login");
 
-  await expect(page.getByRole("heading", { name: "Sign in to the private vault." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Sign in to the private vault" })).toBeVisible();
   await expect(page.getByText("Credentials")).toBeVisible();
   await expect(page.getByLabel("Username")).toBeVisible();
   await expect(page.getByLabel("Password")).toBeVisible();
@@ -274,7 +274,7 @@ test("@ui-regression @ui-forms login form stays compact on mobile", async ({ pag
   await page.setViewportSize(mobileViewport);
   await page.goto("/login");
 
-  await expect(page.getByRole("heading", { name: "Sign in to the private vault." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Sign in to the private vault" })).toBeVisible();
   await expect(page.getByText("Credentials")).toBeVisible();
   await expect(page.getByRole("button", { name: "Sign in" })).toBeVisible();
   await expectLoginHierarchy(page, "mobile");

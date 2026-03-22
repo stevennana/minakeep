@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { clearTaskBlockers } from "./lib/blocker-utils.mjs";
 import {
   ACTIVE_TASK_DIR,
   COMPLETED_TASK_DIR,
@@ -68,6 +69,7 @@ if (!task) {
 
 const completedAt = timestamp();
 const nextTaskId = task.meta.next_task_on_success ?? null;
+const parentTaskId = task.meta.rca_for_task_id ?? null;
 const overrideArtifact = options.artifact.trim();
 const manualOverride = options.manual
   ? {
@@ -108,7 +110,18 @@ if (nextTaskId) {
       const nextMeta = JSON.parse(match[1].trim());
       if (nextMeta.status !== "completed") {
         nextMeta.status = "active";
-        writeText(nextTaskPath, replaceTaskMeta(nextMarkdown, nextMeta));
+        if (parentTaskId && normalizeTaskId(parentTaskId) === normalizeTaskId(nextTaskId)) {
+          delete nextMeta.blocked_by_task_id;
+          delete nextMeta.blocker_signature;
+          delete nextMeta.blocked_at;
+        }
+        const restoredMarkdown = appendTaskProgressNote(
+          replaceTaskMeta(nextMarkdown, nextMeta),
+          parentTaskId && normalizeTaskId(parentTaskId) === normalizeTaskId(nextTaskId)
+            ? `${completedAt}: blocker RCA task ${task.id} completed; restored as current task after resolving blocker ${task.meta.blocker_signature ?? "unknown"}.`
+            : `${completedAt}: restored as current task after ${task.id} promotion.`,
+        );
+        writeText(nextTaskPath, restoredMarkdown);
       }
     }
   }
@@ -135,6 +148,11 @@ if (manualOverride) {
     manual_override: manualOverride,
   };
   writeText(evaluationPath, JSON.stringify(manualEvaluation, null, 2));
+}
+
+clearTaskBlockers(task.id);
+if (parentTaskId) {
+  clearTaskBlockers(parentTaskId);
 }
 
 console.log(
