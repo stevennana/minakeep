@@ -1,50 +1,49 @@
 Read the following repository documents before making changes:
 - AGENTS.md
-- docs/PRODUCT_SENSE.md
 - docs/FRONTEND.md
-- docs/product-specs/ui-progressive-disclosure.md
+- docs/product-specs/public-showroom-search.md
+- docs/design-docs/public-home-first-screen-density.md
 - docs/design-docs/progressive-disclosure-rules.md
-- docs/exec-plans/active/067-ui-information-density-reset.md
+- docs/exec-plans/active/068-public-search-expanded-row-reset.md
 
-Current task id: 067-ui-information-density-reset
-Current task title: UI information density reset
+Current task id: 068-public-search-expanded-row-reset
+Current task title: Public search expanded row reset
 
 Objective:
-Reduce redundant explanatory UI across the product and move truly necessary guidance into lighter disclosure patterns.
+Fix the expanded public-search layout so it occupies a clear row beneath the archive heading and removes redundant labeling.
 
 Scope:
-- owner and public helper-copy reduction
-- intro-panel and section-copy simplification
-- tooltip or lighter-disclosure treatment where guidance is still necessary
+- expanded public-search placement and shell layout
+- archive head and search-row spacing relationship
+- label and helper-copy reduction inside the expanded search state
 
 Out of scope:
-- public search row placement
-- owner links page structural layout
-- auth/session behavior
+- title-search behavior changes
+- masonry card redesign
+- owner dashboard layout
 
 Exit criteria:
-1. Obvious actions are no longer surrounded by repetitive explanatory text.
-2. Internal implementation details are removed from user-facing UI.
-3. Necessary guidance remains available in a lighter form where appropriate.
-4. `npm run test:e2e -- --grep @ui-information-density` passes.
+1. Expanded public search sits on its own readable row beneath the archive heading on desktop.
+2. The expanded state uses minimal obvious labeling.
+3. Collapsed search and mobile states remain clean.
+4. `npm run test:e2e -- --grep @ui-public-search-row` passes.
 5. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-information-density`
+- `npm run test:e2e -- --grep @ui-public-search-row`
 
 Evaluator notes:
-Promote only when the product feels more intuitive and less talkative without becoming ambiguous.
+Promote only when the expanded search state looks deliberately placed and does not over-explain itself.
 
 Required repository artifacts for this task:
-- src/app
-- src/features
+- src/features/public-content/components/public-showroom.tsx
 - src/app/globals.css
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-information-density
+- npm run test:e2e -- --grep @ui-public-search-row
 
 Previous known gaps from the last evaluation:
 - none

@@ -278,18 +278,23 @@ async function expectSearchLayout(page: Page, viewport: "desktop" | "mobile") {
   const searchShell = page.getByTestId("public-home-search-shell");
   const field = page.locator(".public-search-field");
   const summary = page.locator("[data-testid='public-home-search-summary']");
+  const closeButton = page.getByRole("button", { name: "Close public title search" });
   const archiveHeadBox = await getBox(archiveHead);
   const shellHeadBox = await getBox(shellHead);
   const searchShellBox = await getBox(searchShell);
   const fieldBox = await getBox(field);
   const summaryBox = await getBox(summary);
+  const closeButtonBox = await getBox(closeButton);
 
   if (viewport === "desktop") {
     expect(searchShellBox.y).toBeGreaterThan(shellHeadBox.y + shellHeadBox.height - 8);
     expect(Math.abs(searchShellBox.x - archiveHeadBox.x)).toBeLessThanOrEqual(2);
     expect(searchShellBox.width).toBeGreaterThanOrEqual(archiveHeadBox.width - 4);
-    expect(summaryBox.x).toBeGreaterThan(fieldBox.x + fieldBox.width - 24);
+    expect(closeButtonBox.x).toBeGreaterThan(fieldBox.x + fieldBox.width - 24);
+    expect(summaryBox.y).toBeGreaterThan(fieldBox.y + fieldBox.height - 8);
+    expect(Math.abs(summaryBox.x - fieldBox.x)).toBeLessThanOrEqual(2);
   } else {
+    expect(closeButtonBox.y).toBeLessThanOrEqual(summaryBox.y);
     expect(searchShellBox.y).toBeGreaterThan(shellHeadBox.y + shellHeadBox.height - 8);
     expect(summaryBox.y).toBeGreaterThan(fieldBox.y + fieldBox.height - 8);
     expect(Math.abs(summaryBox.x - fieldBox.x)).toBeLessThanOrEqual(2);
@@ -388,6 +393,8 @@ test("@ui-regression @ui-refinement-hardening @ui-public-showroom @ui-public-sho
   await searchToggle.click();
   await expect(searchInput).toBeVisible();
   await expect(page.getByRole("button", { name: "Close public title search" })).toBeVisible();
+  await expect(page.getByText("Title only")).toHaveCount(0);
+  await expect(page.getByText("Matches published note and link titles.")).toHaveCount(0);
   await expect(page.getByTestId("public-home-search-summary")).toHaveText("Showing all 4 public items.");
   await expectSearchLayout(page, "desktop");
 
@@ -428,6 +435,8 @@ test("@ui-regression @ui-refinement-hardening @ui-public-showroom @ui-public-sho
   await searchToggle.click();
   await expect(searchInput).toBeVisible();
   await expect(page.getByRole("button", { name: "Close public title search" })).toBeVisible();
+  await expect(page.getByText("Title only")).toHaveCount(0);
+  await expect(page.getByText("Matches published note and link titles.")).toHaveCount(0);
   await expectSearchLayout(page, "mobile");
 
   await searchInput.fill("needle");

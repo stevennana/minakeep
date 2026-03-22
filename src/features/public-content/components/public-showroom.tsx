@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-import { Button, Disclosure, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
+import { Button, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
 import { LinkFavicon } from "@/features/links/components/link-favicon";
 import { NoteCardImage } from "@/features/notes/components/note-card-image";
 import type { NoteCardImage as NoteCardImageData } from "@/features/notes/types";
@@ -239,52 +239,50 @@ export function PublicShowroom({
             </div>
           </div>
 
-          <div className="public-search-shell" data-testid="public-home-search-shell" role="search">
+          <div
+            className="public-search-shell"
+            data-search-expanded={isSearchExpanded ? "true" : "false"}
+            data-testid="public-home-search-shell"
+            role="search"
+          >
             <div className={`search-form public-search-panel ${isSearchExpanded ? "public-search-panel-expanded" : "public-search-panel-collapsed"}`}>
               {isSearchExpanded ? (
-                <>
-                  <div className="public-search-header">
-                    <Disclosure className="public-search-disclosure" summary="Title only">
-                      <p>Matches published note and link titles.</p>
-                    </Disclosure>
-                    <Button
-                      aria-controls={searchPanelId}
-                      aria-expanded={isSearchExpanded}
-                      aria-label="Close public title search"
-                      className="public-search-toggle"
-                      data-testid="public-home-search-toggle"
-                      onClick={closeSearch}
-                      type="button"
-                      variant="ghost"
-                    >
-                      Close search
-                    </Button>
+                <div className="public-search-controls public-search-controls-expanded" id={searchPanelId}>
+                  <div className="public-search-field">
+                    <input
+                      aria-label="Search public titles"
+                      autoComplete="off"
+                      className="text-input"
+                      data-testid="public-home-search-input"
+                      onChange={(event) => setQuery(event.currentTarget.value)}
+                      onKeyDown={(event) => {
+                        if (event.key === "Escape") {
+                          event.preventDefault();
+                          closeSearch();
+                        }
+                      }}
+                      placeholder={hasPublishedLinks ? "Search public titles" : "Search published note titles"}
+                      ref={searchInputRef}
+                      type="search"
+                      value={query}
+                    />
                   </div>
-                  <div className="public-search-controls" id={searchPanelId}>
-                    <div className="public-search-field">
-                      <input
-                        aria-label="Search public titles"
-                        autoComplete="off"
-                        className="text-input"
-                        data-testid="public-home-search-input"
-                        onChange={(event) => setQuery(event.currentTarget.value)}
-                        onKeyDown={(event) => {
-                          if (event.key === "Escape") {
-                            event.preventDefault();
-                            closeSearch();
-                          }
-                        }}
-                        placeholder={hasPublishedLinks ? "Filter public titles" : "Filter published note titles"}
-                        ref={searchInputRef}
-                        type="search"
-                        value={query}
-                      />
-                    </div>
-                    <p className="field-note public-search-summary" data-testid="public-home-search-summary">
-                      {getSearchSummary(query.trim(), filteredItems.length, items.length)}
-                    </p>
-                  </div>
-                </>
+                  <Button
+                    aria-controls={searchPanelId}
+                    aria-expanded={isSearchExpanded}
+                    aria-label="Close public title search"
+                    className="public-search-toggle"
+                    data-testid="public-home-search-toggle"
+                    onClick={closeSearch}
+                    type="button"
+                    variant="ghost"
+                  >
+                    Close
+                  </Button>
+                  <p className="field-note public-search-summary" data-testid="public-home-search-summary">
+                    {getSearchSummary(query.trim(), filteredItems.length, items.length)}
+                  </p>
+                </div>
               ) : (
                 <div className="public-search-collapsed-row">
                   <Button

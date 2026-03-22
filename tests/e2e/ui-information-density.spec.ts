@@ -143,7 +143,7 @@ test("@ui-information-density login and dashboard remove implementation-heavy he
   await expect(page.getByLabel("Dashboard overview")).toContainText("On the public site");
 });
 
-test("@ui-information-density public search keeps title scope in lighter disclosure", async ({ page }) => {
+test("@ui-information-density public search keeps title scope obvious without redundant disclosure copy", async ({ page }) => {
   await page.goto("/");
 
   await expect(page.getByTestId("public-home-search-summary")).toHaveText("2 public items.");
@@ -151,9 +151,10 @@ test("@ui-information-density public search keeps title scope in lighter disclos
 
   await page.getByRole("button", { name: "Open public title search" }).click();
 
-  await expect(page.getByText("Title only")).toBeVisible();
-  await expect(page.getByText("Matches published note and link titles only.")).toHaveCount(0);
-  await expect(page.getByPlaceholder("Filter public titles")).toBeVisible();
+  await expect(page.getByText("Title only")).toHaveCount(0);
+  await expect(page.getByText("Matches published note and link titles.")).toHaveCount(0);
+  await expect(page.getByPlaceholder("Search public titles")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Close public title search" })).toBeVisible();
 });
 
 test("@ui-information-density owner secondary surfaces move guidance into compact disclosures", async ({ page }) => {

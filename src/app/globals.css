@@ -915,7 +915,7 @@ textarea {
 }
 
 .public-search-collapsed-row,
-.public-search-header {
+.public-search-controls-expanded {
   align-items: start;
   display: grid;
   gap: 0.8rem;
@@ -940,7 +940,12 @@ textarea {
   gap: 0.8rem;
 }
 
+.public-search-controls-expanded {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
 .public-search-field {
+  grid-column: 1;
   min-width: 0;
 }
 
@@ -954,6 +959,10 @@ textarea {
   font-size: 0.8rem;
   line-height: 1.45;
   margin: 0;
+}
+
+.public-search-controls-expanded .public-search-summary {
+  grid-column: 1 / -1;
 }
 
 .public-intro-panel h1 {
@@ -2690,13 +2699,13 @@ textarea {
     grid-template-columns: auto minmax(0, 1fr);
   }
 
-  .public-search-header {
-    grid-template-columns: minmax(0, 1fr) auto;
-  }
-
   .public-search-controls {
     align-items: end;
     grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .public-search-shell[data-search-expanded="true"] {
+    padding: 0.88rem 0.95rem 0.92rem;
   }
 
   .public-note-showroom {

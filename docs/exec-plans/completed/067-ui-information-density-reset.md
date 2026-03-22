@@ -5,7 +5,7 @@
   "id": "067-ui-information-density-reset",
   "title": "UI information density reset",
   "order": 67,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "068-public-search-expanded-row-reset",
   "prompt_docs": [
@@ -29,7 +29,8 @@
     "Screens still force users to read multi-line workflow explanations before using obvious controls.",
     "Critical guidance disappears entirely instead of moving to lighter disclosure.",
     "Internal implementation details remain visible in user-facing copy."
-  ]
+  ],
+  "completed_at": "2026-03-22T02:58:51.141Z"
 }
 ```
 
@@ -70,3 +71,4 @@ Promote only when the product feels more intuitive and less talkative without be
 
 - Start here. Append timestamped progress notes as work lands.
 - 2026-03-22 11:51 KST: Removed implementation-heavy login and workspace helper copy, collapsed owner/public intro text into compact status rows, added a reusable disclosure primitive for optional guidance, and added task-specific Playwright coverage for the lighter-disclosure expectations.
+- 2026-03-22T02:58:51.141Z: automatically promoted after deterministic checks and evaluator approval.

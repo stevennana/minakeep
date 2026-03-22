@@ -1,8 +1,8 @@
 {
-  "task_id": "067-ui-information-density-reset",
-  "started_at": "2026-03-22T11:43:50+09:00",
-  "artifact_dir": "state/artifacts/20260322T114350-067-ui-information-density-reset",
+  "task_id": "068-public-search-expanded-row-reset",
+  "started_at": "2026-03-22T11:59:21+09:00",
+  "artifact_dir": "state/artifacts/20260322T115921-068-public-search-expanded-row-reset",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-03-22T02:58:50.845Z"
+  "updated_at": "2026-03-22T03:08:49.014Z"
 }

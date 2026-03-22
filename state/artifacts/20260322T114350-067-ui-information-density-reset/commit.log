@@ -1,0 +1,21 @@
+[main bcd579e] ralph: 067-ui-information-density-reset 2026-03-22T11:58:51+09:00
+ 73 files changed, 1578 insertions(+), 182 deletions(-)
+ create mode 100644 docs/design-docs/progressive-disclosure-rules.md
+ create mode 100644 docs/exec-plans/active/067-ui-information-density-reset.md
+ create mode 100644 docs/exec-plans/active/068-public-search-expanded-row-reset.md
+ create mode 100644 docs/exec-plans/active/069-owner-dashboard-notes-priority-reset.md
+ create mode 100644 docs/exec-plans/active/070-owner-links-layout-reset.md
+ create mode 100644 docs/exec-plans/active/071-owner-session-continuity.md
+ create mode 100644 docs/exec-plans/active/072-ui-refinement-hardening.md
+ create mode 100644 docs/product-specs/owner-session-continuity.md
+ create mode 100644 docs/product-specs/ui-progressive-disclosure.md
+ create mode 100644 state/artifacts/20260322T111449-063-ui-refinement-hardening/backlog.log
+ create mode 100644 state/artifacts/20260322T111449-063-ui-refinement-hardening/promote.log
+ create mode 100644 state/artifacts/20260322T114350-067-ui-information-density-reset/commit.log
+ create mode 100644 state/artifacts/20260322T114350-067-ui-information-density-reset/evaluator.log
+ create mode 100644 state/artifacts/20260322T114350-067-ui-information-density-reset/npm-run-test-e2e-grep-ui-information-density-next-server.log
+ create mode 100644 state/artifacts/20260322T114350-067-ui-information-density-reset/npm-run-verify-next-server.log
+ create mode 100644 state/artifacts/20260322T114350-067-ui-information-density-reset/task-prompt.log
+ create mode 100644 state/artifacts/20260322T114350-067-ui-information-density-reset/worker.jsonl
+ create mode 100644 tests/e2e/ui-information-density.spec.ts
+commit: created

@@ -1021,3 +1021,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T114350-067-ui-information-density-reset/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T114350-067-ui-information-density-reset/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 067-ui-information-density-reset -> 068-public-search-expanded-row-reset
+- backlog: rendered current=068-public-search-expanded-row-reset
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooo
+- cycle: finished
+
+### cycle 2026-03-22T11:59:21+09:00 task=068-public-search-expanded-row-reset
+- artifacts: state/artifacts/20260322T115921-068-public-search-expanded-row-reset
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260322T115921-068-public-search-expanded-row-reset/worker.jsonl
+- worker-summary: Adjusted the public showroom search so the expanded state is a cleaner row beneath the archive heading, without the old disclosure/helper copy. The main UI change is in [public-showroom.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/public-content/components/public-showroom.tsx#L242) and the layout rules are in [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css#L911). I also updated the Playwright coverage in [ui-public-showroom.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-public-showroom.spec.ts) and [ui-information-density.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-information-density.spec.ts#L146) so the task now guards against redundant expanded-state labeling.
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T115921-068-public-search-expanded-row-reset/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T115921-068-public-search-expanded-row-reset/npm-run-verify-next-server.log
