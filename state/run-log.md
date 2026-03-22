@@ -897,3 +897,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T093413-056-public-surface-taste-foundation/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T093413-056-public-surface-taste-foundation/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 056-public-surface-taste-foundation -> 057-public-showroom-masonry-reset
+- backlog: rendered current=057-public-showroom-masonry-reset
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooo
+- cycle: finished
+
+### cycle 2026-03-22T09:50:41+09:00 task=057-public-showroom-masonry-reset
+- artifacts: state/artifacts/20260322T095041-057-public-showroom-masonry-reset
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260322T095041-057-public-showroom-masonry-reset/worker.jsonl
+- worker-summary: Reworked the public homepage in [public-showroom.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/public-content/components/public-showroom.tsx) and [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css) so the archive head and collapsed search sit in one quieter top block, while the showroom itself uses a desktop multi-column masonry flow with a strict single-column mobile fallback. I also tightened the task-specific UI coverage in [ui-public-showroom.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-public-showroom.spec.ts), [ui-home-grid.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-home-grid.spec.ts), and [ui-public-home-density.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-public-home-density.spec.ts), then refreshed the affected public snapshots.
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260322T095041-057-public-showroom-masonry-reset/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260322T095041-057-public-showroom-masonry-reset/npm-run-verify-next-server.log

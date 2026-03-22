@@ -219,79 +219,9 @@ export function PublicShowroom({
   };
 
   return (
-    <>
-      <Surface className="public-search-shell" density="compact" role="search" tone="panel">
-        <div className={`search-form public-search-panel ${isSearchExpanded ? "public-search-panel-expanded" : "public-search-panel-collapsed"}`}>
-          {isSearchExpanded ? (
-            <>
-              <div className="public-search-header">
-                <SectionHeading meta="Title-only live filter" title="Search public titles" />
-                <Button
-                  aria-controls={searchPanelId}
-                  aria-expanded={isSearchExpanded}
-                  aria-label="Close public title search"
-                  className="public-search-toggle"
-                  data-testid="public-home-search-toggle"
-                  onClick={closeSearch}
-                  type="button"
-                  variant="ghost"
-                >
-                  Close search
-                </Button>
-              </div>
-              <div className="public-search-controls" id={searchPanelId}>
-                <FormField
-                  className="public-search-field"
-                  hint="Matches published note and link titles only."
-                  label="Title filter"
-                >
-                  <input
-                    aria-label="Search public titles"
-                    autoComplete="off"
-                    className="text-input"
-                    data-testid="public-home-search-input"
-                    onChange={(event) => setQuery(event.currentTarget.value)}
-                    onKeyDown={(event) => {
-                      if (event.key === "Escape") {
-                        event.preventDefault();
-                        closeSearch();
-                      }
-                    }}
-                    placeholder={hasPublishedLinks ? "Filter published notes and links by title" : "Filter published notes by title"}
-                    ref={searchInputRef}
-                    type="search"
-                    value={query}
-                  />
-                </FormField>
-                <p className="field-note public-search-summary" data-testid="public-home-search-summary">
-                  {getSearchSummary(query.trim(), filteredItems.length, items.length)}
-                </p>
-              </div>
-            </>
-          ) : (
-            <div className="public-search-collapsed-row">
-              <Button
-                aria-controls={searchPanelId}
-                aria-expanded={isSearchExpanded}
-                aria-label="Open public title search"
-                className="public-search-toggle"
-                data-testid="public-home-search-toggle"
-                onClick={openSearch}
-                type="button"
-                variant="ghost"
-              >
-                Search titles
-              </Button>
-              <p className="field-note public-search-summary" data-testid="public-home-search-summary">
-                {getCollapsedSearchSummary(items.length)}
-              </p>
-            </div>
-          )}
-        </div>
-      </Surface>
-
-      <div className="public-home-grid">
-        <Surface className="note-collection-panel" tone="panel">
+    <div className="public-home-grid">
+      <Surface className="note-collection-panel public-home-archive" tone="panel">
+        <div className="public-home-archive-head">
           <div className="public-home-shell-head public-hero public-intro-panel">
             <div className="public-home-shell-copy">
               <p className="eyebrow">Public showroom</p>
@@ -302,18 +232,90 @@ export function PublicShowroom({
               <strong>{publishedCountLabel}</strong>
             </div>
           </div>
-          <SectionHeading meta={listMeta} title={listTitle} />
-          {filteredItems.length === 0 ? (
-            <p data-testid="public-home-empty-state">{emptyStateMessage}</p>
-          ) : (
-            <div className="note-list public-note-list public-note-showroom" data-testid="public-home-showroom">
-              {filteredItems.map((item) => (
-                <PublishedContentPreviewCard key={`${item.kind}-${item.id}`} item={item} />
-              ))}
+
+          <div className="public-search-shell" role="search">
+            <div className={`search-form public-search-panel ${isSearchExpanded ? "public-search-panel-expanded" : "public-search-panel-collapsed"}`}>
+              {isSearchExpanded ? (
+                <>
+                  <div className="public-search-header">
+                    <SectionHeading meta="Title-only live filter" title="Search public titles" />
+                    <Button
+                      aria-controls={searchPanelId}
+                      aria-expanded={isSearchExpanded}
+                      aria-label="Close public title search"
+                      className="public-search-toggle"
+                      data-testid="public-home-search-toggle"
+                      onClick={closeSearch}
+                      type="button"
+                      variant="ghost"
+                    >
+                      Close search
+                    </Button>
+                  </div>
+                  <div className="public-search-controls" id={searchPanelId}>
+                    <FormField
+                      className="public-search-field"
+                      hint="Matches published note and link titles only."
+                      label="Title filter"
+                    >
+                      <input
+                        aria-label="Search public titles"
+                        autoComplete="off"
+                        className="text-input"
+                        data-testid="public-home-search-input"
+                        onChange={(event) => setQuery(event.currentTarget.value)}
+                        onKeyDown={(event) => {
+                          if (event.key === "Escape") {
+                            event.preventDefault();
+                            closeSearch();
+                          }
+                        }}
+                        placeholder={hasPublishedLinks ? "Filter published notes and links by title" : "Filter published notes by title"}
+                        ref={searchInputRef}
+                        type="search"
+                        value={query}
+                      />
+                    </FormField>
+                    <p className="field-note public-search-summary" data-testid="public-home-search-summary">
+                      {getSearchSummary(query.trim(), filteredItems.length, items.length)}
+                    </p>
+                  </div>
+                </>
+              ) : (
+                <div className="public-search-collapsed-row">
+                  <Button
+                    aria-controls={searchPanelId}
+                    aria-expanded={isSearchExpanded}
+                    aria-label="Open public title search"
+                    className="public-search-toggle"
+                    data-testid="public-home-search-toggle"
+                    onClick={openSearch}
+                    type="button"
+                    variant="ghost"
+                  >
+                    Search titles
+                  </Button>
+                  <p className="field-note public-search-summary" data-testid="public-home-search-summary">
+                    {getCollapsedSearchSummary(items.length)}
+                  </p>
+                </div>
+              )}
             </div>
-          )}
-        </Surface>
-      </div>
-    </>
+          </div>
+        </div>
+
+        <SectionHeading className="public-showroom-section-heading" meta={listMeta} title={listTitle} />
+
+        {filteredItems.length === 0 ? (
+          <p data-testid="public-home-empty-state">{emptyStateMessage}</p>
+        ) : (
+          <div className="note-list public-note-list public-note-showroom" data-testid="public-home-showroom">
+            {filteredItems.map((item) => (
+              <PublishedContentPreviewCard key={`${item.kind}-${item.id}`} item={item} />
+            ))}
+          </div>
+        )}
+      </Surface>
+    </div>
   );
 }

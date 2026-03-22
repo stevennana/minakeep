@@ -234,10 +234,41 @@ async function expectMixedFeedRhythm(page: Page, viewport: "desktop" | "mobile")
   expect(new Set(kinds)).toEqual(new Set(["note", "link"]));
 
   if (viewport === "desktop") {
-    expect(new Set(boxes.map((box) => box.x)).size).toBeGreaterThanOrEqual(2);
+    expect(new Set(boxes.map((box) => box.x)).size).toBeGreaterThanOrEqual(3);
   } else {
     expect(Math.max(...boxes.map((box) => box.x)) - Math.min(...boxes.map((box) => box.x))).toBeLessThanOrEqual(2);
     expect(boxes[1]?.y).toBeGreaterThan(boxes[0]?.y ?? 0);
+  }
+}
+
+async function expectShowroomColumns(page: Page, viewport: "desktop" | "mobile") {
+  const layout = await page.evaluate(() => {
+    const showroom = document.querySelector<HTMLElement>("[data-testid='public-home-showroom']");
+
+    if (!showroom) {
+      return null;
+    }
+
+    const styles = getComputedStyle(showroom);
+
+    return {
+      columnCount: Number.parseInt(styles.columnCount, 10),
+      display: styles.display
+    };
+  });
+
+  expect(layout).not.toBeNull();
+
+  if (!layout) {
+    return;
+  }
+
+  expect(layout.display).toBe("block");
+
+  if (viewport === "desktop") {
+    expect(layout.columnCount).toBeGreaterThanOrEqual(3);
+  } else {
+    expect(layout.columnCount).toBe(1);
   }
 }
 
@@ -316,7 +347,7 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-regression @ui-public-showroom @ui-public-search-collapse @ui-public-taste-foundation mixed public showroom keeps search collapsed by default on desktop", async ({ page }) => {
+test("@ui-regression @ui-public-showroom @ui-public-showroom-masonry @ui-public-search-collapse @ui-public-taste-foundation mixed public showroom keeps search collapsed by default on desktop", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await page.goto("/");
 
@@ -332,6 +363,7 @@ test("@ui-regression @ui-public-showroom @ui-public-search-collapse @ui-public-t
   await expect(page.getByRole("link", { name: seededPublishedLinks[0].title })).toBeVisible();
   await expect(page.getByText("Opens in new tab")).toHaveCount(seededPublishedLinks.length);
   await expect(page.getByTestId("public-home-search-summary")).toHaveText("Title-only filter across 4 public items.");
+  await expectShowroomColumns(page, "desktop");
   await expectMixedFeedRhythm(page, "desktop");
   await expectCollapsedSearchLayout(page, "desktop");
   await expectPublicTasteFoundation(page);
@@ -357,7 +389,7 @@ test("@ui-regression @ui-public-showroom @ui-public-search-collapse @ui-public-t
   await expect(page.getByTestId("public-home-search-summary")).toHaveText("Showing 2 of 4 public items.");
 });
 
-test("@ui-regression @ui-public-showroom @ui-public-search-collapse mixed public showroom search expands cleanly on mobile", async ({ page }) => {
+test("@ui-regression @ui-public-showroom @ui-public-showroom-masonry @ui-public-search-collapse mixed public showroom search expands cleanly on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await page.goto("/");
 
@@ -371,6 +403,7 @@ test("@ui-regression @ui-public-showroom @ui-public-search-collapse mixed public
   await expect(showroomCards).toHaveCount(seededPublishedNotes.length + seededPublishedLinks.length);
   await expect(page.getByRole("link", { name: seededPublishedNotes[0].title })).toBeVisible();
   await expect(page.getByRole("link", { name: seededPublishedLinks[0].title })).toBeVisible();
+  await expectShowroomColumns(page, "mobile");
   await expectMixedFeedRhythm(page, "mobile");
   await expect(page.getByTestId("public-home-search-summary")).toHaveText("Title-only filter across 4 public items.");
   await expectCollapsedSearchLayout(page, "mobile");

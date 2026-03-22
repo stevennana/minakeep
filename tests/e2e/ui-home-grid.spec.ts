@@ -229,10 +229,41 @@ async function expectShowroomRhythm(page: Page, viewport: "desktop" | "mobile") 
   );
 
   if (viewport === "desktop") {
-    expect(new Set(boxes.slice(0, 4).map((box) => box.x)).size).toBeGreaterThanOrEqual(2);
+    expect(new Set(boxes.slice(0, 6).map((box) => box.x)).size).toBeGreaterThanOrEqual(3);
   } else {
     expect(Math.max(...boxes.map((box) => box.x)) - Math.min(...boxes.map((box) => box.x))).toBeLessThanOrEqual(2);
     expect(boxes[1]?.y).toBeGreaterThan(boxes[0]?.y ?? 0);
+  }
+}
+
+async function expectShowroomColumns(page: Page, viewport: "desktop" | "mobile") {
+  const layout = await page.evaluate(() => {
+    const showroom = document.querySelector<HTMLElement>(".public-note-showroom");
+
+    if (!showroom) {
+      return null;
+    }
+
+    const styles = getComputedStyle(showroom);
+
+    return {
+      columnCount: Number.parseInt(styles.columnCount, 10),
+      display: styles.display
+    };
+  });
+
+  expect(layout).not.toBeNull();
+
+  if (!layout) {
+    return;
+  }
+
+  expect(layout.display).toBe("block");
+
+  if (viewport === "desktop") {
+    expect(layout.columnCount).toBeGreaterThanOrEqual(3);
+  } else {
+    expect(layout.columnCount).toBe(1);
   }
 }
 
@@ -246,7 +277,7 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-regression @ui-home-grid homepage showroom uses a varied desktop grid", async ({ page }) => {
+test("@ui-regression @ui-home-grid @ui-public-showroom-masonry homepage showroom uses a varied desktop grid", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await page.goto("/");
 
@@ -256,6 +287,7 @@ test("@ui-regression @ui-home-grid homepage showroom uses a varied desktop grid"
   await expect(page.locator("[data-card-variant='feature']")).toHaveCount(2);
   await expect(page.getByRole("link", { name: seededNotes[0].title })).toBeVisible();
   await expect(page.locator(".note-preview-card-summary").first()).toBeVisible();
+  await expectShowroomColumns(page, "desktop");
   await expectShowroomRhythm(page, "desktop");
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
@@ -266,7 +298,7 @@ test("@ui-regression @ui-home-grid homepage showroom uses a varied desktop grid"
   });
 });
 
-test("@ui-regression @ui-home-grid homepage showroom collapses cleanly on mobile", async ({ page }) => {
+test("@ui-regression @ui-home-grid @ui-public-showroom-masonry homepage showroom collapses cleanly on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await page.goto("/");
 
@@ -275,6 +307,7 @@ test("@ui-regression @ui-home-grid homepage showroom collapses cleanly on mobile
   await expect(page.locator("[data-card-variant='balanced']")).toHaveCount(2);
   await expect(page.locator("[data-card-variant='feature']")).toHaveCount(2);
   await expect(page.getByRole("link", { name: seededNotes[0].title })).toBeVisible();
+  await expectShowroomColumns(page, "mobile");
   await expectShowroomRhythm(page, "mobile");
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);

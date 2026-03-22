@@ -5,7 +5,7 @@
   "id": "057-public-showroom-masonry-reset",
   "title": "Public showroom masonry reset",
   "order": 57,
-  "status": "planned",
+  "status": "active",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "058-public-note-human-reading-polish",
   "prompt_docs": [
@@ -72,3 +72,5 @@ Promote only when the public showroom feels more alive without becoming chaotic 
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-22 09:58 KST: Rebuilt the homepage archive shell so the compact archive head and recessed public search live together inside one quieter top block, removing the previous stacked search-first impression.
+- 2026-03-22 09:58 KST: Switched the public showroom feed to CSS multi-column masonry on desktop with strict single-column mobile fallback, refreshed the related Playwright showroom snapshots, and tagged the task-specific UI checks under `@ui-public-showroom-masonry`.

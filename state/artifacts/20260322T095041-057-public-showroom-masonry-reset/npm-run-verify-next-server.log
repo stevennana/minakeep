@@ -1,0 +1,374 @@
+
+> minakeep@0.1.0 dev
+> next dev --hostname 127.0.0.1 --port 3100
+
+[1m[38;2;173;127;168m▲ Next.js 16.2.0[39m[22m (Turbopack)
+- Local:         http://127.0.0.1:3100
+- Network:       http://127.0.0.1:3100
+- Environments: .env
+[32m[1m✓[22m[39m Ready in 199ms
+
+ GET /api/health [32m200[39m in 100ms[2m (next.js: 89ms, application-code: 10ms)[22m
+ GET /login [32m200[39m in 167ms[2m (next.js: 50ms, application-code: 118ms)[22m
+ GET /app [32m200[39m in 120ms[2m (next.js: 25ms, proxy.ts: 39ms, application-code: 55ms)[22m
+ POST /login [34m303[39m in 231ms[2m (next.js: 1296µs, application-code: 230ms)[22m
+  └─ ƒ loginAction({}) in 99ms [2msrc/app/login/actions.ts[22m
+ GET / [32m200[39m in 52ms[2m (next.js: 10ms, application-code: 42ms)[22m
+ GET /login?callbackUrl=http%3A%2F%2Flocalhost%3A3100%2Fapp%2Fsearch [32m200[39m in 21ms[2m (next.js: 861µs, application-code: 20ms)[22m
+ GET /login?callbackUrl=http%3A%2F%2Flocalhost%3A3100%2Fapp%2Fnotes%2Fnew [32m200[39m in 23ms[2m (next.js: 980µs, application-code: 22ms)[22m
+ GET /app [32m200[39m in 23ms[2m (next.js: 1040µs, proxy.ts: 3ms, application-code: 19ms)[22m
+ POST /login?callbackUrl=http%3A%2F%2Flocalhost%3A3100%2Fapp%2Fnotes%2Fnew [34m303[39m in 60ms[2m (next.js: 1107µs, application-code: 59ms)[22m
+  └─ ƒ loginAction({}) in 31ms [2msrc/app/login/actions.ts[22m
+ GET /app/notes/new [32m200[39m in 37ms[2m (next.js: 20ms, proxy.ts: 3ms, application-code: 13ms)[22m
+ GET /app/notes/cmn11y94b0000kqyb934damue/edit?saved=1 [32m200[39m in 259ms[2m (next.js: 216ms, proxy.ts: 3ms, application-code: 40ms)[22m
+ POST /app/notes/new [34m303[39m in 291ms[2m (next.js: 2ms, proxy.ts: 4ms, application-code: 285ms)[22m
+  └─ ƒ createNoteAction({}) in 21ms [2msrc/app/app/notes/actions.ts[22m
+ POST /app/notes/cmn11y94b0000kqyb934damue/edit?saved=1 [34m303[39m in 145ms[2m (next.js: 4ms, proxy.ts: 6ms, application-code: 135ms)[22m
+  └─ ƒ updateNoteAction("cmn11y94b0000kqyb934damue", {}) in 29ms [2msrc/app/app/notes/actions.ts[22m
+ GET /app [32m200[39m in 191ms[2m (next.js: 1104µs, proxy.ts: 9ms, application-code: 180ms)[22m
+ GET /app/notes/cmn11y94b0000kqyb934damue/edit?saved=1 [32m200[39m in 155ms[2m (next.js: 16ms, proxy.ts: 109ms, application-code: 30ms)[22m
+ GET /app/notes/cmn11y94b0000kqyb934damue/edit [32m200[39m in 25ms[2m (next.js: 1685µs, proxy.ts: 4ms, application-code: 20ms)[22m
+ GET /login [32m200[39m in 20ms[2m (next.js: 1706µs, application-code: 18ms)[22m
+ GET /app [32m200[39m in 26ms[2m (next.js: 999µs, proxy.ts: 3ms, application-code: 22ms)[22m
+ POST /login [34m303[39m in 62ms[2m (next.js: 920µs, application-code: 61ms)[22m
+  └─ ƒ loginAction({}) in 31ms [2msrc/app/login/actions.ts[22m
+ GET /app/notes/new [32m200[39m in 17ms[2m (next.js: 985µs, proxy.ts: 3ms, application-code: 13ms)[22m
+ GET /app/notes/cmn11ya1g0001kqyb0k3jybw7/edit?saved=1 [32m200[39m in 30ms[2m (next.js: 2ms, proxy.ts: 2ms, application-code: 25ms)[22m
+ POST /app/notes/new [34m303[39m in 46ms[2m (next.js: 1123µs, proxy.ts: 3ms, application-code: 41ms)[22m
+  └─ ƒ createNoteAction({}) in 7ms [2msrc/app/app/notes/actions.ts[22m
+ POST /api/test/mina/chat/completions [32m200[39m in 1516ms[2m (next.js: 13ms, application-code: 1503ms)[22m
+ GET /app/notes/cmn11ya1g0001kqyb0k3jybw7/edit?saved=1 [32m200[39m in 44ms[2m (next.js: 6ms, proxy.ts: 11ms, application-code: 27ms)[22m
+ GET /app/notes/cmn11ya1g0001kqyb0k3jybw7/edit?retried=1 [32m200[39m in 25ms[2m (next.js: 1566µs, proxy.ts: 3ms, application-code: 21ms)[22m
+ POST /app/notes/cmn11ya1g0001kqyb0k3jybw7/edit?saved=1 [34m303[39m in 45ms[2m (next.js: 4ms, proxy.ts: 5ms, application-code: 36ms)[22m
+  └─ ƒ retryNoteEnrichmentAction("cmn11ya1g0001kqyb0k3jybw7") in 6ms [2msrc/app/app/notes/actions.ts[22m
+ POST /api/test/mina/chat/completions [32m200[39m in 1510ms[2m (next.js: 711µs, application-code: 1510ms)[22m
+ GET /app/notes/cmn11ya1g0001kqyb0k3jybw7/edit?retried=1 [32m200[39m in 43ms[2m (next.js: 6ms, proxy.ts: 10ms, application-code: 27ms)[22m
+ GET /login [32m200[39m in 19ms[2m (next.js: 886µs, application-code: 18ms)[22m
+ GET /app [32m200[39m in 45ms[2m (next.js: 1154µs, proxy.ts: 2ms, application-code: 42ms)[22m
+ POST /login [34m303[39m in 79ms[2m (next.js: 870µs, application-code: 78ms)[22m
+  └─ ƒ loginAction({}) in 30ms [2msrc/app/login/actions.ts[22m
+ GET /app/notes/new [32m200[39m in 16ms[2m (next.js: 840µs, proxy.ts: 3ms, application-code: 12ms)[22m
+ GET /app/notes/cmn11yf1s0002kqyblxmzgkpy/edit?saved=1 [32m200[39m in 24ms[2m (next.js: 2ms, proxy.ts: 2ms, application-code: 19ms)[22m
+ POST /app/notes/new [34m303[39m in 39ms[2m (next.js: 1753µs, proxy.ts: 3ms, application-code: 35ms)[22m
+  └─ ƒ createNoteAction({}) in 6ms [2msrc/app/app/notes/actions.ts[22m
+ GET /app/notes/cmn11yf1s0002kqyblxmzgkpy/edit?published=1 [32m200[39m in 21ms[2m (next.js: 1268µs, proxy.ts: 2ms, application-code: 17ms)[22m
+ POST /app/notes/cmn11yf1s0002kqyblxmzgkpy/edit?saved=1 [34m303[39m in 34ms[2m (next.js: 1421µs, proxy.ts: 3ms, application-code: 29ms)[22m
+  └─ ƒ publishNoteAction("cmn11yf1s0002kqyblxmzgkpy") in 4ms [2msrc/app/app/notes/actions.ts[22m
+ GET / [32m200[39m in 17ms[2m (next.js: 918µs, application-code: 16ms)[22m
+ GET /notes/public-note-1774141354982 [32m200[39m in 198ms[2m (next.js: 183ms, application-code: 15ms)[22m
+ GET /app [32m200[39m in 48ms[2m (next.js: 922µs, proxy.ts: 3ms, application-code: 44ms)[22m
+ GET /app/notes/cmn11yf1s0002kqyblxmzgkpy/edit [32m200[39m in 21ms[2m (next.js: 2ms, proxy.ts: 3ms, application-code: 16ms)[22m
+ GET /app/notes/cmn11yf1s0002kqyblxmzgkpy/edit?unpublished=1 [32m200[39m in 22ms[2m (next.js: 1319µs, proxy.ts: 3ms, application-code: 18ms)[22m
+ POST /app/notes/cmn11yf1s0002kqyblxmzgkpy/edit [34m303[39m in 36ms[2m (next.js: 1705µs, proxy.ts: 3ms, application-code: 31ms)[22m
+  └─ ƒ unpublishNoteAction("cmn11yf1s0002kqyblxmzgkpy") in 5ms [2msrc/app/app/notes/actions.ts[22m
+ GET / [32m200[39m in 18ms[2m (next.js: 842µs, application-code: 18ms)[22m
+ GET /notes/public-note-1774141354982 [33m404[39m in 36ms[2m (next.js: 4ms, application-code: 32ms)[22m
+ GET /login [32m200[39m in 24ms[2m (next.js: 830µs, application-code: 23ms)[22m
+ GET /app [32m200[39m in 24ms[2m (next.js: 975µs, proxy.ts: 2ms, application-code: 21ms)[22m
+ POST /login [34m303[39m in 59ms[2m (next.js: 863µs, application-code: 59ms)[22m
+  └─ ƒ loginAction({}) in 30ms [2msrc/app/login/actions.ts[22m
+ GET /app/links [32m200[39m in 37ms[2m (next.js: 17ms, proxy.ts: 3ms, application-code: 17ms)[22m
+ GET /app/links?saved=1 [32m200[39m in 26ms[2m (next.js: 867µs, proxy.ts: 3ms, application-code: 23ms)[22m
+ POST /app/links [34m303[39m in 42ms[2m (next.js: 1019µs, proxy.ts: 3ms, application-code: 38ms)[22m
+  └─ ƒ createLinkAction({}) in 7ms [2msrc/app/app/links/actions.ts[22m
+ POST /api/test/mina/chat/completions [32m200[39m in 3ms[2m (next.js: 762µs, application-code: 2ms)[22m
+{"level":"warn","message":"Link favicon could not be resolved.","metadata":{"linkId":"cmn11ygav0003kqybvp05v5nn","url":"https://example.com/reference-1774141356599"},"timestamp":"2026-03-22T01:02:37.130Z"}
+ GET /app/links?saved=1 [32m200[39m in 42ms[2m (next.js: 1499µs, proxy.ts: 5ms, application-code: 35ms)[22m
+ GET / [32m200[39m in 31ms[2m (next.js: 2ms, application-code: 29ms)[22m
+ GET /login [32m200[39m in 17ms[2m (next.js: 797µs, application-code: 16ms)[22m
+ GET /app [32m200[39m in 23ms[2m (next.js: 887µs, proxy.ts: 3ms, application-code: 19ms)[22m
+ POST /login [34m303[39m in 58ms[2m (next.js: 873µs, application-code: 57ms)[22m
+  └─ ƒ loginAction({}) in 30ms [2msrc/app/login/actions.ts[22m
+ GET /app/links [32m200[39m in 21ms[2m (next.js: 904µs, proxy.ts: 3ms, application-code: 18ms)[22m
+ GET /app/links?saved=1 [32m200[39m in 25ms[2m (next.js: 790µs, proxy.ts: 2ms, application-code: 22ms)[22m
+ POST /app/links [34m303[39m in 39ms[2m (next.js: 1266µs, proxy.ts: 3ms, application-code: 35ms)[22m
+  └─ ƒ createLinkAction({}) in 6ms [2msrc/app/app/links/actions.ts[22m
+ POST /api/test/mina/chat/completions [32m200[39m in 2ms[2m (next.js: 658µs, application-code: 1623µs)[22m
+{"level":"warn","message":"Link favicon could not be resolved.","metadata":{"linkId":"cmn11yj100004kqyb1x6x8oqg","url":"https://example.com/published-link-1774141360159"},"timestamp":"2026-03-22T01:02:40.666Z"}
+ GET /app/links?saved=1 [32m200[39m in 50ms[2m (next.js: 2ms, proxy.ts: 10ms, application-code: 37ms)[22m
+ GET /app/links?published=1 [32m200[39m in 29ms[2m (next.js: 1032µs, proxy.ts: 4ms, application-code: 24ms)[22m
+ POST /app/links?saved=1 [34m303[39m in 49ms[2m (next.js: 1592µs, proxy.ts: 6ms, application-code: 41ms)[22m
+  └─ ƒ publishLinkAction("cmn11yj100004kqyb1x6x8oqg") in 8ms [2msrc/app/app/links/actions.ts[22m
+ GET / [32m200[39m in 18ms[2m (next.js: 835µs, application-code: 17ms)[22m
+ GET /app/links [32m200[39m in 94ms[2m (next.js: 1077µs, proxy.ts: 2ms, application-code: 91ms)[22m
+ GET /app/links?unpublished=1 [32m200[39m in 24ms[2m (next.js: 809µs, proxy.ts: 2ms, application-code: 21ms)[22m
+ POST /app/links [34m303[39m in 36ms[2m (next.js: 1498µs, proxy.ts: 3ms, application-code: 31ms)[22m
+  └─ ƒ unpublishLinkAction("cmn11yj100004kqyb1x6x8oqg") in 4ms [2msrc/app/app/links/actions.ts[22m
+ GET / [32m200[39m in 17ms[2m (next.js: 878µs, application-code: 17ms)[22m
+ GET /login [32m200[39m in 18ms[2m (next.js: 749µs, application-code: 17ms)[22m
+ GET /app [32m200[39m in 24ms[2m (next.js: 813µs, proxy.ts: 2ms, application-code: 21ms)[22m
+ POST /login [34m303[39m in 57ms[2m (next.js: 950µs, application-code: 56ms)[22m
+  └─ ƒ loginAction({}) in 29ms [2msrc/app/login/actions.ts[22m
+ GET /app/links [32m200[39m in 23ms[2m (next.js: 1144µs, proxy.ts: 3ms, application-code: 19ms)[22m
+ GET /app/links?saved=1 [32m200[39m in 30ms[2m (next.js: 791µs, proxy.ts: 2ms, application-code: 27ms)[22m
+ POST /app/links [34m303[39m in 42ms[2m (next.js: 956µs, proxy.ts: 3ms, application-code: 38ms)[22m
+  └─ ƒ createLinkAction({}) in 5ms [2msrc/app/app/links/actions.ts[22m
+{"level":"warn","message":"Link favicon could not be resolved.","metadata":{"linkId":"cmn11ym500005kqybfrjlohh2","url":"https://example.com/retry-link-1774141364180"},"timestamp":"2026-03-22T01:02:44.701Z"}
+ POST /api/test/mina/chat/completions [32m200[39m in 1511ms[2m (next.js: 812µs, application-code: 1510ms)[22m
+ GET /app/links?saved=1 [32m200[39m in 49ms[2m (next.js: 3ms, proxy.ts: 10ms, application-code: 36ms)[22m
+ GET /app/links?retried=1 [32m200[39m in 30ms[2m (next.js: 967µs, proxy.ts: 3ms, application-code: 26ms)[22m
+ POST /app/links?saved=1 [34m303[39m in 49ms[2m (next.js: 1454µs, proxy.ts: 7ms, application-code: 41ms)[22m
+  └─ ƒ retryLinkEnrichmentAction("cmn11ym500005kqybfrjlohh2") in 7ms [2msrc/app/app/links/actions.ts[22m
+ POST /api/test/mina/chat/completions [32m200[39m in 1511ms[2m (next.js: 584µs, application-code: 1511ms)[22m
+ GET /app/links?retried=1 [32m200[39m in 49ms[2m (next.js: 3ms, proxy.ts: 10ms, application-code: 36ms)[22m
+ GET /login [32m200[39m in 30ms[2m (next.js: 881µs, application-code: 29ms)[22m
+ GET /app [32m200[39m in 24ms[2m (next.js: 834µs, proxy.ts: 2ms, application-code: 20ms)[22m
+ POST /login [34m303[39m in 58ms[2m (next.js: 913µs, application-code: 57ms)[22m
+  └─ ƒ loginAction({}) in 30ms [2msrc/app/login/actions.ts[22m
+ GET /app/links [32m200[39m in 25ms[2m (next.js: 874µs, proxy.ts: 3ms, application-code: 21ms)[22m
+ GET /app/links?error=invalid-url [32m200[39m in 24ms[2m (next.js: 888µs, proxy.ts: 2ms, application-code: 21ms)[22m
+ POST /app/links [34m303[39m in 35ms[2m (next.js: 1275µs, proxy.ts: 3ms, application-code: 31ms)[22m
+  └─ ƒ createLinkAction({}) in 3ms [2msrc/app/app/links/actions.ts[22m
+ GET /login [32m200[39m in 15ms[2m (next.js: 749µs, application-code: 14ms)[22m
+ GET /app [32m200[39m in 23ms[2m (next.js: 776µs, proxy.ts: 2ms, application-code: 20ms)[22m
+ POST /login [34m303[39m in 56ms[2m (next.js: 925µs, application-code: 55ms)[22m
+  └─ ƒ loginAction({}) in 29ms [2msrc/app/login/actions.ts[22m
+ GET /app/notes/new [32m200[39m in 16ms[2m (next.js: 957µs, proxy.ts: 3ms, application-code: 12ms)[22m
+ GET /app/notes/cmn11yrmg0006kqyb9t0cw602/edit?saved=1 [32m200[39m in 23ms[2m (next.js: 2ms, proxy.ts: 2ms, application-code: 19ms)[22m
+ POST /app/notes/new [34m303[39m in 38ms[2m (next.js: 928µs, proxy.ts: 3ms, application-code: 34ms)[22m
+  └─ ƒ createNoteAction({}) in 7ms [2msrc/app/app/notes/actions.ts[22m
+ GET /app/links [32m200[39m in 55ms[2m (next.js: 999µs, proxy.ts: 2ms, application-code: 51ms)[22m
+ GET /app/links?saved=1 [32m200[39m in 33ms[2m (next.js: 830µs, proxy.ts: 2ms, application-code: 30ms)[22m
+ POST /app/links [34m303[39m in 46ms[2m (next.js: 1456µs, proxy.ts: 3ms, application-code: 41ms)[22m
+  └─ ƒ createLinkAction({}) in 5ms [2msrc/app/app/links/actions.ts[22m
+ POST /api/test/mina/chat/completions [32m200[39m in 2ms[2m (next.js: 694µs, application-code: 1748µs)[22m
+{"level":"warn","message":"Link favicon could not be resolved.","metadata":{"linkId":"cmn11yrtf0007kqybk3m4g9ld","url":"https://example.com/url-needle-1774141371281"},"timestamp":"2026-03-22T01:02:52.062Z"}
+ GET /app/links?saved=1 [32m200[39m in 51ms[2m (next.js: 3ms, proxy.ts: 10ms, application-code: 38ms)[22m
+ GET /app/tags?tag=ai-owned [32m200[39m in 151ms[2m (next.js: 25ms, proxy.ts: 6ms, application-code: 120ms)[22m
+ GET /app/tags [32m200[39m in 61ms[2m (next.js: 776µs, proxy.ts: 3ms, application-code: 58ms)[22m
+ GET /app/search?q=Filtered%20note%201774141371281 [32m200[39m in 87ms[2m (next.js: 15ms, proxy.ts: 3ms, application-code: 69ms)[22m
+ GET /app/search?q=url-needle-1774141371281 [32m200[39m in 58ms[2m (next.js: 808µs, proxy.ts: 3ms, application-code: 54ms)[22m
+ GET /app/search?q=ai-owned [32m200[39m in 48ms[2m (next.js: 873µs, proxy.ts: 3ms, application-code: 45ms)[22m
+ GET /login [32m200[39m in 16ms[2m (next.js: 819µs, application-code: 15ms)[22m
+ GET /app [32m200[39m in 24ms[2m (next.js: 1014µs, proxy.ts: 2ms, application-code: 21ms)[22m
+ POST /login [34m303[39m in 59ms[2m (next.js: 928µs, application-code: 58ms)[22m
+  └─ ƒ loginAction({}) in 30ms [2msrc/app/login/actions.ts[22m
+ GET /app/links [32m200[39m in 26ms[2m (next.js: 918µs, proxy.ts: 3ms, application-code: 22ms)[22m
+ GET /app/links?saved=1 [32m200[39m in 30ms[2m (next.js: 772µs, proxy.ts: 2ms, application-code: 27ms)[22m
+ POST /app/links [34m303[39m in 49ms[2m (next.js: 1054µs, proxy.ts: 9ms, application-code: 39ms)[22m
+  └─ ƒ createLinkAction({}) in 6ms [2msrc/app/app/links/actions.ts[22m
+{"level":"warn","message":"Link favicon could not be resolved.","metadata":{"linkId":"cmn11yuz70008kqybmbxaijkz","url":"https://example.com/ai-enriched-link-1774141375601"},"timestamp":"2026-03-22T01:02:56.151Z"}
+ GET /app/links?saved=1 [32m200[39m in 43ms[2m (next.js: 1903µs, proxy.ts: 6ms, application-code: 35ms)[22m
+ GET /app/search?q=ai [32m200[39m in 57ms[2m (next.js: 1829µs, proxy.ts: 6ms, application-code: 50ms)[22m
+ GET /app/tags?tag=ai [32m200[39m in 67ms[2m (next.js: 1417µs, proxy.ts: 9ms, application-code: 57ms)[22m
+ GET /login [32m200[39m in 15ms[2m (next.js: 734µs, application-code: 14ms)[22m
+ GET /app [32m200[39m in 24ms[2m (next.js: 858µs, proxy.ts: 2ms, application-code: 21ms)[22m
+ POST /login [34m303[39m in 58ms[2m (next.js: 869µs, application-code: 57ms)[22m
+  └─ ƒ loginAction({}) in 30ms [2msrc/app/login/actions.ts[22m
+ GET /app/links [32m200[39m in 61ms[2m (next.js: 802µs, proxy.ts: 2ms, application-code: 57ms)[22m
+ GET /app/links?saved=1 [32m200[39m in 30ms[2m (next.js: 887µs, proxy.ts: 2ms, application-code: 27ms)[22m
+ POST /app/links [34m303[39m in 43ms[2m (next.js: 790µs, proxy.ts: 3ms, application-code: 39ms)[22m
+  └─ ƒ createLinkAction({}) in 6ms [2msrc/app/app/links/actions.ts[22m
+ POST /api/test/mina/chat/completions [32m200[39m in 3ms[2m (next.js: 598µs, application-code: 2ms)[22m
+ GET /app/links?saved=1 [32m200[39m in 53ms[2m (next.js: 3ms, proxy.ts: 9ms, application-code: 41ms)[22m
+ GET /media/dd29e4be-f3c2-4796-879a-e31f7f8553c2 [32m200[39m in 429ms[2m (next.js: 419ms, application-code: 10ms)[22m
+ GET /app/links?published=1 [32m200[39m in 49ms[2m (next.js: 1218µs, proxy.ts: 3ms, application-code: 44ms)[22m
+ POST /app/links?saved=1 [34m303[39m in 66ms[2m (next.js: 1616µs, proxy.ts: 5ms, application-code: 60ms)[22m
+  └─ ƒ publishLinkAction("cmn11yxtt0009kqybhg55a3gi") in 6ms [2msrc/app/app/links/actions.ts[22m
+ GET /media/dd29e4be-f3c2-4796-879a-e31f7f8553c2 [32m200[39m in 14ms[2m (next.js: 5ms, application-code: 10ms)[22m
+ GET / [32m200[39m in 25ms[2m (next.js: 793µs, application-code: 24ms)[22m
+ GET /media/dd29e4be-f3c2-4796-879a-e31f7f8553c2 [32m200[39m in 13ms[2m (next.js: 793µs, application-code: 12ms)[22m
+ GET /app/links [32m200[39m in 64ms[2m (next.js: 851µs, proxy.ts: 3ms, application-code: 60ms)[22m
+ GET /media/dd29e4be-f3c2-4796-879a-e31f7f8553c2 [32m200[39m in 16ms[2m (next.js: 1832µs, application-code: 14ms)[22m
+ GET /app/links?saved=1 [32m200[39m in 36ms[2m (next.js: 885µs, proxy.ts: 6ms, application-code: 29ms)[22m
+ POST /app/links [34m303[39m in 48ms[2m (next.js: 839µs, proxy.ts: 3ms, application-code: 45ms)[22m
+  └─ ƒ createLinkAction({}) in 6ms [2msrc/app/app/links/actions.ts[22m
+{"level":"warn","message":"Link favicon cache failed.","metadata":{"error":"Configured link favicon fetch failure for Playwright.","linkId":"cmn11z0en000akqybpj8yb7wy","url":"https://example.com/fallback-favicon-1774141379339"},"timestamp":"2026-03-22T01:03:03.159Z"}
+ POST /api/test/mina/chat/completions [32m200[39m in 1753µs[2m (next.js: 580µs, application-code: 1173µs)[22m
+ GET /media/dd29e4be-f3c2-4796-879a-e31f7f8553c2 [32m200[39m in 7ms[2m (next.js: 1130µs, application-code: 6ms)[22m
+ GET /app/links?saved=1 [32m200[39m in 58ms[2m (next.js: 4ms, proxy.ts: 10ms, application-code: 44ms)[22m
+ GET /app/links?favicon=1 [32m200[39m in 42ms[2m (next.js: 902µs, proxy.ts: 3ms, application-code: 39ms)[22m
+ POST /app/links?saved=1 [34m303[39m in 59ms[2m (next.js: 1269µs, proxy.ts: 4ms, application-code: 53ms)[22m
+  └─ ƒ refreshLinkFaviconAction("cmn11z0en000akqybpj8yb7wy") in 7ms [2msrc/app/app/links/actions.ts[22m
+ GET /media/dd29e4be-f3c2-4796-879a-e31f7f8553c2 [32m200[39m in 8ms[2m (next.js: 1896µs, application-code: 6ms)[22m
+ GET /media/60dea1fa-d93e-4a62-8136-b89cc26e453b [32m200[39m in 9ms[2m (next.js: 3ms, application-code: 6ms)[22m
+ GET /media/draft-note-image-1774141386346 [33m404[39m in 5ms[2m (next.js: 1384µs, application-code: 3ms)[22m
+ GET /login [32m200[39m in 24ms[2m (next.js: 767µs, application-code: 23ms)[22m
+ GET /app [32m200[39m in 23ms[2m (next.js: 875µs, proxy.ts: 2ms, application-code: 20ms)[22m
+ POST /login [34m303[39m in 60ms[2m (next.js: 955µs, application-code: 59ms)[22m
+  └─ ƒ loginAction({}) in 33ms [2msrc/app/login/actions.ts[22m
+ GET /media/draft-note-image-1774141386346 [32m200[39m in 10ms[2m (next.js: 3ms, application-code: 7ms)[22m
+ GET /media/draft-note-image-1774141386346 [32m200[39m in 6ms[2m (next.js: 608µs, application-code: 5ms)[22m
+ GET /media/published-note-image-1774141386709 [32m200[39m in 5ms[2m (next.js: 1323µs, application-code: 4ms)[22m
+ GET /media/hidden-note-image-1774141386709 [33m404[39m in 4ms[2m (next.js: 743µs, application-code: 4ms)[22m
+ GET /media/published-link-favicon-1774141386709 [32m200[39m in 4ms[2m (next.js: 632µs, application-code: 4ms)[22m
+ GET /login [32m200[39m in 14ms[2m (next.js: 773µs, application-code: 14ms)[22m
+ GET /app [32m200[39m in 23ms[2m (next.js: 1116µs, proxy.ts: 2ms, application-code: 19ms)[22m
+ POST /login [34m303[39m in 58ms[2m (next.js: 1021µs, application-code: 57ms)[22m
+  └─ ƒ loginAction({}) in 30ms [2msrc/app/login/actions.ts[22m
+ GET /media/published-note-image-1774141386709 [32m200[39m in 9ms[2m (next.js: 1235µs, application-code: 7ms)[22m
+ GET /app/notes/new [32m200[39m in 16ms[2m (next.js: 1694µs, proxy.ts: 3ms, application-code: 11ms)[22m
+ GET /app/notes/cmn11z3l2000bkqybyzgqxqti/edit?saved=1 [32m200[39m in 24ms[2m (next.js: 2ms, proxy.ts: 2ms, application-code: 19ms)[22m
+ POST /app/notes/new [34m303[39m in 38ms[2m (next.js: 1013µs, proxy.ts: 3ms, application-code: 34ms)[22m
+  └─ ƒ createNoteAction({}) in 5ms [2msrc/app/app/notes/actions.ts[22m
+ GET /app/notes/cmn11z3l2000bkqybyzgqxqti/edit?saved=1 [32m200[39m in 46ms[2m (next.js: 11ms, proxy.ts: 6ms, application-code: 30ms)[22m
+ GET /app [32m200[39m in 58ms[2m (next.js: 2ms, proxy.ts: 7ms, application-code: 49ms)[22m
+ GET /media/published-note-image-1774141386709 [32m200[39m in 11ms[2m (next.js: 4ms, application-code: 8ms)[22m
+ GET /login [32m200[39m in 18ms[2m (next.js: 857µs, application-code: 17ms)[22m
+ GET /app [32m200[39m in 21ms[2m (next.js: 878µs, proxy.ts: 2ms, application-code: 17ms)[22m
+ POST /login [34m303[39m in 55ms[2m (next.js: 943µs, application-code: 54ms)[22m
+  └─ ƒ loginAction({}) in 30ms [2msrc/app/login/actions.ts[22m
+ GET /app/notes/new [32m200[39m in 36ms[2m (next.js: 1027µs, proxy.ts: 6ms, application-code: 29ms)[22m
+ POST /api/notes/images [32m201[39m in 30ms[2m (next.js: 21ms, application-code: 9ms)[22m
+ GET /media/e0ef4654-3d3d-4151-854a-d92e473d75c2 [32m200[39m in 12ms[2m (next.js: 4ms, application-code: 9ms)[22m
+ GET /app/notes/cmn11z6fe000ckqybigv8snoa/edit?saved=1 [32m200[39m in 27ms[2m (next.js: 2ms, proxy.ts: 2ms, application-code: 23ms)[22m
+ POST /app/notes/new [34m303[39m in 44ms[2m (next.js: 1607µs, proxy.ts: 3ms, application-code: 40ms)[22m
+  └─ ƒ createNoteAction({}) in 8ms [2msrc/app/app/notes/actions.ts[22m
+ GET /media/e0ef4654-3d3d-4151-854a-d92e473d75c2 [32m200[39m in 10ms[2m (next.js: 1211µs, application-code: 9ms)[22m
+ GET / [32m200[39m in 18ms[2m (next.js: 847µs, application-code: 17ms)[22m
+ GET /login [32m200[39m in 15ms[2m (next.js: 761µs, application-code: 14ms)[22m
+ GET /login [32m200[39m in 15ms[2m (next.js: 759µs, application-code: 14ms)[22m
+ GET /login [32m200[39m in 19ms[2m (next.js: 768µs, application-code: 18ms)[22m
+ GET /app [32m200[39m in 21ms[2m (next.js: 785µs, proxy.ts: 2ms, application-code: 18ms)[22m
+ POST /login [34m303[39m in 54ms[2m (next.js: 924µs, application-code: 53ms)[22m
+  └─ ƒ loginAction({}) in 28ms [2msrc/app/login/actions.ts[22m
+ GET /app/notes/cmn11z74f0008ktyb1lai50j4/edit [32m200[39m in 52ms[2m (next.js: 2ms, proxy.ts: 3ms, application-code: 47ms)[22m
+ GET /login [32m200[39m in 15ms[2m (next.js: 796µs, application-code: 14ms)[22m
+ GET /app [32m200[39m in 21ms[2m (next.js: 817µs, proxy.ts: 2ms, application-code: 18ms)[22m
+ POST /login [34m303[39m in 57ms[2m (next.js: 888µs, application-code: 56ms)[22m
+  └─ ƒ loginAction({}) in 31ms [2msrc/app/login/actions.ts[22m
+ GET /app/notes/cmn11z7lu0009ktybvjzmlzpa/edit [32m200[39m in 44ms[2m (next.js: 3ms, proxy.ts: 3ms, application-code: 39ms)[22m
+ GET / [32m200[39m in 18ms[2m (next.js: 846µs, application-code: 17ms)[22m
+ GET / [32m200[39m in 18ms[2m (next.js: 810µs, application-code: 17ms)[22m
+ GET / [32m200[39m in 17ms[2m (next.js: 772µs, application-code: 17ms)[22m
+ GET / [32m200[39m in 17ms[2m (next.js: 769µs, application-code: 16ms)[22m
+ GET /login [32m200[39m in 15ms[2m (next.js: 786µs, application-code: 15ms)[22m
+ GET /app [32m200[39m in 21ms[2m (next.js: 868µs, proxy.ts: 2ms, application-code: 18ms)[22m
+ POST /login [34m303[39m in 54ms[2m (next.js: 909µs, application-code: 54ms)[22m
+  └─ ƒ loginAction({}) in 30ms [2msrc/app/login/actions.ts[22m
+ GET /app/notes/new [32m200[39m in 27ms[2m (next.js: 858µs, proxy.ts: 3ms, application-code: 23ms)[22m
+ GET /app/notes/cmn11z9eq000dkqybt87bn4n7/edit?saved=1 [32m200[39m in 23ms[2m (next.js: 2ms, proxy.ts: 2ms, application-code: 18ms)[22m
+ POST /app/notes/new [34m303[39m in 37ms[2m (next.js: 939µs, proxy.ts: 3ms, application-code: 33ms)[22m
+  └─ ƒ createNoteAction({}) in 6ms [2msrc/app/app/notes/actions.ts[22m
+ GET /login [32m200[39m in 18ms[2m (next.js: 794µs, application-code: 17ms)[22m
+ GET /app [32m200[39m in 22ms[2m (next.js: 901µs, proxy.ts: 2ms, application-code: 18ms)[22m
+ POST /login [34m303[39m in 57ms[2m (next.js: 997µs, application-code: 56ms)[22m
+  └─ ƒ loginAction({}) in 31ms [2msrc/app/login/actions.ts[22m
+ GET /app/notes/cmn11z9hk000tktybnazfpfm6/edit [32m200[39m in 43ms[2m (next.js: 2ms, proxy.ts: 3ms, application-code: 39ms)[22m
+ GET /login [32m200[39m in 21ms[2m (next.js: 804µs, application-code: 20ms)[22m
+ GET /app [32m200[39m in 22ms[2m (next.js: 873µs, proxy.ts: 3ms, application-code: 18ms)[22m
+ POST /login [34m303[39m in 56ms[2m (next.js: 922µs, application-code: 55ms)[22m
+  └─ ƒ loginAction({}) in 30ms [2msrc/app/login/actions.ts[22m
+ GET /app/notes/new [32m200[39m in 27ms[2m (next.js: 911µs, proxy.ts: 3ms, application-code: 23ms)[22m
+ GET /media/3b92f5a1-6c7b-417c-b948-3dfdce5a8efe-with-extra-wrap-length-for-the-gutter [33m404[39m in 6ms[2m (next.js: 1766µs, application-code: 4ms)[22m
+ GET /login [32m200[39m in 18ms[2m (next.js: 756µs, application-code: 17ms)[22m
+ GET /app [32m200[39m in 21ms[2m (next.js: 900µs, proxy.ts: 2ms, application-code: 18ms)[22m
+ POST /login [34m303[39m in 56ms[2m (next.js: 920µs, application-code: 55ms)[22m
+  └─ ƒ loginAction({}) in 30ms [2msrc/app/login/actions.ts[22m
+ GET /app/notes/cmn11zabn000vktyb019s8pri/edit [32m200[39m in 50ms[2m (next.js: 3ms, proxy.ts: 8ms, application-code: 40ms)[22m
+ GET /login [32m200[39m in 16ms[2m (next.js: 970µs, application-code: 15ms)[22m
+ GET /app [32m200[39m in 22ms[2m (next.js: 1062µs, proxy.ts: 2ms, application-code: 19ms)[22m
+ POST /login [34m303[39m in 55ms[2m (next.js: 899µs, application-code: 55ms)[22m
+  └─ ƒ loginAction({}) in 29ms [2msrc/app/login/actions.ts[22m
+ GET /app/notes/cmn11zar7000wktyb0xurhhuw/edit [32m200[39m in 44ms[2m (next.js: 2ms, proxy.ts: 3ms, application-code: 39ms)[22m
+ GET /app/notes/cmn11zar7000wktyb0xurhhuw/edit?saved=1 [32m200[39m in 25ms[2m (next.js: 1898µs, proxy.ts: 2ms, application-code: 20ms)[22m
+ POST /app/notes/cmn11zar7000wktyb0xurhhuw/edit [34m303[39m in 44ms[2m (next.js: 2ms, proxy.ts: 3ms, application-code: 39ms)[22m
+  └─ ƒ updateNoteAction("cmn11zar7000wktyb0xurhhuw", {}) in 10ms [2msrc/app/app/notes/actions.ts[22m
+ GET /login [32m200[39m in 15ms[2m (next.js: 905µs, application-code: 15ms)[22m
+ GET /app [32m200[39m in 21ms[2m (next.js: 1004µs, proxy.ts: 2ms, application-code: 18ms)[22m
+ POST /login [34m303[39m in 56ms[2m (next.js: 924µs, application-code: 55ms)[22m
+  └─ ƒ loginAction({}) in 31ms [2msrc/app/login/actions.ts[22m
+ GET /app/notes/cmn11zbll000xktybtwjyvyt2/edit [32m200[39m in 41ms[2m (next.js: 2ms, proxy.ts: 3ms, application-code: 36ms)[22m
+ GET /login [32m200[39m in 21ms[2m (next.js: 773µs, application-code: 21ms)[22m
+ GET /app [32m200[39m in 21ms[2m (next.js: 816µs, proxy.ts: 2ms, application-code: 18ms)[22m
+ POST /login [34m303[39m in 54ms[2m (next.js: 930µs, application-code: 53ms)[22m
+  └─ ƒ loginAction({}) in 29ms [2msrc/app/login/actions.ts[22m
+ GET /app/notes/cmn11zc3e000yktybj71uhmk9/edit [32m200[39m in 45ms[2m (next.js: 2ms, proxy.ts: 3ms, application-code: 40ms)[22m
+ GET /app/notes/cmn11zc3e000yktybj71uhmk9/edit?saved=1 [32m200[39m in 25ms[2m (next.js: 1437µs, proxy.ts: 3ms, application-code: 21ms)[22m
+ POST /app/notes/cmn11zc3e000yktybj71uhmk9/edit [34m303[39m in 41ms[2m (next.js: 2ms, proxy.ts: 4ms, application-code: 34ms)[22m
+  └─ ƒ updateNoteAction("cmn11zc3e000yktybj71uhmk9", {}) in 6ms [2msrc/app/app/notes/actions.ts[22m
+ GET /app/notes/cmn11zc3e000yktybj71uhmk9/edit?saved=1 [32m200[39m in 46ms[2m (next.js: 1469µs, proxy.ts: 3ms, application-code: 42ms)[22m
+ GET /login [32m200[39m in 16ms[2m (next.js: 796µs, application-code: 15ms)[22m
+ GET /app [32m200[39m in 22ms[2m (next.js: 819µs, proxy.ts: 2ms, application-code: 19ms)[22m
+ POST /login [34m303[39m in 55ms[2m (next.js: 1071µs, application-code: 54ms)[22m
+  └─ ƒ loginAction({}) in 29ms [2msrc/app/login/actions.ts[22m
+ GET /app/notes/cmn11zcxc000zktybzhynwqf7/edit [32m200[39m in 45ms[2m (next.js: 2ms, proxy.ts: 3ms, application-code: 40ms)[22m
+ GET /login [32m200[39m in 17ms[2m (next.js: 802µs, application-code: 16ms)[22m
+ GET /app [32m200[39m in 21ms[2m (next.js: 872µs, proxy.ts: 2ms, application-code: 18ms)[22m
+ POST /login [34m303[39m in 61ms[2m (next.js: 902µs, application-code: 60ms)[22m
+  └─ ƒ loginAction({}) in 36ms [2msrc/app/login/actions.ts[22m
+ GET /app/notes/cmn11zdeo0010ktyb6ox82uhe/edit [32m200[39m in 44ms[2m (next.js: 2ms, proxy.ts: 3ms, application-code: 39ms)[22m
+ GET /app/notes/cmn11zdeo0010ktyb6ox82uhe/edit?saved=1 [32m200[39m in 25ms[2m (next.js: 1427µs, proxy.ts: 2ms, application-code: 21ms)[22m
+ POST /app/notes/cmn11zdeo0010ktyb6ox82uhe/edit [34m303[39m in 40ms[2m (next.js: 3ms, proxy.ts: 3ms, application-code: 34ms)[22m
+  └─ ƒ updateNoteAction("cmn11zdeo0010ktyb6ox82uhe", {}) in 6ms [2msrc/app/app/notes/actions.ts[22m
+ GET /login [32m200[39m in 20ms[2m (next.js: 5ms, application-code: 15ms)[22m
+ GET /app [32m200[39m in 40ms[2m (next.js: 953µs, proxy.ts: 3ms, application-code: 36ms)[22m
+ POST /login [34m303[39m in 82ms[2m (next.js: 1649µs, application-code: 80ms)[22m
+  └─ ƒ loginAction({}) in 35ms [2msrc/app/login/actions.ts[22m
+ GET /app/notes/new [32m200[39m in 62ms[2m (next.js: 1565µs, proxy.ts: 7ms, application-code: 53ms)[22m
+ GET /login [32m200[39m in 15ms[2m (next.js: 786µs, application-code: 15ms)[22m
+ GET /app [32m200[39m in 22ms[2m (next.js: 912µs, proxy.ts: 3ms, application-code: 18ms)[22m
+ POST /login [34m303[39m in 55ms[2m (next.js: 921µs, application-code: 54ms)[22m
+  └─ ƒ loginAction({}) in 30ms [2msrc/app/login/actions.ts[22m
+ GET /app/notes/cmn11zetc0012ktyb9cofa7vb/edit [32m200[39m in 50ms[2m (next.js: 2ms, proxy.ts: 3ms, application-code: 45ms)[22m
+ GET /login [32m200[39m in 16ms[2m (next.js: 777µs, application-code: 15ms)[22m
+ GET /app [32m200[39m in 22ms[2m (next.js: 1059µs, proxy.ts: 2ms, application-code: 18ms)[22m
+ POST /login [34m303[39m in 56ms[2m (next.js: 905µs, application-code: 55ms)[22m
+  └─ ƒ loginAction({}) in 30ms [2msrc/app/login/actions.ts[22m
+ GET /app/notes/cmn11zfaa0013ktybabwhugrz/edit [32m200[39m in 44ms[2m (next.js: 2ms, proxy.ts: 3ms, application-code: 39ms)[22m
+ GET /media/ui-note-images-draft-1774141402965 [33m404[39m in 6ms[2m (next.js: 3ms, application-code: 3ms)[22m
+ GET /login [32m200[39m in 21ms[2m (next.js: 1023µs, application-code: 20ms)[22m
+ GET /app [32m200[39m in 28ms[2m (next.js: 865µs, proxy.ts: 2ms, application-code: 25ms)[22m
+ POST /login [34m303[39m in 63ms[2m (next.js: 963µs, application-code: 62ms)[22m
+  └─ ƒ loginAction({}) in 30ms [2msrc/app/login/actions.ts[22m
+ GET /media/ui-note-images-published-first-1774141402965 [32m200[39m in 8ms[2m (next.js: 852µs, application-code: 7ms)[22m
+ GET /media/ui-note-images-draft-1774141402965 [32m200[39m in 10ms[2m (next.js: 1969µs, application-code: 8ms)[22m
+ GET / [32m200[39m in 18ms[2m (next.js: 740µs, application-code: 17ms)[22m
+ GET /media/ui-note-images-published-first-1774141402965 [32m200[39m in 9ms[2m (next.js: 1253µs, application-code: 8ms)[22m
+ GET /notes/published-note-image-card [32m200[39m in 49ms[2m (next.js: 3ms, application-code: 46ms)[22m
+ GET /media/ui-note-images-published-first-1774141402965 [32m200[39m in 17ms[2m (next.js: 1114µs, application-code: 15ms)[22m
+ GET /media/ui-note-images-published-second-1774141402965 [32m200[39m in 17ms[2m (next.js: 3ms, application-code: 14ms)[22m
+ GET /login [32m200[39m in 17ms[2m (next.js: 847µs, application-code: 16ms)[22m
+ GET /app [32m200[39m in 29ms[2m (next.js: 1005µs, proxy.ts: 2ms, application-code: 26ms)[22m
+ POST /login [34m303[39m in 64ms[2m (next.js: 910µs, application-code: 63ms)[22m
+  └─ ƒ loginAction({}) in 31ms [2msrc/app/login/actions.ts[22m
+ GET /login [32m200[39m in 16ms[2m (next.js: 771µs, application-code: 15ms)[22m
+ GET /app [32m200[39m in 24ms[2m (next.js: 1120µs, proxy.ts: 2ms, application-code: 20ms)[22m
+ POST /login [34m303[39m in 58ms[2m (next.js: 1048µs, application-code: 57ms)[22m
+  └─ ƒ loginAction({}) in 31ms [2msrc/app/login/actions.ts[22m
+ GET /login [32m200[39m in 19ms[2m (next.js: 940µs, application-code: 18ms)[22m
+ GET /app [32m200[39m in 22ms[2m (next.js: 1069µs, proxy.ts: 3ms, application-code: 18ms)[22m
+ POST /login [34m303[39m in 56ms[2m (next.js: 1059µs, application-code: 55ms)[22m
+  └─ ƒ loginAction({}) in 30ms [2msrc/app/login/actions.ts[22m
+ GET /app/links [32m200[39m in 56ms[2m (next.js: 1574µs, proxy.ts: 3ms, application-code: 52ms)[22m
+ GET /login [32m200[39m in 16ms[2m (next.js: 823µs, application-code: 15ms)[22m
+ GET /app [32m200[39m in 23ms[2m (next.js: 915µs, proxy.ts: 2ms, application-code: 20ms)[22m
+ POST /login [34m303[39m in 58ms[2m (next.js: 883µs, application-code: 57ms)[22m
+  └─ ƒ loginAction({}) in 31ms [2msrc/app/login/actions.ts[22m
+ GET /app/links [32m200[39m in 54ms[2m (next.js: 881µs, proxy.ts: 3ms, application-code: 51ms)[22m
+ GET /login [32m200[39m in 16ms[2m (next.js: 799µs, application-code: 16ms)[22m
+ GET /app [32m200[39m in 23ms[2m (next.js: 993µs, proxy.ts: 3ms, application-code: 19ms)[22m
+ POST /login [34m303[39m in 58ms[2m (next.js: 1155µs, application-code: 56ms)[22m
+  └─ ƒ loginAction({}) in 30ms [2msrc/app/login/actions.ts[22m
+ GET /app/tags?tag=studio-systems [32m200[39m in 44ms[2m (next.js: 2ms, proxy.ts: 3ms, application-code: 39ms)[22m
+ GET /login [32m200[39m in 21ms[2m (next.js: 1099µs, application-code: 20ms)[22m
+ GET /app [32m200[39m in 22ms[2m (next.js: 942µs, proxy.ts: 2ms, application-code: 19ms)[22m
+ POST /login [34m303[39m in 57ms[2m (next.js: 912µs, application-code: 56ms)[22m
+  └─ ƒ loginAction({}) in 31ms [2msrc/app/login/actions.ts[22m
+ GET /app/tags?tag=studio-systems [32m200[39m in 41ms[2m (next.js: 845µs, proxy.ts: 3ms, application-code: 38ms)[22m
+ GET /login [32m200[39m in 17ms[2m (next.js: 786µs, application-code: 16ms)[22m
+ GET /app [32m200[39m in 28ms[2m (next.js: 1205µs, proxy.ts: 3ms, application-code: 25ms)[22m
+ POST /login [34m303[39m in 62ms[2m (next.js: 882µs, application-code: 61ms)[22m
+  └─ ƒ loginAction({}) in 30ms [2msrc/app/login/actions.ts[22m
+ GET /app/search?q=rhythm [32m200[39m in 42ms[2m (next.js: 1152µs, proxy.ts: 2ms, application-code: 38ms)[22m
+ GET /login [32m200[39m in 16ms[2m (next.js: 777µs, application-code: 16ms)[22m
+ GET /app [32m200[39m in 24ms[2m (next.js: 1031µs, proxy.ts: 3ms, application-code: 20ms)[22m
+ POST /login [34m303[39m in 57ms[2m (next.js: 897µs, application-code: 57ms)[22m
+  └─ ƒ loginAction({}) in 29ms [2msrc/app/login/actions.ts[22m
+ GET /app/search?q=rhythm [32m200[39m in 47ms[2m (next.js: 1020µs, proxy.ts: 2ms, application-code: 43ms)[22m
+ GET / [32m200[39m in 18ms[2m (next.js: 772µs, application-code: 17ms)[22m
+ GET / [32m200[39m in 18ms[2m (next.js: 908µs, application-code: 17ms)[22m
+ GET /notes/public-notes-should-read-like-finished-pages-not-dashboards [32m200[39m in 26ms[2m (next.js: 1779µs, application-code: 24ms)[22m
+ GET /notes/public-notes-should-read-like-finished-pages-not-dashboards [32m200[39m in 19ms[2m (next.js: 1924µs, application-code: 18ms)[22m
+ GET / [32m200[39m in 18ms[2m (next.js: 792µs, application-code: 17ms)[22m
+ GET / [32m200[39m in 18ms[2m (next.js: 799µs, application-code: 17ms)[22m
+ GET / [32m200[39m in 17ms[2m (next.js: 760µs, application-code: 16ms)[22m
+ GET /login [32m200[39m in 16ms[2m (next.js: 790µs, application-code: 16ms)[22m
+ GET /login [32m200[39m in 15ms[2m (next.js: 997µs, application-code: 14ms)[22m
+ GET /app [32m200[39m in 22ms[2m (next.js: 1197µs, proxy.ts: 3ms, application-code: 18ms)[22m
+ POST /login [34m303[39m in 57ms[2m (next.js: 1072µs, application-code: 56ms)[22m
+  └─ ƒ loginAction({}) in 30ms [2msrc/app/login/actions.ts[22m
+ GET /login [32m200[39m in 21ms[2m (next.js: 778µs, application-code: 20ms)[22m
+ GET /app [32m200[39m in 21ms[2m (next.js: 924µs, proxy.ts: 2ms, application-code: 18ms)[22m
+ POST /login [34m303[39m in 57ms[2m (next.js: 934µs, application-code: 56ms)[22m
+  └─ ƒ loginAction({}) in 31ms [2msrc/app/login/actions.ts[22m

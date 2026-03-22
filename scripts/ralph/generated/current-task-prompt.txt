@@ -1,53 +1,53 @@
 Read the following repository documents before making changes:
 - AGENTS.md
-- docs/PRODUCT_SENSE.md
 - docs/FRONTEND.md
-- docs/product-specs/public-surface-human-design-reset.md
-- docs/design-docs/cool-monochrome-visual-system.md
+- docs/product-specs/public-home-showroom.md
+- docs/product-specs/public-showroom-search.md
+- docs/design-docs/homepage-showroom-rhythm.md
+- docs/design-docs/public-home-first-screen-density.md
 - docs/design-docs/public-surface-taste-rules.md
 - docs/references/public-surface-design-references.md
-- docs/exec-plans/active/056-public-surface-taste-foundation.md
+- docs/exec-plans/active/057-public-showroom-masonry-reset.md
 
-Current task id: 056-public-surface-taste-foundation
-Current task title: Public surface taste foundation
+Current task id: 057-public-showroom-masonry-reset
+Current task title: Public showroom masonry reset
 
 Objective:
-Establish the reusable public-surface design foundation for the new taste-led wave before rebuilding specific pages.
+Rebuild the public homepage into a more dynamic masonry-style published archive with quieter top chrome.
 
 Scope:
-- shared public typography and spacing tokens
-- calmer public topbar and shell primitives
-- public-surface card/chip primitive cleanup
-- no route-model or feature-logic changes
+- homepage showroom layout and archive head
+- collapsed and expanded public search shell styling
+- note/link preview-card rhythm on the public homepage
 
 Out of scope:
-- full masonry showroom implementation
-- public note page layout rewrite
-- owner-workspace redesign
+- public note page redesign
+- owner routes
+- publishing logic or search semantics changes
 
 Exit criteria:
-1. Shared public-facing primitives and CSS rules reflect the calmer taste-led direction.
-2. Public chrome reads as support structure rather than the primary focal point.
-3. Typography and tag-chip primitives are ready for the later page slices.
-4. `npm run test:e2e -- --grep @ui-public-taste-foundation` passes.
+1. Desktop homepage layout feels visibly more dynamic than the current two-column impression.
+2. The first screen remains content-first and scan-friendly.
+3. Mobile collapse remains readable and touch-safe.
+4. `npm run test:e2e -- --grep @ui-public-showroom-masonry` passes.
 5. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `npm run test:e2e -- --grep @ui-public-taste-foundation`
+- `npm run test:e2e -- --grep @ui-public-showroom-masonry`
 
 Evaluator notes:
-Promote only when the new public foundation is visibly different from generic AI-slop patterns and is implemented through reusable styling layers.
+Promote only when the public showroom feels more alive without becoming chaotic or image-gallery random.
 
 Required repository artifacts for this task:
+- src/app/page.tsx
+- src/features/public-content/components/public-showroom.tsx
 - src/app/globals.css
-- src/components/ui
-- src/app/layout.tsx
 - tests/e2e
 
 Required commands for this task:
 - npm run verify
-- npm run test:e2e -- --grep @ui-public-taste-foundation
+- npm run test:e2e -- --grep @ui-public-showroom-masonry
 
 Previous known gaps from the last evaluation:
 - none
