@@ -83,6 +83,14 @@ DEMO_PASSWORD="replace-with-a-long-demo-password"
 
 Set both demo vars or leave both unset. The app still seeds only the owner account into SQLite; the demo account is an env-backed runtime role for read-only workspace access.
 
+Optional server-to-server external note-create API:
+
+```bash
+API_KEY="replace-with-a-long-random-static-key"
+```
+
+Leave `API_KEY` unset to keep `POST /api/open/notes` disabled.
+
 Start the app:
 
 ```bash
@@ -168,6 +176,77 @@ Follow operator logs:
 ```bash
 docker compose logs -f app
 ```
+
+## External note API
+
+Minakeep exposes one server-to-server note-create endpoint:
+
+```text
+POST /api/open/notes
+```
+
+Authentication:
+
+- header: `X-API-Key: <API_KEY>`
+- server-to-server only
+- no CORS support in this wave
+
+Request body:
+
+```json
+{
+  "title": "Example note",
+  "markdown": "# Heading\n\nBody text",
+  "isPublished": true
+}
+```
+
+Rules:
+
+- `title` must be a string
+- `markdown` must be a string
+- `isPublished` is optional and must be a boolean when present
+- unsupported fields are rejected
+- if `isPublished` is omitted, the created note stays private
+
+Responses:
+
+- `201` created
+- `400` invalid JSON or unsupported/invalid fields
+- `401` missing or invalid `X-API-Key`
+- `503` API disabled because `API_KEY` is unset, or owner account unavailable
+
+Success response shape:
+
+```json
+{
+  "note": {
+    "id": "cm123...",
+    "title": "Example note",
+    "slug": "example-note",
+    "isPublished": true
+  },
+  "ownerUrl": "/app/notes/cm123.../edit",
+  "publicUrl": "/notes/example-note"
+}
+```
+
+If the note stays private, `publicUrl` is `null`.
+
+`curl` example:
+
+```bash
+curl -X POST http://127.0.0.1:3000/api/open/notes \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: ${API_KEY}" \
+  -d '{
+    "title": "Remote API note",
+    "markdown": "# Remote API note\n\nCreated from curl.",
+    "isPublished": true
+  }'
+```
+
+API-created notes are written under the single owner account and enter the same AI enrichment flow as UI-created notes.
 
 ## Useful commands
 
