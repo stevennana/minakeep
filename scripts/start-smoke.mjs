@@ -57,7 +57,89 @@ async function verifyProbePath(url) {
   }
 }
 
-async function runSmokeScenario({ env = process.env, probePaths: scenarioProbePaths = [] } = {}) {
+async function fetchRequiredText(url) {
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error(`Smoke probe failed for ${url} with status ${response.status}`);
+  }
+
+  return response.text();
+}
+
+function expectIncludes(text, expected, context) {
+  if (!text.includes(expected)) {
+    throw new Error(`Expected ${context} to include "${expected}".`);
+  }
+}
+
+function expectExcludes(text, unexpected, context) {
+  if (text.includes(unexpected)) {
+    throw new Error(`Expected ${context} to exclude "${unexpected}".`);
+  }
+}
+
+function expectCanonical(html, expectedHref, context) {
+  const canonicalMatch = html.match(/<link[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["'][^>]*>/i);
+
+  if (expectedHref === null) {
+    if (canonicalMatch) {
+      throw new Error(`Expected ${context} to omit a canonical link, but found "${canonicalMatch[1]}".`);
+    }
+
+    return;
+  }
+
+  if (!canonicalMatch) {
+    throw new Error(`Expected ${context} to include canonical href "${expectedHref}".`);
+  }
+
+  if (canonicalMatch[1] !== expectedHref) {
+    throw new Error(`Expected ${context} canonical href to be "${expectedHref}", received "${canonicalMatch[1]}".`);
+  }
+}
+
+function extractLocs(xml) {
+  return Array.from(xml.matchAll(/<loc>(.*?)<\/loc>/g), (match) => match[1] ?? "");
+}
+
+async function verifyDiscoveryFailsClosed(baseUrl) {
+  const robotsText = await fetchRequiredText(`${baseUrl}/robots.txt`);
+  expectIncludes(robotsText, "User-Agent: *", "robots.txt");
+  expectIncludes(robotsText, "Disallow: /", "robots.txt");
+  expectExcludes(robotsText, "Sitemap:", "robots.txt");
+
+  const sitemapText = await fetchRequiredText(`${baseUrl}/sitemap.xml`);
+  expectIncludes(sitemapText, "<urlset", "sitemap.xml");
+
+  if (extractLocs(sitemapText).length !== 0) {
+    throw new Error("Expected sitemap.xml to fail closed with no public URLs when SITE_URL is unset.");
+  }
+
+  expectCanonical(await fetchRequiredText(`${baseUrl}/`), null, "homepage");
+  expectCanonical(await fetchRequiredText(`${baseUrl}/notes/legacy-note`), null, "public note page");
+}
+
+async function verifyDiscoveryConfigured(baseUrl, canonicalOrigin) {
+  const robotsText = await fetchRequiredText(`${baseUrl}/robots.txt`);
+  expectIncludes(robotsText, "User-Agent: *", "robots.txt");
+  expectIncludes(robotsText, "Allow: /", "robots.txt");
+  expectIncludes(robotsText, `Sitemap: ${canonicalOrigin}/sitemap.xml`, "robots.txt");
+
+  const sitemapText = await fetchRequiredText(`${baseUrl}/sitemap.xml`);
+  const sitemapLocs = extractLocs(sitemapText).sort();
+  const expectedLocs = [`${canonicalOrigin}/`, `${canonicalOrigin}/notes/legacy-note`].sort();
+
+  if (JSON.stringify(sitemapLocs) !== JSON.stringify(expectedLocs)) {
+    throw new Error(`Expected sitemap.xml URLs ${JSON.stringify(expectedLocs)}, received ${JSON.stringify(sitemapLocs)}.`);
+  }
+
+  expectExcludes(sitemapText, "https://example.com/legacy", "sitemap.xml");
+  expectCanonical(await fetchRequiredText(`${baseUrl}/`), `${canonicalOrigin}/`, "homepage");
+  expectCanonical(await fetchRequiredText(`${baseUrl}/notes/legacy-note`), `${canonicalOrigin}/notes/legacy-note`, "public note page");
+}
+
+async function runSmokeScenario({ env = process.env, probePaths: scenarioProbePaths = [], verify } = {}) {
   await run(npmBin, ["run", "db:prepare"], env);
 
   if (!existsSync(".next/BUILD_ID")) {
@@ -74,11 +156,16 @@ async function runSmokeScenario({ env = process.env, probePaths: scenarioProbePa
   });
 
   try {
-    await waitForHealth(`http://${host}:${port}/api/health`);
+    const baseUrl = `http://${host}:${port}`;
+    await waitForHealth(`${baseUrl}/api/health`);
 
     for (const probePath of scenarioProbePaths) {
       const normalizedPath = probePath.startsWith("/") ? probePath : `/${probePath}`;
-      await verifyProbePath(`http://${host}:${port}${normalizedPath}`);
+      await verifyProbePath(`${baseUrl}${normalizedPath}`);
+    }
+
+    if (verify) {
+      await verify(baseUrl);
     }
   } finally {
     child.kill("SIGTERM");
@@ -93,6 +180,7 @@ const legacySmokeRoot = path.resolve("tmp");
 mkdirSync(legacySmokeRoot, { recursive: true });
 const legacySmokeDirectory = mkdtempSync(path.join(legacySmokeRoot, "legacy-upgrade-smoke-"));
 const legacyDatabasePath = path.join(legacySmokeDirectory, "minakeep.db");
+const discoveryCanonicalOrigin = "https://discovery.example.test";
 const legacyEnv = {
   ...process.env,
   AUTH_SECRET: process.env.AUTH_SECRET ?? "minakeep-smoke-upgrade-secret",
@@ -108,7 +196,17 @@ createLegacyUpgradeFixture(legacyDatabasePath);
 try {
   await runSmokeScenario({
     env: legacyEnv,
-    probePaths: ["/", "/notes/legacy-note"]
+    probePaths: ["/", "/notes/legacy-note"],
+    verify: verifyDiscoveryFailsClosed
+  });
+
+  await runSmokeScenario({
+    env: {
+      ...legacyEnv,
+      SITE_URL: discoveryCanonicalOrigin
+    },
+    probePaths: ["/", "/notes/legacy-note"],
+    verify: (baseUrl) => verifyDiscoveryConfigured(baseUrl, discoveryCanonicalOrigin)
   });
 
   const backupRoots = readdirSync(path.join(legacySmokeDirectory, "backups"));

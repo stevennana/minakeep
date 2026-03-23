@@ -1563,3 +1563,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=not_done promotion=false Do not promote. The source helpers are aligned, but the shipped build does not satisfy the discovery contract in substance: `next build` is statically prerendering `/robots.txt` and `/sitemap.xml` (`.next/prerender-manifest.json`, `.next/server/app/robots.txt.body`, `.next/server/app/sitemap.xml.body`). That binds discovery output to build-time env/DB state instead of the runtime `SITE_URL` and runtime published-content boundary. The current `@seo-discovery` coverage only runs against `next dev` via `scripts/playwright-web-server.mjs`, so it misses this production behavior. In a real built deployment, robots can stay fail-closed even when `SITE_URL` is configured at runtime, and the sitemap can snapshot stale build-time content instead of current published notes. -> state/artifacts/20260323T191448-088-public-sitemap-and-robots/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T191448-088-public-sitemap-and-robots/npm-run-test-e2e-grep-seo-discovery-next-server.log
+- commit: commit: created
+- promote: Task 088-public-sitemap-and-robots not eligible for promotion.
+- backlog: rendered current=088-public-sitemap-and-robots
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxoooxxooxoxxx
+- cycle: finished
+
+### cycle 2026-03-23T19:28:25+09:00 task=088-public-sitemap-and-robots
+- artifacts: state/artifacts/20260323T192825-088-public-sitemap-and-robots
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260323T192825-088-public-sitemap-and-robots/worker.jsonl
+- worker-summary: Discovery now stays runtime-backed in production. [sitemap.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/sitemap.ts) and [robots.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/robots.ts) export `dynamic = "force-dynamic"`, so `SITE_URL` and the current published-note set are read under `next start` instead of being frozen at build time. I also extended [start-smoke.mjs](/Users/stevenna/WebstormProjects/minakeep/scripts/start-smoke.mjs) to boot the built app twice against a known legacy-upgrade fixture: once with no `SITE_URL` to prove fail-closed `robots`/empty sitemap/no canonicals, and once with a configured origin to prove `robots`, `sitemap`, and homepage/note canonicals all use the same shared origin contract and only expose `/` plus published note URLs. The task log was updated in [088-public-sitemap-and-robots.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/088-public-sitemap-and-robots.md), and the operator handoff was written to [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
+- evaluator: started
+- evaluator: status=done promotion=true Task 088 is complete in substance. The implementation keeps discovery derived from the existing public-content boundary, ships dynamic runtime-backed `/sitemap.xml` and `/robots.txt`, uses one shared `SITE_URL` origin helper for sitemap/robots/canonical URLs, excludes standalone link URLs, and revalidates discovery on note/link public mutations. The required `@seo-discovery` and full `verify` gates both passed in the provided deterministic checks, including production-style smoke coverage under `next start`. -> state/artifacts/20260323T192825-088-public-sitemap-and-robots/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T192825-088-public-sitemap-and-robots/npm-run-test-e2e-grep-seo-discovery-next-server.log

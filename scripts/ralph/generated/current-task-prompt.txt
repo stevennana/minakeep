@@ -54,8 +54,10 @@ Required commands for this task:
 - npm run verify
 
 Previous known gaps from the last evaluation:
-- Homepage sitemap `lastmod` does not correctly represent unpublish/removal events; it regresses to the newest remaining published item's timestamp instead of the time the public homepage actually changed.
-- Regression coverage should protect the correct homepage `lastmod` behavior for publish and unpublish mutations rather than asserting the rollback to the pre-publish timestamp.
+- Exit criterion 1 is not satisfied in substance: the built `/sitemap.xml` is prerendered, so it is not reliably derived from the current runtime public-note set.
+- Exit criterion 2 is not satisfied in substance: the built `/robots.txt` is prerendered, so runtime `SITE_URL` configuration is not guaranteed to control sitemap advertisement.
+- The objective to keep discovery output automatically aligned with publish, unpublish, and slug changes is not fully met for deployed builds because discovery is currently optimized as static build output instead of a strict runtime extension of the existing public-content boundary.
+- Production-style proof for discovery is missing. Current E2E exercises `next dev`, not the built `next start` path where the staticization issue appears.
 
 
 
