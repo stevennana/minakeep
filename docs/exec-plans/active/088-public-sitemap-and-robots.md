@@ -81,3 +81,5 @@ Promote only when the discovery routes feel like a strict extension of the exist
 - 2026-03-23T09:51:15Z: `npm run test:e2e -- --grep @seo-discovery` and `npm run verify` both passed; sitemap, robots, and canonical metadata now ship through the shared public-origin contract.
 - 2026-03-23T18:59:00+09:00: extended link-side public mutations to revalidate `/sitemap.xml` too, because the homepage sitemap `lastmod` depends on published link timestamps even though links stay homepage-only.
 - 2026-03-23T18:59:00+09:00: added `@seo-discovery` regression coverage that proves the homepage sitemap entry refreshes after publishing and unpublishing a link without ever emitting a standalone first-party link URL.
+- 2026-03-23T20:05:00+09:00: replaced homepage sitemap `lastmod` inference with a persisted public-discovery state so publish and unpublish events advance the homepage timestamp even when the newest published item is removed.
+- 2026-03-23T20:05:00+09:00: tightened unit and `@seo-discovery` coverage to require forward-moving homepage `lastmod` values for both publish and unpublish mutations instead of allowing rollback to an older timestamp.

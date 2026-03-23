@@ -98,3 +98,35 @@ test("buildPublicSitemap includes the homepage plus published note routes only",
     ]);
   });
 });
+
+test("buildPublicSitemap keeps the homepage lastmod at the latest public-home mutation", async () => {
+  await withSiteUrl("https://notes.example.com", () => {
+    assert.deepEqual(
+      buildPublicSitemap(
+        [createPublishedNote()],
+        new Date("2026-03-21T13:00:00.000Z")
+      ),
+      [
+        {
+          url: "https://notes.example.com/",
+          lastModified: new Date("2026-03-21T13:00:00.000Z")
+        },
+        {
+          url: "https://notes.example.com/notes/published-note",
+          lastModified: new Date("2026-03-21T11:00:00.000Z")
+        }
+      ]
+    );
+  });
+});
+
+test("buildPublicSitemap preserves the homepage route after the last public item is removed", async () => {
+  await withSiteUrl("https://notes.example.com", () => {
+    assert.deepEqual(buildPublicSitemap([], new Date("2026-03-21T14:00:00.000Z")), [
+      {
+        url: "https://notes.example.com/",
+        lastModified: new Date("2026-03-21T14:00:00.000Z")
+      }
+    ]);
+  });
+});

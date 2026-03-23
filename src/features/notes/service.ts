@@ -6,6 +6,7 @@ import { notesRepo } from "@/features/notes/repo";
 import { createNoteExcerpt } from "@/features/notes/markdown";
 import type { NoteDraftInput } from "@/features/notes/types";
 import { createUniqueNoteSlug } from "@/features/notes/slug";
+import { recordPublicHomepageChange } from "@/features/public-site/state";
 
 export class PublishedNoteDeleteForbiddenError extends Error {
   constructor() {
@@ -94,7 +95,9 @@ export async function publishNote(ownerId: string, id: string) {
     return existingNote;
   }
 
-  return notesRepo.updatePublication(id, true);
+  const note = await notesRepo.updatePublication(id, true);
+  await recordPublicHomepageChange();
+  return note;
 }
 
 export async function unpublishNote(ownerId: string, id: string) {
@@ -108,7 +111,9 @@ export async function unpublishNote(ownerId: string, id: string) {
     return existingNote;
   }
 
-  return notesRepo.updatePublication(id, false);
+  const note = await notesRepo.updatePublication(id, false);
+  await recordPublicHomepageChange();
+  return note;
 }
 
 export async function deleteDraftNote(ownerId: string, id: string) {

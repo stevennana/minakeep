@@ -54,8 +54,8 @@ Required commands for this task:
 - npm run verify
 
 Previous known gaps from the last evaluation:
-- Ensure `/sitemap.xml` is revalidated for published-link mutations as well as note mutations, because the sitemap homepage entry currently depends on link timestamps too.
-- Add regression coverage proving sitemap freshness after link-side public changes, not just initial sitemap contents under seeded data.
+- Homepage sitemap `lastmod` does not correctly represent unpublish/removal events; it regresses to the newest remaining published item's timestamp instead of the time the public homepage actually changed.
+- Regression coverage should protect the correct homepage `lastmod` behavior for publish and unpublish mutations rather than asserting the rollback to the pre-publish timestamp.
 
 
 

@@ -7,6 +7,7 @@ import { cacheLinkFavicon } from "@/features/links/favicon";
 import { normalizeLinkInput } from "@/features/links/normalize";
 import { linksRepo } from "@/features/links/repo";
 import type { LinkDraftInput } from "@/features/links/types";
+import { recordPublicHomepageChange } from "@/features/public-site/state";
 
 export class DuplicateLinkUrlError extends Error {
   constructor() {
@@ -57,7 +58,9 @@ export async function publishLink(ownerId: string, id: string) {
     return existingLink;
   }
 
-  return linksRepo.updatePublication(id, true);
+  const link = await linksRepo.updatePublication(id, true);
+  await recordPublicHomepageChange();
+  return link;
 }
 
 export async function unpublishLink(ownerId: string, id: string) {
@@ -71,7 +74,9 @@ export async function unpublishLink(ownerId: string, id: string) {
     return existingLink;
   }
 
-  return linksRepo.updatePublication(id, false);
+  const link = await linksRepo.updatePublication(id, false);
+  await recordPublicHomepageChange();
+  return link;
 }
 
 export async function deleteSavedLink(ownerId: string, id: string) {

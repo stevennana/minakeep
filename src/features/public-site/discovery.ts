@@ -12,15 +12,15 @@ function getPublicContentLastModified(item: Pick<PublishedPublicContent, "publis
   return item.updatedAt > item.publishedAt ? item.updatedAt : item.publishedAt;
 }
 
-function getHomepageLastModified(items: PublishedPublicContent[]) {
-  if (items.length === 0) {
-    return undefined;
+function getHomepageLastModified(items: PublishedPublicContent[], homepageLastChangedAt?: Date | null) {
+  let latest = homepageLastChangedAt ?? null;
+
+  for (const item of items) {
+    const lastModified = getPublicContentLastModified(item);
+    latest = latest && latest > lastModified ? latest : lastModified;
   }
 
-  return items.reduce((latest, item) => {
-    const lastModified = getPublicContentLastModified(item);
-    return lastModified > latest ? lastModified : latest;
-  }, getPublicContentLastModified(items[0]));
+  return latest ?? undefined;
 }
 
 export function getPublicRobots(): MetadataRoute.Robots {
@@ -44,14 +44,14 @@ export function getPublicRobots(): MetadataRoute.Robots {
   };
 }
 
-export function buildPublicSitemap(items: PublishedPublicContent[]): MetadataRoute.Sitemap {
+export function buildPublicSitemap(items: PublishedPublicContent[], homepageLastChangedAt?: Date | null): MetadataRoute.Sitemap {
   const homeUrl = buildPublicUrl(PUBLIC_HOME_PATH);
 
   if (!homeUrl) {
     return [];
   }
 
-  const homepageLastModified = getHomepageLastModified(items);
+  const homepageLastModified = getHomepageLastModified(items, homepageLastChangedAt);
   const homepageEntry: MetadataRoute.Sitemap[number] = homepageLastModified
     ? {
         url: homeUrl,

@@ -273,7 +273,9 @@ test("@seo-discovery sitemap homepage lastmod stays fresh after link-side public
       }, { timeout: 15000 })
       .toBe(true);
 
-    expect(unpublishedHomeLastmod).toBe(initialHomeLastmod);
+    expect(unpublishedHomeLastmod).not.toBe(initialHomeLastmod);
+    expect(unpublishedHomeLastmod).not.toBe(publishedHomeLastmod);
+    expect(new Date(unpublishedHomeLastmod!).getTime()).toBeGreaterThan(new Date(publishedHomeLastmod!).getTime());
   } finally {
     await prisma.link.deleteMany({
       where: {
