@@ -5,11 +5,15 @@ This queue is the task-level promotion source of truth for minakeep.
 Only task files in this directory that contain a `taskmeta` JSON block are eligible for automatic selection, evaluation, and promotion.
 
 ## Current recommended sequence
-1. `077-external-note-api-auth-foundation.md` -> define the static-key auth boundary, env contract, and route skeleton for server-to-server note creation
-2. `078-external-note-api-create-and-publish.md` -> add API note creation with optional publish-on-create and reuse the existing note enrichment/publish flow
-3. `079-external-note-api-hardening.md` -> harden docs, regression coverage, and fail-closed behavior for the external note API
+1. `080-site-settings-foundation.md` -> define the persisted settings model, route ownership, and site-wide branding contract
+2. `081-site-settings-ui.md` -> expose the owner settings surface for title/description editing and shell-level branding reads
+3. `082-public-showroom-clickable-media.md` -> make published note and link preview images use the same destinations as their titles
+4. `083-public-note-reading-top-summary.md` -> move AI summary/tags above the note body and tighten public-note title fit
+5. `084-owner-content-deletion.md` -> add permanent delete for unpublished notes and links with explicit confirmation
+6. `085-self-host-upgrade-safety.md` -> add upgrade-safe schema-change handling and automatic SQLite backup for self-host/Docker paths
+7. `086-next-wave-hardening.md` -> align docs and regression coverage across the full wave
 
-Tasks `073` through `076` are preserved in completed history as the finished demo-user tranche. Earlier completed tranches remain preserved as history.
+Tasks `077` through `079` are preserved in completed history as the finished external-note-api tranche. Earlier completed tranches remain preserved as history.
 
 ## Operating rule
 

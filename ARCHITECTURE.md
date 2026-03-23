@@ -8,9 +8,11 @@ Minakeep is a web application with:
 - a public site for published notes and published links
 - a private owner area for notes, links, tags, and search
 - an optional server-to-server note-create API protected by one environment-backed API key and disabled when `API_KEY` is unset
+- an owner-editable site settings surface for shared service branding
 - an automatic AI enrichment path for notes and links
 - a SQLite-backed persistence layer for content and owner identity
 - a mounted media storage path for uploaded note images and cached link favicons
+- an upgrade-safe runtime path for self-host and Docker schema changes
 - a deterministic operator path with logged startup and Ralph-loop state tracking
 
 ## Architectural Priorities
@@ -42,6 +44,9 @@ Markdown note drafts, publishing state, slugs, public rendering, and note-side e
 ### Links
 Manual bookmark capture with URL/title plus AI-generated summary and shared tags.
 
+### Site settings
+Owner-managed service title/description and the extensible configuration boundary for future settings.
+
 ### Media
 Uploaded note images, cached link favicons, media visibility rules, and server-backed media delivery.
 
@@ -69,6 +74,7 @@ Prisma runtime prep, startup smoke, operator logging, Docker packaging, and Ralp
 - Auth.js handles owner sign-in
 - route handlers expose health and future server-backed workflows
 - the external note-create route should stay narrow, server-only, fail closed when `API_KEY` is missing or wrong, and stay separate from browser-session auth
+- owner settings and destructive owner actions should stay behind narrow server-side helpers rather than route-local ad hoc mutations
 - route handlers or server-backed media endpoints should mediate owner/private media visibility instead of exposing the full media volume directly
 - Prisma access stays behind narrow server-side helpers
 - server logging stays explicit and avoids secrets or full sensitive payloads
@@ -79,6 +85,7 @@ Prisma runtime prep, startup smoke, operator logging, Docker packaging, and Ralp
 - Prisma schema defines owner, note, link, and shared tag tables up front, and note/link records carry shared enrichment state fields for status, error, attempt count, and last update time
 - uploaded note images and cached favicons should live on a mounted filesystem path rather than inside SQLite blobs
 - `db:prepare` must generate the client, sync schema, and seed the owner account
+- schema-changing waves must also define how an older working SQLite state upgrades safely before the new runtime serves traffic
 - future migrations should extend the existing schema instead of replacing it ad hoc
 
 ## Verification Shape

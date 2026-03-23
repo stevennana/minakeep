@@ -1,5 +1,6 @@
 "use client";
 
+import type { Route } from "next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -7,7 +8,8 @@ const navItems = [
   { href: "/app", label: "Notes" },
   { href: "/app/links", label: "Links" },
   { href: "/app/tags", label: "Tags" },
-  { href: "/app/search", label: "Search" }
+  { href: "/app/search", label: "Search" },
+  { href: "/app/settings", label: "Settings" }
 ] as const;
 
 function isActivePath(pathname: string, href: string) {
@@ -30,7 +32,7 @@ export function VaultNav() {
           <Link
             aria-current={isActive ? "page" : undefined}
             className={isActive ? "vault-nav-link vault-nav-link-active" : "vault-nav-link"}
-            href={item.href}
+            href={item.href as Route}
             key={item.href}
           >
             {item.label}

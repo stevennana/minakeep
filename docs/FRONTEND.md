@@ -21,6 +21,7 @@ Describe the user-facing structure of Minakeep so an agent can implement the UI 
 - `/app/links` -> private saved-link management with publish controls
 - `/app/tags` -> shared-tag overview
 - `/app/search` -> owner-only search and filtering
+- `/app/settings` -> owner-only configuration section for site-wide service settings
 - media delivery should use server-backed URLs that respect owner/private and published/public boundaries
 
 ## Primary Screens
@@ -48,6 +49,9 @@ Smaller typographic hierarchy, reduced padding, and reusable form/layout primiti
 ### Links, tags, and search
 Secondary owner surfaces should inherit the same density and responsive behavior as the dashboard rather than looking like oversized standalone cards.
 
+### Settings
+The owner workspace should expose a dedicated settings section for service configuration. The first wave needs only title and description, but the route and storage model should feel like the start of an extendable settings area rather than an isolated one-off form.
+
 ## UI Rules
 - keep public reading calm, clear, and note-first
 - make the published content visually dominant; topbar chrome, archive counters, and search affordances should feel recessive
@@ -72,6 +76,7 @@ Secondary owner surfaces should inherit the same density and responsive behavior
 - on the owner dashboard, prioritize the Notes section over route-promotion tiles or owner-tool explainer panels
 - do not repeat `Links`, `Tags`, and `Search` as in-panel shortcuts inside the Notes section when the left sidebar already exposes those routes
 - on the owner links screen, do not pin the growing saved-links list beside a short static capture form; the growing list should take the dominant continuous space
+- owner settings should live in the same navigation system as the other private surfaces rather than in an ad hoc hidden route
 - avoid exposing internal implementation details such as DB seeding or route structure as user-facing informational copy
 - public navigation should not leave an authenticated owner appearing logged out or force an unnecessary re-login
 - demo users may browse owner routes, but all write controls must be disabled, hidden, or replaced with read-only status treatment
@@ -91,6 +96,7 @@ Secondary owner surfaces should inherit the same density and responsive behavior
 - AI metadata remains visible but visually secondary to authored content
 - uploaded note images remain owner-visible immediately but should reach public routes only through published-note surfaces
 - demo mode is read-only across note save, link save, publish, unpublish, retry, upload, and other mutation paths
+- owner delete actions require an explicit confirmation and remain unavailable for still-published notes or links
 
 ## Frontend Non-Goals for v1
 - public search filters by type

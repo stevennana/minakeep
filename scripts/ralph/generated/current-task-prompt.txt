@@ -1,52 +1,53 @@
 Read the following repository documents before making changes:
 - AGENTS.md
-- docs/SECURITY.md
+- ARCHITECTURE.md
+- docs/FRONTEND.md
 - docs/RELIABILITY.md
-- docs/product-specs/external-note-api.md
-- docs/design-docs/external-note-api-boundary.md
-- docs/product-specs/public-note-publishing.md
-- docs/product-specs/note-ai-enrichment.md
-- docs/exec-plans/active/079-external-note-api-hardening.md
+- docs/product-specs/workspace-settings.md
+- docs/design-docs/site-configuration-architecture.md
+- docs/design-docs/minakeep-information-architecture.md
+- docs/exec-plans/active/080-site-settings-foundation.md
 
-Current task id: 079-external-note-api-hardening
-Current task title: External note API hardening
+Current task id: 080-site-settings-foundation
+Current task title: Site settings foundation
 
 Objective:
-Harden the external note API through docs alignment, regression coverage, and fail-closed behavior checks.
+Establish the persisted settings model and service boundary for site-wide title and description.
 
 Scope:
-- final doc alignment across specs, architecture, security, reliability, and env examples
-- regression coverage for valid key, invalid key, missing key, and publish-on-create behavior
-- cleanup of any route or test drift from the earlier slices
+- persisted settings model for site title and description
+- server-side read/write service boundary
+- route ownership and navigation contract for `/app/settings`
+- deterministic defaults when no saved settings exist yet
 
 Out of scope:
-- link ingest
-- per-client API keys
-- browser-origin support or CORS policy work
+- broader settings UI polish
+- content deletion flows
+- public showroom and note-detail UI changes
 
 Exit criteria:
-1. The shipped docs describe the external note API contract without leaving auth or publish defaults implied.
-2. Regression coverage protects both private note create and publish-on-create flows, plus auth failures.
-3. The route still fails closed when `API_KEY` is absent or wrong.
-4. `npm run test:e2e -- --grep @note-api` passes.
-5. `npm run verify` passes.
+1. The repo has a documented and implemented settings foundation for site title/description.
+2. Public/private shell branding can read the same persisted settings values with safe defaults.
+3. The settings boundary is shaped for later configuration growth.
+4. `npm run verify` passes.
 
 Required checks:
-- `npm run test:e2e -- --grep @note-api`
+- `npm run typecheck`
+- `npm run test:unit`
 - `npm run verify`
 
 Evaluator notes:
-Promote only when the docs, tests, and shipped boundary all agree on one static-key, server-to-server note-create feature.
+Promote only when the settings work looks like the start of a durable configuration domain, not a route-local special case.
 
 Required repository artifacts for this task:
-- docs
-- .env.example
-- .env.compose.example
-- tests/e2e
+- src/app
+- src/features
+- prisma/schema.prisma
 - tests/unit
 
 Required commands for this task:
-- npm run test:e2e -- --grep @note-api
+- npm run typecheck
+- npm run test:unit
 - npm run verify
 
 Previous known gaps from the last evaluation:

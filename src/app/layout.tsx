@@ -1,18 +1,23 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { getSiteSettings } from "@/features/site-settings/service";
 import { getWorkspaceSession } from "@/lib/auth/owner-session";
 import { isReadOnlyWorkspaceRole } from "@/lib/auth/roles";
 
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: "Minakeep",
-  description: "Private notes and links, with selectively published public notes and links."
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+
+  return {
+    title: settings.branding.title,
+    description: settings.branding.description
+  };
+}
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const workspaceSession = await getWorkspaceSession();
+  const [workspaceSession, siteSettings] = await Promise.all([getWorkspaceSession(), getSiteSettings()]);
   const workspaceLabel = workspaceSession
     ? isReadOnlyWorkspaceRole(workspaceSession.actor.role)
       ? "Read-only workspace"
@@ -26,9 +31,9 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
           <header className="site-header" data-ui-shell="topbar">
             <div className="brand-block">
               <Link className="brand" href="/">
-                Minakeep
+                {siteSettings.branding.title}
               </Link>
-              <p className="brand-caption">Private notes and saved references, with selectively public reading.</p>
+              <p className="brand-caption">{siteSettings.branding.description}</p>
             </div>
             <nav aria-label="Primary" className="site-nav" data-ui-nav="primary">
               <Link href="/">Published notes</Link>

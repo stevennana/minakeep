@@ -12,6 +12,7 @@ Define the security posture for Minakeep's current shipped slice.
 - validate demonstration credentials on the server only
 - validate external note-create requests on the server only through the configured `API_KEY`
 - store only the owner password hash in SQLite
+- require owner-only auth for destructive note/link deletion and reject delete attempts for still-published content
 - accept saved-link URLs only for `http` and `https`
 - keep AI provider tokens and base URLs server-only
 - do not send private note or link content to unconfigured or fallback endpoints silently
@@ -40,6 +41,7 @@ Define the security posture for Minakeep's current shipped slice.
 - `/app/*` routes are private
 - `/api/open/notes` is publicly reachable but must fail closed unless a valid `X-API-Key` matches the configured `API_KEY`
 - `/api/open/notes` returns `503` when `API_KEY` is unset and `401` when `X-API-Key` is missing or invalid
+- `/app/settings` is private and may expose owner-editable service configuration
 - public title search must only query published content
 - public link cards must open only the already-saved external URL in a new tab
 - API health checks must expose only non-sensitive readiness information
@@ -53,6 +55,7 @@ Define the security posture for Minakeep's current shipped slice.
 - unsafe saved-link URL schemes are rejected before persistence
 - no secrets appear in logs, docs examples, or test fixtures
 - owner auth and route protection stay covered by automated checks before promotion
+- destructive owner actions must require explicit confirmation in the UI and still enforce the unpublished-only guard server-side
 - external note-create auth must reject missing or invalid `X-API-Key` headers without leaking the configured secret
 - valid keyed external note-create requests that omit `isPublished` must keep the note private; only explicit publish-on-create may expose it publicly
 - AI integration must prove that tokens stay server-side and that failure paths do not leak raw endpoint credentials or full private payloads

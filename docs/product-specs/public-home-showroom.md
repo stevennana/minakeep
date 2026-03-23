@@ -18,6 +18,8 @@ An anonymous visitor opens `/`.
 - The mixed feed sits in one shared archive surface rather than separate note and link sections.
 - The layout stays easy to scan quickly.
 - Metadata remains compact and secondary to titles and previews.
+- Published note preview images open the same note detail page as the note title.
+- Published link preview image areas open the same external destination as the link title, in a new tab.
 
 ## Validation
 - Mixed public content dominates the first-screen experience.
@@ -27,4 +29,5 @@ An anonymous visitor opens `/`.
 - The homepage grid feels dynamic without becoming visually chaotic.
 - Desktop does not collapse back into a generic two-column app grid.
 - Mobile layouts still scan cleanly.
+- Preview-image click targets match the same destinations as the related note/link titles.
 - `npm run verify` passes.

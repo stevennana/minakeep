@@ -11,6 +11,8 @@ If a UI or API behavior is visible to users, it should be defined here before im
 | `markdown-editor-workbench.md` | confirmed | Source-first markdown editor modes, toolbar, shortcuts, and mobile authoring behavior |
 | `note-image-attachments.md` | confirmed | Uploaded note images, markdown embedding, and derived note-card image behavior |
 | `external-note-api.md` | confirmed | Server-to-server note creation through one environment API key |
+| `workspace-settings.md` | proposed | Owner-editable site title/description with an extensible settings surface |
+| `owner-content-deletion.md` | proposed | Permanent delete for unpublished owner notes and links |
 | `public-note-publishing.md` | confirmed | Public note visibility and note pages |
 | `link-capture.md` | confirmed | Private bookmark capture with AI-owned summary/tag metadata |
 | `link-favicon-caching.md` | confirmed | Cached favicon fetch and card rendering for saved links |

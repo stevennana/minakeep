@@ -14,6 +14,7 @@ Keep Minakeep legible by separating public reading from private authoring from t
 - `/app/notes/*` owns note drafting and editing
 - `/app/links` owns private link capture
 - `/app/tags` and `/app/search` own retrieval and organization
+- `/app/settings` owns owner-editable service configuration
 
 ## Bootstrap Rule
 - placeholder screens are acceptable in the foundation task only when they state clearly which queued task owns the missing behavior

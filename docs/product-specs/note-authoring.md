@@ -15,6 +15,7 @@ The owner signs in and opens the notes-first private dashboard.
 - The private note editor remains markdown-native even as richer editor controls are added.
 - After save, the note shows visible AI enrichment status and generated summary/tags when available.
 - Draft notes remain private by default.
+- An unpublished note may be permanently deleted after explicit confirmation.
 - A demonstration user may open the same note-authoring surfaces in read-only mode but cannot save or otherwise alter note data.
 
 ## Validation

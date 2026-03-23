@@ -13,6 +13,7 @@ Define the reliability expectations and failure-handling rules for Minakeep.
 - media and favicon fetch failures must fall back cleanly instead of blocking note save, link save, or public rendering
 - external note-create auth failures must fail closed without weakening normal owner note creation
 - external note-create requests that omit `isPublished` must stay private by default unless the caller explicitly opts into publish-on-create
+- schema-changing releases must keep older working self-host and Docker installs upgradeable without silent data loss
 
 ## Verification
 - `npm run db:prepare` prepares SQLite state and owner seed deterministically
@@ -44,6 +45,8 @@ If a user-visible behavior depends on an outside resource such as AI chat or a t
 For the AI enrichment wave, E2E must prove: note save with generated metadata, link save with generated metadata, and save-with-visible-failure when the endpoint fails or times out.
 For the mixed public wave, checks should also prove that stale or manually seeded invalid published-link URLs stay hidden from public routes instead of being rendered optimistically.
 For the external note API wave, E2E must prove: valid keyed private note create, valid keyed publish-on-create, rejection of missing `X-API-Key`, and rejection of invalid `X-API-Key` requests. Unit coverage must also keep the disabled `503` fail-closed path protected when `API_KEY` is unset.
+For the owner-delete/settings wave, E2E must prove: delete remains blocked until unpublish, delete confirmation is required, and site title/description changes propagate across the shipped shell surfaces.
+For the upgrade-safe self-host wave, verification must prove: a schema-changing release can start from an older working SQLite state, automatic backup happens before the upgrade path runs, and the upgraded runtime still boots cleanly.
 For the media wave, E2E must prove: note image upload with markdown insertion, owner-visible draft image rendering, public image visibility only after note publish, and favicon fallback when fetch/cache fails.
 The hardening contract for that slice is tagged `@media-regression` and must keep the private draft-image boundary plus the favicon fallback-and-refresh path deterministic.
 For the UI redesign wave, the tagged `@ui-*` Playwright coverage must prove both `1440x900` desktop and `390x844` mobile behavior, stable screenshots, visible hierarchy anchors/actions, and automated accessibility scanning.

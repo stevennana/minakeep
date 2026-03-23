@@ -16,6 +16,8 @@ An operator wants to run Minakeep in a container instead of a direct local Node 
 - Optional AI env vars may stay unset in the shipped Compose example so owner-only boot works without placeholder endpoint values.
 - The container startup path ensures the mounted runtime directories exist, writes a timestamped server log under `/app/logs`, runs the existing `db:prepare` contract, and then serves the built app on `0.0.0.0:$PORT`.
 - The shipped Compose service includes an HTTP healthcheck against `/api/health`.
+- When a released version introduces a schema change, the self-host/Docker path provides an upgrade-safe contract for older working installs.
+- The upgrade-safe contract includes an automatic SQLite backup before the schema-upgrade step runs.
 
 ## Validation
 - The Docker image builds successfully from the repo source.
@@ -23,4 +25,6 @@ An operator wants to run Minakeep in a container instead of a direct local Node 
 - The Compose configuration is valid and documented for operator use through `docker compose config`.
 - Mounted DB/media/log paths are clearly defined and not baked into the image.
 - Demo-user env handling is documented and stays aligned with the direct local runtime contract.
+- Schema-changing releases document and exercise an upgrade path from an older working Minakeep install to the new version.
+- Automatic pre-upgrade SQLite backups are documented and operator-visible.
 - `npm run verify` passes, and the Docker path keeps its build/config proof explicit through `docker build -t minakeep:test .` plus `docker compose config` instead of relying on prose alone.

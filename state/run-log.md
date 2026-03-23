@@ -1340,3 +1340,14 @@ Worker stalled. Stopping loop for RCA.
 - health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxoo
 - cycle: finished
 No remaining task. Stopping loop.
+## loop start 2026-03-23T12:05:45+09:00
+
+### cycle 2026-03-23T12:05:45+09:00 task=080-site-settings-foundation
+- artifacts: state/artifacts/20260323T120545-080-site-settings-foundation
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260323T120545-080-site-settings-foundation/worker.jsonl
+- worker-summary: Implemented the site settings foundation as a real domain, not a route-local form. The new persisted singleton model lives in [schema.prisma](/Users/stevenna/WebstormProjects/minakeep/prisma/schema.prisma), the read/write boundary is in [service.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/site-settings/service.ts) with repo/types beside it, and `/app/settings` now exists via [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/settings/page.tsx) and [actions.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/app/settings/actions.ts). Shared shell branding and metadata now read through the same settings service in [layout.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/layout.tsx), and private navigation now includes `Settings` in [vault-nav.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/navigation/components/vault-nav.tsx).
+- evaluator: started
+- evaluator: status=done promotion=true The task is complete in substance. The repo now has a dedicated `site-settings` domain with typed defaults, a singleton persisted Prisma model, a server-only repo/service boundary, and `/app/settings` wired into the owner workspace. Shared shell branding and root metadata both read through the same persisted settings service with deterministic fallbacks when no record exists, and demo-user writes are still blocked at the server boundary. The implementation reads as the start of a durable configuration domain rather than a route-local branding hack, and the required verification commands passed. -> state/artifacts/20260323T120545-080-site-settings-foundation/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T120545-080-site-settings-foundation/npm-run-verify-next-server.log

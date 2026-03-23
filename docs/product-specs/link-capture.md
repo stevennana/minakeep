@@ -11,6 +11,7 @@ The owner opens the private links area and saves a new link.
 - After save, the link shows visible AI enrichment status and generated summary/tags when available.
 - Saved links are private by default but may later be published explicitly.
 - The owner can review saved links in the private area.
+- An unpublished link may be permanently deleted after explicit confirmation.
 - Links share the same tag vocabulary used by notes.
 - On the owner links screen, the saved-links list keeps the dominant continuous layout space instead of being compressed beside a short static capture form.
 - A demonstration user may inspect the links workspace in read-only mode but cannot save, refresh, publish, unpublish, or retry link actions.
