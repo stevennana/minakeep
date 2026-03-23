@@ -5,7 +5,7 @@
   "id": "082-public-showroom-clickable-media",
   "title": "Public showroom clickable media",
   "order": 82,
-  "status": "planned",
+  "status": "active",
   "promotion_mode": "standard",
   "next_task_on_success": "083-public-note-reading-top-summary",
   "prompt_docs": [
@@ -66,3 +66,5 @@ Promote only when media click targets feel like a natural extension of the exist
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-23T03:40:05.762Z: restored as current task after 081-site-settings-ui promotion.
+- 2026-03-23T03:42:30Z: made public showroom note images and link media wrappers follow the same destinations as their titles, added explicit media-link accessibility labels, and extended public-showroom E2E coverage for note-detail routing plus external new-tab link media behavior.

@@ -1366,3 +1366,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true The task is complete in substance. `/app/settings` is implemented as a native owner-workspace surface, `Settings` is present in the private nav, title/description persist through the singleton site-settings boundary, demo users are read-only in both UI and server action enforcement, and shared branding is sourced from site settings in the root layout metadata and shell header. The required checks in the task contract already passed. -> state/artifacts/20260323T122743-081-site-settings-ui/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T122743-081-site-settings-ui/npm-run-test-e2e-grep-settings-next-server.log
+- commit: commit: created
+- promote: Promoted 081-site-settings-ui -> 082-public-showroom-clickable-media
+- backlog: rendered current=082-public-showroom-clickable-media
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxoooo
+- cycle: finished
+
+### cycle 2026-03-23T12:40:35+09:00 task=082-public-showroom-clickable-media
+- artifacts: state/artifacts/20260323T124035-082-public-showroom-clickable-media
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260323T124035-082-public-showroom-clickable-media/worker.jsonl
+- worker-summary: Made the showroom media targets behave like the existing titles in [public-showroom.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/public-content/components/public-showroom.tsx): published note images now link to the same note detail route as the note title, and published link media now opens the same external URL in a new tab as the link title. I added minimal styling in [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css) so the media links stay focusable and visually stable without changing the card rhythm.
+- evaluator: started
+- evaluator: status=not_done promotion=false Routing, new-tab behavior, visual regression coverage, and the required command gates are all green, but the accessibility part of the scope is still short. The new media links in `src/features/public-content/components/public-showroom.tsx` use repeated generic `aria-label`s instead of the corresponding note/link title, so assistive-tech users get bolt-on duplicate links rather than a natural extension of the existing title destinations. -> state/artifacts/20260323T124035-082-public-showroom-clickable-media/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T124035-082-public-showroom-clickable-media/npm-run-test-e2e-grep-public-showroom-next-server.log

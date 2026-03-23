@@ -1,13 +1,20 @@
 import "dotenv/config";
 
+import { mkdir, rm, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { tmpdir } from "node:os";
+
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 import { PrismaClient } from "@prisma/client";
 import { expect, test, type Locator, type Page } from "@playwright/test";
+
+import { getMediaAssetPath } from "../../src/features/media/types";
 
 const desktopViewport = { width: 1440, height: 900 };
 const mobileViewport = { width: 390, height: 844 };
 
 const databaseUrl = process.env.DATABASE_URL;
+const mediaRoot = path.resolve(process.env.MEDIA_ROOT ?? path.join(tmpdir(), "minakeep-media"));
 
 if (!databaseUrl) {
   throw new Error("DATABASE_URL must be set before running public showroom UI tests.");
@@ -18,6 +25,12 @@ const prisma = new PrismaClient({
     url: databaseUrl
   })
 });
+
+async function writeMediaFixture(storageKey: string, body: string) {
+  const filePath = path.resolve(mediaRoot, storageKey);
+  await mkdir(path.dirname(filePath), { recursive: true });
+  await writeFile(filePath, body, "utf8");
+}
 
 const seededPublishedNotes = [
   {
@@ -57,7 +70,7 @@ const seededPublishedLinks = [
   }
 ] as const;
 
-async function seedPublicShowroomContent() {
+async function seedPublicShowroomContent(options?: { withNoteImage?: boolean }) {
   const username = process.env.OWNER_USERNAME ?? "owner";
   const owner = await prisma.user.findUnique({
     where: {
@@ -68,6 +81,20 @@ async function seedPublicShowroomContent() {
   if (!owner) {
     throw new Error(`Owner account '${username}' must exist before public showroom UI tests run.`);
   }
+
+  const timestamp = Date.now();
+  const noteWithImageId = `ui-public-showroom-note-${timestamp}`;
+  const noteImageAssetId = `ui-public-showroom-note-image-${timestamp}`;
+  const noteImageStorageKey = `note-images/${noteWithImageId}/${noteImageAssetId}.svg`;
+  const noteImageAlt = "Archive rhythm cover image";
+  const noteImageSvg =
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 72"><rect width="128" height="72" fill="#0f766e"/><text x="12" y="40" font-size="14" fill="#ecfeff">archive</text></svg>';
+
+  await prisma.mediaAsset.deleteMany({
+    where: {
+      ownerId: owner.id
+    }
+  });
 
   await prisma.link.deleteMany({
     where: {
@@ -81,13 +108,24 @@ async function seedPublicShowroomContent() {
     }
   });
 
+  await rm(mediaRoot, { force: true, recursive: true });
+  await mkdir(mediaRoot, { recursive: true });
+
   for (const note of seededPublishedNotes) {
     await prisma.note.create({
       data: {
+        ...(options?.withNoteImage && note.slug === seededPublishedNotes[0].slug
+          ? {
+              id: noteWithImageId
+            }
+          : {}),
         ownerId: owner.id,
         title: note.title,
         slug: note.slug,
-        markdown: note.markdown,
+        markdown:
+          options?.withNoteImage && note.slug === seededPublishedNotes[0].slug
+            ? [`![${noteImageAlt}](${getMediaAssetPath(noteImageAssetId)})`, "", note.markdown].join("\n")
+            : note.markdown,
         excerpt: note.excerpt,
         summary: note.summary,
         enrichmentStatus: "ready",
@@ -107,6 +145,23 @@ async function seedPublicShowroomContent() {
         }
       }
     });
+  }
+
+  if (options?.withNoteImage) {
+    await prisma.mediaAsset.create({
+      data: {
+        id: noteImageAssetId,
+        contentType: "image/svg+xml",
+        fileName: "archive-rhythm-cover.svg",
+        kind: "note-image",
+        noteId: noteWithImageId,
+        ownerId: owner.id,
+        sizeBytes: Buffer.byteLength(noteImageSvg),
+        storageKey: noteImageStorageKey
+      }
+    });
+
+    await writeMediaFixture(noteImageStorageKey, noteImageSvg);
   }
 
   for (const link of seededPublishedLinks) {
@@ -134,6 +189,14 @@ async function seedPublicShowroomContent() {
       }
     });
   }
+
+  return {
+    linkedNoteSlug: seededPublishedNotes[0].slug,
+    linkedNoteTitle: seededPublishedNotes[0].title,
+    linkedUrl: seededPublishedLinks[0].url,
+    linkedUrlTitle: seededPublishedLinks[0].title,
+    noteImageAlt
+  };
 }
 
 async function expectNoHorizontalOverflow(page: Page) {
@@ -354,8 +417,10 @@ async function expectPublicTasteFoundation(page: Page) {
 
 test.describe.configure({ mode: "serial" });
 
+let showroomFixtures: Awaited<ReturnType<typeof seedPublicShowroomContent>>;
+
 test.beforeEach(async () => {
-  await seedPublicShowroomContent();
+  showroomFixtures = await seedPublicShowroomContent();
 });
 
 test.afterAll(async () => {
@@ -404,6 +469,38 @@ test("@ui-regression @ui-refinement-hardening @ui-public-showroom @ui-public-sho
   await expect(page.getByRole("link", { name: seededPublishedNotes[1].title })).toBeVisible();
   await expect(page.getByRole("link", { name: seededPublishedLinks[1].title })).toBeVisible();
   await expect(page.getByTestId("public-home-search-summary")).toHaveText("Showing 2 of 4 public items.");
+});
+
+test("@ui-regression @ui-public-showroom public showroom media targets follow the same destinations as their titles", async ({ page }) => {
+  showroomFixtures = await seedPublicShowroomContent({ withNoteImage: true });
+  await page.setViewportSize(desktopViewport);
+  await page.goto("/");
+
+  const noteCard = page.locator("[data-card-kind='note']").filter({ has: page.getByRole("link", { name: showroomFixtures.linkedNoteTitle }) });
+  const noteTitleLink = noteCard.getByRole("link", { name: showroomFixtures.linkedNoteTitle });
+  const noteMediaLink = noteCard.getByTestId("public-note-card-media-link");
+
+  await expect(noteCard.getByRole("img", { name: showroomFixtures.noteImageAlt })).toHaveCount(1);
+  await expect(noteTitleLink).toHaveAttribute("href", `/notes/${showroomFixtures.linkedNoteSlug}`);
+  await expect(noteMediaLink).toHaveAttribute("href", `/notes/${showroomFixtures.linkedNoteSlug}`);
+
+  await noteMediaLink.click();
+  await expect(page).toHaveURL(new RegExp(`/notes/${showroomFixtures.linkedNoteSlug}$`));
+
+  await page.goto("/");
+
+  const linkCard = page.locator("[data-card-kind='link']").filter({ has: page.getByRole("link", { name: showroomFixtures.linkedUrlTitle }) });
+  const linkTitleLink = linkCard.getByRole("link", { name: showroomFixtures.linkedUrlTitle });
+  const linkMediaLink = linkCard.getByTestId("public-link-card-media-link");
+
+  await expect(linkTitleLink).toHaveAttribute("href", showroomFixtures.linkedUrl);
+  await expect(linkTitleLink).toHaveAttribute("target", "_blank");
+  await expect(linkMediaLink).toHaveAttribute("href", showroomFixtures.linkedUrl);
+  await expect(linkMediaLink).toHaveAttribute("target", "_blank");
+
+  const [popup] = await Promise.all([page.waitForEvent("popup"), linkMediaLink.click()]);
+  await expect.poll(() => popup.url()).toBe(showroomFixtures.linkedUrl);
+  await popup.close();
 });
 
 test("@ui-regression @ui-refinement-hardening @ui-public-showroom @ui-public-showroom-masonry @ui-public-search-collapse @ui-public-taste-regression mixed public showroom search expands cleanly on mobile", async ({ page }) => {

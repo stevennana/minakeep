@@ -1702,6 +1702,7 @@ textarea {
 .ui-button:focus-visible,
 .site-nav a:focus-visible,
 .vault-nav-link:focus-visible,
+.note-preview-card-media-link:focus-visible,
 .note-list-link:focus-visible,
 .tag-filter-link:focus-visible {
   outline: 2px solid rgba(50, 72, 99, 0.28);
@@ -2218,6 +2219,14 @@ textarea {
   display: grid;
 }
 
+.note-preview-card-media-link {
+  border-radius: calc(var(--public-card-radius) - 0.25rem);
+  color: inherit;
+  display: block;
+  min-width: 0;
+  text-decoration: none;
+}
+
 .note-preview-card-image-frame {
   aspect-ratio: 16 / 10;
   border-radius: calc(var(--public-card-radius) - 0.25rem);
@@ -2226,6 +2235,7 @@ textarea {
 .note-preview-card-image {
   height: 100%;
   object-fit: cover;
+  transition: transform 140ms ease;
 }
 
 .link-preview-card-image-frame {
@@ -2266,6 +2276,11 @@ textarea {
   line-height: 1.1;
   margin-top: 0.15rem;
   transition: color 140ms ease, transform 140ms ease;
+}
+
+.note-preview-card-media-link:hover .note-preview-card-image,
+.note-preview-card-media-link:focus-visible .note-preview-card-image {
+  transform: scale(1.01);
 }
 
 .note-list-link:hover {

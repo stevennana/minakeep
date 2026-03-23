@@ -1,5 +1,6 @@
 "use client";
 
+import type { Route } from "next";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
@@ -89,56 +90,101 @@ function PublishedContentPreviewCard({ item }: { item: PublicShowroomItem }) {
       ? item.excerpt.trim()
       : null;
 
+  if (isNote) {
+    const noteHref = `/notes/${item.slug}` as Route;
+
+    return (
+      <article
+        className={`note-preview-card note-preview-card-${variant} public-content-card public-content-card-${item.kind}`}
+        data-card-kind={item.kind}
+        data-card-variant={variant}
+      >
+        {item.cardImage ? (
+          <Link
+            aria-label="Open published note preview"
+            className="note-preview-card-media-link"
+            data-testid="public-note-card-media-link"
+            href={noteHref}
+          >
+            <NoteCardImage
+              frameClassName="note-card-image-frame note-preview-card-image-frame"
+              image={item.cardImage}
+              imageClassName="note-card-image note-preview-card-image"
+              testId="public-note-card-image"
+              title={item.title}
+            />
+          </Link>
+        ) : null}
+        <div className="note-preview-card-body">
+          <h2 className="note-preview-card-title">
+            <Link className="note-list-link" href={noteHref}>
+              {item.title}
+            </Link>
+          </h2>
+          <div className="note-preview-card-copy">
+            <p className="note-preview-card-summary">{primaryPreview}</p>
+            {supportingPreview ? <p className="note-preview-card-excerpt">{supportingPreview}</p> : null}
+          </div>
+        </div>
+        <MetadataRow className="note-preview-card-meta public-card-meta">
+          <span>Published note</span>
+          <span>{item.publishedAtLabel}</span>
+        </MetadataRow>
+        <TagList aria-label="Published note tags" className="note-preview-card-tags">
+          {item.tags.length === 0 ? (
+            <TagChip className="public-card-tag" muted>
+              No generated tags
+            </TagChip>
+          ) : (
+            item.tags.map((tag) => (
+              <TagChip className="public-card-tag" key={tag.id} title={tag.name}>
+                {tag.name}
+              </TagChip>
+            ))
+          )}
+        </TagList>
+      </article>
+    );
+  }
+
   return (
     <article
       className={`note-preview-card note-preview-card-${variant} public-content-card public-content-card-${item.kind}`}
       data-card-kind={item.kind}
       data-card-variant={variant}
     >
-      {isNote && item.cardImage ? (
-        <NoteCardImage
-          frameClassName="note-card-image-frame note-preview-card-image-frame"
-          image={item.cardImage}
-          imageClassName="note-card-image note-preview-card-image"
-          testId="public-note-card-image"
-          title={item.title}
-        />
-      ) : null}
-      {!isNote ? (
+      <a
+        aria-label="Open published link preview in a new tab"
+        className="note-preview-card-media-link"
+        data-testid="public-link-card-media-link"
+        href={item.url}
+        rel="noopener noreferrer"
+        target="_blank"
+      >
         <LinkFavicon
           faviconAssetId={item.faviconAssetId}
           frameClassName="link-favicon-frame note-preview-card-image-frame link-preview-card-image-frame"
           imageClassName="link-favicon-image note-preview-card-image link-preview-card-image"
           testId="public-link-card-favicon"
         />
-      ) : null}
+      </a>
       <div className="note-preview-card-body">
         <h2 className="note-preview-card-title">
-          {isNote ? (
-            <Link className="note-list-link" href={`/notes/${item.slug}`}>
-              {item.title}
-            </Link>
-          ) : (
-            <a className="note-list-link" href={item.url} rel="noopener noreferrer" target="_blank">
-              {item.title}
-            </a>
-          )}
+          <a className="note-list-link" href={item.url} rel="noopener noreferrer" target="_blank">
+            {item.title}
+          </a>
         </h2>
         <div className="note-preview-card-copy">
           <p className="note-preview-card-summary">{primaryPreview}</p>
-          {isNote ? (
-            supportingPreview ? <p className="note-preview-card-excerpt">{supportingPreview}</p> : null
-          ) : (
-            <p className="note-preview-card-excerpt public-link-card-url">{getDisplayUrl(item.url)}</p>
-          )}
+          <p className="note-preview-card-excerpt public-link-card-url">{getDisplayUrl(item.url)}</p>
         </div>
       </div>
       <MetadataRow className="note-preview-card-meta public-card-meta">
-        <span>{isNote ? "Published note" : "Published link"}</span>
-        {!isNote ? <span>Opens in new tab</span> : null}
+        <span>Published link</span>
+        <span>Opens in new tab</span>
         <span>{item.publishedAtLabel}</span>
       </MetadataRow>
-      <TagList aria-label={isNote ? "Published note tags" : "Published link tags"} className="note-preview-card-tags">
+      <TagList aria-label="Published link tags" className="note-preview-card-tags">
         {item.tags.length === 0 ? (
           <TagChip className="public-card-tag" muted>
             No generated tags

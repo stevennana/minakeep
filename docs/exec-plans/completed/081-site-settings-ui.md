@@ -5,7 +5,7 @@
   "id": "081-site-settings-ui",
   "title": "Site settings UI",
   "order": 81,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "standard",
   "next_task_on_success": "082-public-showroom-clickable-media",
   "prompt_docs": [
@@ -28,7 +28,8 @@
     "The settings route feels like an isolated admin page rather than part of the owner workspace.",
     "Saved title/description changes do not actually propagate to the shell surfaces they claim to control.",
     "Demo users can mutate settings."
-  ]
+  ],
+  "completed_at": "2026-03-23T03:40:05.762Z"
 }
 ```
 
@@ -75,3 +76,4 @@ Promote only when the settings surface feels native to the owner workspace and t
 - 2026-03-23T03:31:39Z: Added dedicated Playwright coverage in `tests/e2e/settings.spec.ts` for owner save flow, public/private shell branding propagation, browser metadata updates, and demo-user read-only enforcement including blocked direct server-action submission.
 - 2026-03-23T03:31:39Z: Updated the product/design index docs to mark workspace settings and site-configuration architecture as confirmed after the shipped UI and task-specific E2E contract passed.
 - 2026-03-23T03:35:10Z: `npm run test:e2e -- --grep settings` and `npm run verify` both passed after adding cleanup to the new settings E2E so later UI snapshots return to the default seeded branding state.
+- 2026-03-23T03:40:05.762Z: automatically promoted after deterministic checks and evaluator approval.

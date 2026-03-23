@@ -1,50 +1,46 @@
 Read the following repository documents before making changes:
 - AGENTS.md
 - docs/FRONTEND.md
-- docs/product-specs/workspace-settings.md
-- docs/design-docs/site-configuration-architecture.md
-- docs/design-docs/owner-workspace-density.md
-- docs/exec-plans/active/081-site-settings-ui.md
+- docs/product-specs/public-home-showroom.md
+- docs/design-docs/homepage-showroom-rhythm.md
+- docs/design-docs/responsive-ui-rules.md
+- docs/exec-plans/active/082-public-showroom-clickable-media.md
 
-Current task id: 081-site-settings-ui
-Current task title: Site settings UI
+Current task id: 082-public-showroom-clickable-media
+Current task title: Public showroom clickable media
 
 Objective:
-Expose the owner-facing settings surface for title and description and apply those values across the shipped shell branding.
+Make public showroom images/favicons clickable and consistent with the existing title destinations.
 
 Scope:
-- `/app/settings` route
-- owner navigation entry
-- owner form for title and description
-- demo-user read-only handling
-- site-wide branding propagation
+- note preview image click target
+- link preview image/fallback click target
+- accessibility and new-tab behavior alignment
 
 Out of scope:
-- delete flows
-- public showroom image behavior
-- public note detail metadata placement
+- note detail layout
+- owner delete/settings work
 
 Exit criteria:
-1. The owner can edit title and description from the workspace settings route.
-2. The saved values appear where the current fixed service branding is shown.
-3. Demo users can inspect but not save settings.
-4. `npm run test:e2e -- --grep settings` passes.
+1. Published note preview images route to the same note detail page as the note title.
+2. Published link media opens the same external destination in a new tab.
+3. The showroom remains visually stable on desktop and mobile.
+4. `npm run test:e2e -- --grep public-showroom` passes.
 5. `npm run verify` passes.
 
 Required checks:
-- `npm run test:e2e -- --grep settings`
+- `npm run test:e2e -- --grep public-showroom`
 - `npm run verify`
 
 Evaluator notes:
-Promote only when the settings surface feels native to the owner workspace and the branding propagation is real, not partial.
+Promote only when media click targets feel like a natural extension of the existing card behavior rather than a bolt-on wrapper.
 
 Required repository artifacts for this task:
-- src/app/app
-- src/features/navigation
+- src/features/public-content
 - tests/e2e
 
 Required commands for this task:
-- npm run test:e2e -- --grep settings
+- npm run test:e2e -- --grep public-showroom
 - npm run verify
 
 Previous known gaps from the last evaluation:
