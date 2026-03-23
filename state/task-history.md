@@ -72,3 +72,4 @@
 - 2026-03-23T04:50:40.993Z: promoted 084-owner-content-deletion -> 085-self-host-upgrade-safety
 - 2026-03-23T05:43:54.452Z: promoted 085-self-host-upgrade-safety -> 086-next-wave-hardening
 - 2026-03-23T05:59:23.134Z: promoted 086-next-wave-hardening -> NONE
+- 2026-03-23T09:41:01.068Z: promoted 087-public-site-origin-foundation -> 088-public-sitemap-and-robots

@@ -1518,3 +1518,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Task 087 is complete in substance. The repo now has a single server-only `SITE_URL` origin contract, homepage and public note metadata both consume the shared helper instead of request-context guessing, missing or invalid origin config fails closed by omitting canonicals and setting `robots` to noindex/nofollow, and the operator path is aligned across direct env docs, Compose docs, and `docker-compose.yml`. I did not find any overlap between canonical-origin ownership and owner-editable site branding. -> state/artifacts/20260323T183124-087-public-site-origin-foundation/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T183124-087-public-site-origin-foundation/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 087-public-site-origin-foundation -> 088-public-sitemap-and-robots
+- backlog: rendered current=088-public-sitemap-and-robots
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxoooxxooxo
+- cycle: finished
+
+### cycle 2026-03-23T18:41:31+09:00 task=088-public-sitemap-and-robots
+- artifacts: state/artifacts/20260323T184131-088-public-sitemap-and-robots
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260323T184131-088-public-sitemap-and-robots/worker.jsonl
+- worker-summary: Implemented the public discovery slice for task `088`. [robots.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/robots.ts) and [sitemap.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/sitemap.ts) now derive from shared logic in [discovery.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/public-site/discovery.ts), so `/robots.txt`, `/sitemap.xml`, and page canonicals all use the same `SITE_URL` contract from [config.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/public-site/config.ts). The sitemap includes only `/` plus published note routes, published links stay excluded as standalone URLs, and note-path revalidation now also refreshes `/sitemap.xml` via [runtime.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/runtime.ts).
+- evaluator: started
+- evaluator: status=not_done promotion=false The core sitemap/robots/canonical slice is implemented and the required commands passed, but I found a substantive freshness gap: `buildPublicSitemap()` intentionally derives the homepage `lastModified` from all published public content, including links, while `/sitemap.xml` is only revalidated from note mutations. Because `next build` classifies `/sitemap.xml` as static and `revalidateLinkPaths()` does not include `/sitemap.xml`, published-link changes can leave the homepage sitemap entry stale. That means discovery is not fully aligned with the shipped public-content boundary yet. -> state/artifacts/20260323T184131-088-public-sitemap-and-robots/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T184131-088-public-sitemap-and-robots/npm-run-test-e2e-grep-seo-discovery-next-server.log

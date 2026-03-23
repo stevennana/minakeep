@@ -5,7 +5,7 @@
   "id": "087-public-site-origin-foundation",
   "title": "Public site origin foundation",
   "order": 87,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "standard",
   "next_task_on_success": "088-public-sitemap-and-robots",
   "prompt_docs": [
@@ -34,7 +34,8 @@
     "The implementation derives canonical public URLs from request headers or ad hoc host guessing instead of one documented operator-owned origin contract.",
     "The new origin/config path overlaps incorrectly with owner-editable site settings.",
     "Missing-origin behavior still advertises crawlable or incorrect public URLs."
-  ]
+  ],
+  "completed_at": "2026-03-23T09:41:01.068Z"
 }
 ```
 
@@ -78,3 +79,4 @@ Promote only when the SEO foundation clearly separates operator-owned deployment
 - 2026-03-23 16:05 KST: Added a dedicated `SITE_URL`-backed public-site origin helper with bare-origin validation and fail-closed URL building for canonical/discovery consumers.
 - 2026-03-23 16:05 KST: Wired shared public metadata helpers into `/` and `/notes/[slug]`, added unit coverage for configured and missing-origin behavior, and clarified env/operator ownership in settings and env examples.
 - 2026-03-23 18:33 KST: Forwarded `SITE_URL` through the shipped `docker-compose.yml` runtime contract and aligned README/Compose operator guidance so self-hosted deployments configure the canonical origin explicitly and fail closed when it is absent.
+- 2026-03-23T09:41:01.068Z: automatically promoted after deterministic checks and evaluator approval.

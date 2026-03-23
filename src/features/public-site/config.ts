@@ -1,5 +1,7 @@
 import "server-only";
 
+import { getPlaywrightPublicSiteUrlOverride } from "@/features/public-site/test-mode";
+
 export const PUBLIC_SITE_ORIGIN_ENV_KEY = "SITE_URL";
 
 export type PublicSiteOriginStatus =
@@ -16,6 +18,12 @@ export type PublicSiteOriginStatus =
     };
 
 function readSiteUrl() {
+  const playwrightOverride = getPlaywrightPublicSiteUrlOverride();
+
+  if (playwrightOverride !== undefined) {
+    return playwrightOverride;
+  }
+
   const value = process.env[PUBLIC_SITE_ORIGIN_ENV_KEY]?.trim();
   return value ? value : null;
 }

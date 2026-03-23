@@ -10,6 +10,8 @@ const logPath = process.env.MINAKEEP_NEXT_SERVER_LOG;
 const aiTestModeFile = process.env.PLAYWRIGHT_AI_TEST_MODE_FILE ?? path.join(tmpdir(), "minakeep-playwright-ai-mode.json");
 const linkFaviconTestModeFile =
   process.env.PLAYWRIGHT_LINK_FAVICON_TEST_MODE_FILE ?? path.join(tmpdir(), "minakeep-playwright-link-favicon-mode.json");
+const publicSiteUrlFile =
+  process.env.PLAYWRIGHT_PUBLIC_SITE_URL_FILE ?? path.join(tmpdir(), "minakeep-playwright-public-site-url.json");
 
 const logStream = (() => {
   if (!logPath) {
@@ -22,6 +24,7 @@ const logStream = (() => {
 
 rmSync(aiTestModeFile, { force: true });
 rmSync(linkFaviconTestModeFile, { force: true });
+rmSync(publicSiteUrlFile, { force: true });
 
 const child = spawn(npmBin, ["run", "dev", "--", "--hostname", host, "--port", port], {
   cwd: process.cwd(),
@@ -32,6 +35,7 @@ const child = spawn(npmBin, ["run", "dev", "--", "--hostname", host, "--port", p
     DEMO_USERNAME: process.env.DEMO_USERNAME ?? "demo",
     PLAYWRIGHT_AI_TEST_MODE_FILE: aiTestModeFile,
     PLAYWRIGHT_LINK_FAVICON_TEST_MODE_FILE: linkFaviconTestModeFile,
+    PLAYWRIGHT_PUBLIC_SITE_URL_FILE: publicSiteUrlFile,
     PLAYWRIGHT_TEST: "1"
   }
 });

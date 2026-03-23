@@ -5,7 +5,7 @@
   "id": "088-public-sitemap-and-robots",
   "title": "Public sitemap and robots",
   "order": 88,
-  "status": "queued",
+  "status": "active",
   "promotion_mode": "standard",
   "next_task_on_success": "089-public-seo-discovery-hardening",
   "prompt_docs": [
@@ -76,3 +76,6 @@ Promote only when the discovery routes feel like a strict extension of the exist
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-23T09:41:01.068Z: restored as current task after 087-public-site-origin-foundation promotion.
+- 2026-03-23T09:48:41Z: added shared public discovery helpers, wired `src/app/sitemap.ts` and `src/app/robots.ts`, extended note revalidation to cover `/sitemap.xml`, and added Playwright-only `SITE_URL` override support for deterministic discovery coverage.
+- 2026-03-23T09:51:15Z: `npm run test:e2e -- --grep @seo-discovery` and `npm run verify` both passed; sitemap, robots, and canonical metadata now ship through the shared public-origin contract.

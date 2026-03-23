@@ -14,6 +14,7 @@ type NoteRouteRecord = {
 
 export function revalidateNotePaths(note: NoteRouteRecord) {
   revalidatePath("/");
+  revalidatePath("/sitemap.xml");
   revalidatePath("/app");
   revalidatePath("/app/search");
   revalidatePath("/app/tags");
