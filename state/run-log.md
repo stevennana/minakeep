@@ -1593,3 +1593,9 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Task 089 is complete in substance. The repo documents `SITE_URL` as a bare canonical public origin for both direct Node and Docker/Compose operators, includes restart and verification steps, and explicitly tells operators to submit `/sitemap.xml` after configuration without claiming provider-specific API integration. The implementation fails closed when `SITE_URL` is missing or invalid, emits canonical metadata only when configured, keeps published links homepage-only in the sitemap, and records homepage `lastmod` changes for public mutations. Unit, E2E, and smoke coverage all protect the discovery contract, and the required commands are recorded as passing. -> state/artifacts/20260323T194526-089-public-seo-discovery-hardening/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T194526-089-public-seo-discovery-hardening/npm-run-test-e2e-grep-seo-discovery-next-server.log
+- commit: commit: created
+- promote: Promoted 089-public-seo-discovery-hardening -> NONE
+- backlog: rendered current=NONE
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxoooxxooxoxxxoo
+- cycle: finished
+No remaining task. Stopping loop.
