@@ -48,7 +48,8 @@ Required commands for this task:
 - docker compose config
 
 Previous known gaps from the last evaluation:
-- none
+- Add deterministic verification that starts the built app against an upgraded legacy SQLite database and proves the runtime boots cleanly after the schema upgrade.
+- Resolve the Docker operator-path documentation mismatch so the upgrade instructions clearly match the shipped Compose behavior (published-image pull flow vs source-build Compose flow).
 
 
 

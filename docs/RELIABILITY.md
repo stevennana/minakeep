@@ -20,7 +20,9 @@ Define the reliability expectations and failure-handling rules for Minakeep.
 - `npm run db:prepare` also creates a timestamped SQLite backup under a sibling `backups/` directory before applying schema changes to an existing SQLite file
 - demo credentials should seed deterministically when configured, without breaking owner-only startup when they are absent
 - `npm run start:smoke` boots the production-style server and probes a health endpoint
+- `npm run start:smoke` also replays a legacy SQLite upgrade fixture through `db:prepare`, verifies the pre-upgrade backup exists, and boots the built app again against the upgraded database
 - `npm run verify` includes startup proof alongside code-level checks
+- the upgrade-safe verification path must boot the built app against an upgraded legacy SQLite database, not just stop at `prisma db push`
 - Ralph status and backlog rendering must work without hand-editing state files
 - Docker packaging keeps explicit daemon-backed proof commands outside `npm run verify`; the shipped contract is `docker build -t minakeep:test .`, `docker compose config`, and a container entrypoint that stays aligned with the same `db:prepare` plus `/api/health` startup path used by direct Node smoke
 - AI tasks must require a real-endpoint E2E check when `LLM_BASE`, `TOKEN`, and `MODEL` are present

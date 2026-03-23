@@ -2,6 +2,8 @@ import { spawn } from "node:child_process";
 import { copyFileSync, existsSync, mkdirSync } from "node:fs";
 import path from "node:path";
 
+import Database from "better-sqlite3";
+
 const SQLITE_SIDE_CAR_SUFFIXES = ["", "-shm", "-wal"];
 
 function run(command, args, { cwd = process.cwd(), env = process.env, allowedExitCodes = [] } = {}) {
@@ -129,5 +131,97 @@ export async function backupSqliteBeforeSchemaPush({
     backupDirectory,
     databasePath,
     state: "backed-up"
+  };
+}
+
+function sqliteTableHasColumn(database, tableName, columnName) {
+  const columns = database.prepare(`PRAGMA table_info("${tableName}")`).all();
+
+  return columns.some((column) => column.name === columnName);
+}
+
+export function backfillLegacyPublicationTimestamps(databasePath, logger = console) {
+  const database = new Database(databasePath);
+
+  try {
+    if (!sqliteTableHasColumn(database, "Note", "publishedAt") || !sqliteTableHasColumn(database, "Link", "publishedAt")) {
+      logger.log(`Skipping legacy publication backfill because ${databasePath} does not expose the current publication columns yet.`);
+      return {
+        linkChanges: 0,
+        noteChanges: 0,
+        state: "skipped-schema"
+      };
+    }
+
+    const applyBackfill = database.transaction(() => {
+      const noteChanges = database
+        .prepare(
+          `UPDATE "Note"
+           SET "publishedAt" = COALESCE("updatedAt", "createdAt")
+           WHERE "isPublished" = 1 AND "publishedAt" IS NULL`
+        )
+        .run().changes;
+      const linkChanges = database
+        .prepare(
+          `UPDATE "Link"
+           SET "publishedAt" = COALESCE("updatedAt", "createdAt")
+           WHERE "isPublished" = 1 AND "publishedAt" IS NULL`
+        )
+        .run().changes;
+
+      return {
+        linkChanges,
+        noteChanges
+      };
+    });
+
+    const result = applyBackfill();
+
+    if (result.noteChanges === 0 && result.linkChanges === 0) {
+      logger.log(`No legacy published rows needed publishedAt backfill in ${databasePath}.`);
+      return {
+        ...result,
+        state: "skipped-in-sync"
+      };
+    }
+
+    logger.log(
+      `Backfilled publishedAt for ${result.noteChanges} note(s) and ${result.linkChanges} link(s) in ${databasePath} so older published content stays visible after upgrade.`
+    );
+
+    return {
+      ...result,
+      state: "backfilled"
+    };
+  } finally {
+    database.close();
+  }
+}
+
+export function applyRuntimeSqliteUpgrades({
+  databaseUrl,
+  cwd = process.cwd(),
+  logger = console
+}) {
+  const databasePath = getSqliteDatabasePath(databaseUrl, cwd);
+
+  if (!databasePath) {
+    logger.log("Skipping runtime SQLite upgrade fixes because DATABASE_URL is not a file-based SQLite path.");
+    return {
+      state: "skipped-non-sqlite"
+    };
+  }
+
+  if (!existsSync(databasePath)) {
+    logger.log(`Skipping runtime SQLite upgrade fixes because ${databasePath} does not exist yet.`);
+    return {
+      databasePath,
+      state: "skipped-missing"
+    };
+  }
+
+  return {
+    databasePath,
+    ...backfillLegacyPublicationTimestamps(databasePath, logger)
   };
 }

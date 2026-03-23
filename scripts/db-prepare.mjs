@@ -3,7 +3,7 @@ import "dotenv/config";
 import { spawn } from "node:child_process";
 import path from "node:path";
 
-import { backupSqliteBeforeSchemaPush } from "./lib/sqlite-upgrade.mjs";
+import { applyRuntimeSqliteUpgrades, backupSqliteBeforeSchemaPush } from "./lib/sqlite-upgrade.mjs";
 
 const BIN_DIR = path.resolve("node_modules", ".bin");
 const prismaBin = path.join(BIN_DIR, process.platform === "win32" ? "prisma.cmd" : "prisma");
@@ -35,4 +35,7 @@ await backupSqliteBeforeSchemaPush({
   schemaPath
 });
 await run(prismaBin, ["db", "push", "--accept-data-loss"]);
+applyRuntimeSqliteUpgrades({
+  databaseUrl: process.env.DATABASE_URL
+});
 await run(nodeBin, ["--import", "tsx", "prisma/seed.ts"]);

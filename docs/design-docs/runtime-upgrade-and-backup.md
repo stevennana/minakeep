@@ -8,6 +8,7 @@ Keep self-hosted and Docker upgrades safe when Minakeep introduces schema-level 
 - the release/runtime path should not assume a fresh SQLite database
 - the startup/upgrade contract should remain compatible with the shipped mounted data path
 - `npm run db:prepare` is the contract point for applying schema updates before a new runtime serves traffic
+- `npm run db:prepare` may also apply idempotent compatibility fixes for older persisted rows after the schema sync so the new runtime can still read previously published content
 
 ## Backup Rules
 - before an automatic schema upgrade runs, Minakeep should create a timestamped SQLite backup

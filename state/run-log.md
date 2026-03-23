@@ -1441,3 +1441,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=not_done promotion=false The core implementation is close: `db:prepare` now creates a timestamped SQLite backup before `prisma db push`, legacy-schema regression coverage exists, docs describe backup/restore, and both required commands passed. I would still hold promotion because the repository does not yet prove the full reliability contract in substance: the legacy-upgrade test upgrades and inspects the DB, but it never boots the built app against that upgraded legacy database and checks `/api/health`, so the required 'older working install upgrades and the upgraded runtime still boots cleanly' path is not actually verified. There is also a remaining operator-doc ambiguity in the Docker path: `README.md` describes Compose as using the published image and tells operators to `docker compose pull`, while the shipped `docker-compose.yml` is source-build oriented (`build:` plus `image: minakeep:local`), so the upgrade action is not fully clear for Docker operators. -> state/artifacts/20260323T135111-085-self-host-upgrade-safety/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T135111-085-self-host-upgrade-safety/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Task 085-self-host-upgrade-safety not eligible for promotion.
+- backlog: rendered current=085-self-host-upgrade-safety
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxooox
+- cycle: finished
+
+### cycle 2026-03-23T14:07:47+09:00 task=085-self-host-upgrade-safety
+- artifacts: state/artifacts/20260323T140747-085-self-host-upgrade-safety
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260323T140747-085-self-host-upgrade-safety/worker.jsonl
+- worker-summary: Implemented the upgrade-safe path in [scripts/db-prepare.mjs](/Users/stevenna/WebstormProjects/minakeep/scripts/db-prepare.mjs) and [scripts/lib/sqlite-upgrade.mjs](/Users/stevenna/WebstormProjects/minakeep/scripts/lib/sqlite-upgrade.mjs). `db:prepare` still takes the pre-upgrade SQLite backup first, and now also backfills `publishedAt` for older published note/link rows after schema sync so legacy public content stays readable on the new runtime. The regression coverage in [tests/unit/db-prepare-upgrade.test.ts](/Users/stevenna/WebstormProjects/minakeep/tests/unit/db-prepare-upgrade.test.ts) verifies the backup plus upgraded data shape, and [scripts/start-smoke.mjs](/Users/stevenna/WebstormProjects/minakeep/scripts/start-smoke.mjs) now also boots the built app against a real legacy-upgrade SQLite fixture during `verify`.
+- evaluator: started
+- evaluator: status=not_done promotion=false The upgrade mechanics are substantively in place: `db:prepare` creates a pre-schema SQLite backup, applies the schema push, runs a legacy compatibility backfill, and both unit coverage and `start:smoke` prove a legacy database can upgrade and boot on the new runtime. I am not marking the task done because the shipped operator documentation is still not fully correct for direct self-host restore: the README restore steps hardcode `minakeep.db`, while the documented default direct-Node database is `dev.db`. That leaves the Docker restore path clear, but the self-host restore path is not yet operator-safe in the docs. -> state/artifacts/20260323T140747-085-self-host-upgrade-safety/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T140747-085-self-host-upgrade-safety/npm-run-verify-next-server.log

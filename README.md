@@ -118,7 +118,7 @@ npm run verify
 
 ## Docker / Compose
 
-Official Docker Hub image:
+Published images are available on Docker Hub, but the shipped Compose contract is source-built from the checked-out repo:
 
 ```bash
 docker pull stevenna050/minakeep:1.0.1
@@ -132,13 +132,12 @@ Local build for testing:
 docker build -t minakeep:test .
 ```
 
-Run the primary operator path with Docker Compose against the published image:
+Run the primary operator path with Docker Compose against the checked-out source tree:
 
 ```bash
 cp .env.compose.example .env
 mkdir -p data media logs
-docker compose pull
-docker compose up -d
+docker compose up -d --build
 ```
 
 The compose file fixes the container-internal runtime paths to `/app/data`, `/app/media`, and `/app/logs`; the `.env` file is for auth, port, and optional demo-user and AI config.
@@ -209,10 +208,16 @@ Direct Node/self-host upgrades:
 
 Compose/Docker upgrades:
 
-1. update `.env` if the new release needs config changes
-2. pull or rebuild the new image
-3. run `docker compose up -d`
-4. inspect `docker compose logs -f app` for the backup path and a clean startup
+1. update the repo checkout to the new release and adjust `.env` if that release needs config changes
+2. rebuild and restart the Compose service with `docker compose up -d --build`
+3. inspect `docker compose logs -f app` for the backup path and a clean startup
+
+The shipped `docker-compose.yml` builds the local checkout into `minakeep:local` before starting the container, so `docker compose pull` is not the primary upgrade path for this repo-managed Compose setup.
+
+Optional published-image flow:
+
+1. pull the tag you want, for example `docker pull stevenna050/minakeep:1.0.1`
+2. run that image directly with equivalent env vars and mounted `data`, `media`, and `logs` paths, or override the Compose service image intentionally
 
 The container entrypoint reuses the same `npm run db:prepare` contract. With the shipped Compose defaults, the live SQLite file is `/app/data/minakeep.db` and pre-upgrade backups land under `/app/data/backups/<db-name>-pre-upgrade-<timestamp>/`, which appears on the host as `./data/backups/...`.
 

@@ -1,3 +1,4 @@
+# Primary repo-local operator path: Compose builds the checked-out source into `minakeep:local`.
 services:
   app:
     build:
