@@ -1,53 +1,50 @@
 Read the following repository documents before making changes:
 - AGENTS.md
-- ARCHITECTURE.md
 - docs/FRONTEND.md
-- docs/RELIABILITY.md
 - docs/product-specs/workspace-settings.md
 - docs/design-docs/site-configuration-architecture.md
-- docs/design-docs/minakeep-information-architecture.md
-- docs/exec-plans/active/080-site-settings-foundation.md
+- docs/design-docs/owner-workspace-density.md
+- docs/exec-plans/active/081-site-settings-ui.md
 
-Current task id: 080-site-settings-foundation
-Current task title: Site settings foundation
+Current task id: 081-site-settings-ui
+Current task title: Site settings UI
 
 Objective:
-Establish the persisted settings model and service boundary for site-wide title and description.
+Expose the owner-facing settings surface for title and description and apply those values across the shipped shell branding.
 
 Scope:
-- persisted settings model for site title and description
-- server-side read/write service boundary
-- route ownership and navigation contract for `/app/settings`
-- deterministic defaults when no saved settings exist yet
+- `/app/settings` route
+- owner navigation entry
+- owner form for title and description
+- demo-user read-only handling
+- site-wide branding propagation
 
 Out of scope:
-- broader settings UI polish
-- content deletion flows
-- public showroom and note-detail UI changes
+- delete flows
+- public showroom image behavior
+- public note detail metadata placement
 
 Exit criteria:
-1. The repo has a documented and implemented settings foundation for site title/description.
-2. Public/private shell branding can read the same persisted settings values with safe defaults.
-3. The settings boundary is shaped for later configuration growth.
-4. `npm run verify` passes.
+1. The owner can edit title and description from the workspace settings route.
+2. The saved values appear where the current fixed service branding is shown.
+3. Demo users can inspect but not save settings.
+4. `npm run test:e2e -- --grep settings` passes.
+5. `npm run verify` passes.
 
 Required checks:
-- `npm run typecheck`
-- `npm run test:unit`
+- `npm run test:e2e -- --grep settings`
 - `npm run verify`
 
 Evaluator notes:
-Promote only when the settings work looks like the start of a durable configuration domain, not a route-local special case.
+Promote only when the settings surface feels native to the owner workspace and the branding propagation is real, not partial.
 
 Required repository artifacts for this task:
-- src/app
-- src/features
-- prisma/schema.prisma
-- tests/unit
+- src/app/app
+- src/features/navigation
+- tests/e2e
 
 Required commands for this task:
-- npm run typecheck
-- npm run test:unit
+- npm run test:e2e -- --grep settings
 - npm run verify
 
 Previous known gaps from the last evaluation:

@@ -1351,3 +1351,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true The task is complete in substance. The repo now has a dedicated `site-settings` domain with typed defaults, a singleton persisted Prisma model, a server-only repo/service boundary, and `/app/settings` wired into the owner workspace. Shared shell branding and root metadata both read through the same persisted settings service with deterministic fallbacks when no record exists, and demo-user writes are still blocked at the server boundary. The implementation reads as the start of a durable configuration domain rather than a route-local branding hack, and the required verification commands passed. -> state/artifacts/20260323T120545-080-site-settings-foundation/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T120545-080-site-settings-foundation/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 080-site-settings-foundation -> 081-site-settings-ui
+- backlog: rendered current=081-site-settings-ui
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooo
+- cycle: finished
+
+### cycle 2026-03-23T12:27:43+09:00 task=081-site-settings-ui
+- artifacts: state/artifacts/20260323T122743-081-site-settings-ui
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260323T122743-081-site-settings-ui/worker.jsonl
+- worker-summary: Added dedicated settings coverage in [settings.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/settings.spec.ts). It exercises the owner save flow from `/app/settings`, verifies the saved title and description propagate through the shared public/private shell branding and browser metadata, and confirms demo users can inspect settings but cannot submit the server action. I also updated the task log in [081-site-settings-ui.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/081-site-settings-ui.md), marked the settings docs as confirmed in [index.md](/Users/stevenna/WebstormProjects/minakeep/docs/product-specs/index.md) and [index.md](/Users/stevenna/WebstormProjects/minakeep/docs/design-docs/index.md), and wrote the operator handoff to [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
+- evaluator: started
+- evaluator: status=done promotion=true The task is complete in substance. `/app/settings` is implemented as a native owner-workspace surface, `Settings` is present in the private nav, title/description persist through the singleton site-settings boundary, demo users are read-only in both UI and server action enforcement, and shared branding is sourced from site settings in the root layout metadata and shell header. The required checks in the task contract already passed. -> state/artifacts/20260323T122743-081-site-settings-ui/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T122743-081-site-settings-ui/npm-run-test-e2e-grep-settings-next-server.log

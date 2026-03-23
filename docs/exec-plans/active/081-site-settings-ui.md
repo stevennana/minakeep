@@ -5,7 +5,7 @@
   "id": "081-site-settings-ui",
   "title": "Site settings UI",
   "order": 81,
-  "status": "planned",
+  "status": "active",
   "promotion_mode": "standard",
   "next_task_on_success": "082-public-showroom-clickable-media",
   "prompt_docs": [
@@ -70,3 +70,8 @@ Promote only when the settings surface feels native to the owner workspace and t
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-23T03:27:13.746Z: restored as current task after 080-site-settings-foundation promotion.
+- 2026-03-23T03:31:39Z: Audited the existing settings route and shared branding reads. Confirmed the owner nav entry, `/app/settings` surface, demo-user UI disablement, and root-shell branding propagation were already implemented from the foundation wave.
+- 2026-03-23T03:31:39Z: Added dedicated Playwright coverage in `tests/e2e/settings.spec.ts` for owner save flow, public/private shell branding propagation, browser metadata updates, and demo-user read-only enforcement including blocked direct server-action submission.
+- 2026-03-23T03:31:39Z: Updated the product/design index docs to mark workspace settings and site-configuration architecture as confirmed after the shipped UI and task-specific E2E contract passed.
+- 2026-03-23T03:35:10Z: `npm run test:e2e -- --grep settings` and `npm run verify` both passed after adding cleanup to the new settings E2E so later UI snapshots return to the default seeded branding state.

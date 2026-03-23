@@ -5,7 +5,7 @@
   "id": "080-site-settings-foundation",
   "title": "Site settings foundation",
   "order": 80,
-  "status": "planned",
+  "status": "completed",
   "promotion_mode": "standard",
   "next_task_on_success": "081-site-settings-ui",
   "prompt_docs": [
@@ -32,7 +32,8 @@
     "The implementation adds a one-off branding hack instead of an extensible settings boundary.",
     "The settings persistence path weakens existing owner/demo access rules.",
     "Shell branding reads diverge between public and private surfaces without an explicit documented reason."
-  ]
+  ],
+  "completed_at": "2026-03-23T03:27:13.746Z"
 }
 ```
 
@@ -78,3 +79,4 @@ Promote only when the settings work looks like the start of a durable configurat
 - 2026-03-23 12:08 KST: Wired `/app/settings` into private navigation, added the owner-write/demo-read-only route surface, and switched the shared public/private shell branding plus root metadata to read from the same settings service.
 - 2026-03-23 12:08 KST: Added unit coverage for default fallback and save normalization. Required verification commands still need to run.
 - 2026-03-23 12:20 KST: `npm run typecheck`, `npm run test:unit`, and `npm run verify` passed. Owner-navigation snapshot baselines were refreshed where the intentional new `Settings` nav item changed the shipped UI.
+- 2026-03-23T03:27:13.746Z: automatically promoted after deterministic checks and evaluator approval.

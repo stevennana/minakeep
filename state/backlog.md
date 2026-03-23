@@ -67,8 +67,8 @@
 - [x] 077-external-note-api-auth-foundation — External note API auth foundation
 - [x] 078-external-note-api-create-and-publish — External note API create and publish
 - [x] 079-external-note-api-hardening — External note API hardening
-- [ ] 080-site-settings-foundation — Site settings foundation ← current
-- [ ] 081-site-settings-ui — Site settings UI
+- [x] 080-site-settings-foundation — Site settings foundation
+- [ ] 081-site-settings-ui — Site settings UI ← current
 - [ ] 082-public-showroom-clickable-media — Public showroom clickable media
 - [ ] 083-public-note-reading-top-summary — Public note reading top summary
 - [ ] 084-owner-content-deletion — Owner content deletion
