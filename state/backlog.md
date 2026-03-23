@@ -76,5 +76,5 @@
 - [x] 086-next-wave-hardening — Next wave hardening
 - [x] 087-public-site-origin-foundation — Public site origin foundation
 - [x] 088-public-sitemap-and-robots — Public sitemap and robots
-- [ ] 089-public-seo-discovery-hardening — Public SEO discovery hardening ← current
+- [x] 089-public-seo-discovery-hardening — Public SEO discovery hardening
 

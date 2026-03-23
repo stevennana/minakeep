@@ -5,11 +5,10 @@ This queue is the task-level promotion source of truth for minakeep.
 Only task files in this directory that contain a `taskmeta` JSON block are eligible for automatic selection, evaluation, and promotion.
 
 ## Current recommended sequence
-1. `087-public-site-origin-foundation.md` -> define the canonical public-site origin contract and fail-closed discovery rules
-2. `088-public-sitemap-and-robots.md` -> add `sitemap.xml`, `robots.txt`, and published-note discovery behavior
-3. `089-public-seo-discovery-hardening.md` -> align operator docs, regression coverage, and search-console-ready validation
 
-Tasks `080` through `086` are preserved in completed history as the finished settings/delete/upgrade tranche. Earlier completed tranches remain preserved as history.
+The active queue is currently exhausted.
+
+Tasks `087` through `089` are preserved in completed history as the finished sitemap/SEO tranche. Tasks `080` through `086` remain preserved as the earlier settings/delete/upgrade tranche, and earlier completed tranches remain available as history.
 
 ## Operating rule
 

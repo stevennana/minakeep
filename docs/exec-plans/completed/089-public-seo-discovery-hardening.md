@@ -5,7 +5,7 @@
   "id": "089-public-seo-discovery-hardening",
   "title": "Public SEO discovery hardening",
   "order": 89,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "standard",
   "next_task_on_success": "NONE",
   "prompt_docs": [
@@ -34,7 +34,8 @@
     "Operator docs do not clearly explain how to configure the canonical public origin and submit the sitemap to Google Search Console.",
     "Regression coverage misses the fail-closed missing-origin path or the published-link exclusion rule.",
     "The final docs imply Google-specific API integration that the shipped feature does not actually provide."
-  ]
+  ],
+  "completed_at": "2026-03-23T10:57:22.796Z"
 }
 ```
 
@@ -78,3 +79,4 @@ Promote only when the SEO/discovery feature is operator-usable for real self-hos
 - 2026-03-23T19:51:55+0900: aligned README, architecture, security, reliability, and env-example guidance around `SITE_URL`, bare-origin requirements, and `/sitemap.xml` registration for direct Node and Docker/Compose operators without adding provider-specific integration claims.
 - 2026-03-23T19:51:55+0900: tightened discovery regression coverage so unit tests pin invalid-origin fail-closed behavior plus homepage-only link exclusion, and `@seo-discovery` E2E also asserts the expected robots meta tags alongside canonical behavior.
 - 2026-03-23T19:51:55+0900: required checks passed: `npm run test:e2e -- --grep @seo-discovery`, `npm run verify`, and a clean standalone `npm run start:smoke` rerun after avoiding an initial overlapping-build collision.
+- 2026-03-23T10:57:22.796Z: automatically promoted after deterministic checks and evaluator approval.
