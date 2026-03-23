@@ -47,6 +47,7 @@ type NoteEditorProps = {
   formDescription: string;
   submitLabel: string;
   savedNotice?: string;
+  savedNoticeTone?: "default" | "error";
   enrichment?: EnrichmentState;
   generatedSummary?: string | null;
   generatedTags?: SavedTag[];
@@ -125,6 +126,7 @@ export function NoteEditor({
   formDescription,
   submitLabel,
   savedNotice,
+  savedNoticeTone = "default",
   enrichment,
   generatedSummary,
   generatedTags = [],
@@ -618,7 +620,7 @@ export function NoteEditor({
           </MetadataRow>
         </IntroBlock>
         {readOnly ? (
-          <p className="read-only-note">This view is for inspection only. Editing, publishing, retry, and image upload controls are disabled.</p>
+          <p className="read-only-note">This view is for inspection only. Editing, publishing, retry, delete, and image upload controls are disabled.</p>
         ) : null}
         {publication ? (
           <Surface className="publication-panel" tone="inset">
@@ -652,7 +654,7 @@ export function NoteEditor({
             </div>
           </Surface>
         ) : null}
-        {savedNotice ? <p className="status-note">{savedNotice}</p> : null}
+        {savedNotice ? <p className={savedNoticeTone === "error" ? "status-note status-note-error" : "status-note"}>{savedNotice}</p> : null}
       </Surface>
 
       {enrichment ? (

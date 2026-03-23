@@ -7,6 +7,13 @@ import { createNoteExcerpt } from "@/features/notes/markdown";
 import type { NoteDraftInput } from "@/features/notes/types";
 import { createUniqueNoteSlug } from "@/features/notes/slug";
 
+export class PublishedNoteDeleteForbiddenError extends Error {
+  constructor() {
+    super("published-note-delete-forbidden");
+    this.name = "PublishedNoteDeleteForbiddenError";
+  }
+}
+
 function normalizeTitle(title: string) {
   const trimmedTitle = title.trim();
 
@@ -102,6 +109,20 @@ export async function unpublishNote(ownerId: string, id: string) {
   }
 
   return notesRepo.updatePublication(id, false);
+}
+
+export async function deleteDraftNote(ownerId: string, id: string) {
+  const existingNote = await notesRepo.findByIdForOwner(ownerId, id);
+
+  if (!existingNote) {
+    return null;
+  }
+
+  if (existingNote.isPublished) {
+    throw new PublishedNoteDeleteForbiddenError();
+  }
+
+  return notesRepo.delete(id);
 }
 
 export async function retryNoteEnrichment(ownerId: string, id: string) {

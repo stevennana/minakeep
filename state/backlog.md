@@ -70,8 +70,8 @@
 - [x] 080-site-settings-foundation — Site settings foundation
 - [x] 081-site-settings-ui — Site settings UI
 - [x] 082-public-showroom-clickable-media — Public showroom clickable media
-- [ ] 083-public-note-reading-top-summary — Public note reading top summary ← current
-- [ ] 084-owner-content-deletion — Owner content deletion
+- [x] 083-public-note-reading-top-summary — Public note reading top summary
+- [ ] 084-owner-content-deletion — Owner content deletion ← current
 - [ ] 085-self-host-upgrade-safety — Self-host upgrade safety
 - [ ] 086-next-wave-hardening — Next wave hardening
 

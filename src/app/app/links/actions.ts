@@ -9,7 +9,9 @@ import { LinkValidationError } from "@/features/links/normalize";
 import {
   DuplicateLinkUrlError,
   createSavedLink,
+  deleteSavedLink,
   publishLink,
+  PublishedLinkDeleteForbiddenError,
   refreshLinkFavicon,
   retryLinkEnrichment,
   startLinkFaviconRefresh,
@@ -18,11 +20,24 @@ import {
 } from "@/features/links/service";
 import { isReadOnlyWorkspaceMutationError, requireWritableOwnerSession } from "@/lib/auth/owner-session";
 
+class DeleteConfirmationRequiredError extends Error {
+  constructor() {
+    super("delete-confirmation-required");
+    this.name = "DeleteConfirmationRequiredError";
+  }
+}
+
 function getLinkInput(formData: FormData) {
   return {
     url: String(formData.get("url") ?? ""),
     title: String(formData.get("title") ?? "")
   };
+}
+
+function requireDeleteConfirmation(formData: FormData) {
+  if (String(formData.get("confirmDelete") ?? "") !== "permanent") {
+    throw new DeleteConfirmationRequiredError();
+  }
 }
 
 function revalidateLinkPaths() {
@@ -141,4 +156,30 @@ export async function unpublishLinkAction(linkId: string) {
 
   revalidateLinkPaths();
   redirect("/app/links?unpublished=1");
+}
+
+export async function deleteLinkAction(linkId: string, formData: FormData) {
+  try {
+    requireDeleteConfirmation(formData);
+
+    const link = await withWritableOwnerSession("/app/links", (owner) => deleteSavedLink(owner.id, linkId));
+
+    if (!link) {
+      notFound();
+    }
+
+    revalidateLinkPaths();
+  } catch (error) {
+    if (error instanceof DeleteConfirmationRequiredError) {
+      redirect("/app/links?error=delete-confirmation");
+    }
+
+    if (error instanceof PublishedLinkDeleteForbiddenError) {
+      redirect("/app/links?error=delete-published");
+    }
+
+    throw error;
+  }
+
+  redirect("/app/links?deleted=1");
 }

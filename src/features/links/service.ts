@@ -15,6 +15,13 @@ export class DuplicateLinkUrlError extends Error {
   }
 }
 
+export class PublishedLinkDeleteForbiddenError extends Error {
+  constructor() {
+    super("published-link-delete-forbidden");
+    this.name = "PublishedLinkDeleteForbiddenError";
+  }
+}
+
 export async function listOwnerLinks(ownerId: string) {
   return linksRepo.listForOwner(ownerId);
 }
@@ -65,6 +72,20 @@ export async function unpublishLink(ownerId: string, id: string) {
   }
 
   return linksRepo.updatePublication(id, false);
+}
+
+export async function deleteSavedLink(ownerId: string, id: string) {
+  const existingLink = await linksRepo.findByIdForOwner(ownerId, id);
+
+  if (!existingLink) {
+    return null;
+  }
+
+  if (existingLink.isPublished) {
+    throw new PublishedLinkDeleteForbiddenError();
+  }
+
+  return linksRepo.delete(id);
 }
 
 export async function retryLinkEnrichment(ownerId: string, id: string) {

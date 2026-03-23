@@ -282,6 +282,16 @@ export const notesRepo = {
 
     return mapNoteEditorRecord(note);
   },
+  async delete(id: string) {
+    const note = await prisma.note.delete({
+      where: {
+        id
+      },
+      select: noteEditorSelect
+    });
+
+    return mapNoteEditorRecord(note);
+  },
   async setEnrichmentPending(id: string) {
     const note = await prisma.note.update({
       where: {

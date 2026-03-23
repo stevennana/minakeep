@@ -226,6 +226,16 @@ export const linksRepo = {
 
     return mapLinkRecord(link);
   },
+  async delete(id: string) {
+    const link = await prisma.link.delete({
+      where: {
+        id
+      },
+      select: linkSummarySelect
+    });
+
+    return mapLinkRecord(link);
+  },
   async setEnrichmentPending(id: string) {
     const link = await prisma.link.update({
       where: {

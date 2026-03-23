@@ -293,11 +293,13 @@ test("@demo-user demo workspace routes stay browsable while mutation controls ar
   const seededLinkCard = page.getByRole("article").filter({ has: page.getByRole("link", { name: seededDraftLink.title }) });
   await expect(seededLinkCard.getByRole("button", { name: "Refresh favicon unavailable" })).toBeDisabled();
   await expect(seededLinkCard.getByRole("button", { name: "Publish unavailable" })).toBeDisabled();
+  await expect(seededLinkCard.getByRole("button", { name: "Delete unavailable" })).toBeDisabled();
   await expect(seededLinkCard.getByRole("button", { name: "Retry unavailable" })).toBeDisabled();
   const publishedLinkCard = page
     .getByRole("article")
     .filter({ has: page.getByRole("link", { name: seededPublishedLink.title }) });
   await expect(publishedLinkCard.getByRole("button", { name: "Unpublish unavailable" })).toBeDisabled();
+  await expect(publishedLinkCard.getByRole("button", { name: "Delete unavailable" })).toBeDisabled();
 
   await page.goto("/app/tags");
   await expect(page.getByRole("heading", { name: "Browse one private taxonomy" })).toBeVisible();
@@ -318,6 +320,7 @@ test("@demo-user demo workspace routes stay browsable while mutation controls ar
   await expect(page.getByLabel("Markdown body")).toHaveJSProperty("readOnly", true);
   await expect(page.getByRole("button", { name: "Save unavailable" })).toBeDisabled();
   await expect(page.getByRole("button", { name: "Publish unavailable" })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "Delete unavailable" })).toBeDisabled();
   await expect(page.getByRole("button", { name: "Retry unavailable" })).toBeDisabled();
 
   await page.goto("/app/notes/new");
@@ -336,6 +339,7 @@ test("@demo-user demo workspace routes stay browsable while mutation controls ar
   await expect(page.getByLabel("Markdown body")).toHaveJSProperty("readOnly", true);
   await expect(page.getByRole("button", { name: "Save unavailable" })).toBeDisabled();
   await expect(page.getByRole("button", { name: "Unpublish unavailable" })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "Delete unavailable" })).toBeDisabled();
 });
 
 test("@demo-user direct demo mutation attempts are rejected at the server boundary", async ({ browser }) => {
@@ -348,6 +352,7 @@ test("@demo-user direct demo mutation attempts are rejected at the server bounda
   await ownerPage.goto(`/app/notes/${seededFixture.draftNoteId}/edit`);
   const updateNoteAction = await captureServerAction(ownerPage.locator("form.note-form"));
   const publishNoteAction = await captureServerAction(ownerPage.locator("form").filter({ has: ownerPage.getByRole("button", { name: "Publish note" }) }));
+  const deleteNoteAction = await captureServerAction(ownerPage.locator("details.delete-disclosure form"));
   const retryNoteAction = await captureServerAction(ownerPage.locator("form").filter({ has: ownerPage.getByRole("button", { name: "Retry AI enrichment" }) }));
 
   await ownerPage.goto(`/app/notes/${seededFixture.publishedNoteId}/edit`);
@@ -358,6 +363,7 @@ test("@demo-user direct demo mutation attempts are rejected at the server bounda
   const draftLinkCard = ownerPage.getByRole("article").filter({ has: ownerPage.getByRole("link", { name: seededDraftLink.title }) });
   const refreshLinkFaviconAction = await captureServerAction(draftLinkCard.locator("form.secondary-link-favicon-refresh"));
   const publishLinkAction = await captureServerAction(draftLinkCard.locator("form").filter({ has: ownerPage.getByRole("button", { name: "Publish link" }) }));
+  const deleteLinkAction = await captureServerAction(draftLinkCard.locator("details.delete-disclosure form"));
   const retryLinkAction = await captureServerAction(draftLinkCard.locator("form.secondary-link-retry"));
   const publishedLinkCard = ownerPage.getByRole("article").filter({ has: ownerPage.getByRole("link", { name: seededPublishedLink.title }) });
   const unpublishLinkAction = await captureServerAction(publishedLinkCard.locator("form").filter({ has: ownerPage.getByRole("button", { name: "Unpublish link" }) }));
@@ -404,6 +410,11 @@ test("@demo-user direct demo mutation attempts are rejected at the server bounda
   expect(publishNoteResult.status).toBe(200);
   expect(publishNoteResult.url).toContain("error=read-only");
 
+  const deleteNoteResult = await postServerAction(demoPage, deleteNoteAction);
+  expect(deleteNoteResult.redirected).toBe(true);
+  expect(deleteNoteResult.status).toBe(200);
+  expect(deleteNoteResult.url).toContain("error=read-only");
+
   const unpublishNoteResult = await postServerAction(demoPage, unpublishNoteAction);
   expect(unpublishNoteResult.redirected).toBe(true);
   expect(unpublishNoteResult.status).toBe(200);
@@ -426,6 +437,11 @@ test("@demo-user direct demo mutation attempts are rejected at the server bounda
   expect(publishLinkResult.redirected).toBe(true);
   expect(publishLinkResult.status).toBe(200);
   expect(publishLinkResult.url).toContain("error=read-only");
+
+  const deleteLinkResult = await postServerAction(demoPage, deleteLinkAction);
+  expect(deleteLinkResult.redirected).toBe(true);
+  expect(deleteLinkResult.status).toBe(200);
+  expect(deleteLinkResult.url).toContain("error=read-only");
 
   const unpublishLinkResult = await postServerAction(demoPage, unpublishLinkAction);
   expect(unpublishLinkResult.redirected).toBe(true);

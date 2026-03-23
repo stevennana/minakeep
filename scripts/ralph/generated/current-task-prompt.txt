@@ -1,46 +1,52 @@
 Read the following repository documents before making changes:
 - AGENTS.md
-- docs/FRONTEND.md
-- docs/product-specs/public-note-reading.md
-- docs/design-docs/public-surface-taste-rules.md
-- docs/exec-plans/active/083-public-note-reading-top-summary.md
+- docs/SECURITY.md
+- docs/RELIABILITY.md
+- docs/product-specs/owner-content-deletion.md
+- docs/product-specs/note-authoring.md
+- docs/product-specs/link-capture.md
+- docs/design-docs/owner-workspace-density.md
+- docs/exec-plans/active/084-owner-content-deletion.md
 
-Current task id: 083-public-note-reading-top-summary
-Current task title: Public note reading top summary
+Current task id: 084-owner-content-deletion
+Current task title: Owner content deletion
 
 Objective:
-Move AI support metadata above the public note body and improve title fitting on the public detail page.
+Add permanent delete for unpublished notes and links with explicit confirmation and server-side unpublished-only enforcement.
 
 Scope:
-- top-of-page AI summary/tags placement
-- title-fit and line-wrapping polish
-- desktop/mobile note-detail regression coverage
+- note delete
+- link delete
+- confirmation UX
+- demo-user and published-content guards
 
 Out of scope:
-- public showroom card click behavior
-- owner delete/settings work
+- trash/archive/restore
+- settings and public-reading changes
 
 Exit criteria:
-1. AI summary and AI tags appear beneath the title and above the body.
-2. Title wrapping feels intentional and uses the available width before breaking into more lines.
-3. Public note reading remains calm and body-first after the layout change.
-4. `npm run test:e2e -- --grep public-note` passes.
-5. `npm run verify` passes.
+1. Unpublished notes can be permanently deleted after confirmation.
+2. Unpublished links can be permanently deleted after confirmation.
+3. Published items cannot be deleted until unpublished first.
+4. Demo users cannot delete content.
+5. `npm run test:e2e -- --grep delete` passes.
+6. `npm run verify` passes.
 
 Required checks:
-- `npm run test:e2e -- --grep public-note`
+- `npm run test:e2e -- --grep delete`
 - `npm run verify`
 
 Evaluator notes:
-Promote only when the top-of-page metadata improves orientation without turning the note detail page into a metadata-first surface.
+Promote only when destructive behavior is explicit, guarded, and clearly permanent.
 
 Required repository artifacts for this task:
-- src/app/notes
-- src/app/globals.css
+- src/app/app
+- src/features/notes
+- src/features/links
 - tests/e2e
 
 Required commands for this task:
-- npm run test:e2e -- --grep public-note
+- npm run test:e2e -- --grep delete
 - npm run verify
 
 Previous known gaps from the last evaluation:

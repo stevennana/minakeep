@@ -5,7 +5,7 @@
   "id": "084-owner-content-deletion",
   "title": "Owner content deletion",
   "order": 84,
-  "status": "planned",
+  "status": "active",
   "promotion_mode": "standard",
   "next_task_on_success": "085-self-host-upgrade-safety",
   "prompt_docs": [
@@ -72,3 +72,6 @@ Promote only when destructive behavior is explicit, guarded, and clearly permane
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-23T04:17:01.322Z: restored as current task after 083-public-note-reading-top-summary promotion.
+- 2026-03-23T04:36:49Z: added note/link delete services and server actions with unpublished-only enforcement, explicit confirmation payload checks, dashboard/status messaging, read-only demo guards, and owner-surface delete affordances that keep the editor and links layouts stable.
+- 2026-03-23T04:36:49Z: added delete-focused Playwright coverage, extended demo-user mutation coverage to include delete, refreshed impacted owner-surface snapshots, and confirmed `npm run test:e2e -- --grep delete` plus `npm run verify` pass locally.

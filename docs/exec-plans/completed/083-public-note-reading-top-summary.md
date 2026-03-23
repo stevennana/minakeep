@@ -5,7 +5,7 @@
   "id": "083-public-note-reading-top-summary",
   "title": "Public note reading top summary",
   "order": 83,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "standard",
   "next_task_on_success": "084-owner-content-deletion",
   "prompt_docs": [
@@ -27,7 +27,8 @@
     "AI summary/tags still sit below the body or otherwise fail to orient the reader early.",
     "Title wrapping still feels prematurely narrow on wide note pages.",
     "The change makes AI metadata more visually dominant than the authored note body."
-  ]
+  ],
+  "completed_at": "2026-03-23T04:17:01.322Z"
 }
 ```
 
@@ -70,3 +71,4 @@ Promote only when the top-of-page metadata improves orientation without turning 
 - 2026-03-23T04:10:41Z: Moved the public note AI summary and AI tags into the top reading stack beneath the title, softened the support treatment so it orients without taking over, and removed the narrow title cap that was causing premature desktop wrapping.
 - 2026-03-23T04:10:41Z: Extended `tests/e2e/ui-public-note.spec.ts` to assert the new support ordering and intentional title fit, then refreshed the desktop and mobile public-note snapshots while keeping `npm run test:e2e -- --grep public-note` green.
 - 2026-03-23T04:12:38Z: `npm run verify` passed, including lint, typecheck, build, the full Playwright suite, and startup smoke, so the task now satisfies its required command gates.
+- 2026-03-23T04:17:01.322Z: automatically promoted after deterministic checks and evaluator approval.

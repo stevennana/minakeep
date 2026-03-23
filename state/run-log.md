@@ -1411,3 +1411,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true The task is complete in substance. The public note page now renders AI summary and tags directly beneath the title and before the markdown body in src/app/notes/[slug]/page.tsx, the note-detail CSS widens the title block and softens the support treatment in src/app/globals.css, and the updated Playwright coverage plus refreshed desktop/mobile snapshots substantively guard the new hierarchy and title-fit behavior. The provided deterministic check record shows both required gates passed on 2026-03-23: `npm run test:e2e -- --grep public-note` and `npm run verify`. -> state/artifacts/20260323T130614-083-public-note-reading-top-summary/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T130614-083-public-note-reading-top-summary/npm-run-test-e2e-grep-public-note-next-server.log
+- commit: commit: created
+- promote: Promoted 083-public-note-reading-top-summary -> 084-owner-content-deletion
+- backlog: rendered current=084-owner-content-deletion
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxoo
+- cycle: finished
+
+### cycle 2026-03-23T13:17:31+09:00 task=084-owner-content-deletion
+- artifacts: state/artifacts/20260323T131731-084-owner-content-deletion
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260323T131731-084-owner-content-deletion/worker.jsonl
+- worker-summary: Implemented permanent delete for unpublished notes and links with explicit confirmation and server-side guards. The new delete paths live in [notes actions](/Users/stevenna/WebstormProjects/minakeep/src/app/app/notes/actions.ts), [links actions](/Users/stevenna/WebstormProjects/minakeep/src/app/app/links/actions.ts), [notes service](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/service.ts), and [links service](/Users/stevenna/WebstormProjects/minakeep/src/features/links/service.ts). Owner UI now exposes permanent-delete confirmation for draft notes and links in [note edit page](/Users/stevenna/WebstormProjects/minakeep/src/app/app/notes/[id]/edit/page.tsx) and [links page](/Users/stevenna/WebstormProjects/minakeep/src/app/app/links/page.tsx), while published items stay delete-blocked until unpublished and demo users remain blocked in both UI and server actions.
+- evaluator: started
+- evaluator: status=done promotion=true Task 084 appears complete in substance. The implementation uses hard deletes for notes and links, exposes a clear permanent-delete confirmation step in the owner UI, blocks delete in the demo workspace, and enforces unpublished-only deletion again on the server side. The focused delete Playwright run and full `npm run verify` both passed in the provided deterministic check summary, and the shipped docs/specs for this wave match the behavior I inspected. -> state/artifacts/20260323T131731-084-owner-content-deletion/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T131731-084-owner-content-deletion/npm-run-test-e2e-grep-delete-next-server.log

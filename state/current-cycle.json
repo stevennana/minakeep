@@ -1,8 +1,8 @@
 {
-  "task_id": "083-public-note-reading-top-summary",
-  "started_at": "2026-03-23T13:06:14+09:00",
-  "artifact_dir": "state/artifacts/20260323T130614-083-public-note-reading-top-summary",
+  "task_id": "084-owner-content-deletion",
+  "started_at": "2026-03-23T13:17:31+09:00",
+  "artifact_dir": "state/artifacts/20260323T131731-084-owner-content-deletion",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-03-23T04:17:01.140Z"
+  "updated_at": "2026-03-23T04:50:40.729Z"
 }

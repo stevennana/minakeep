@@ -2,14 +2,27 @@
 
 import { notFound, redirect } from "next/navigation";
 import { createOwnerNote, queueNoteEnrichment, revalidateNotePaths, scheduleNoteEnrichment } from "@/features/notes/runtime";
-import { publishNote, retryNoteEnrichment, unpublishNote, updateDraftNote } from "@/features/notes/service";
+import { deleteDraftNote, publishNote, PublishedNoteDeleteForbiddenError, retryNoteEnrichment, unpublishNote, updateDraftNote } from "@/features/notes/service";
 import { isReadOnlyWorkspaceMutationError, requireWritableOwnerSession } from "@/lib/auth/owner-session";
+
+class DeleteConfirmationRequiredError extends Error {
+  constructor() {
+    super("delete-confirmation-required");
+    this.name = "DeleteConfirmationRequiredError";
+  }
+}
 
 function getNoteInput(formData: FormData) {
   return {
     title: String(formData.get("title") ?? ""),
     markdown: String(formData.get("markdown") ?? "")
   };
+}
+
+function requireDeleteConfirmation(formData: FormData) {
+  if (String(formData.get("confirmDelete") ?? "") !== "permanent") {
+    throw new DeleteConfirmationRequiredError();
+  }
 }
 
 function appendReadOnlyError(path: string) {
@@ -84,4 +97,30 @@ export async function retryNoteEnrichmentAction(noteId: string) {
 
   revalidateNotePaths(note);
   redirect(`/app/notes/${noteId}/edit?retried=1`);
+}
+
+export async function deleteNoteAction(noteId: string, formData: FormData) {
+  try {
+    requireDeleteConfirmation(formData);
+
+    const note = await withWritableOwnerSession(`/app/notes/${noteId}/edit`, (owner) => deleteDraftNote(owner.id, noteId));
+
+    if (!note) {
+      notFound();
+    }
+
+    revalidateNotePaths(note);
+  } catch (error) {
+    if (error instanceof DeleteConfirmationRequiredError) {
+      redirect(`/app/notes/${noteId}/edit?error=delete-confirmation`);
+    }
+
+    if (error instanceof PublishedNoteDeleteForbiddenError) {
+      redirect(`/app/notes/${noteId}/edit?error=delete-published`);
+    }
+
+    throw error;
+  }
+
+  redirect("/app?deleted=note");
 }

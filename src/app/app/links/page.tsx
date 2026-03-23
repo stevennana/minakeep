@@ -1,5 +1,6 @@
 import {
   createLinkAction,
+  deleteLinkAction,
   publishLinkAction,
   refreshLinkFaviconAction,
   retryLinkEnrichmentAction,
@@ -29,6 +30,7 @@ type LinksPageProps = {
     retried?: string;
     published?: string;
     unpublished?: string;
+    deleted?: string;
     favicon?: string;
     error?: string;
   }>;
@@ -36,6 +38,10 @@ type LinksPageProps = {
 
 function getStatusMessage(error?: string) {
   switch (error) {
+    case "delete-confirmation":
+      return "Confirm permanent delete before removing this link.";
+    case "delete-published":
+      return "Unpublish this link before deleting it permanently.";
     case "duplicate-url":
       return "That URL is already saved in your private links.";
     case "invalid-url":
@@ -65,6 +71,8 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
           ? "Link published."
           : resolvedSearchParams.unpublished === "1"
             ? "Link unpublished."
+            : resolvedSearchParams.deleted === "1"
+              ? "Link permanently deleted."
             : resolvedSearchParams.favicon === "1"
               ? "Favicon refresh requested."
               : getStatusMessage(resolvedSearchParams.error);
@@ -86,10 +94,16 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
           </MetadataRow>
         </IntroBlock>
         {statusMessage ? (
-          <p className={resolvedSearchParams.error ? "status-note status-note-error" : "status-note"}>{statusMessage}</p>
+          <p
+            className={
+              resolvedSearchParams.error ? "status-note status-note-error" : "status-note"
+            }
+          >
+            {statusMessage}
+          </p>
         ) : null}
         {isReadOnly ? (
-          <p className="read-only-note">Link capture, publishing, favicon refresh, and AI retry stay disabled in the demo workspace.</p>
+          <p className="read-only-note">Link capture, publishing, delete, favicon refresh, and AI retry stay disabled in the demo workspace.</p>
         ) : null}
       </Surface>
 
@@ -210,9 +224,14 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
                   </div>
                   <div className="button-row secondary-link-actions">
                     {isReadOnly ? (
-                      <Button disabled type="button" variant="ghost">
-                        {link.isPublished ? "Unpublish unavailable" : "Publish unavailable"}
-                      </Button>
+                      <>
+                        <Button disabled type="button" variant="ghost">
+                          {link.isPublished ? "Unpublish unavailable" : "Publish unavailable"}
+                        </Button>
+                        <Button disabled type="button" variant="ghost">
+                          Delete unavailable
+                        </Button>
+                      </>
                     ) : (
                       <>
                         {link.isPublished ? (
@@ -225,6 +244,32 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
                           <form action={publishLinkAction.bind(null, link.id)}>
                             <Button type="submit">Publish link</Button>
                           </form>
+                        )}
+                        {link.isPublished ? (
+                          <Button
+                            aria-label="Delete unavailable until unpublished"
+                            disabled
+                            title="Unpublish this link before deleting it permanently."
+                            type="button"
+                            variant="ghost"
+                          >
+                            Delete unavailable
+                          </Button>
+                        ) : (
+                          <details className="delete-disclosure secondary-link-delete-disclosure">
+                            <summary className="ghost-button delete-disclosure-summary">Delete link</summary>
+                            <div className="delete-disclosure-panel">
+                              <p>This permanently removes this unpublished link. There is no trash or restore step.</p>
+                              <form action={deleteLinkAction.bind(null, link.id)} className="delete-confirmation-form">
+                                <input name="confirmDelete" type="hidden" value="permanent" />
+                                <div className="button-row delete-confirmation-actions">
+                                  <Button className="delete-action-button" type="submit">
+                                    Delete permanently
+                                  </Button>
+                                </div>
+                              </form>
+                            </div>
+                          </details>
                         )}
                       </>
                     )}

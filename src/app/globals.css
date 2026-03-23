@@ -1776,6 +1776,55 @@ textarea {
   margin-top: 0;
 }
 
+.delete-disclosure {
+  display: block;
+  margin: 0;
+  min-width: 0;
+}
+
+.delete-disclosure-summary {
+  list-style: none;
+  width: auto;
+}
+
+.delete-disclosure-summary::-webkit-details-marker {
+  display: none;
+}
+
+.delete-disclosure-panel {
+  background: var(--danger-soft);
+  border: 1px solid var(--danger-line);
+  border-radius: var(--radius-2);
+  color: #991b1b;
+  margin-top: 0.7rem;
+  padding: 0.8rem 0.9rem;
+}
+
+.delete-disclosure-panel p {
+  margin: 0;
+}
+
+.delete-confirmation-form {
+  margin-top: 0.65rem;
+}
+
+.delete-confirmation-actions {
+  margin-top: 0;
+}
+
+.delete-action-button {
+  background: #991b1b;
+  border-color: #991b1b;
+  color: #fff;
+}
+
+.delete-action-button:hover,
+.delete-action-button:focus-visible {
+  background: #7f1d1d;
+  border-color: #7f1d1d;
+  color: #fff;
+}
+
 .note-list,
 .link-list {
   margin-top: 0.25rem;
@@ -2085,6 +2134,10 @@ textarea {
 
 .secondary-link-actions form {
   display: block;
+}
+
+.secondary-link-delete-disclosure {
+  flex: 0 0 auto;
 }
 
 .secondary-link-actions :is(.primary-button, .ghost-button, .ui-button) {
@@ -2620,6 +2673,22 @@ textarea {
   border-radius: var(--radius-pill);
   color: var(--ink-muted);
   padding: 0.5rem 0.8rem;
+}
+
+@media (max-width: 639px) {
+  .secondary-link-item {
+    gap: 0.7rem;
+    padding: 0.82rem 0.92rem;
+  }
+
+  .secondary-link-meta {
+    gap: 0.5rem;
+    padding-top: 0.72rem;
+  }
+
+  .secondary-link-actions {
+    gap: 0.45rem;
+  }
 }
 
 @media (min-width: 640px) {

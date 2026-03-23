@@ -17,11 +17,18 @@ async function signOutAction() {
   });
 }
 
-export default async function PrivateDashboardPage() {
+type PrivateDashboardPageProps = {
+  searchParams?: Promise<{
+    deleted?: string;
+  }>;
+};
+
+export default async function PrivateDashboardPage({ searchParams }: PrivateDashboardPageProps) {
   noStore();
 
   const workspace = await requireWorkspaceSession();
   const isReadOnly = isReadOnlyWorkspaceRole(workspace.actor.role);
+  const resolvedSearchParams = (await searchParams) ?? {};
   const notes = await listOwnerNotes(workspace.owner.id);
   const publishedNotes = notes.filter((note) => note.isPublished).length;
   const pendingNotes = notes.filter((note) => note.enrichment.status === "pending").length;
@@ -52,6 +59,7 @@ export default async function PrivateDashboardPage() {
           </div>
         </div>
         {isReadOnly ? <p className="read-only-note">This demo shows the owner&rsquo;s real notes and publication state without allowing edits.</p> : null}
+        {resolvedSearchParams.deleted === "note" ? <p className="status-note">Note permanently deleted.</p> : null}
         <div className="summary-row dashboard-summary-row" aria-label="Dashboard overview">
           <div className="dashboard-stat">
             <span className="dashboard-stat-value">{notes.length}</span>
