@@ -92,6 +92,8 @@ function PublishedContentPreviewCard({ item }: { item: PublicShowroomItem }) {
 
   if (isNote) {
     const noteHref = `/notes/${item.slug}` as Route;
+    const noteTitleLinkId = `public-note-card-title-link-${item.id}`;
+    const noteMediaLabelId = `public-note-card-media-label-${item.id}`;
 
     return (
       <article
@@ -101,11 +103,14 @@ function PublishedContentPreviewCard({ item }: { item: PublicShowroomItem }) {
       >
         {item.cardImage ? (
           <Link
-            aria-label="Open published note preview"
+            aria-labelledby={`${noteTitleLinkId} ${noteMediaLabelId}`}
             className="note-preview-card-media-link"
             data-testid="public-note-card-media-link"
             href={noteHref}
           >
+            <span className="sr-only" id={noteMediaLabelId}>
+              Preview image.
+            </span>
             <NoteCardImage
               frameClassName="note-card-image-frame note-preview-card-image-frame"
               image={item.cardImage}
@@ -117,7 +122,7 @@ function PublishedContentPreviewCard({ item }: { item: PublicShowroomItem }) {
         ) : null}
         <div className="note-preview-card-body">
           <h2 className="note-preview-card-title">
-            <Link className="note-list-link" href={noteHref}>
+            <Link className="note-list-link" href={noteHref} id={noteTitleLinkId}>
               {item.title}
             </Link>
           </h2>
@@ -147,6 +152,10 @@ function PublishedContentPreviewCard({ item }: { item: PublicShowroomItem }) {
     );
   }
 
+  const linkTitleLinkId = `public-link-card-title-link-${item.id}`;
+  const linkDestinationLabelId = `public-link-card-destination-${item.id}`;
+  const displayUrl = getDisplayUrl(item.url);
+
   return (
     <article
       className={`note-preview-card note-preview-card-${variant} public-content-card public-content-card-${item.kind}`}
@@ -154,13 +163,16 @@ function PublishedContentPreviewCard({ item }: { item: PublicShowroomItem }) {
       data-card-variant={variant}
     >
       <a
-        aria-label="Open published link preview in a new tab"
+        aria-labelledby={`${linkTitleLinkId} ${linkDestinationLabelId}`}
         className="note-preview-card-media-link"
         data-testid="public-link-card-media-link"
         href={item.url}
         rel="noopener noreferrer"
         target="_blank"
       >
+        <span className="sr-only" id={linkDestinationLabelId}>
+          {`Destination ${displayUrl}. Opens externally in a new tab.`}
+        </span>
         <LinkFavicon
           faviconAssetId={item.faviconAssetId}
           frameClassName="link-favicon-frame note-preview-card-image-frame link-preview-card-image-frame"
@@ -170,13 +182,13 @@ function PublishedContentPreviewCard({ item }: { item: PublicShowroomItem }) {
       </a>
       <div className="note-preview-card-body">
         <h2 className="note-preview-card-title">
-          <a className="note-list-link" href={item.url} rel="noopener noreferrer" target="_blank">
+          <a className="note-list-link" href={item.url} id={linkTitleLinkId} rel="noopener noreferrer" target="_blank">
             {item.title}
           </a>
         </h2>
         <div className="note-preview-card-copy">
           <p className="note-preview-card-summary">{primaryPreview}</p>
-          <p className="note-preview-card-excerpt public-link-card-url">{getDisplayUrl(item.url)}</p>
+          <p className="note-preview-card-excerpt public-link-card-url">{displayUrl}</p>
         </div>
       </div>
       <MetadataRow className="note-preview-card-meta public-card-meta">

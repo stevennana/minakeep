@@ -1381,3 +1381,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=not_done promotion=false Routing, new-tab behavior, visual regression coverage, and the required command gates are all green, but the accessibility part of the scope is still short. The new media links in `src/features/public-content/components/public-showroom.tsx` use repeated generic `aria-label`s instead of the corresponding note/link title, so assistive-tech users get bolt-on duplicate links rather than a natural extension of the existing title destinations. -> state/artifacts/20260323T124035-082-public-showroom-clickable-media/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T124035-082-public-showroom-clickable-media/npm-run-test-e2e-grep-public-showroom-next-server.log
+- commit: commit: created
+- promote: Task 082-public-showroom-clickable-media not eligible for promotion.
+- backlog: rendered current=082-public-showroom-clickable-media
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxoooox
+- cycle: finished
+
+### cycle 2026-03-23T12:53:12+09:00 task=082-public-showroom-clickable-media
+- artifacts: state/artifacts/20260323T125312-082-public-showroom-clickable-media
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260323T125312-082-public-showroom-clickable-media/worker.jsonl
+- worker-summary: Updated [public-showroom.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/public-content/components/public-showroom.tsx#L93) so published note preview images route to the same note page as the title and published link media opens the same external URL in a new tab as the title, with item-specific accessible names instead of generic labels. I also extended [ui-public-showroom.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-public-showroom.spec.ts#L485) to assert those accessible names and destinations, and tightened related public-home selectors in [home.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/home.spec.ts), [public-home-search.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/public-home-search.spec.ts), and [ui-public-tag-fit.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-public-tag-fit.spec.ts). The task progress log was updated in [082-public-showroom-clickable-media.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/082-public-showroom-clickable-media.md#L68).
+- evaluator: started
+- evaluator: status=done promotion=true The task is ready for promotion. The current showroom implementation makes note preview images link to the same note route as their titles, makes link media open the same external URL in a new tab as the title link, keeps the media wrappers styled as part of the existing card structure rather than as an overlay hack, and includes item-specific accessible names for the new media targets. The required E2E and full verify commands both passed in the provided deterministic check run. -> state/artifacts/20260323T125312-082-public-showroom-clickable-media/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T125312-082-public-showroom-clickable-media/npm-run-test-e2e-grep-public-showroom-next-server.log

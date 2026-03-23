@@ -206,7 +206,7 @@ test("public homepage live search filters mixed published content by title only"
   await expect(page.getByRole("combobox")).toHaveCount(0);
   await expect(showroomCards).toHaveCount(seededPublishedNotes.length + seededPublishedLinks.length);
   await expect(page.getByRole("link", { name: seededPublishedNotes[0].title })).toBeVisible();
-  await expect(page.getByRole("link", { name: seededPublishedLinks[0].title })).toBeVisible();
+  await expect(page.getByRole("link", { name: seededPublishedLinks[0].title, exact: true })).toBeVisible();
   await expect(page.getByRole("link", { name: seededUnsafePublishedLink.title })).toHaveCount(0);
 
   await searchToggle.click();
@@ -217,9 +217,9 @@ test("public homepage live search filters mixed published content by title only"
   await expect(page).toHaveURL(/\/$/);
   await expect(showroomCards).toHaveCount(2);
   await expect(page.getByRole("link", { name: seededPublishedNotes[0].title })).toBeVisible();
-  await expect(page.getByRole("link", { name: seededPublishedLinks[0].title })).toBeVisible();
+  await expect(page.getByRole("link", { name: seededPublishedLinks[0].title, exact: true })).toBeVisible();
   await expect(page.getByRole("link", { name: seededPublishedNotes[1].title })).toHaveCount(0);
-  await expect(page.getByRole("link", { name: seededPublishedLinks[1].title })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: seededPublishedLinks[1].title, exact: true })).toHaveCount(0);
   await expect(page.getByRole("link", { name: seededUnpublishedNote.title })).toHaveCount(0);
   await expect(page.getByTestId("public-home-search-summary")).toHaveText("Showing 2 of 4 public items.");
 

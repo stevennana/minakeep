@@ -266,8 +266,10 @@ test("owner can publish and unpublish a link across the public homepage", async 
     await expect(savedLinkEntry.getByRole("button", { name: "Unpublish link" })).toBeVisible();
 
     await page.goto("/");
-    const publicLinkEntry = page.locator("[data-card-kind='link']").filter({ has: page.getByRole("link", { name: title }) });
-    const publicLink = publicLinkEntry.getByRole("link", { name: title });
+    const publicLinkEntry = page
+      .locator("[data-card-kind='link']")
+      .filter({ has: page.getByRole("link", { name: title, exact: true }) });
+    const publicLink = publicLinkEntry.locator(".note-preview-card-title").getByRole("link", { name: title, exact: true });
     await expect(publicLink).toBeVisible();
     await expect(publicLink).toHaveAttribute("href", url);
     await expect(publicLink).toHaveAttribute("target", "_blank");

@@ -244,7 +244,7 @@ test("@ui-public-tag-fit @ui-responsive public showroom keeps long tag chips fit
   await page.goto("/");
 
   await expect(page.getByRole("link", { name: seededNote.title })).toBeVisible();
-  await expect(page.getByRole("link", { name: seededLink.title })).toBeVisible();
+  await expect(page.getByRole("link", { name: seededLink.title, exact: true })).toBeVisible();
   await expect(page.getByLabel("Published note tags")).toContainText("public-facing-tag-chip-with-a-label-that-needs-to-wrap-cleanly");
   await expect(page.getByLabel("Published link tags")).toContainText("link-tag-that-needs-to-wrap-without-escaping-its-chip");
   await expectTagChipsToFit(page, "[data-testid='public-home-showroom'] .tag-pill", 2);

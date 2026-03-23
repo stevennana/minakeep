@@ -44,7 +44,7 @@ Required commands for this task:
 - npm run verify
 
 Previous known gaps from the last evaluation:
-- none
+- Accessibility alignment is incomplete: the media links at `src/features/public-content/components/public-showroom.tsx:103-108` and `src/features/public-content/components/public-showroom.tsx:156-163` expose generic accessible names instead of the item-specific title/destination, which does not satisfy the task's accessibility-alignment intent or the evaluator note about feeling like a natural extension of existing card behavior.
 
 
 

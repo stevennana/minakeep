@@ -68,3 +68,4 @@ Promote only when media click targets feel like a natural extension of the exist
 - Start here. Append timestamped progress notes as work lands.
 - 2026-03-23T03:40:05.762Z: restored as current task after 081-site-settings-ui promotion.
 - 2026-03-23T03:42:30Z: made public showroom note images and link media wrappers follow the same destinations as their titles, added explicit media-link accessibility labels, and extended public-showroom E2E coverage for note-detail routing plus external new-tab link media behavior.
+- 2026-03-23T03:54:55Z: replaced generic showroom media-link labels with item-specific title-derived names, added link-destination/new-tab screen-reader context, and tightened the public-showroom E2E to assert accessible names alongside existing destination checks.

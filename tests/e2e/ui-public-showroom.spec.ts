@@ -26,6 +26,17 @@ const prisma = new PrismaClient({
   })
 });
 
+function getDisplayUrl(url: string) {
+  try {
+    const parsedUrl = new URL(url);
+    const pathname = parsedUrl.pathname === "/" ? "" : parsedUrl.pathname;
+
+    return `${parsedUrl.host}${pathname}`;
+  } catch {
+    return url.replace(/^https?:\/\//, "");
+  }
+}
+
 async function writeMediaFixture(storageKey: string, body: string) {
   const filePath = path.resolve(mediaRoot, storageKey);
   await mkdir(path.dirname(filePath), { recursive: true });
@@ -440,7 +451,7 @@ test("@ui-regression @ui-refinement-hardening @ui-public-showroom @ui-public-sho
   await expect(searchInput).toHaveCount(0);
   await expect(showroomCards).toHaveCount(seededPublishedNotes.length + seededPublishedLinks.length);
   await expect(page.getByRole("link", { name: seededPublishedNotes[0].title })).toBeVisible();
-  await expect(page.getByRole("link", { name: seededPublishedLinks[0].title })).toBeVisible();
+  await expect(page.getByRole("link", { name: seededPublishedLinks[0].title, exact: true })).toBeVisible();
   await expect(page.getByText("Opens in new tab")).toHaveCount(seededPublishedLinks.length);
   await expect(page.getByTestId("public-home-search-summary")).toHaveText("4 public items.");
   await expectShowroomColumns(page, "desktop");
@@ -467,7 +478,7 @@ test("@ui-regression @ui-refinement-hardening @ui-public-showroom @ui-public-sho
 
   await expect(showroomCards).toHaveCount(2);
   await expect(page.getByRole("link", { name: seededPublishedNotes[1].title })).toBeVisible();
-  await expect(page.getByRole("link", { name: seededPublishedLinks[1].title })).toBeVisible();
+  await expect(page.getByRole("link", { name: seededPublishedLinks[1].title, exact: true })).toBeVisible();
   await expect(page.getByTestId("public-home-search-summary")).toHaveText("Showing 2 of 4 public items.");
 });
 
@@ -476,27 +487,35 @@ test("@ui-regression @ui-public-showroom public showroom media targets follow th
   await page.setViewportSize(desktopViewport);
   await page.goto("/");
 
-  const noteCard = page.locator("[data-card-kind='note']").filter({ has: page.getByRole("link", { name: showroomFixtures.linkedNoteTitle }) });
-  const noteTitleLink = noteCard.getByRole("link", { name: showroomFixtures.linkedNoteTitle });
+  const noteCard = page
+    .locator("[data-card-kind='note']")
+    .filter({ has: page.getByRole("link", { name: showroomFixtures.linkedNoteTitle, exact: true }) });
+  const noteTitleLink = noteCard.locator(".note-preview-card-title").getByRole("link", { name: showroomFixtures.linkedNoteTitle, exact: true });
   const noteMediaLink = noteCard.getByTestId("public-note-card-media-link");
 
   await expect(noteCard.getByRole("img", { name: showroomFixtures.noteImageAlt })).toHaveCount(1);
   await expect(noteTitleLink).toHaveAttribute("href", `/notes/${showroomFixtures.linkedNoteSlug}`);
   await expect(noteMediaLink).toHaveAttribute("href", `/notes/${showroomFixtures.linkedNoteSlug}`);
+  await expect(noteMediaLink).toHaveAccessibleName(`${showroomFixtures.linkedNoteTitle} Preview image.`);
 
   await noteMediaLink.click();
   await expect(page).toHaveURL(new RegExp(`/notes/${showroomFixtures.linkedNoteSlug}$`));
 
   await page.goto("/");
 
-  const linkCard = page.locator("[data-card-kind='link']").filter({ has: page.getByRole("link", { name: showroomFixtures.linkedUrlTitle }) });
-  const linkTitleLink = linkCard.getByRole("link", { name: showroomFixtures.linkedUrlTitle });
+  const linkCard = page
+    .locator("[data-card-kind='link']")
+    .filter({ has: page.getByRole("link", { name: showroomFixtures.linkedUrlTitle, exact: true }) });
+  const linkTitleLink = linkCard.locator(".note-preview-card-title").getByRole("link", { name: showroomFixtures.linkedUrlTitle, exact: true });
   const linkMediaLink = linkCard.getByTestId("public-link-card-media-link");
 
   await expect(linkTitleLink).toHaveAttribute("href", showroomFixtures.linkedUrl);
   await expect(linkTitleLink).toHaveAttribute("target", "_blank");
   await expect(linkMediaLink).toHaveAttribute("href", showroomFixtures.linkedUrl);
   await expect(linkMediaLink).toHaveAttribute("target", "_blank");
+  await expect(linkMediaLink).toHaveAccessibleName(
+    `${showroomFixtures.linkedUrlTitle} Destination ${getDisplayUrl(showroomFixtures.linkedUrl)}. Opens externally in a new tab.`
+  );
 
   const [popup] = await Promise.all([page.waitForEvent("popup"), linkMediaLink.click()]);
   await expect.poll(() => popup.url()).toBe(showroomFixtures.linkedUrl);
@@ -516,7 +535,7 @@ test("@ui-regression @ui-refinement-hardening @ui-public-showroom @ui-public-sho
   await expect(searchInput).toHaveCount(0);
   await expect(showroomCards).toHaveCount(seededPublishedNotes.length + seededPublishedLinks.length);
   await expect(page.getByRole("link", { name: seededPublishedNotes[0].title })).toBeVisible();
-  await expect(page.getByRole("link", { name: seededPublishedLinks[0].title })).toBeVisible();
+  await expect(page.getByRole("link", { name: seededPublishedLinks[0].title, exact: true })).toBeVisible();
   await expectShowroomColumns(page, "mobile");
   await expectMixedFeedRhythm(page, "mobile");
   await expect(page.getByTestId("public-home-search-summary")).toHaveText("4 public items.");
@@ -541,7 +560,7 @@ test("@ui-regression @ui-refinement-hardening @ui-public-showroom @ui-public-sho
   await expect(page).toHaveURL(/\/$/);
   await expect(showroomCards).toHaveCount(2);
   await expect(page.getByRole("link", { name: seededPublishedNotes[1].title })).toBeVisible();
-  await expect(page.getByRole("link", { name: seededPublishedLinks[1].title })).toBeVisible();
+  await expect(page.getByRole("link", { name: seededPublishedLinks[1].title, exact: true })).toBeVisible();
   await expect(page.getByTestId("public-home-search-summary")).toHaveText("Showing 2 of 4 public items.");
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
