@@ -1,63 +1,57 @@
 Read the following repository documents before making changes:
 - AGENTS.md
-- ARCHITECTURE.md
-- docs/FRONTEND.md
 - docs/SECURITY.md
 - docs/RELIABILITY.md
 - docs/product-specs/public-sitemap-and-seo.md
-- docs/product-specs/public-note-publishing.md
-- docs/product-specs/public-link-publishing.md
+- docs/product-specs/docker-packaging.md
 - docs/design-docs/public-discovery-and-indexing.md
-- docs/exec-plans/active/088-public-sitemap-and-robots.md
+- README.md
+- docs/exec-plans/active/089-public-seo-discovery-hardening.md
 
-Current task id: 088-public-sitemap-and-robots
-Current task title: Public sitemap and robots
+Current task id: 089-public-seo-discovery-hardening
+Current task title: Public SEO discovery hardening
 
 Objective:
-Ship the public discovery routes and canonical metadata behavior needed for search-engine indexing of the homepage and published notes.
+Harden the sitemap/SEO wave through operator guidance, regression coverage, and final docs alignment for self-host and Docker users.
 
 Scope:
-- add `/sitemap.xml`
-- add `/robots.txt`
-- include `/` plus published note detail pages only
-- exclude published links as standalone URLs in v1
-- wire canonical URLs on the public homepage and public note pages
-- keep discovery output automatically aligned with note publish, unpublish, and slug changes
+- final doc alignment across README, architecture, security, reliability, and Docker/self-host guidance
+- regression coverage for sitemap contents, robots behavior, canonical metadata, and missing-origin fail-closed behavior
+- explicit operator instructions for Search Console registration after `SITE_URL` is configured
 
 Out of scope:
-- Google Search Console verification ownership
-- per-search-engine metadata extensions beyond core sitemap/robots/canonical behavior
-- new public detail pages for links
+- Google verification HTML files, DNS records, or API automation
+- analytics, schema.org, or broader SEO feature expansion
 
 Exit criteria:
-1. The sitemap contains only first-party public URLs that actually exist.
-2. Robots output advertises the sitemap when the canonical origin is configured and fails closed when it is not.
-3. Public home and note pages emit canonical URLs built from the same shared origin contract.
-4. `npm run test:e2e -- --grep @seo-discovery` passes.
-5. `npm run verify` passes.
+1. Self-host and Docker docs explain how to configure the canonical public origin and submit `/sitemap.xml`.
+2. Regression coverage protects the discovery contract, including fail-closed behavior and link exclusion.
+3. The shipped feature remains generic search-engine discovery rather than Google-specific integration.
+4. `npm run test:e2e -- --grep @seo-discovery`, `npm run verify`, and `npm run start:smoke` pass.
 
 Required checks:
 - `npm run test:e2e -- --grep @seo-discovery`
 - `npm run verify`
+- `npm run start:smoke`
 
 Evaluator notes:
-Promote only when the discovery routes feel like a strict extension of the existing public-content boundary rather than a second looser publishing system.
+Promote only when the SEO/discovery feature is operator-usable for real self-hosted deployments and the docs do not overclaim beyond sitemap, robots, and canonical support.
 
 Required repository artifacts for this task:
-- src/app
-- src/features
+- docs
+- README.md
+- .env.example
+- .env.compose.example
 - tests/e2e
 - tests/unit
 
 Required commands for this task:
 - npm run test:e2e -- --grep @seo-discovery
 - npm run verify
+- npm run start:smoke
 
 Previous known gaps from the last evaluation:
-- Exit criterion 1 is not satisfied in substance: the built `/sitemap.xml` is prerendered, so it is not reliably derived from the current runtime public-note set.
-- Exit criterion 2 is not satisfied in substance: the built `/robots.txt` is prerendered, so runtime `SITE_URL` configuration is not guaranteed to control sitemap advertisement.
-- The objective to keep discovery output automatically aligned with publish, unpublish, and slug changes is not fully met for deployed builds because discovery is currently optimized as static build output instead of a strict runtime extension of the existing public-content boundary.
-- Production-style proof for discovery is missing. Current E2E exercises `next dev`, not the built `next start` path where the staticization issue appears.
+- none
 
 
 

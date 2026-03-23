@@ -25,6 +25,7 @@ Define the reliability expectations and failure-handling rules for Minakeep.
 - `npm run verify` includes startup proof alongside code-level checks
 - the upgrade-safe verification path must boot the built app against an upgraded legacy SQLite database, not just stop at `prisma db push`
 - sitemap/canonical work must keep explicit route-level proof for `/robots.txt`, `/sitemap.xml`, and public canonical tags instead of assuming metadata correctness by inspection
+- operator docs must keep an explicit, restart-safe path for setting `SITE_URL`, validating discovery output, and then registering `/sitemap.xml` with a search engine
 - Ralph status and backlog rendering must work without hand-editing state files
 - Docker packaging keeps explicit daemon-backed proof commands outside `npm run verify`; the shipped contract is `docker build -t minakeep:test .`, `docker compose config`, and a container entrypoint that stays aligned with the same `db:prepare` plus `/api/health` startup path used by direct Node smoke
 - AI tasks must require a real-endpoint E2E check when `LLM_BASE`, `TOKEN`, and `MODEL` are present
@@ -53,6 +54,7 @@ For the external note API wave, E2E must prove: valid keyed private note create,
 For the owner-delete/settings wave, E2E must prove: delete remains blocked until unpublish, delete confirmation is required, and site title/description changes propagate across the shipped shell surfaces.
 Unit coverage should also keep the unpublished-only note/link delete guard protected at the service boundary so the invariant does not rely only on UI state or stale form submissions.
 For the sitemap/SEO wave, E2E must prove: `/robots.txt` advertises the sitemap only when `SITE_URL` is configured, `/sitemap.xml` includes the homepage plus published note URLs only, published links remain absent as standalone URLs, and public home/note pages emit the configured canonical origin.
+Unit coverage should also keep the fail-closed missing-or-invalid-origin behavior and the homepage-only published-link sitemap rule protected without depending only on seeded E2E data.
 For the upgrade-safe self-host wave, verification must prove: a schema-changing release can start from an older working SQLite state, automatic backup happens before the upgrade path runs, the backup keeps the pre-upgrade schema available for restore, and the upgraded runtime still boots cleanly.
 For the media wave, E2E must prove: note image upload with markdown insertion, owner-visible draft image rendering, public image visibility only after note publish, and favicon fallback when fetch/cache fails.
 The hardening contract for that slice is tagged `@media-regression` and must keep the private draft-image boundary plus the favicon fallback-and-refresh path deterministic.

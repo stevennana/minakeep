@@ -5,7 +5,7 @@
   "id": "088-public-sitemap-and-robots",
   "title": "Public sitemap and robots",
   "order": 88,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "standard",
   "next_task_on_success": "089-public-seo-discovery-hardening",
   "prompt_docs": [
@@ -33,7 +33,8 @@
     "Sitemap output leaks unpublished notes, private routes, or fake link-detail URLs.",
     "Robots output and canonical route helpers diverge from the same configured public origin.",
     "The slice relies on manual operator edits instead of automatically reflecting publish/unpublish changes."
-  ]
+  ],
+  "completed_at": "2026-03-23T10:44:56.760Z"
 }
 ```
 
@@ -86,3 +87,4 @@ Promote only when the discovery routes feel like a strict extension of the exist
 - 2026-03-23T19:38:18+0900: forced `src/app/robots.ts` and `src/app/sitemap.ts` to render dynamically at runtime so discovery output reads current `SITE_URL` and published-note state under `next start` instead of freezing at build time.
 - 2026-03-23T19:38:18+0900: extended `npm run start:smoke` to boot one built app against a legacy-upgrade fixture twice, proving discovery fails closed without `SITE_URL` and emits the configured sitemap/canonical origin with only `/` plus published note URLs when `SITE_URL` is set.
 - 2026-03-23T19:38:18+0900: reran `npm run test:e2e -- --grep @seo-discovery` and `npm run verify`; both passed, and the production build route table now reports `/robots.txt` and `/sitemap.xml` as dynamic (`ƒ`) instead of static (`○`).
+- 2026-03-23T10:44:56.760Z: automatically promoted after deterministic checks and evaluator approval.

@@ -27,6 +27,7 @@ Define the security posture for Minakeep's current shipped slice.
 - keep any `DEMO_USERNAME` and `DEMO_PASSWORD` values in environment configuration only
 - keep `API_KEY` in environment configuration only when the external note API is enabled
 - keep `SITE_URL` in environment configuration only when the public sitemap/canonical discovery surface is enabled
+- keep `SITE_URL` limited to the bare public origin; never use a path, preview host, localhost, or Docker-internal hostname as the canonical discovery target
 - keep `LLM_BASE`, `TOKEN`, and `MODEL` in shell or local environment only
 - never commit seeded credentials or secret values
 - document required environment variables in `.env.example` and runtime docs
@@ -43,6 +44,7 @@ Define the security posture for Minakeep's current shipped slice.
 - `/api/open/notes` is publicly reachable but must fail closed unless a valid `X-API-Key` matches the configured `API_KEY`
 - `/api/open/notes` returns `503` when `API_KEY` is unset and `401` when `X-API-Key` is missing or invalid
 - `/sitemap.xml` and `/robots.txt` are public machine-readable routes and must never enumerate private routes, unpublished notes, unpublished links, or owner-only URLs
+- public discovery remains generic search-engine support only; v1 does not expose search-provider verification files or API integration
 - `/app/settings` is private and may expose owner-editable service configuration
 - public title search must only query published content
 - public link cards must open only the already-saved external URL in a new tab

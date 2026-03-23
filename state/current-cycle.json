@@ -1,8 +1,8 @@
 {
-  "task_id": "088-public-sitemap-and-robots",
-  "started_at": "2026-03-23T19:28:25+09:00",
-  "artifact_dir": "state/artifacts/20260323T192825-088-public-sitemap-and-robots",
+  "task_id": "089-public-seo-discovery-hardening",
+  "started_at": "2026-03-23T19:45:26+09:00",
+  "artifact_dir": "state/artifacts/20260323T194526-089-public-seo-discovery-hardening",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-03-23T10:44:56.590Z"
+  "updated_at": "2026-03-23T10:57:22.617Z"
 }

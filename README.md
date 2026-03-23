@@ -104,7 +104,16 @@ Optional canonical public origin for sitemap, robots, and canonical metadata:
 SITE_URL="https://notes.example.com"
 ```
 
-Set `SITE_URL` only to the real public origin you want crawlers to index. Leave it unset to fail closed for search discovery instead of advertising localhost, preview, or Docker-internal URLs.
+Set `SITE_URL` only to the bare real public origin you want crawlers to index. Leave it unset to fail closed for search discovery instead of advertising localhost, preview, or Docker-internal URLs.
+
+Search discovery registration for direct Node/self-host installs:
+
+1. set `SITE_URL` to the real deployed public origin, with no path, query, or hash
+2. restart Minakeep so `/robots.txt`, `/sitemap.xml`, and canonical tags read the updated origin
+3. verify `https://<your-site>/robots.txt` and `https://<your-site>/sitemap.xml` from outside the app
+4. submit `https://<your-site>/sitemap.xml` to Google Search Console or another search engine
+
+Minakeep ships generic sitemap, robots, and canonical support only. It does not automate provider verification files, DNS records, or search-engine APIs.
 
 Start the app:
 
@@ -176,7 +185,7 @@ Optional canonical public origin for sitemap, robots, and canonical metadata:
 SITE_URL="https://notes.example.com"
 ```
 
-Set `SITE_URL` only when the deployed container is actually reachable at that public origin. Leave it unset to fail closed for search discovery.
+Set `SITE_URL` only when the deployed container is actually reachable at that bare public origin. Leave it unset to fail closed for search discovery.
 
 Optional demo-workspace env vars follow the same both-or-neither rule:
 
@@ -208,7 +217,14 @@ Follow operator logs:
 docker compose logs -f app
 ```
 
-After `SITE_URL` is configured and the app is reachable at that origin, submit `https://<your-site>/sitemap.xml` to Google Search Console or your search engine of choice.
+Search discovery registration for Docker/Compose installs:
+
+1. set `SITE_URL` in the Compose env file to the real deployed public origin, with no path, query, or hash
+2. restart the app with `docker compose up -d --build`
+3. verify `https://<your-site>/robots.txt` and `https://<your-site>/sitemap.xml`
+4. submit `https://<your-site>/sitemap.xml` to Google Search Console or another search engine
+
+This remains generic search-engine discovery support. The repo does not ship Google verification files, DNS instructions, or API automation.
 
 ## Upgrades and restore
 

@@ -78,6 +78,17 @@ test("getPublicRobots advertises the sitemap when SITE_URL is configured", async
   });
 });
 
+test("getPublicRobots fails closed when SITE_URL is invalid", async () => {
+  await withSiteUrl("https://notes.example.com/public?preview=1", () => {
+    assert.deepEqual(getPublicRobots(), {
+      rules: {
+        userAgent: "*",
+        disallow: "/"
+      }
+    });
+  });
+});
+
 test("buildPublicSitemap fails closed when SITE_URL is unset", async () => {
   await withSiteUrl(undefined, () => {
     assert.deepEqual(buildPublicSitemap([createPublishedNote()]), []);
@@ -94,6 +105,17 @@ test("buildPublicSitemap includes the homepage plus published note routes only",
       {
         url: "https://notes.example.com/notes/published-note",
         lastModified: new Date("2026-03-21T11:00:00.000Z")
+      }
+    ]);
+  });
+});
+
+test("buildPublicSitemap keeps published links homepage-only", async () => {
+  await withSiteUrl("https://notes.example.com", () => {
+    assert.deepEqual(buildPublicSitemap([createPublishedLink()]), [
+      {
+        url: "https://notes.example.com/",
+        lastModified: new Date("2026-03-21T12:00:00.000Z")
       }
     ]);
   });

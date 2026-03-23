@@ -75,6 +75,6 @@
 - [x] 085-self-host-upgrade-safety — Self-host upgrade safety
 - [x] 086-next-wave-hardening — Next wave hardening
 - [x] 087-public-site-origin-foundation — Public site origin foundation
-- [ ] 088-public-sitemap-and-robots — Public sitemap and robots ← current
-- [ ] 089-public-seo-discovery-hardening — Public SEO discovery hardening
+- [x] 088-public-sitemap-and-robots — Public sitemap and robots
+- [ ] 089-public-seo-discovery-hardening — Public SEO discovery hardening ← current
 

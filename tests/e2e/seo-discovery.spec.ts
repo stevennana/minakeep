@@ -174,9 +174,11 @@ test("@seo-discovery robots and sitemap fail closed when the canonical public or
 
   await page.goto("/");
   await expect(page.locator("link[rel='canonical']")).toHaveCount(0);
+  await expect(page.locator("meta[name='robots']")).toHaveAttribute("content", /noindex,\s*nofollow/i);
 
   await page.goto(`/notes/${seededPublishedNote.slug}`);
   await expect(page.locator("link[rel='canonical']")).toHaveCount(0);
+  await expect(page.locator("meta[name='robots']")).toHaveAttribute("content", /noindex,\s*nofollow/i);
 });
 
 test("@seo-discovery configured origin drives public robots, sitemap, and canonical metadata", async ({ page }) => {
@@ -206,9 +208,11 @@ test("@seo-discovery configured origin drives public robots, sitemap, and canoni
 
   await page.goto("/");
   await expect(page.locator("link[rel='canonical']")).toHaveAttribute("href", `${configuredOrigin}/`);
+  await expect(page.locator("meta[name='robots']")).toHaveAttribute("content", /index,\s*follow/i);
 
   await page.goto(`/notes/${seededPublishedNote.slug}`);
   await expect(page.locator("link[rel='canonical']")).toHaveAttribute("href", `${configuredOrigin}/notes/${seededPublishedNote.slug}`);
+  await expect(page.locator("meta[name='robots']")).toHaveAttribute("content", /index,\s*follow/i);
 });
 
 test("@seo-discovery sitemap homepage lastmod stays fresh after link-side public mutations", async ({ page }) => {

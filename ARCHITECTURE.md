@@ -61,7 +61,7 @@ Automatic summary/tag generation for notes and links through a Mina-hosted OpenA
 Shared design tokens, layout rules, and component language for public and private surfaces.
 
 ### Operations
-Prisma runtime prep, startup smoke, operator logging, Docker packaging, and Ralph loop state.
+Prisma runtime prep, startup smoke, operator logging, Docker packaging, Ralph loop state, and operator-managed public discovery configuration through `SITE_URL`.
 
 ## Frontend / Backend Shape
 ### Frontend
@@ -76,6 +76,7 @@ Prisma runtime prep, startup smoke, operator logging, Docker packaging, and Ralp
 - route handlers expose health and future server-backed workflows
 - the external note-create route should stay narrow, server-only, fail closed when `API_KEY` is missing or wrong, and stay separate from browser-session auth
 - public discovery routes should stay narrow and machine-readable, derive only from already-public content, and fail closed when the deployment has no configured canonical public origin
+- public discovery support should stay generic to search engines through canonical metadata, `robots.txt`, and `sitemap.xml`, with operator docs pointing to `/sitemap.xml` registration instead of provider-specific APIs
 - owner settings and destructive owner actions should stay behind narrow server-side helpers rather than route-local ad hoc mutations
 - route handlers or server-backed media endpoints should mediate owner/private media visibility instead of exposing the full media volume directly
 - Prisma access stays behind narrow server-side helpers

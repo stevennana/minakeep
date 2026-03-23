@@ -5,7 +5,7 @@
   "id": "089-public-seo-discovery-hardening",
   "title": "Public SEO discovery hardening",
   "order": 89,
-  "status": "queued",
+  "status": "active",
   "promotion_mode": "standard",
   "next_task_on_success": "NONE",
   "prompt_docs": [
@@ -73,3 +73,8 @@ Promote only when the SEO/discovery feature is operator-usable for real self-hos
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-23T10:44:56.760Z: restored as current task after 088-public-sitemap-and-robots promotion.
+- 2026-03-23T19:46:53+0900: audited the shipped discovery implementation, env examples, README, and task contract; confirmed the remaining work is docs/operator alignment plus narrower regression assertions rather than new route behavior.
+- 2026-03-23T19:51:55+0900: aligned README, architecture, security, reliability, and env-example guidance around `SITE_URL`, bare-origin requirements, and `/sitemap.xml` registration for direct Node and Docker/Compose operators without adding provider-specific integration claims.
+- 2026-03-23T19:51:55+0900: tightened discovery regression coverage so unit tests pin invalid-origin fail-closed behavior plus homepage-only link exclusion, and `@seo-discovery` E2E also asserts the expected robots meta tags alongside canonical behavior.
+- 2026-03-23T19:51:55+0900: required checks passed: `npm run test:e2e -- --grep @seo-discovery`, `npm run verify`, and a clean standalone `npm run start:smoke` rerun after avoiding an initial overlapping-build collision.

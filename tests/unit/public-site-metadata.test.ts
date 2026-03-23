@@ -74,3 +74,14 @@ test("getPublicPageMetadata omits canonicals and noindexes when SITE_URL is miss
     });
   });
 });
+
+test("getPublicPageMetadata omits canonicals and noindexes when SITE_URL is invalid", async () => {
+  await withSiteUrl("https://notes.example.com/public?preview=1", () => {
+    assert.deepEqual(getPublicPageMetadata(PUBLIC_HOME_PATH), {
+      robots: {
+        index: false,
+        follow: false
+      }
+    });
+  });
+});

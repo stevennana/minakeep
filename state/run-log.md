@@ -1578,3 +1578,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Task 088 is complete in substance. The implementation keeps discovery derived from the existing public-content boundary, ships dynamic runtime-backed `/sitemap.xml` and `/robots.txt`, uses one shared `SITE_URL` origin helper for sitemap/robots/canonical URLs, excludes standalone link URLs, and revalidates discovery on note/link public mutations. The required `@seo-discovery` and full `verify` gates both passed in the provided deterministic checks, including production-style smoke coverage under `next start`. -> state/artifacts/20260323T192825-088-public-sitemap-and-robots/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T192825-088-public-sitemap-and-robots/npm-run-test-e2e-grep-seo-discovery-next-server.log
+- commit: commit: created
+- promote: Promoted 088-public-sitemap-and-robots -> 089-public-seo-discovery-hardening
+- backlog: rendered current=089-public-seo-discovery-hardening
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxoooxxooxoxxxo
+- cycle: finished
+
+### cycle 2026-03-23T19:45:26+09:00 task=089-public-seo-discovery-hardening
+- artifacts: state/artifacts/20260323T194526-089-public-seo-discovery-hardening
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260323T194526-089-public-seo-discovery-hardening/worker.jsonl
+- worker-summary: Operator guidance is aligned for both direct Node and Docker installs: [README.md](/Users/stevenna/WebstormProjects/minakeep/README.md#L101), [ARCHITECTURE.md](/Users/stevenna/WebstormProjects/minakeep/ARCHITECTURE.md#L63), [docs/SECURITY.md](/Users/stevenna/WebstormProjects/minakeep/docs/SECURITY.md#L25), [docs/RELIABILITY.md](/Users/stevenna/WebstormProjects/minakeep/docs/RELIABILITY.md#L20), [.env.example](/Users/stevenna/WebstormProjects/minakeep/.env.example#L18), and [.env.compose.example](/Users/stevenna/WebstormProjects/minakeep/.env.compose.example#L16) now make `SITE_URL` a bare canonical public origin, explain the restart/verification flow, and tell operators to submit `https://<site>/sitemap.xml` without implying Google-specific integration.
+- evaluator: started
+- evaluator: status=done promotion=true Task 089 is complete in substance. The repo documents `SITE_URL` as a bare canonical public origin for both direct Node and Docker/Compose operators, includes restart and verification steps, and explicitly tells operators to submit `/sitemap.xml` after configuration without claiming provider-specific API integration. The implementation fails closed when `SITE_URL` is missing or invalid, emits canonical metadata only when configured, keeps published links homepage-only in the sitemap, and records homepage `lastmod` changes for public mutations. Unit, E2E, and smoke coverage all protect the discovery contract, and the required commands are recorded as passing. -> state/artifacts/20260323T194526-089-public-seo-discovery-hardening/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T194526-089-public-seo-discovery-hardening/npm-run-test-e2e-grep-seo-discovery-next-server.log
