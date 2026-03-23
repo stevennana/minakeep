@@ -2600,6 +2600,7 @@ textarea {
 .markdown-preview p,
 .markdown-preview ul,
 .markdown-preview ol,
+.markdown-preview table,
 .markdown-preview pre,
 .markdown-preview blockquote {
   margin: 0 0 0.95rem;
@@ -2651,6 +2652,36 @@ textarea {
   height: auto;
   margin: 1.1rem 0;
   max-width: 100%;
+}
+
+.markdown-preview table {
+  border-collapse: collapse;
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  width: 100%;
+}
+
+.markdown-preview thead {
+  background: rgba(50, 72, 99, 0.06);
+}
+
+.markdown-preview th,
+.markdown-preview td {
+  border: 1px solid rgba(100, 116, 139, 0.2);
+  min-width: 8rem;
+  padding: 0.72rem 0.8rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.markdown-preview th {
+  color: var(--ink);
+  font-weight: var(--weight-strong);
+}
+
+.markdown-preview tbody tr:nth-child(even) {
+  background: rgba(241, 245, 249, 0.5);
 }
 
 .bullet-list {

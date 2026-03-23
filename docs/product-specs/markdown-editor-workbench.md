@@ -17,6 +17,7 @@ The owner opens `/app/notes/new` or `/app/notes/[id]/edit`.
 - `Tab` still indents, `Shift+Tab` outdents, `Enter` continues lists or blockquotes, and `Ctrl/Cmd+B`, `Ctrl/Cmd+I`, `Ctrl/Cmd+K`, and `Ctrl/Cmd+Alt+2` trigger common inline or heading transforms.
 - Returning from preview restores the source pane and keeps the draft text intact.
 - The rendered preview continues to reflect the same markdown rendering rules used elsewhere in Minakeep.
+- Pipe-style markdown tables should render as readable tables in preview and on published note pages instead of showing raw `|` syntax.
 
 ## Validation
 - Note content still persists as markdown text, not a second document schema.

@@ -10,6 +10,7 @@ The owner signs in and opens the notes-first private dashboard.
 - The owner can create a draft note with a title and markdown body.
 - The owner can edit an existing draft note.
 - The private note editor keeps one markdown body as the saved source while showing a rendered preview from that same source.
+- The shared markdown renderer supports common authoring structures including headings, lists, quotes, code blocks, links, images, and pipe-table syntax.
 - On desktop, the editor opens as a split workbench so source and preview can be reviewed together.
 - On mobile, the editor uses an `Edit` / `Preview` toggle instead of forcing both panes into the same width.
 - The private note editor remains markdown-native even as richer editor controls are added.

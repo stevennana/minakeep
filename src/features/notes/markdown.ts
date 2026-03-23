@@ -73,13 +73,32 @@ function isOrderedListItem(line: string) {
   return /^\d+\.\s+/.test(line);
 }
 
+function splitTableCells(line: string) {
+  return line
+    .trim()
+    .replace(/^\|/, "")
+    .replace(/\|$/, "")
+    .split("|")
+    .map((cell) => cell.trim());
+}
+
+function isTableDividerLine(line: string) {
+  return /^\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?$/.test(line.trim());
+}
+
+function isTableRow(line: string) {
+  const trimmed = line.trim();
+  return trimmed.includes("|") && splitTableCells(trimmed).length > 1;
+}
+
 function stripMarkdown(value: string) {
   return value
     .replace(/```[\s\S]*?```/g, " ")
+    .replace(/^\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?$/gm, " ")
     .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, "$1")
     .replace(/`([^`]+)`/g, "$1")
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1")
-    .replace(/[*_>#-]/g, " ")
+    .replace(/[|*_>#-]/g, " ")
     .replace(/\d+\.\s+/g, " ")
     .replace(/\s+/g, " ")
     .trim();
@@ -191,6 +210,28 @@ export function renderMarkdownToHtml(markdown: string) {
       }
 
       blocks.push(`<ol>${items.join("")}</ol>`);
+      continue;
+    }
+
+    if (
+      index + 1 < normalizedLines.length &&
+      isTableRow(trimmedLine) &&
+      isTableDividerLine(normalizedLines[index + 1])
+    ) {
+      const headerCells = splitTableCells(trimmedLine);
+      const bodyRows: string[] = [];
+      index += 2;
+
+      while (index < normalizedLines.length && isTableRow(normalizedLines[index])) {
+        const rowCells = splitTableCells(normalizedLines[index]);
+        const cells = headerCells.map((_, cellIndex) => `<td>${renderInlineMarkdown(rowCells[cellIndex] ?? "")}</td>`);
+        bodyRows.push(`<tr>${cells.join("")}</tr>`);
+        index += 1;
+      }
+
+      const header = headerCells.map((cell) => `<th>${renderInlineMarkdown(cell)}</th>`).join("");
+      const body = bodyRows.length > 0 ? `<tbody>${bodyRows.join("")}</tbody>` : "";
+      blocks.push(`<table><thead><tr>${header}</tr></thead>${body}</table>`);
       continue;
     }
 
