@@ -223,9 +223,19 @@ The container entrypoint reuses the same `npm run db:prepare` contract. With the
 
 SQLite restore path:
 
-1. stop the app or run `docker compose down`
-2. copy the backup files from the chosen timestamped backup directory back into the active SQLite directory, replacing `minakeep.db` and any matching `minakeep.db-wal` or `minakeep.db-shm` files
+Direct Node/self-host restore with the default local SQLite path:
+
+1. stop the running Minakeep process
+2. copy the backup files from `./backups/<db-name>-pre-upgrade-<timestamp>/` back into the repo root, replacing `dev.db` and any matching `dev.db-wal` or `dev.db-shm` files
 3. restart the release you want to run after the restore
+
+Compose/Docker restore with the shipped Compose defaults:
+
+1. run `docker compose down`
+2. copy the backup files from `./data/backups/<db-name>-pre-upgrade-<timestamp>/` back into `./data`, replacing `minakeep.db` and any matching `minakeep.db-wal` or `minakeep.db-shm` files
+3. restart the release you want to run after the restore
+
+If you use a custom `DATABASE_URL`, restore the backup files over that configured SQLite filename instead of the defaults above.
 
 Future image releases:
 

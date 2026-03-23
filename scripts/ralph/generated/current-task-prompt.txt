@@ -48,8 +48,7 @@ Required commands for this task:
 - docker compose config
 
 Previous known gaps from the last evaluation:
-- Add deterministic verification that starts the built app against an upgraded legacy SQLite database and proves the runtime boots cleanly after the schema upgrade.
-- Resolve the Docker operator-path documentation mismatch so the upgrade instructions clearly match the shipped Compose behavior (published-image pull flow vs source-build Compose flow).
+- Exit criterion 3 is not fully satisfied. The README's shared restore instructions tell operators to replace `minakeep.db`, but the same README documents the default direct self-host SQLite path as `file:./dev.db`. The restore path therefore is not clearly and correctly documented for both Docker and direct self-host operators.
 
 
 

@@ -1,8 +1,8 @@
 {
   "task_id": "085-self-host-upgrade-safety",
-  "started_at": "2026-03-23T14:07:47+09:00",
-  "artifact_dir": "state/artifacts/20260323T140747-085-self-host-upgrade-safety",
+  "started_at": "2026-03-23T14:36:31+09:00",
+  "artifact_dir": "state/artifacts/20260323T143631-085-self-host-upgrade-safety",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-03-23T05:36:00.881Z"
+  "updated_at": "2026-03-23T05:43:54.280Z"
 }

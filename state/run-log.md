@@ -1456,3 +1456,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=not_done promotion=false The upgrade mechanics are substantively in place: `db:prepare` creates a pre-schema SQLite backup, applies the schema push, runs a legacy compatibility backfill, and both unit coverage and `start:smoke` prove a legacy database can upgrade and boot on the new runtime. I am not marking the task done because the shipped operator documentation is still not fully correct for direct self-host restore: the README restore steps hardcode `minakeep.db`, while the documented default direct-Node database is `dev.db`. That leaves the Docker restore path clear, but the self-host restore path is not yet operator-safe in the docs. -> state/artifacts/20260323T140747-085-self-host-upgrade-safety/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T140747-085-self-host-upgrade-safety/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Task 085-self-host-upgrade-safety not eligible for promotion.
+- backlog: rendered current=085-self-host-upgrade-safety
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxoooxx
+- cycle: finished
+
+### cycle 2026-03-23T14:36:31+09:00 task=085-self-host-upgrade-safety
+- artifacts: state/artifacts/20260323T143631-085-self-host-upgrade-safety
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260323T143631-085-self-host-upgrade-safety/worker.jsonl
+- worker-summary: Clarified the operator restore docs in [README.md](/Users/stevenna/WebstormProjects/minakeep/README.md#L195) so the upgrade path now distinguishes direct self-host restore of `dev.db` from Compose restore of `./data/minakeep.db`. I also recorded the final task note in [085-self-host-upgrade-safety.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/085-self-host-upgrade-safety.md#L81) and wrote the operator handoff summary to [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt#L1).
+- evaluator: started
+- evaluator: status=done promotion=true Task 085 appears complete in substance. The repo now has an explicit upgrade contract centered on `npm run db:prepare`: it detects schema drift on existing file-based SQLite databases, creates a timestamped sibling backup before `prisma db push`, then applies runtime compatibility fixes for legacy rows. The upgrade path is exercised by both a unit regression against an older SQLite fixture and `npm run start:smoke`, which upgrades a legacy database, confirms a restore-ready backup exists, and boots the built app against the upgraded state. Operator docs in `README.md` clearly distinguish direct self-host versus Compose upgrade and restore flows, including backup locations for `./dev.db` and `./data/minakeep.db`. The provided deterministic checks show both `npm run verify` and `docker compose config` passing. -> state/artifacts/20260323T143631-085-self-host-upgrade-safety/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T143631-085-self-host-upgrade-safety/npm-run-verify-next-server.log
