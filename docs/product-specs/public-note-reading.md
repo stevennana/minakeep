@@ -15,13 +15,13 @@ An anonymous visitor opens `/notes/[slug]`.
 - The page shares the same cool monochrome visual system as the homepage.
 - `h1` and `strong` no longer dominate the page with oversized scale or overly black emphasis.
 - Tag chips fit their content and support longer labels without overflow.
-- The note title should not wrap into multiple lines when the available page width is sufficient for one line.
+- The note title should avoid premature wrapping; when the available page width comfortably fits it, it should stay on one line, while longer desktop titles may wrap to a second line without feeling cramped.
 
 ## Validation
 - Public note pages feel more reading-first than dashboard-like.
 - Metadata hierarchy is clear and non-dominant.
 - The title, tags, and AI summary feel refined rather than heavy-handed.
 - AI summary and tags appear before the article body.
-- Title wrapping feels intentional rather than prematurely narrow.
+- Title wrapping feels intentional rather than prematurely narrow, especially on desktop widths.
 - Mobile reading remains comfortable.
 - `npm run verify` passes.

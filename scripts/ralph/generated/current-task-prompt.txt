@@ -1,54 +1,50 @@
 Read the following repository documents before making changes:
 - AGENTS.md
-- ARCHITECTURE.md
+- docs/SECURITY.md
 - docs/RELIABILITY.md
+- docs/FRONTEND.md
+- docs/product-specs/workspace-settings.md
+- docs/product-specs/owner-content-deletion.md
+- docs/product-specs/public-home-showroom.md
+- docs/product-specs/public-note-reading.md
 - docs/product-specs/docker-packaging.md
-- docs/design-docs/container-runtime-packaging.md
-- docs/design-docs/runtime-upgrade-and-backup.md
-- docs/exec-plans/active/085-self-host-upgrade-safety.md
+- docs/exec-plans/active/086-next-wave-hardening.md
 
-Current task id: 085-self-host-upgrade-safety
-Current task title: Self-host upgrade safety
+Current task id: 086-next-wave-hardening
+Current task title: Next wave hardening
 
 Objective:
-Provide an upgrade-safe path for self-host and Docker operators when Minakeep introduces schema changes.
+Harden the full wave by aligning docs, tests, and regression coverage after the feature slices land.
 
 Scope:
-- automatic pre-upgrade SQLite backup
-- runtime upgrade path for older working installs
-- self-host and Docker documentation
+- doc alignment across the full wave
+- regression coverage review
+- cleanup of any wave-level drift
 
 Out of scope:
-- distributed backup storage
-- rollback orchestration beyond the documented SQLite restore path
-- unrelated UI work
+- new feature fronts beyond this tranche
 
 Exit criteria:
-1. A schema-changing release defines how an older working Minakeep install upgrades safely.
-2. Automatic SQLite backup happens before the schema-upgrade step.
-3. The Docker/self-host operator docs explain the upgrade and restore path clearly.
-4. `docker compose config` passes.
-5. `npm run verify` passes.
+1. The shipped docs match the final behavior across settings, delete, public reading, public showroom, and upgrade safety.
+2. Regression coverage protects the new feature fronts.
+3. `npm run verify` passes.
 
 Required checks:
 - `npm run verify`
-- `docker compose config`
 
 Evaluator notes:
-Promote only when the upgrade-safe path is explicit and operator-usable, not just implied by a schema sync helper.
+Promote only when the full wave reads as one coherent shipped tranche rather than several partially integrated slices.
 
 Required repository artifacts for this task:
-- scripts
-- README.md
-- docker-compose.yml
-- .env.compose.example
+- docs
+- tests/e2e
+- tests/unit
 
 Required commands for this task:
 - npm run verify
-- docker compose config
 
 Previous known gaps from the last evaluation:
-- Exit criterion 3 is not fully satisfied. The README's shared restore instructions tell operators to replace `minakeep.db`, but the same README documents the default direct self-host SQLite path as `file:./dev.db`. The restore path therefore is not clearly and correctly documented for both Docker and direct self-host operators.
+- none
 
 
 

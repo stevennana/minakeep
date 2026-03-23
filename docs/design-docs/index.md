@@ -21,7 +21,7 @@ This directory contains durable design decisions that are deeper than the top-le
 | `homepage-showroom-rhythm.md` | confirmed | public homepage composition, dynamic grid behavior, and preview-card rhythm |
 | `media-storage-and-serving.md` | confirmed | mounted media storage, publish-gated image serving, and derived card-image rules |
 | `container-runtime-packaging.md` | confirmed | Docker image, Compose, mounted volumes, and env-driven operator packaging |
-| `runtime-upgrade-and-backup.md` | proposed | upgrade-safe schema changes and automatic SQLite backup rules for self-host/Docker paths |
+| `runtime-upgrade-and-backup.md` | confirmed | upgrade-safe schema changes and automatic SQLite backup rules for self-host/Docker paths |
 | `public-home-first-screen-density.md` | confirmed | collapsed search chrome, minimal framing copy, and first-screen showroom priority |
 | `markdown-editor-workbench.md` | confirmed | source-first note-editor architecture, view modes, toolbar rules, and mobile authoring behavior |
 | `owner-workspace-density.md` | confirmed | desktop density rules, slimmer navigation, and compact owner layouts |

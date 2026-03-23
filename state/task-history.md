@@ -70,3 +70,4 @@
 - 2026-03-23T04:05:44.141Z: promoted 082-public-showroom-clickable-media -> 083-public-note-reading-top-summary
 - 2026-03-23T04:17:01.322Z: promoted 083-public-note-reading-top-summary -> 084-owner-content-deletion
 - 2026-03-23T04:50:40.993Z: promoted 084-owner-content-deletion -> 085-self-host-upgrade-safety
+- 2026-03-23T05:43:54.452Z: promoted 085-self-host-upgrade-safety -> 086-next-wave-hardening

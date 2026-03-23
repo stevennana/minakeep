@@ -1471,3 +1471,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Task 085 appears complete in substance. The repo now has an explicit upgrade contract centered on `npm run db:prepare`: it detects schema drift on existing file-based SQLite databases, creates a timestamped sibling backup before `prisma db push`, then applies runtime compatibility fixes for legacy rows. The upgrade path is exercised by both a unit regression against an older SQLite fixture and `npm run start:smoke`, which upgrades a legacy database, confirms a restore-ready backup exists, and boots the built app against the upgraded state. Operator docs in `README.md` clearly distinguish direct self-host versus Compose upgrade and restore flows, including backup locations for `./dev.db` and `./data/minakeep.db`. The provided deterministic checks show both `npm run verify` and `docker compose config` passing. -> state/artifacts/20260323T143631-085-self-host-upgrade-safety/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T143631-085-self-host-upgrade-safety/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 085-self-host-upgrade-safety -> 086-next-wave-hardening
+- backlog: rendered current=086-next-wave-hardening
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxoooxxo
+- cycle: finished
+
+### cycle 2026-03-23T14:44:24+09:00 task=086-next-wave-hardening
+- artifacts: state/artifacts/20260323T144424-086-next-wave-hardening
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260323T144424-086-next-wave-hardening/worker.jsonl
+- worker-summary: Updated the hardening tranche without broadening scope. I aligned the shipped docs in [docs/design-docs/index.md](/Users/stevenna/WebstormProjects/minakeep/docs/design-docs/index.md), [docs/RELIABILITY.md](/Users/stevenna/WebstormProjects/minakeep/docs/RELIABILITY.md), and [docs/product-specs/public-note-reading.md](/Users/stevenna/WebstormProjects/minakeep/docs/product-specs/public-note-reading.md), added a service-boundary delete regression in [tests/unit/delete-guards.test.ts](/Users/stevenna/WebstormProjects/minakeep/tests/unit/delete-guards.test.ts), and recorded the task progress in [docs/exec-plans/active/086-next-wave-hardening.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/086-next-wave-hardening.md). The operator handoff is written to [state/last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
+- evaluator: started
+- evaluator: status=done promotion=true The hardening tranche reads as complete. The reviewed docs align with the shipped implementation for workspace settings, owner-only deletion guards, the mixed public showroom, public note reading, and upgrade-safe runtime behavior. Regression coverage is substantive across those fronts, and the provided deterministic run shows `npm run verify` passing end to end. -> state/artifacts/20260323T144424-086-next-wave-hardening/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T144424-086-next-wave-hardening/npm-run-verify-next-server.log

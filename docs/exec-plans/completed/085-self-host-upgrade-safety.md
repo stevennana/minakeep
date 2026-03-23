@@ -5,7 +5,7 @@
   "id": "085-self-host-upgrade-safety",
   "title": "Self-host upgrade safety",
   "order": 85,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "standard",
   "next_task_on_success": "086-next-wave-hardening",
   "prompt_docs": [
@@ -30,7 +30,8 @@
     "Schema-changing releases still rely on undocumented operator luck.",
     "Automatic upgrade runs without a visible SQLite backup path.",
     "The upgrade path works only for fresh installs instead of older working Minakeep sites."
-  ]
+  ],
+  "completed_at": "2026-03-23T05:43:54.452Z"
 }
 ```
 
@@ -80,3 +81,4 @@ Promote only when the upgrade-safe path is explicit and operator-usable, not jus
 - 2026-03-23T05:30:17Z: Re-ran the required task gates on the final tree. `npm run verify` passed with lint, typecheck, build, 47 unit tests, the full 80-test Playwright suite, and the updated two-stage `start:smoke` contract that also upgrades and boots a legacy SQLite fixture; `docker compose config` also passed against the shipped source-build Compose file.
 - 2026-03-23T05:39:40Z: Clarified the README restore instructions so direct self-host operators restore the default `dev.db` path while Compose operators restore the mounted `minakeep.db` path under `./data`, closing the remaining operator-doc ambiguity from the last evaluation.
 - 2026-03-23T05:39:40Z: Re-ran the task gates after the doc-only fix. `docker compose config` passed, and `npm run verify` passed again with lint, typecheck, build, 47 unit tests, the full 80-test Playwright suite, and the legacy-upgrade `start:smoke` proof that creates a restore-ready backup before booting the upgraded runtime.
+- 2026-03-23T05:43:54.452Z: automatically promoted after deterministic checks and evaluator approval.
