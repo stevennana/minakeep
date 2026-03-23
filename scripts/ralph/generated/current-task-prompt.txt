@@ -53,7 +53,8 @@ Required commands for this task:
 - npm run verify
 
 Previous known gaps from the last evaluation:
-- none
+- The shipped Compose runtime does not forward `SITE_URL` to the app (`docker-compose.yml` environment block), so Docker deployments cannot actually use the documented canonical-origin contract.
+- Operator docs are still incomplete/misaligned for the Compose path: `README.md` describes `.env` as auth/port/demo/AI config only and omits `SITE_URL`, despite the new public-origin requirement.
 
 
 

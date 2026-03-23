@@ -19,6 +19,7 @@ services:
       # that differs from OWNER_USERNAME to enable the read-only demo workspace.
       DEMO_USERNAME: ${DEMO_USERNAME:-}
       DEMO_PASSWORD: ${DEMO_PASSWORD:-}
+      SITE_URL: ${SITE_URL:-}
       MEDIA_ROOT: /app/media
       LOG_LEVEL: ${LOG_LEVEL:-info}
       LLM_BASE: ${LLM_BASE:-}

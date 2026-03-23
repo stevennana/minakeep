@@ -98,6 +98,14 @@ API_KEY="replace-with-a-long-random-static-key"
 
 Leave `API_KEY` unset to keep `POST /api/open/notes` disabled.
 
+Optional canonical public origin for sitemap, robots, and canonical metadata:
+
+```bash
+SITE_URL="https://notes.example.com"
+```
+
+Set `SITE_URL` only to the real public origin you want crawlers to index. Leave it unset to fail closed for search discovery instead of advertising localhost, preview, or Docker-internal URLs.
+
 Start the app:
 
 ```bash
@@ -140,7 +148,7 @@ mkdir -p data media logs
 docker compose up -d --build
 ```
 
-The compose file fixes the container-internal runtime paths to `/app/data`, `/app/media`, and `/app/logs`; the `.env` file is for auth, port, and optional demo-user and AI config.
+The compose file fixes the container-internal runtime paths to `/app/data`, `/app/media`, and `/app/logs`; the `.env` file is for auth, port, canonical public origin, and optional demo-user and AI config.
 
 The Compose path keeps mutable runtime state mounted outside the image:
 
@@ -161,6 +169,14 @@ AUTH_SECRET="replace-with-a-long-random-secret"
 OWNER_USERNAME="owner"
 OWNER_PASSWORD="replace-with-a-long-password"
 ```
+
+Optional canonical public origin for sitemap, robots, and canonical metadata:
+
+```bash
+SITE_URL="https://notes.example.com"
+```
+
+Set `SITE_URL` only when the deployed container is actually reachable at that public origin. Leave it unset to fail closed for search discovery.
 
 Optional demo-workspace env vars follow the same both-or-neither rule:
 
@@ -191,6 +207,8 @@ Follow operator logs:
 ```bash
 docker compose logs -f app
 ```
+
+After `SITE_URL` is configured and the app is reachable at that origin, submit `https://<your-site>/sitemap.xml` to Google Search Console or your search engine of choice.
 
 ## Upgrades and restore
 

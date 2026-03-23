@@ -77,3 +77,4 @@ Promote only when the SEO foundation clearly separates operator-owned deployment
 - Start here. Append timestamped progress notes as work lands.
 - 2026-03-23 16:05 KST: Added a dedicated `SITE_URL`-backed public-site origin helper with bare-origin validation and fail-closed URL building for canonical/discovery consumers.
 - 2026-03-23 16:05 KST: Wired shared public metadata helpers into `/` and `/notes/[slug]`, added unit coverage for configured and missing-origin behavior, and clarified env/operator ownership in settings and env examples.
+- 2026-03-23 18:33 KST: Forwarded `SITE_URL` through the shipped `docker-compose.yml` runtime contract and aligned README/Compose operator guidance so self-hosted deployments configure the canonical origin explicitly and fail closed when it is absent.

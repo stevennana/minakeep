@@ -1503,3 +1503,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=not_done promotion=false The shared `SITE_URL` foundation is implemented correctly in code: `src/features/public-site/config.ts` is the single origin parser/builder, `src/features/public-site/metadata.ts` centralizes canonical/robots behavior, and `/` plus `/notes/[slug]` consume that helper instead of guessing from request context. Required checks also passed per the deterministic summary. The blocking issue is the operator/runtime contract: `docker-compose.yml` does not pass `SITE_URL` into the container, while `.env.compose.example` and the docs now present `SITE_URL` as part of the supported Compose configuration. That leaves the Docker/self-host path misaligned with the documented source-of-truth boundary, so task 087 is not complete in substance yet. -> state/artifacts/20260323T181815-087-public-site-origin-foundation/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T181815-087-public-site-origin-foundation/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Task 087-public-site-origin-foundation not eligible for promotion.
+- backlog: rendered current=087-public-site-origin-foundation
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxoooxxoox
+- cycle: finished
+
+### cycle 2026-03-23T18:31:24+09:00 task=087-public-site-origin-foundation
+- artifacts: state/artifacts/20260323T183124-087-public-site-origin-foundation
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260323T183124-087-public-site-origin-foundation/worker.jsonl
+- worker-summary: The remaining gap on task `087` was the operator path, so I kept the change narrow. [docker-compose.yml](/Users/stevenna/WebstormProjects/minakeep/docker-compose.yml) now forwards `SITE_URL` into the app, and the operator docs in [README.md](/Users/stevenna/WebstormProjects/minakeep/README.md) plus [.env.compose.example](/Users/stevenna/WebstormProjects/minakeep/.env.compose.example) now treat `SITE_URL` as the canonical public-origin setting for self-host and Compose, document the fail-closed behavior when it is unset, and point operators at `https://<site>/sitemap.xml` for registration. I also appended the progress log in [087-public-site-origin-foundation.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/087-public-site-origin-foundation.md) and wrote the handoff to [state/last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
+- evaluator: started
+- evaluator: status=done promotion=true Task 087 is complete in substance. The repo now has a single server-only `SITE_URL` origin contract, homepage and public note metadata both consume the shared helper instead of request-context guessing, missing or invalid origin config fails closed by omitting canonicals and setting `robots` to noindex/nofollow, and the operator path is aligned across direct env docs, Compose docs, and `docker-compose.yml`. I did not find any overlap between canonical-origin ownership and owner-editable site branding. -> state/artifacts/20260323T183124-087-public-site-origin-foundation/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T183124-087-public-site-origin-foundation/npm-run-verify-next-server.log
