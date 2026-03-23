@@ -5,7 +5,7 @@
   "id": "083-public-note-reading-top-summary",
   "title": "Public note reading top summary",
   "order": 83,
-  "status": "planned",
+  "status": "active",
   "promotion_mode": "standard",
   "next_task_on_success": "084-owner-content-deletion",
   "prompt_docs": [
@@ -66,3 +66,7 @@ Promote only when the top-of-page metadata improves orientation without turning 
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-23T04:05:44.141Z: restored as current task after 082-public-showroom-clickable-media promotion.
+- 2026-03-23T04:10:41Z: Moved the public note AI summary and AI tags into the top reading stack beneath the title, softened the support treatment so it orients without taking over, and removed the narrow title cap that was causing premature desktop wrapping.
+- 2026-03-23T04:10:41Z: Extended `tests/e2e/ui-public-note.spec.ts` to assert the new support ordering and intentional title fit, then refreshed the desktop and mobile public-note snapshots while keeping `npm run test:e2e -- --grep public-note` green.
+- 2026-03-23T04:12:38Z: `npm run verify` passed, including lint, typecheck, build, the full Playwright suite, and startup smoke, so the task now satisfies its required command gates.

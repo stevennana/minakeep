@@ -20,6 +20,7 @@ export default async function PublicNotePage({ params }: PublicNotePageProps) {
 
   const publishedAt = note.publishedAt ?? note.updatedAt;
   const formattedPublishedAt = new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(publishedAt);
+  const hasSupportContent = Boolean(note.summary) || note.tags.length > 0;
 
   return (
     <div className="feature-layout public-note-layout">
@@ -38,34 +39,34 @@ export default async function PublicNotePage({ params }: PublicNotePageProps) {
             <p className="eyebrow">Public note</p>
             <h1>{note.title}</h1>
           </div>
+          {hasSupportContent ? (
+            <div className="public-note-support" data-testid="public-note-support">
+              {note.summary ? (
+                <div className="public-note-support-block" data-testid="public-note-summary">
+                  <strong>AI summary</strong>
+                  <p className="note-generated-summary">{note.summary}</p>
+                </div>
+              ) : null}
+              {note.tags.length > 0 ? (
+                <div className="public-note-support-block" data-testid="public-note-tags">
+                  <strong>AI tags</strong>
+                  <TagList aria-label="Published note tags" className="public-note-tags">
+                    {note.tags.map((tag) => (
+                      <TagChip className="public-note-tag" key={tag.id}>
+                        {tag.name}
+                      </TagChip>
+                    ))}
+                  </TagList>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
         </header>
         <div
           className="markdown-preview public-note-body"
           data-testid="public-note-markdown"
           dangerouslySetInnerHTML={{ __html: renderMarkdownToHtml(note.markdown) }}
         />
-        {(note.summary || note.tags.length > 0) && (
-          <footer className="public-note-support" data-testid="public-note-support">
-            {note.summary ? (
-              <div className="public-note-support-block" data-testid="public-note-summary">
-                <strong>AI summary</strong>
-                <p className="note-generated-summary">{note.summary}</p>
-              </div>
-            ) : null}
-            {note.tags.length > 0 ? (
-              <div className="public-note-support-block" data-testid="public-note-tags">
-                <strong>AI tags</strong>
-                <TagList aria-label="Published note tags" className="public-note-tags">
-                  {note.tags.map((tag) => (
-                    <TagChip className="public-note-tag" key={tag.id}>
-                      {tag.name}
-                    </TagChip>
-                  ))}
-                </TagList>
-              </div>
-            ) : null}
-          </footer>
-        )}
       </Surface>
     </div>
   );

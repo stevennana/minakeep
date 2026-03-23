@@ -1396,3 +1396,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true The task is ready for promotion. The current showroom implementation makes note preview images link to the same note route as their titles, makes link media open the same external URL in a new tab as the title link, keeps the media wrappers styled as part of the existing card structure rather than as an overlay hack, and includes item-specific accessible names for the new media targets. The required E2E and full verify commands both passed in the provided deterministic check run. -> state/artifacts/20260323T125312-082-public-showroom-clickable-media/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T125312-082-public-showroom-clickable-media/npm-run-test-e2e-grep-public-showroom-next-server.log
+- commit: commit: created
+- promote: Promoted 082-public-showroom-clickable-media -> 083-public-note-reading-top-summary
+- backlog: rendered current=083-public-note-reading-top-summary
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxo
+- cycle: finished
+
+### cycle 2026-03-23T13:06:14+09:00 task=083-public-note-reading-top-summary
+- artifacts: state/artifacts/20260323T130614-083-public-note-reading-top-summary
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260323T130614-083-public-note-reading-top-summary/worker.jsonl
+- worker-summary: Moved the public note AI support block above the body in [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/notes/[slug]/page.tsx#L13) and rebalanced the note-detail styling in [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css#L1006) so summary and tags sit beneath the title, the title uses the available width before wrapping, and the body stays visually primary. I also tightened the regression coverage in [ui-public-note.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-public-note.spec.ts#L158), refreshed the desktop/mobile public-note snapshots, and updated the task log in [083-public-note-reading-top-summary.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/083-public-note-reading-top-summary.md#L66).
+- evaluator: started
+- evaluator: status=done promotion=true The task is complete in substance. The public note page now renders AI summary and tags directly beneath the title and before the markdown body in src/app/notes/[slug]/page.tsx, the note-detail CSS widens the title block and softens the support treatment in src/app/globals.css, and the updated Playwright coverage plus refreshed desktop/mobile snapshots substantively guard the new hierarchy and title-fit behavior. The provided deterministic check record shows both required gates passed on 2026-03-23: `npm run test:e2e -- --grep public-note` and `npm run verify`. -> state/artifacts/20260323T130614-083-public-note-reading-top-summary/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T130614-083-public-note-reading-top-summary/npm-run-test-e2e-grep-public-note-next-server.log

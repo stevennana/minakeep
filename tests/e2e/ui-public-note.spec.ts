@@ -184,9 +184,39 @@ async function expectReadingHierarchy(page: Page, viewport: "desktop" | "mobile"
   });
 
   expect(metrics.metaTop).toBeLessThan(metrics.headingTop);
-  expect(metrics.headingTop).toBeLessThan(metrics.bodyTop);
-  expect(metrics.bodyTop).toBeLessThan(metrics.supportTop);
+  expect(metrics.headingTop).toBeLessThan(metrics.supportTop);
+  expect(metrics.supportTop).toBeLessThan(metrics.bodyTop);
   expect(metrics.bodyMeasureWidth).toBeLessThanOrEqual(viewport === "desktop" ? 760 : metrics.viewportWidth - 32);
+}
+
+async function expectIntentionalTitleFit(page: Page, viewport: "desktop" | "mobile") {
+  const metrics = await page.evaluate(() => {
+    const heading = document.querySelector(".public-note-header h1");
+    const titleBlock = document.querySelector(".public-note-title-block");
+
+    if (!heading || !titleBlock) {
+      return null;
+    }
+
+    const headingRect = heading.getBoundingClientRect();
+    const titleBlockRect = titleBlock.getBoundingClientRect();
+    const lineHeight = Number.parseFloat(getComputedStyle(heading).lineHeight);
+
+    return {
+      headingWidth: headingRect.width,
+      lineCount: Math.round(headingRect.height / lineHeight),
+      titleBlockWidth: titleBlockRect.width
+    };
+  });
+
+  expect(metrics).not.toBeNull();
+
+  if (!metrics) {
+    return;
+  }
+
+  expect(metrics.lineCount).toBeLessThanOrEqual(viewport === "desktop" ? 2 : 4);
+  expect(metrics.headingWidth).toBeGreaterThan(metrics.titleBlockWidth * (viewport === "desktop" ? 0.72 : 0.78));
 }
 
 async function expectSoftenedPublicType(page: Page, viewport: "desktop" | "mobile") {
@@ -249,6 +279,7 @@ test("@ui-regression @ui-public-note @ui-public-note-taste @ui-public-type @ui-r
   await expect(page.getByLabel("Published note tags")).toContainText("reading");
   await expect(page.getByRole("link", { name: "Back to published notes" })).toBeVisible();
   await expectReadingHierarchy(page, "desktop");
+  await expectIntentionalTitleFit(page, "desktop");
   await expectSoftenedPublicType(page, "desktop");
   await expectPublicTagChipFit(page);
   await expectAccessibleStructure(page);
@@ -268,6 +299,7 @@ test("@ui-regression @ui-public-note @ui-public-note-taste @ui-public-type @ui-r
   await expect(page.getByText(seededNote.summary)).toBeVisible();
   await expect(page.getByRole("link", { name: "Back to published notes" })).toBeVisible();
   await expectReadingHierarchy(page, "mobile");
+  await expectIntentionalTitleFit(page, "mobile");
   await expectSoftenedPublicType(page, "mobile");
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);

@@ -69,8 +69,8 @@
 - [x] 079-external-note-api-hardening — External note API hardening
 - [x] 080-site-settings-foundation — Site settings foundation
 - [x] 081-site-settings-ui — Site settings UI
-- [ ] 082-public-showroom-clickable-media — Public showroom clickable media ← current
-- [ ] 083-public-note-reading-top-summary — Public note reading top summary
+- [x] 082-public-showroom-clickable-media — Public showroom clickable media
+- [ ] 083-public-note-reading-top-summary — Public note reading top summary ← current
 - [ ] 084-owner-content-deletion — Owner content deletion
 - [ ] 085-self-host-upgrade-safety — Self-host upgrade safety
 - [ ] 086-next-wave-hardening — Next wave hardening

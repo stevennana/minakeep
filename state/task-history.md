@@ -67,3 +67,4 @@
 - 2026-03-22T09:20:41.324Z: promoted 079-external-note-api-hardening -> NONE
 - 2026-03-23T03:27:13.746Z: promoted 080-site-settings-foundation -> 081-site-settings-ui
 - 2026-03-23T03:40:05.762Z: promoted 081-site-settings-ui -> 082-public-showroom-clickable-media
+- 2026-03-23T04:05:44.141Z: promoted 082-public-showroom-clickable-media -> 083-public-note-reading-top-summary

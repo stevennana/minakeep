@@ -1,50 +1,50 @@
 Read the following repository documents before making changes:
 - AGENTS.md
 - docs/FRONTEND.md
-- docs/product-specs/public-home-showroom.md
-- docs/design-docs/homepage-showroom-rhythm.md
-- docs/design-docs/responsive-ui-rules.md
-- docs/exec-plans/active/082-public-showroom-clickable-media.md
+- docs/product-specs/public-note-reading.md
+- docs/design-docs/public-surface-taste-rules.md
+- docs/exec-plans/active/083-public-note-reading-top-summary.md
 
-Current task id: 082-public-showroom-clickable-media
-Current task title: Public showroom clickable media
+Current task id: 083-public-note-reading-top-summary
+Current task title: Public note reading top summary
 
 Objective:
-Make public showroom images/favicons clickable and consistent with the existing title destinations.
+Move AI support metadata above the public note body and improve title fitting on the public detail page.
 
 Scope:
-- note preview image click target
-- link preview image/fallback click target
-- accessibility and new-tab behavior alignment
+- top-of-page AI summary/tags placement
+- title-fit and line-wrapping polish
+- desktop/mobile note-detail regression coverage
 
 Out of scope:
-- note detail layout
+- public showroom card click behavior
 - owner delete/settings work
 
 Exit criteria:
-1. Published note preview images route to the same note detail page as the note title.
-2. Published link media opens the same external destination in a new tab.
-3. The showroom remains visually stable on desktop and mobile.
-4. `npm run test:e2e -- --grep public-showroom` passes.
+1. AI summary and AI tags appear beneath the title and above the body.
+2. Title wrapping feels intentional and uses the available width before breaking into more lines.
+3. Public note reading remains calm and body-first after the layout change.
+4. `npm run test:e2e -- --grep public-note` passes.
 5. `npm run verify` passes.
 
 Required checks:
-- `npm run test:e2e -- --grep public-showroom`
+- `npm run test:e2e -- --grep public-note`
 - `npm run verify`
 
 Evaluator notes:
-Promote only when media click targets feel like a natural extension of the existing card behavior rather than a bolt-on wrapper.
+Promote only when the top-of-page metadata improves orientation without turning the note detail page into a metadata-first surface.
 
 Required repository artifacts for this task:
-- src/features/public-content
+- src/app/notes
+- src/app/globals.css
 - tests/e2e
 
 Required commands for this task:
-- npm run test:e2e -- --grep public-showroom
+- npm run test:e2e -- --grep public-note
 - npm run verify
 
 Previous known gaps from the last evaluation:
-- Accessibility alignment is incomplete: the media links at `src/features/public-content/components/public-showroom.tsx:103-108` and `src/features/public-content/components/public-showroom.tsx:156-163` expose generic accessible names instead of the item-specific title/destination, which does not satisfy the task's accessibility-alignment intent or the evaluator note about feeling like a natural extension of existing card behavior.
+- none
 
 
 

@@ -1,8 +1,8 @@
 {
-  "task_id": "082-public-showroom-clickable-media",
-  "started_at": "2026-03-23T12:53:12+09:00",
-  "artifact_dir": "state/artifacts/20260323T125312-082-public-showroom-clickable-media",
+  "task_id": "083-public-note-reading-top-summary",
+  "started_at": "2026-03-23T13:06:14+09:00",
+  "artifact_dir": "state/artifacts/20260323T130614-083-public-note-reading-top-summary",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-03-23T04:05:43.980Z"
+  "updated_at": "2026-03-23T04:17:01.140Z"
 }
