@@ -1533,3 +1533,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=not_done promotion=false The core sitemap/robots/canonical slice is implemented and the required commands passed, but I found a substantive freshness gap: `buildPublicSitemap()` intentionally derives the homepage `lastModified` from all published public content, including links, while `/sitemap.xml` is only revalidated from note mutations. Because `next build` classifies `/sitemap.xml` as static and `revalidateLinkPaths()` does not include `/sitemap.xml`, published-link changes can leave the homepage sitemap entry stale. That means discovery is not fully aligned with the shipped public-content boundary yet. -> state/artifacts/20260323T184131-088-public-sitemap-and-robots/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T184131-088-public-sitemap-and-robots/npm-run-test-e2e-grep-seo-discovery-next-server.log
+- commit: commit: created
+- promote: Task 088-public-sitemap-and-robots not eligible for promotion.
+- backlog: rendered current=088-public-sitemap-and-robots
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxoooxxooxox
+- cycle: finished
+
+### cycle 2026-03-23T18:59:00+09:00 task=088-public-sitemap-and-robots
+- artifacts: state/artifacts/20260323T185900-088-public-sitemap-and-robots
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260323T185900-088-public-sitemap-and-robots/worker.jsonl
+- worker-summary: Patched link-side public mutations to revalidate `/sitemap.xml` in [actions.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/app/links/actions.ts), which closes the freshness gap for the homepage sitemap entry when published links change. I also added a regression in [seo-discovery.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/seo-discovery.spec.ts) that proves the homepage `lastmod` updates after publishing and unpublishing a link while links still never appear as standalone sitemap URLs, and I updated the task progress log in [088-public-sitemap-and-robots.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/088-public-sitemap-and-robots.md).
+- evaluator: started
+- evaluator: status=not_done promotion=false The core discovery routes, canonical wiring, and required commands are in place, but the sitemap `lastmod` contract is still substantively wrong for homepage removals. `src/features/public-site/discovery.ts` computes homepage `lastModified` only from currently published items, so after unpublishing a note or link the homepage entry can move backward to an older timestamp instead of reflecting the unpublish-time public change. That conflicts with `docs/product-specs/public-sitemap-and-seo.md`, which requires `lastmod` values to reflect meaningful public content change. The new E2E regression in `tests/e2e/seo-discovery.spec.ts` currently codifies that incorrect rollback behavior by expecting the homepage `lastmod` to return to its initial value after unpublish. -> state/artifacts/20260323T185900-088-public-sitemap-and-robots/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T185900-088-public-sitemap-and-robots/npm-run-test-e2e-grep-seo-discovery-next-server.log

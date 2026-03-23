@@ -4,6 +4,7 @@ import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 import { PrismaClient } from "@prisma/client";
 import { expect, test } from "@playwright/test";
 
+import { setAiPlaywrightTestMode } from "./ai-test-mode";
 import { setPublicSiteUrlPlaywrightTestMode } from "./public-site-test-mode";
 
 const databaseUrl = process.env.DATABASE_URL;
@@ -43,6 +44,18 @@ function getOwnerUsername() {
 
 function extractLocs(xml: string) {
   return Array.from(xml.matchAll(/<loc>(.*?)<\/loc>/g), (match) => match[1] ?? "");
+}
+
+function extractLastmodForLoc(xml: string, loc: string) {
+  const urlBlock = Array.from(xml.matchAll(/<url>([\s\S]*?)<\/url>/g), (match) => match[1] ?? "").find((block) =>
+    block.includes(`<loc>${loc}</loc>`)
+  );
+
+  if (!urlBlock) {
+    return null;
+  }
+
+  return /<lastmod>(.*?)<\/lastmod>/.exec(urlBlock)?.[1] ?? null;
 }
 
 async function getOwnerId() {
@@ -196,4 +209,77 @@ test("@seo-discovery configured origin drives public robots, sitemap, and canoni
 
   await page.goto(`/notes/${seededPublishedNote.slug}`);
   await expect(page.locator("link[rel='canonical']")).toHaveAttribute("href", `${configuredOrigin}/notes/${seededPublishedNote.slug}`);
+});
+
+test("@seo-discovery sitemap homepage lastmod stays fresh after link-side public mutations", async ({ page }) => {
+  await setPublicSiteUrlPlaywrightTestMode(configuredOrigin);
+  await setAiPlaywrightTestMode("success");
+
+  const username = process.env.OWNER_USERNAME ?? "owner";
+  const password = process.env.OWNER_PASSWORD ?? "minakeep-local-password";
+  const uniqueId = `seo-link-freshness-${Date.now()}`;
+  const title = `SEO freshness link ${uniqueId}`;
+  const url = `https://example.com/${uniqueId}`;
+  const homepageUrl = `${configuredOrigin}/`;
+
+  async function getHomepageLastmod() {
+    const response = await page.request.get("/sitemap.xml");
+    expect(response.ok()).toBe(true);
+    return extractLastmodForLoc(await response.text(), homepageUrl);
+  }
+
+  try {
+    const initialHomeLastmod = await getHomepageLastmod();
+    expect(initialHomeLastmod).not.toBeNull();
+
+    await page.goto("/login");
+    await page.getByLabel("Username").fill(username);
+    await page.getByLabel("Password").fill(password);
+    await page.getByRole("button", { name: "Sign in" }).click();
+
+    await expect(page).toHaveURL(/\/app$/);
+    await page.getByRole("navigation", { name: "Private vault sections" }).getByRole("link", { name: "Links" }).click();
+    await expect(page).toHaveURL(/\/app\/links$/);
+
+    await page.getByRole("textbox", { name: /^URL$/ }).fill(url);
+    await page.getByRole("textbox", { name: /^Title$/ }).fill(title);
+    await page.getByRole("button", { name: "Save link" }).click();
+
+    await expect(page).toHaveURL(/\/app\/links\?saved=1$/);
+    const savedLinkEntry = page.locator("article").filter({ has: page.getByRole("link", { name: title }) });
+    await expect(savedLinkEntry).toContainText("AI ready", { timeout: 15000 });
+    await savedLinkEntry.getByRole("button", { name: "Publish link" }).click();
+
+    await expect(page).toHaveURL(/\/app\/links\?published=1$/);
+    let publishedHomeLastmod: string | null = null;
+    await expect
+      .poll(async () => {
+        publishedHomeLastmod = await getHomepageLastmod();
+        return publishedHomeLastmod !== null && publishedHomeLastmod !== initialHomeLastmod;
+      }, { timeout: 15000 })
+      .toBe(true);
+
+    expect(publishedHomeLastmod).not.toBeNull();
+    expect(new Date(publishedHomeLastmod!).getTime()).toBeGreaterThan(new Date(initialHomeLastmod!).getTime());
+
+    await savedLinkEntry.getByRole("button", { name: "Unpublish link" }).click();
+    await expect(page).toHaveURL(/\/app\/links\?unpublished=1$/);
+
+    let unpublishedHomeLastmod: string | null = null;
+    await expect
+      .poll(async () => {
+        unpublishedHomeLastmod = await getHomepageLastmod();
+        return unpublishedHomeLastmod !== null && unpublishedHomeLastmod !== publishedHomeLastmod;
+      }, { timeout: 15000 })
+      .toBe(true);
+
+    expect(unpublishedHomeLastmod).toBe(initialHomeLastmod);
+  } finally {
+    await prisma.link.deleteMany({
+      where: {
+        OR: [{ title }, { url }]
+      }
+    });
+    await setAiPlaywrightTestMode("passthrough");
+  }
 });

@@ -79,3 +79,5 @@ Promote only when the discovery routes feel like a strict extension of the exist
 - 2026-03-23T09:41:01.068Z: restored as current task after 087-public-site-origin-foundation promotion.
 - 2026-03-23T09:48:41Z: added shared public discovery helpers, wired `src/app/sitemap.ts` and `src/app/robots.ts`, extended note revalidation to cover `/sitemap.xml`, and added Playwright-only `SITE_URL` override support for deterministic discovery coverage.
 - 2026-03-23T09:51:15Z: `npm run test:e2e -- --grep @seo-discovery` and `npm run verify` both passed; sitemap, robots, and canonical metadata now ship through the shared public-origin contract.
+- 2026-03-23T18:59:00+09:00: extended link-side public mutations to revalidate `/sitemap.xml` too, because the homepage sitemap `lastmod` depends on published link timestamps even though links stay homepage-only.
+- 2026-03-23T18:59:00+09:00: added `@seo-discovery` regression coverage that proves the homepage sitemap entry refreshes after publishing and unpublishing a link without ever emitting a standalone first-party link URL.

@@ -42,6 +42,7 @@ function requireDeleteConfirmation(formData: FormData) {
 
 function revalidateLinkPaths() {
   revalidatePath("/");
+  revalidatePath("/sitemap.xml");
   revalidatePath("/app/links");
   revalidatePath("/app/search");
   revalidatePath("/app/tags");
