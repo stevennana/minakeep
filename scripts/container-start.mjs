@@ -92,7 +92,7 @@ await ensureRuntimePaths();
 
 console.log(`Server logs: ${logFile}`);
 console.log(`LOG_LEVEL=${process.env.LOG_LEVEL ?? "info"}`);
-console.log("Preparing runtime state with `npm run db:prepare` before startup.");
+console.log("Preparing runtime state with `npm run db:prepare` before startup. Existing SQLite installs get a pre-upgrade backup when schema changes are detected.");
 
 try {
   await run(npmBin, ["run", "db:prepare"]);

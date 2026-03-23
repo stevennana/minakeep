@@ -1426,3 +1426,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Task 084 appears complete in substance. The implementation uses hard deletes for notes and links, exposes a clear permanent-delete confirmation step in the owner UI, blocks delete in the demo workspace, and enforces unpublished-only deletion again on the server side. The focused delete Playwright run and full `npm run verify` both passed in the provided deterministic check summary, and the shipped docs/specs for this wave match the behavior I inspected. -> state/artifacts/20260323T131731-084-owner-content-deletion/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T131731-084-owner-content-deletion/npm-run-test-e2e-grep-delete-next-server.log
+- commit: commit: created
+- promote: Promoted 084-owner-content-deletion -> 085-self-host-upgrade-safety
+- backlog: rendered current=085-self-host-upgrade-safety
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxooo
+- cycle: finished
+
+### cycle 2026-03-23T13:51:11+09:00 task=085-self-host-upgrade-safety
+- artifacts: state/artifacts/20260323T135111-085-self-host-upgrade-safety
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260323T135111-085-self-host-upgrade-safety/worker.jsonl
+- worker-summary: Implemented the upgrade-safe SQLite path in [scripts/db-prepare.mjs](/Users/stevenna/WebstormProjects/minakeep/scripts/db-prepare.mjs) and [scripts/lib/sqlite-upgrade.mjs](/Users/stevenna/WebstormProjects/minakeep/scripts/lib/sqlite-upgrade.mjs). `db:prepare` now loads env config directly, detects schema drift on existing file-based SQLite installs, creates a timestamped pre-upgrade backup in a sibling `backups/` directory, and then runs the existing Prisma sync and seed flow. The container startup log in [scripts/container-start.mjs](/Users/stevenna/WebstormProjects/minakeep/scripts/container-start.mjs) now calls out that contract.
+- evaluator: started
+- evaluator: status=not_done promotion=false The core implementation is close: `db:prepare` now creates a timestamped SQLite backup before `prisma db push`, legacy-schema regression coverage exists, docs describe backup/restore, and both required commands passed. I would still hold promotion because the repository does not yet prove the full reliability contract in substance: the legacy-upgrade test upgrades and inspects the DB, but it never boots the built app against that upgraded legacy database and checks `/api/health`, so the required 'older working install upgrades and the upgraded runtime still boots cleanly' path is not actually verified. There is also a remaining operator-doc ambiguity in the Docker path: `README.md` describes Compose as using the published image and tells operators to `docker compose pull`, while the shipped `docker-compose.yml` is source-build oriented (`build:` plus `image: minakeep:local`), so the upgrade action is not fully clear for Docker operators. -> state/artifacts/20260323T135111-085-self-host-upgrade-safety/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T135111-085-self-host-upgrade-safety/npm-run-verify-next-server.log

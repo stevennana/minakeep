@@ -1,8 +1,8 @@
 {
-  "task_id": "084-owner-content-deletion",
-  "started_at": "2026-03-23T13:17:31+09:00",
-  "artifact_dir": "state/artifacts/20260323T131731-084-owner-content-deletion",
+  "task_id": "085-self-host-upgrade-safety",
+  "started_at": "2026-03-23T13:51:11+09:00",
+  "artifact_dir": "state/artifacts/20260323T135111-085-self-host-upgrade-safety",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-03-23T04:50:40.729Z"
+  "updated_at": "2026-03-23T05:07:17.465Z"
 }

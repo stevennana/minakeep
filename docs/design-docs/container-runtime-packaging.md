@@ -10,6 +10,7 @@ Package Minakeep as a production-style container image with a Compose-driven ope
 
 ## Volume Rules
 - mount SQLite data at `/app/data`
+- keep automatic pre-upgrade SQLite backups under `/app/data/backups` inside that same mounted data path
 - mount uploaded media and cached favicons at `/app/media`
 - mount logs at `/app/logs`
 - avoid baking mutable DB/media/log data into the image itself
@@ -19,7 +20,7 @@ Package Minakeep as a production-style container image with a Compose-driven ope
 - include AI env handling for `LLM_BASE`, `TOKEN`, and `MODEL`
 - keep the container path compatible with the existing local env contract instead of inventing a second config model
 - keep the primary Compose defaults on `DATABASE_URL=file:/app/data/minakeep.db` and `MEDIA_ROOT=/app/media`
-- run the existing `npm run db:prepare` contract on container startup before serving the app
+- run the existing `npm run db:prepare` contract on container startup before serving the app, including its pre-upgrade SQLite backup before any schema-changing `db push`
 
 ## Verification Rules
 - the Docker wave must prove image build success

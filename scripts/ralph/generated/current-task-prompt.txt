@@ -1,53 +1,51 @@
 Read the following repository documents before making changes:
 - AGENTS.md
-- docs/SECURITY.md
+- ARCHITECTURE.md
 - docs/RELIABILITY.md
-- docs/product-specs/owner-content-deletion.md
-- docs/product-specs/note-authoring.md
-- docs/product-specs/link-capture.md
-- docs/design-docs/owner-workspace-density.md
-- docs/exec-plans/active/084-owner-content-deletion.md
+- docs/product-specs/docker-packaging.md
+- docs/design-docs/container-runtime-packaging.md
+- docs/design-docs/runtime-upgrade-and-backup.md
+- docs/exec-plans/active/085-self-host-upgrade-safety.md
 
-Current task id: 084-owner-content-deletion
-Current task title: Owner content deletion
+Current task id: 085-self-host-upgrade-safety
+Current task title: Self-host upgrade safety
 
 Objective:
-Add permanent delete for unpublished notes and links with explicit confirmation and server-side unpublished-only enforcement.
+Provide an upgrade-safe path for self-host and Docker operators when Minakeep introduces schema changes.
 
 Scope:
-- note delete
-- link delete
-- confirmation UX
-- demo-user and published-content guards
+- automatic pre-upgrade SQLite backup
+- runtime upgrade path for older working installs
+- self-host and Docker documentation
 
 Out of scope:
-- trash/archive/restore
-- settings and public-reading changes
+- distributed backup storage
+- rollback orchestration beyond the documented SQLite restore path
+- unrelated UI work
 
 Exit criteria:
-1. Unpublished notes can be permanently deleted after confirmation.
-2. Unpublished links can be permanently deleted after confirmation.
-3. Published items cannot be deleted until unpublished first.
-4. Demo users cannot delete content.
-5. `npm run test:e2e -- --grep delete` passes.
-6. `npm run verify` passes.
+1. A schema-changing release defines how an older working Minakeep install upgrades safely.
+2. Automatic SQLite backup happens before the schema-upgrade step.
+3. The Docker/self-host operator docs explain the upgrade and restore path clearly.
+4. `docker compose config` passes.
+5. `npm run verify` passes.
 
 Required checks:
-- `npm run test:e2e -- --grep delete`
 - `npm run verify`
+- `docker compose config`
 
 Evaluator notes:
-Promote only when destructive behavior is explicit, guarded, and clearly permanent.
+Promote only when the upgrade-safe path is explicit and operator-usable, not just implied by a schema sync helper.
 
 Required repository artifacts for this task:
-- src/app/app
-- src/features/notes
-- src/features/links
-- tests/e2e
+- scripts
+- README.md
+- docker-compose.yml
+- .env.compose.example
 
 Required commands for this task:
-- npm run test:e2e -- --grep delete
 - npm run verify
+- docker compose config
 
 Previous known gaps from the last evaluation:
 - none

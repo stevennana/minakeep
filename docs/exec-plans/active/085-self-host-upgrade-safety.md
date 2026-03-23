@@ -5,7 +5,7 @@
   "id": "085-self-host-upgrade-safety",
   "title": "Self-host upgrade safety",
   "order": 85,
-  "status": "planned",
+  "status": "active",
   "promotion_mode": "standard",
   "next_task_on_success": "086-next-wave-hardening",
   "prompt_docs": [
@@ -70,3 +70,7 @@ Promote only when the upgrade-safe path is explicit and operator-usable, not jus
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-03-23T04:50:40.993Z: restored as current task after 084-owner-content-deletion promotion.
+- 2026-03-23T04:57:25Z: Added a `db:prepare`-owned SQLite upgrade helper that detects schema drift on existing file-based SQLite installs, creates a timestamped pre-upgrade backup under a sibling `backups/` directory, and then lets the existing Prisma `db push` plus seed path continue for both direct Node and container startup.
+- 2026-03-23T04:57:25Z: Added deterministic regression coverage for upgrading an older SQLite schema into the current schema while preserving a restore-ready backup copy, and updated the self-host/Docker operator docs to name the upgrade trigger, backup location, and restore steps explicitly.
+- 2026-03-23T05:02:19Z: Required checks passed in the final tree. `npm run verify` passed including the new legacy-SQLite upgrade regression plus the full 80-test Playwright suite and `start:smoke`, and `docker compose config` passed on the shipped Compose contract.

@@ -152,7 +152,7 @@ The Compose path keeps mutable runtime state mounted outside the image:
 The container startup path reuses the existing env contract. On each boot it:
 
 1. ensures the mounted DB/media/log directories exist
-2. runs `npm run db:prepare`
+2. runs `npm run db:prepare`, which creates a timestamped SQLite backup under `/app/data/backups/` before any schema-changing upgrade step
 3. starts `next start` on `0.0.0.0:$PORT`
 
 Required auth/runtime env vars for Compose:
@@ -192,6 +192,35 @@ Follow operator logs:
 ```bash
 docker compose logs -f app
 ```
+
+## Upgrades and restore
+
+Direct Node/self-host upgrades:
+
+1. stop the running Minakeep process
+2. update the repo to the new release and run `npm install`
+3. run `npm run db:prepare`
+4. run `npm run build`
+5. start the app with `npm run start` or `npm run start:logged`
+
+`npm run db:prepare` is the upgrade contract for direct Node installs. If the current `DATABASE_URL` points at an existing SQLite file and the new release needs schema changes, Minakeep creates a timestamped pre-upgrade backup under a sibling `backups/` directory before `prisma db push` runs. For the default local path `file:./dev.db`, backups land under `./backups/<db-name>-pre-upgrade-<timestamp>/`.
+
+`npm run start:logged` already runs `npm run db:prepare` before the server starts, so operators using that wrapper get the same automatic backup behavior on upgrade.
+
+Compose/Docker upgrades:
+
+1. update `.env` if the new release needs config changes
+2. pull or rebuild the new image
+3. run `docker compose up -d`
+4. inspect `docker compose logs -f app` for the backup path and a clean startup
+
+The container entrypoint reuses the same `npm run db:prepare` contract. With the shipped Compose defaults, the live SQLite file is `/app/data/minakeep.db` and pre-upgrade backups land under `/app/data/backups/<db-name>-pre-upgrade-<timestamp>/`, which appears on the host as `./data/backups/...`.
+
+SQLite restore path:
+
+1. stop the app or run `docker compose down`
+2. copy the backup files from the chosen timestamped backup directory back into the active SQLite directory, replacing `minakeep.db` and any matching `minakeep.db-wal` or `minakeep.db-shm` files
+3. restart the release you want to run after the restore
 
 Future image releases:
 

@@ -27,5 +27,5 @@
 ## Runtime Notes
 
 - the SQLite database lives at `file:./dev.db` under the Prisma workspace path
-- `npm run db:prepare` runs `prisma generate`, `prisma db push`, and owner seeding
+- `npm run db:prepare` runs `prisma generate`, creates a pre-upgrade SQLite backup when an existing DB needs schema changes, runs `prisma db push`, and then seeds the owner
 - the seeded owner comes from `OWNER_USERNAME` and `OWNER_PASSWORD`

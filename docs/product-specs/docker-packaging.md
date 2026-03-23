@@ -15,6 +15,7 @@ An operator wants to run Minakeep in a container instead of a direct local Node 
 - Demo credentials follow a both-or-neither env contract, `DEMO_USERNAME` must differ from `OWNER_USERNAME`, and the demo identity stays runtime-only rather than being seeded into SQLite.
 - Optional AI env vars may stay unset in the shipped Compose example so owner-only boot works without placeholder endpoint values.
 - The container startup path ensures the mounted runtime directories exist, writes a timestamped server log under `/app/logs`, runs the existing `db:prepare` contract, and then serves the built app on `0.0.0.0:$PORT`.
+- When the Compose-default SQLite path is used, pre-upgrade backups are written under `/app/data/backups/` inside the mounted data volume.
 - The shipped Compose service includes an HTTP healthcheck against `/api/health`.
 - When a released version introduces a schema change, the self-host/Docker path provides an upgrade-safe contract for older working installs.
 - The upgrade-safe contract includes an automatic SQLite backup before the schema-upgrade step runs.
@@ -24,6 +25,7 @@ An operator wants to run Minakeep in a container instead of a direct local Node 
 - The containerized app startup path stays compatible with mounted volumes and env-driven runtime prep.
 - The Compose configuration is valid and documented for operator use through `docker compose config`.
 - Mounted DB/media/log paths are clearly defined and not baked into the image.
+- Mounted SQLite backups stay inside the same operator-owned data bind mount so restore does not depend on image internals.
 - Demo-user env handling is documented and stays aligned with the direct local runtime contract.
 - Schema-changing releases document and exercise an upgrade path from an older working Minakeep install to the new version.
 - Automatic pre-upgrade SQLite backups are documented and operator-visible.

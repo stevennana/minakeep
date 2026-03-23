@@ -17,6 +17,7 @@ Define the reliability expectations and failure-handling rules for Minakeep.
 
 ## Verification
 - `npm run db:prepare` prepares SQLite state and owner seed deterministically
+- `npm run db:prepare` also creates a timestamped SQLite backup under a sibling `backups/` directory before applying schema changes to an existing SQLite file
 - demo credentials should seed deterministically when configured, without breaking owner-only startup when they are absent
 - `npm run start:smoke` boots the production-style server and probes a health endpoint
 - `npm run verify` includes startup proof alongside code-level checks
@@ -29,7 +30,7 @@ Define the reliability expectations and failure-handling rules for Minakeep.
 
 ## Runtime Startup Contract
 If the app depends on persistent runtime state, document how runtime preparation happens and how a production-style startup smoke proves the `start` path actually works.
-For Minakeep, `npm run db:prepare` is the explicit runtime-prep step and `npm run start:smoke` must be able to boot the built app and probe `/api/health`.
+For Minakeep, `npm run db:prepare` is the explicit runtime-prep step, it must create a pre-upgrade SQLite backup before schema changes on older installs, and `npm run start:smoke` must be able to boot the built app and probe `/api/health`.
 For the container wave, the shipped image entrypoint must create mounted DB/media/log paths, write operator-visible startup logs, run `npm run db:prepare`, and then serve the built app on `0.0.0.0:$PORT` with `/api/health` still usable for health probes.
 
 ## Operator Logging
@@ -46,7 +47,7 @@ For the AI enrichment wave, E2E must prove: note save with generated metadata, l
 For the mixed public wave, checks should also prove that stale or manually seeded invalid published-link URLs stay hidden from public routes instead of being rendered optimistically.
 For the external note API wave, E2E must prove: valid keyed private note create, valid keyed publish-on-create, rejection of missing `X-API-Key`, and rejection of invalid `X-API-Key` requests. Unit coverage must also keep the disabled `503` fail-closed path protected when `API_KEY` is unset.
 For the owner-delete/settings wave, E2E must prove: delete remains blocked until unpublish, delete confirmation is required, and site title/description changes propagate across the shipped shell surfaces.
-For the upgrade-safe self-host wave, verification must prove: a schema-changing release can start from an older working SQLite state, automatic backup happens before the upgrade path runs, and the upgraded runtime still boots cleanly.
+For the upgrade-safe self-host wave, verification must prove: a schema-changing release can start from an older working SQLite state, automatic backup happens before the upgrade path runs, the backup keeps the pre-upgrade schema available for restore, and the upgraded runtime still boots cleanly.
 For the media wave, E2E must prove: note image upload with markdown insertion, owner-visible draft image rendering, public image visibility only after note publish, and favicon fallback when fetch/cache fails.
 The hardening contract for that slice is tagged `@media-regression` and must keep the private draft-image boundary plus the favicon fallback-and-refresh path deterministic.
 For the UI redesign wave, the tagged `@ui-*` Playwright coverage must prove both `1440x900` desktop and `390x844` mobile behavior, stable screenshots, visible hierarchy anchors/actions, and automated accessibility scanning.
