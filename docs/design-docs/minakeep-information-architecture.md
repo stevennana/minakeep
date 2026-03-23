@@ -6,6 +6,7 @@ Keep Minakeep legible by separating public reading from private authoring from t
 ## Public Surface
 - `/` is the public homepage for published notes and published links
 - `/notes/[slug]` is the only public content-detail route in v1
+- `/sitemap.xml` and `/robots.txt` are the machine-readable discovery routes for search crawlers
 - public routes should feel calm and reading-oriented, not like an admin dashboard
 
 ## Private Surface

@@ -1,8 +1,8 @@
 {
-  "task_id": "086-next-wave-hardening",
-  "started_at": "2026-03-23T14:44:24+09:00",
-  "artifact_dir": "state/artifacts/20260323T144424-086-next-wave-hardening",
-  "phase": "finished",
-  "status": "finished",
-  "updated_at": "2026-03-23T05:59:23.219Z"
+  "task_id": "087-public-site-origin-foundation",
+  "started_at": "2026-03-23T18:18:15+09:00",
+  "artifact_dir": "state/artifacts/20260323T181815-087-public-site-origin-foundation",
+  "phase": "commit",
+  "status": "running",
+  "updated_at": "2026-03-23T09:30:54.309Z"
 }

@@ -5,15 +5,11 @@ This queue is the task-level promotion source of truth for minakeep.
 Only task files in this directory that contain a `taskmeta` JSON block are eligible for automatic selection, evaluation, and promotion.
 
 ## Current recommended sequence
-1. `080-site-settings-foundation.md` -> define the persisted settings model, route ownership, and site-wide branding contract
-2. `081-site-settings-ui.md` -> expose the owner settings surface for title/description editing and shell-level branding reads
-3. `082-public-showroom-clickable-media.md` -> make published note and link preview images use the same destinations as their titles
-4. `083-public-note-reading-top-summary.md` -> move AI summary/tags above the note body and tighten public-note title fit
-5. `084-owner-content-deletion.md` -> add permanent delete for unpublished notes and links with explicit confirmation
-6. `085-self-host-upgrade-safety.md` -> add upgrade-safe schema-change handling and automatic SQLite backup for self-host/Docker paths
-7. `086-next-wave-hardening.md` -> align docs and regression coverage across the full wave
+1. `087-public-site-origin-foundation.md` -> define the canonical public-site origin contract and fail-closed discovery rules
+2. `088-public-sitemap-and-robots.md` -> add `sitemap.xml`, `robots.txt`, and published-note discovery behavior
+3. `089-public-seo-discovery-hardening.md` -> align operator docs, regression coverage, and search-console-ready validation
 
-Tasks `077` through `079` are preserved in completed history as the finished external-note-api tranche. Earlier completed tranches remain preserved as history.
+Tasks `080` through `086` are preserved in completed history as the finished settings/delete/upgrade tranche. Earlier completed tranches remain preserved as history.
 
 ## Operating rule
 

@@ -6,6 +6,7 @@ Build Minakeep as an agent-legible codebase with strong boundaries, a short inst
 ## System Overview
 Minakeep is a web application with:
 - a public site for published notes and published links
+- a public discovery surface for canonical metadata, `robots.txt`, and `sitemap.xml` when a real public site origin is configured
 - a private owner area for notes, links, tags, and search
 - an optional server-to-server note-create API protected by one environment-backed API key and disabled when `API_KEY` is unset
 - an owner-editable site settings surface for shared service branding
@@ -74,6 +75,7 @@ Prisma runtime prep, startup smoke, operator logging, Docker packaging, and Ralp
 - Auth.js handles owner sign-in
 - route handlers expose health and future server-backed workflows
 - the external note-create route should stay narrow, server-only, fail closed when `API_KEY` is missing or wrong, and stay separate from browser-session auth
+- public discovery routes should stay narrow and machine-readable, derive only from already-public content, and fail closed when the deployment has no configured canonical public origin
 - owner settings and destructive owner actions should stay behind narrow server-side helpers rather than route-local ad hoc mutations
 - route handlers or server-backed media endpoints should mediate owner/private media visibility instead of exposing the full media volume directly
 - Prisma access stays behind narrow server-side helpers

@@ -26,6 +26,7 @@ Define the security posture for Minakeep's current shipped slice.
 - keep `AUTH_SECRET`, `DATABASE_URL`, `OWNER_USERNAME`, and `OWNER_PASSWORD` in environment configuration only
 - keep any `DEMO_USERNAME` and `DEMO_PASSWORD` values in environment configuration only
 - keep `API_KEY` in environment configuration only when the external note API is enabled
+- keep `SITE_URL` in environment configuration only when the public sitemap/canonical discovery surface is enabled
 - keep `LLM_BASE`, `TOKEN`, and `MODEL` in shell or local environment only
 - never commit seeded credentials or secret values
 - document required environment variables in `.env.example` and runtime docs
@@ -41,6 +42,7 @@ Define the security posture for Minakeep's current shipped slice.
 - `/app/*` routes are private
 - `/api/open/notes` is publicly reachable but must fail closed unless a valid `X-API-Key` matches the configured `API_KEY`
 - `/api/open/notes` returns `503` when `API_KEY` is unset and `401` when `X-API-Key` is missing or invalid
+- `/sitemap.xml` and `/robots.txt` are public machine-readable routes and must never enumerate private routes, unpublished notes, unpublished links, or owner-only URLs
 - `/app/settings` is private and may expose owner-editable service configuration
 - public title search must only query published content
 - public link cards must open only the already-saved external URL in a new tab
@@ -58,6 +60,8 @@ Define the security posture for Minakeep's current shipped slice.
 - destructive owner actions must require explicit confirmation in the UI and still enforce the unpublished-only guard server-side
 - external note-create auth must reject missing or invalid `X-API-Key` headers without leaking the configured secret
 - valid keyed external note-create requests that omit `isPublished` must keep the note private; only explicit publish-on-create may expose it publicly
+- sitemap and robots output must fail closed when `SITE_URL` is unset so the app does not advertise localhost, preview, or otherwise incorrect origins for search indexing
+- sitemap output must include only `/` plus published note routes in v1; published links remain homepage-only public records and must not be exposed as fake internal detail URLs
 - AI integration must prove that tokens stay server-side and that failure paths do not leak raw endpoint credentials or full private payloads
 - missing or incomplete AI env config must record a visible failed enrichment state instead of silently falling back to another endpoint
 - server logs may record HTTP status or high-level failure class for the Mina endpoint, but not request bodies, tokens, or full private note/link payloads

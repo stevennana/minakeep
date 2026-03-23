@@ -74,4 +74,7 @@
 - [x] 084-owner-content-deletion — Owner content deletion
 - [x] 085-self-host-upgrade-safety — Self-host upgrade safety
 - [x] 086-next-wave-hardening — Next wave hardening
+- [ ] 087-public-site-origin-foundation — Public site origin foundation ← current
+- [ ] 088-public-sitemap-and-robots — Public sitemap and robots
+- [ ] 089-public-seo-discovery-hardening — Public SEO discovery hardening
 

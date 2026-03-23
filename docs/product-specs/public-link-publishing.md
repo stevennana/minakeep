@@ -11,6 +11,7 @@ The owner opens the private links area and chooses to publish or unpublish a sav
 - Published links appear in the public showroom alongside published notes.
 - Public link cards show title, summary, and tags.
 - Clicking a published link card opens the saved external URL in a new tab.
+- Published links remain homepage-only public items in v1 and do not get standalone sitemap URLs because there is no internal public link-detail route.
 - Unpublished links never appear on public routes.
 
 ## Validation

@@ -12,6 +12,7 @@ Let the owner publish or unpublish a note and expose published notes on the mixe
 - A trusted external note-create request may publish a note immediately when the request opts into publish-on-create.
 - Published notes appear on the public homepage alongside published links when any links are also published.
 - Each published note is reachable by a public slug-based route.
+- When the public site origin is configured, published notes also appear as first-party URLs in `/sitemap.xml`.
 - Public note listings may show AI-generated summary when available without replacing the authored note body.
 - Unpublished notes are never exposed on public routes.
 

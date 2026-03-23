@@ -1492,3 +1492,14 @@ No remaining task. Stopping loop.
 - health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxoooxxoo
 - cycle: finished
 No remaining task. Stopping loop.
+## loop start 2026-03-23T18:18:15+09:00
+
+### cycle 2026-03-23T18:18:15+09:00 task=087-public-site-origin-foundation
+- artifacts: state/artifacts/20260323T181815-087-public-site-origin-foundation
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260323T181815-087-public-site-origin-foundation/worker.jsonl
+- worker-summary: Implemented the public-origin foundation around a single operator-owned `SITE_URL` contract. The new boundary lives in [config.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/public-site/config.ts#L1) and [metadata.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/public-site/metadata.ts#L1): it accepts only a bare `http(s)` origin, refuses path/query/hash/credential variants, builds public URLs from that source of truth, and fails closed by omitting canonicals plus returning `noindex,nofollow` metadata when `SITE_URL` is missing or invalid. `/` and `/notes/[slug]` now consume that shared helper in [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/page.tsx#L1) and [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/notes/[slug]/page.tsx#L1), and the settings surface now clarifies that branding is separate from deployment origin in [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/app/settings/page.tsx#L38).
+- evaluator: started
+- evaluator: status=not_done promotion=false The shared `SITE_URL` foundation is implemented correctly in code: `src/features/public-site/config.ts` is the single origin parser/builder, `src/features/public-site/metadata.ts` centralizes canonical/robots behavior, and `/` plus `/notes/[slug]` consume that helper instead of guessing from request context. Required checks also passed per the deterministic summary. The blocking issue is the operator/runtime contract: `docker-compose.yml` does not pass `SITE_URL` into the container, while `.env.compose.example` and the docs now present `SITE_URL` as part of the supported Compose configuration. That leaves the Docker/self-host path misaligned with the documented source-of-truth boundary, so task 087 is not complete in substance yet. -> state/artifacts/20260323T181815-087-public-site-origin-foundation/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260323T181815-087-public-site-origin-foundation/npm-run-verify-next-server.log

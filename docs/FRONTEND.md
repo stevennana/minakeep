@@ -13,6 +13,8 @@ Describe the user-facing structure of Minakeep so an agent can implement the UI 
 ## Route Map
 - `/` -> public showroom of published notes and published links
 - `/notes/[slug]` -> public published-note reading page
+- `/sitemap.xml` -> machine-readable sitemap for the homepage and published notes when the public site origin is configured
+- `/robots.txt` -> crawler rules plus sitemap advertisement when the public site origin is configured
 - `/login` -> owner sign-in
 - `/login` may also admit a read-only demonstration user when demo credentials are configured
 - `/app` -> private notes-first dashboard shell
@@ -87,12 +89,14 @@ The owner workspace should expose a dedicated settings section for service confi
 
 ## Search / Share / Admin Notes
 - public search is homepage-only and title-only
+- public discovery for search engines should expose only routes that are already first-party public pages
 - the public search affordance is collapsed or compact by default, shows title-only scope in its collapsed state, and expands only on explicit user action
 - closing the expanded public search returns to the collapsed state and clears the active query
 - owner search remains private
 - tags remain shared across notes and links
 - publishing is a per-item decision for both notes and links
 - published links open the saved destination in a new tab
+- published links do not get first-party sitemap entries in v1 because they do not have internal public detail pages
 - AI metadata remains visible but visually secondary to authored content
 - uploaded note images remain owner-visible immediately but should reach public routes only through published-note surfaces
 - demo mode is read-only across note save, link save, publish, unpublish, retry, upload, and other mutation paths

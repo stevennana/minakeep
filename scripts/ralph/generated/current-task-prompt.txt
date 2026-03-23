@@ -1,46 +1,55 @@
 Read the following repository documents before making changes:
 - AGENTS.md
+- ARCHITECTURE.md
+- docs/FRONTEND.md
 - docs/SECURITY.md
 - docs/RELIABILITY.md
-- docs/FRONTEND.md
-- docs/product-specs/workspace-settings.md
-- docs/product-specs/owner-content-deletion.md
-- docs/product-specs/public-home-showroom.md
-- docs/product-specs/public-note-reading.md
+- docs/product-specs/public-sitemap-and-seo.md
 - docs/product-specs/docker-packaging.md
-- docs/exec-plans/active/086-next-wave-hardening.md
+- docs/design-docs/public-discovery-and-indexing.md
+- docs/exec-plans/active/087-public-site-origin-foundation.md
 
-Current task id: 086-next-wave-hardening
-Current task title: Next wave hardening
+Current task id: 087-public-site-origin-foundation
+Current task title: Public site origin foundation
 
 Objective:
-Harden the full wave by aligning docs, tests, and regression coverage after the feature slices land.
+Establish the canonical public-site origin contract for SEO and discovery without weakening the self-hosted deployment boundary.
 
 Scope:
-- doc alignment across the full wave
-- regression coverage review
-- cleanup of any wave-level drift
+- add the documented runtime config boundary for the canonical public origin, recommended as `SITE_URL`
+- define shared helpers or ownership rules for canonical metadata generation
+- define fail-closed behavior for missing-origin deployments
+- align env and operator docs with the new public-origin requirement
 
 Out of scope:
-- new feature fronts beyond this tranche
+- full sitemap entry generation
+- robots output details beyond the origin/fail-closed contract
+- Google Search Console verification or third-party API integration
 
 Exit criteria:
-1. The shipped docs match the final behavior across settings, delete, public reading, public showroom, and upgrade safety.
-2. Regression coverage protects the new feature fronts.
-3. `npm run verify` passes.
+1. The repo has one documented and implemented source of truth for the public canonical site origin.
+2. Homepage and note-page canonical generation can rely on that boundary instead of route-local guessing.
+3. Missing-origin deployments fail closed for search discovery.
+4. `npm run typecheck`, `npm run test:unit`, and `npm run verify` pass.
 
 Required checks:
+- `npm run typecheck`
+- `npm run test:unit`
 - `npm run verify`
 
 Evaluator notes:
-Promote only when the full wave reads as one coherent shipped tranche rather than several partially integrated slices.
+Promote only when the SEO foundation clearly separates operator-owned deployment origin from owner-editable branding and does not guess public URLs from runtime request context.
 
 Required repository artifacts for this task:
-- docs
-- tests/e2e
+- src/app
+- src/features
 - tests/unit
+- .env.example
+- .env.compose.example
 
 Required commands for this task:
+- npm run typecheck
+- npm run test:unit
 - npm run verify
 
 Previous known gaps from the last evaluation:

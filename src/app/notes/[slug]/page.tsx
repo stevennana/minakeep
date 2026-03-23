@@ -1,14 +1,21 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { ButtonLink, MetadataRow, Surface, TagChip, TagList } from "@/components/ui/primitives";
 import { renderMarkdownToHtml } from "@/features/notes/markdown";
 import { getPublishedNoteBySlug } from "@/features/notes/service";
+import { getPublicPageMetadata, getPublishedNotePath } from "@/features/public-site/metadata";
 
 type PublicNotePageProps = {
   params: Promise<{
     slug: string;
   }>;
 };
+
+export async function generateMetadata({ params }: PublicNotePageProps): Promise<Metadata> {
+  const { slug } = await params;
+  return getPublicPageMetadata(getPublishedNotePath(slug));
+}
 
 export default async function PublicNotePage({ params }: PublicNotePageProps) {
   const { slug } = await params;

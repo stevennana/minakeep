@@ -37,7 +37,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
       <Surface className="secondary-route-hero" density="compact" tone="hero">
         <IntroBlock
           compact
-          description="Shared title and description for the public and private shells."
+          description="Shared title and description for the public and private shells. The canonical public origin stays in deployment env config."
           eyebrow={isReadOnly ? "Read-only demo" : "Workspace settings"}
           title="Site configuration"
         >
@@ -86,7 +86,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
           </div>
         </div>
         <Disclosure summary="Configuration boundary">
-          <p>This route is the durable home for broader site-wide configuration. This wave stores only title and description.</p>
+          <p>This route is the durable home for broader site-wide configuration. This wave stores only title and description; canonical public origin remains operator-owned `SITE_URL` runtime config.</p>
         </Disclosure>
       </Surface>
     </div>

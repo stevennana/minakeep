@@ -18,6 +18,7 @@ This directory contains durable design decisions that are deeper than the top-le
 | `workspace-auth-roles.md` | confirmed | owner vs demo-user permissions and route behavior |
 | `external-note-api-boundary.md` | confirmed | static-key remote note-create boundary and server-owned note lifecycle rules |
 | `site-configuration-architecture.md` | confirmed | owner-editable site branding and extensible settings-domain rules |
+| `public-discovery-and-indexing.md` | confirmed | canonical public origin, sitemap ownership, robots rules, and fail-closed indexing behavior |
 | `homepage-showroom-rhythm.md` | confirmed | public homepage composition, dynamic grid behavior, and preview-card rhythm |
 | `media-storage-and-serving.md` | confirmed | mounted media storage, publish-gated image serving, and derived card-image rules |
 | `container-runtime-packaging.md` | confirmed | Docker image, Compose, mounted volumes, and env-driven operator packaging |
