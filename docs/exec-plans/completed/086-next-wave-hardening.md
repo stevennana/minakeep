@@ -5,7 +5,7 @@
   "id": "086-next-wave-hardening",
   "title": "Next wave hardening",
   "order": 86,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "standard",
   "next_task_on_success": "NONE",
   "prompt_docs": [
@@ -31,7 +31,8 @@
     "Docs drift from the shipped delete/settings/reading/showroom/upgrade behavior.",
     "Regression coverage misses one of the new feature fronts.",
     "The hardening pass broadens into unrelated product work instead of closing the wave cleanly."
-  ]
+  ],
+  "completed_at": "2026-03-23T05:59:23.134Z"
 }
 ```
 
@@ -70,3 +71,4 @@ Promote only when the full wave reads as one coherent shipped tranche rather tha
 - 2026-03-23T05:47:58Z: Audited the shipped wave against the hardening contract. Confirmed settings, delete, public showroom, public note reading, and upgrade-safe runtime behavior are already implemented; remaining work is doc alignment plus a small service-level delete regression.
 - 2026-03-23T05:47:58Z: Tightened the shipped docs by confirming the runtime-upgrade design doc status, refining the public-note title-wrap wording to match the shipped desktop behavior, and recording the service-boundary delete invariant in the reliability test strategy.
 - 2026-03-23T05:52:06Z: Added unit regression coverage for the note/link unpublished-only delete guards and re-ran the full task gate. `npm run verify` passed with lint, `db:prepare`, typecheck, build, 51 unit tests, 80 Playwright tests, and the two-stage `start:smoke` contract including the legacy SQLite upgrade backup proof.
+- 2026-03-23T05:59:23.134Z: automatically promoted after deterministic checks and evaluator approval.

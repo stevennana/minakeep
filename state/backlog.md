@@ -73,5 +73,5 @@
 - [x] 083-public-note-reading-top-summary — Public note reading top summary
 - [x] 084-owner-content-deletion — Owner content deletion
 - [x] 085-self-host-upgrade-safety — Self-host upgrade safety
-- [ ] 086-next-wave-hardening — Next wave hardening ← current
+- [x] 086-next-wave-hardening — Next wave hardening
 
