@@ -69,6 +69,7 @@ Prisma runtime prep, startup smoke, operator logging, Docker packaging, Ralph lo
 - the private `/app` area is notes-first, with dedicated routes for links, tags, and search
 - server components should be the default for route shells and static surfaces
 - interactive owner forms should stay localized to small client components
+- large public or owner collections should load through small server-side slices with URL-driven continuation state instead of fetching the entire note/link archive on first render
 - the next wave should converge public and private surfaces on one elegant knowledge-studio visual system
 
 ### Server

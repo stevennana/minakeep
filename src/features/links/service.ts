@@ -27,10 +27,36 @@ export async function listOwnerLinks(ownerId: string) {
   return linksRepo.listForOwner(ownerId);
 }
 
+export async function listOwnerLinksPage(ownerId: string, limit: number) {
+  return linksRepo.listForOwnerPage(ownerId, limit);
+}
+
+export async function countOwnerLinks(ownerId: string) {
+  return linksRepo.countForOwner(ownerId);
+}
+
+export async function countPublishedOwnerLinks(ownerId: string) {
+  return linksRepo.countPublishedForOwner(ownerId);
+}
+
+export async function countPendingOwnerLinks(ownerId: string) {
+  return linksRepo.countPendingForOwner(ownerId);
+}
+
 export async function listPublishedLinks() {
   const links = await linksRepo.listPublished();
 
   return links.filter((link): link is typeof link & { publishedAt: Date } => link.publishedAt !== null);
+}
+
+export async function listPublishedLinksPage(limit: number, query?: string) {
+  const links = await linksRepo.listPublishedPage(limit, query);
+
+  return links.filter((link): link is typeof link & { publishedAt: Date } => link.publishedAt !== null);
+}
+
+export async function countPublishedLinks(query?: string) {
+  return linksRepo.countPublished(query);
 }
 
 export async function createSavedLink(ownerId: string, input: LinkDraftInput) {

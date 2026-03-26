@@ -25,10 +25,36 @@ export async function listOwnerNotes(ownerId: string) {
   return notesRepo.listForOwner(ownerId);
 }
 
+export async function listOwnerNotesPage(ownerId: string, limit: number) {
+  return notesRepo.listForOwnerPage(ownerId, limit);
+}
+
+export async function countOwnerNotes(ownerId: string) {
+  return notesRepo.countForOwner(ownerId);
+}
+
+export async function countPublishedOwnerNotes(ownerId: string) {
+  return notesRepo.countPublishedForOwner(ownerId);
+}
+
+export async function countPendingOwnerNotes(ownerId: string) {
+  return notesRepo.countPendingForOwner(ownerId);
+}
+
 export async function listPublishedNotes() {
   const notes = await notesRepo.listPublished();
 
   return notes.filter((note): note is typeof note & { publishedAt: Date } => note.publishedAt !== null);
+}
+
+export async function listPublishedNotesPage(limit: number, query?: string) {
+  const notes = await notesRepo.listPublishedPage(limit, query);
+
+  return notes.filter((note): note is typeof note & { publishedAt: Date } => note.publishedAt !== null);
+}
+
+export async function countPublishedNotes(query?: string) {
+  return notesRepo.countPublished(query);
 }
 
 export async function getOwnerNoteForEditor(ownerId: string, id: string) {

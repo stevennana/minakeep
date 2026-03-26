@@ -1,5 +1,7 @@
 import "server-only";
 
+import type { Prisma } from "@prisma/client";
+
 import type { EnrichmentRecordFields } from "@/features/enrichment/types";
 import { normalizeEnrichmentStatus, toEnrichmentState } from "@/features/enrichment/types";
 import { prisma } from "@/lib/prisma";
@@ -105,6 +107,41 @@ function mapPublishedLinkRecord(link: {
   };
 }
 
+function buildPublishedLinkWhere(query?: string): Prisma.LinkWhereInput {
+  const normalizedQuery = query?.trim();
+  const conditions: Prisma.LinkWhereInput[] = [
+    {
+      isPublished: true
+    },
+    {
+      OR: [
+        {
+          url: {
+            startsWith: "http://"
+          }
+        },
+        {
+          url: {
+            startsWith: "https://"
+          }
+        }
+      ]
+    }
+  ];
+
+  if (normalizedQuery) {
+    conditions.push({
+      title: {
+        contains: normalizedQuery
+      }
+    });
+  }
+
+  return {
+    AND: conditions
+  };
+}
+
 export const linksRepo = {
   async listForOwner(ownerId: string) {
     const links = await prisma.link.findMany({
@@ -118,6 +155,43 @@ export const linksRepo = {
     });
 
     return links.map(mapLinkRecord);
+  },
+  async listForOwnerPage(ownerId: string, take: number) {
+    const links = await prisma.link.findMany({
+      where: {
+        ownerId
+      },
+      orderBy: {
+        updatedAt: "desc"
+      },
+      select: linkSummarySelect,
+      take
+    });
+
+    return links.map(mapLinkRecord);
+  },
+  async countForOwner(ownerId: string) {
+    return prisma.link.count({
+      where: {
+        ownerId
+      }
+    });
+  },
+  async countPublishedForOwner(ownerId: string) {
+    return prisma.link.count({
+      where: {
+        ownerId,
+        isPublished: true
+      }
+    });
+  },
+  async countPendingForOwner(ownerId: string) {
+    return prisma.link.count({
+      where: {
+        ownerId,
+        enrichmentStatus: normalizeEnrichmentStatus("pending")
+      }
+    });
   },
   async listPublished() {
     const links = await prisma.link.findMany({
@@ -136,6 +210,28 @@ export const linksRepo = {
     });
 
     return links.map(mapPublishedLinkRecord);
+  },
+  async listPublishedPage(take: number, query?: string) {
+    const links = await prisma.link.findMany({
+      where: buildPublishedLinkWhere(query),
+      orderBy: [
+        {
+          publishedAt: "desc"
+        },
+        {
+          updatedAt: "desc"
+        }
+      ],
+      select: linkPublishedSelect,
+      take
+    });
+
+    return links.map(mapPublishedLinkRecord);
+  },
+  async countPublished(query?: string) {
+    return prisma.link.count({
+      where: buildPublishedLinkWhere(query)
+    });
   },
   async listForOwnerByTag(ownerId: string, tagName: string) {
     const links = await prisma.link.findMany({

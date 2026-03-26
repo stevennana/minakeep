@@ -2,10 +2,17 @@ import type { Route } from "next";
 import { unstable_noStore as noStore } from "next/cache";
 
 import { signOut } from "@/auth";
+import { AutoLoadMore } from "@/components/ui/auto-load-more";
 import { Button, ButtonLink, SectionHeading, Surface } from "@/components/ui/primitives";
 import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pending-refresh";
 import { OwnerNoteCard } from "@/features/notes/components/owner-note-card";
-import { listOwnerNotes } from "@/features/notes/service";
+import {
+  countOwnerNotes,
+  countPendingOwnerNotes,
+  countPublishedOwnerNotes,
+  listOwnerNotesPage
+} from "@/features/notes/service";
+import { normalizeIncrementalLimit, OWNER_COLLECTION_PAGE_SIZE } from "@/lib/pagination";
 import { requireWorkspaceSession } from "@/lib/auth/owner-session";
 import { isReadOnlyWorkspaceRole } from "@/lib/auth/roles";
 
@@ -20,6 +27,7 @@ async function signOutAction() {
 type PrivateDashboardPageProps = {
   searchParams?: Promise<{
     deleted?: string;
+    limit?: string;
   }>;
 };
 
@@ -29,14 +37,18 @@ export default async function PrivateDashboardPage({ searchParams }: PrivateDash
   const workspace = await requireWorkspaceSession();
   const isReadOnly = isReadOnlyWorkspaceRole(workspace.actor.role);
   const resolvedSearchParams = (await searchParams) ?? {};
-  const notes = await listOwnerNotes(workspace.owner.id);
-  const publishedNotes = notes.filter((note) => note.isPublished).length;
-  const pendingNotes = notes.filter((note) => note.enrichment.status === "pending").length;
+  const limit = normalizeIncrementalLimit(resolvedSearchParams.limit, OWNER_COLLECTION_PAGE_SIZE);
+  const [notes, totalNotes, publishedNotes, pendingNotes] = await Promise.all([
+    listOwnerNotesPage(workspace.owner.id, limit),
+    countOwnerNotes(workspace.owner.id),
+    countPublishedOwnerNotes(workspace.owner.id),
+    countPendingOwnerNotes(workspace.owner.id)
+  ]);
   const dateFormatter = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
 
   return (
     <div className="feature-layout">
-      <EnrichmentPendingRefresh enabled={notes.some((note) => note.enrichment.status === "pending")} />
+      <EnrichmentPendingRefresh enabled={pendingNotes > 0} />
       <Surface className="dashboard-hero" tone="hero">
         <div className="dashboard-hero-head">
           <div className="dashboard-hero-copy">
@@ -62,7 +74,7 @@ export default async function PrivateDashboardPage({ searchParams }: PrivateDash
         {resolvedSearchParams.deleted === "note" ? <p className="status-note">Note permanently deleted.</p> : null}
         <div className="summary-row dashboard-summary-row" aria-label="Dashboard overview">
           <div className="dashboard-stat">
-            <span className="dashboard-stat-value">{notes.length}</span>
+            <span className="dashboard-stat-value">{totalNotes}</span>
             <strong>Total notes</strong>
             <span>All notes</span>
           </div>
@@ -81,20 +93,30 @@ export default async function PrivateDashboardPage({ searchParams }: PrivateDash
 
       <div className="dashboard-grid owner-dashboard-grid" data-testid="owner-dashboard-grid">
         <Surface className="owner-dashboard-main" tone="panel">
-          <SectionHeading meta="Drafts and published notes" title="Notes" />
-          {notes.length === 0 ? (
+          <SectionHeading meta={notes.length < totalNotes ? `${notes.length} of ${totalNotes} loaded` : "Drafts and published notes"} title="Notes" />
+          {totalNotes === 0 ? (
             <p>No notes yet. Create your first draft.</p>
           ) : (
-            <div className="note-list owner-dashboard-note-list" data-testid="owner-dashboard-note-list">
-              {notes.map((note) => (
-                <OwnerNoteCard
-                  href={`/app/notes/${note.id}/edit` as Route}
-                  key={note.id}
-                  note={note}
-                  updatedAtLabel={dateFormatter.format(note.updatedAt)}
-                />
-              ))}
-            </div>
+            <>
+              <div className="note-list owner-dashboard-note-list" data-testid="owner-dashboard-note-list">
+                {notes.map((note) => (
+                  <OwnerNoteCard
+                    href={`/app/notes/${note.id}/edit` as Route}
+                    key={note.id}
+                    note={note}
+                    updatedAtLabel={dateFormatter.format(note.updatedAt)}
+                  />
+                ))}
+              </div>
+              <AutoLoadMore
+                buttonLabel="Load more notes"
+                currentCount={notes.length}
+                currentLimit={limit}
+                pageSize={OWNER_COLLECTION_PAGE_SIZE}
+                testId="owner-notes-load-more"
+                totalCount={totalNotes}
+              />
+            </>
           )}
         </Surface>
       </div>

@@ -33,6 +33,7 @@ If a UI or API behavior is visible to users, it should be defined here before im
 | `public-link-publishing.md` | confirmed | Publish/unpublish links into the public showroom |
 | `public-showroom-search.md` | confirmed | Unified title-only public homepage search |
 | `ui-hierarchy-softening.md` | confirmed | Toned-down `h1` and `strong` hierarchy across surfaces |
+| `incremental-content-loading.md` | confirmed | Initial note/link slice sizes plus bottom-triggered automatic continuation |
 
 ## Editing Rule
 When product behavior changes:

@@ -1,10 +1,13 @@
 "use client";
 
 import type { Route } from "next";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useDeferredValue, useEffect, useRef, useState, useTransition } from "react";
 
+import { AutoLoadMore } from "@/components/ui/auto-load-more";
 import { Button, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
+import { PUBLIC_COLLECTION_PAGE_SIZE } from "@/lib/pagination";
 import { LinkFavicon } from "@/features/links/components/link-favicon";
 import { NoteCardImage } from "@/features/notes/components/note-card-image";
 import type { NoteCardImage as NoteCardImageData } from "@/features/notes/types";
@@ -238,29 +241,45 @@ function getCollapsedSearchSummary(totalCount: number) {
 }
 
 export function PublicShowroom({
+  archiveCount,
   defaultSearchExpanded = false,
   hasPublishedLinks,
-  items
+  initialLimit,
+  items,
+  matchingCount,
+  query
 }: {
+  archiveCount: number;
   defaultSearchExpanded?: boolean;
   hasPublishedLinks: boolean;
+  initialLimit: number;
   items: PublicShowroomItem[];
+  matchingCount: number;
+  query: string;
 }) {
-  const [isSearchExpanded, setIsSearchExpanded] = useState(defaultSearchExpanded);
-  const [query, setQuery] = useState("");
+  const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [, startTransition] = useTransition();
+  const [isSearchExpanded, setIsSearchExpanded] = useState(defaultSearchExpanded || query.length > 0);
+  const [draftQuery, setDraftQuery] = useState(query);
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const publishedNotes = items.filter((item) => item.kind === "note").length;
-  const normalizedQuery = query.trim().toLocaleLowerCase();
-  const filteredItems = normalizedQuery.length === 0 ? items : items.filter((item) => item.title.toLocaleLowerCase().includes(normalizedQuery));
+  const deferredQuery = useDeferredValue(draftQuery);
+  const normalizedQuery = query.trim();
+  const loadedCount = items.length;
   const searchPanelId = "public-title-search-panel";
   const publishedCountLabel = hasPublishedLinks
-    ? `${items.length} public item${items.length === 1 ? "" : "s"}`
-    : `${publishedNotes} published note${publishedNotes === 1 ? "" : "s"}`;
+    ? `${archiveCount} public item${archiveCount === 1 ? "" : "s"}`
+    : `${archiveCount} published note${archiveCount === 1 ? "" : "s"}`;
   const listTitle = hasPublishedLinks ? "Published notes and links" : "Published notes";
-  const listMeta = normalizedQuery ? `${filteredItems.length} matching title${filteredItems.length === 1 ? "" : "s"}` : "Newest first";
+  const listMeta = normalizedQuery
+    ? `${loadedCount}${loadedCount < matchingCount ? ` of ${matchingCount}` : ""} matching title${matchingCount === 1 ? "" : "s"}`
+    : loadedCount < matchingCount
+      ? `${loadedCount} of ${matchingCount} loaded`
+      : "Newest first";
   const showroomHeading = hasPublishedLinks ? "Published notes and links" : "Published notes";
   const emptyStateMessage =
-    items.length === 0
+    archiveCount === 0
       ? "No published notes or links yet."
       : hasPublishedLinks
         ? "No published notes or links match this title."
@@ -272,10 +291,44 @@ export function PublicShowroom({
     }
   }, [isSearchExpanded]);
 
+  useEffect(() => {
+    const nextQuery = deferredQuery.trim();
+
+    if (nextQuery === query) {
+      return;
+    }
+
+    const nextSearchParams = new URLSearchParams(searchParams.toString());
+
+    if (nextQuery) {
+      nextSearchParams.set("q", nextQuery);
+    } else {
+      nextSearchParams.delete("q");
+    }
+
+    nextSearchParams.delete("limit");
+
+    startTransition(() => {
+      router.replace((nextSearchParams.size > 0 ? `${pathname}?${nextSearchParams.toString()}` : pathname) as Parameters<typeof router.replace>[0], {
+        scroll: false
+      });
+    });
+  }, [deferredQuery, pathname, query, router, searchParams]);
+
   const openSearch = () => setIsSearchExpanded(true);
   const closeSearch = () => {
-    setQuery("");
+    setDraftQuery("");
     setIsSearchExpanded(false);
+
+    const nextSearchParams = new URLSearchParams(searchParams.toString());
+    nextSearchParams.delete("q");
+    nextSearchParams.delete("limit");
+
+    startTransition(() => {
+      router.replace((nextSearchParams.size > 0 ? `${pathname}?${nextSearchParams.toString()}` : pathname) as Parameters<typeof router.replace>[0], {
+        scroll: false
+      });
+    });
   };
 
   return (
@@ -312,7 +365,7 @@ export function PublicShowroom({
                       autoComplete="off"
                       className="text-input"
                       data-testid="public-home-search-input"
-                      onChange={(event) => setQuery(event.currentTarget.value)}
+                      onChange={(event) => setDraftQuery(event.currentTarget.value)}
                       onKeyDown={(event) => {
                         if (event.key === "Escape") {
                           event.preventDefault();
@@ -322,7 +375,7 @@ export function PublicShowroom({
                       placeholder={hasPublishedLinks ? "Search public titles" : "Search published note titles"}
                       ref={searchInputRef}
                       type="search"
-                      value={query}
+                      value={draftQuery}
                     />
                   </div>
                   <Button
@@ -338,7 +391,7 @@ export function PublicShowroom({
                     Close
                   </Button>
                   <p className="field-note public-search-summary" data-testid="public-home-search-summary">
-                    {getSearchSummary(query.trim(), filteredItems.length, items.length)}
+                    {getSearchSummary(normalizedQuery, loadedCount, matchingCount)}
                   </p>
                 </div>
               ) : (
@@ -356,7 +409,7 @@ export function PublicShowroom({
                     Search titles
                   </Button>
                   <p className="field-note public-search-summary" data-testid="public-home-search-summary">
-                    {getCollapsedSearchSummary(items.length)}
+                    {getCollapsedSearchSummary(archiveCount)}
                   </p>
                 </div>
               )}
@@ -366,14 +419,24 @@ export function PublicShowroom({
 
         <SectionHeading className="public-showroom-section-heading" meta={listMeta} title={listTitle} />
 
-        {filteredItems.length === 0 ? (
+        {items.length === 0 ? (
           <p data-testid="public-home-empty-state">{emptyStateMessage}</p>
         ) : (
-          <div className="note-list public-note-list public-note-showroom" data-testid="public-home-showroom">
-            {filteredItems.map((item) => (
-              <PublishedContentPreviewCard key={`${item.kind}-${item.id}`} item={item} />
-            ))}
-          </div>
+          <>
+            <div className="note-list public-note-list public-note-showroom" data-testid="public-home-showroom">
+              {items.map((item) => (
+                <PublishedContentPreviewCard key={`${item.kind}-${item.id}`} item={item} />
+              ))}
+            </div>
+            <AutoLoadMore
+              buttonLabel="Load more published items"
+              currentCount={loadedCount}
+              currentLimit={initialLimit}
+              pageSize={PUBLIC_COLLECTION_PAGE_SIZE}
+              testId="public-home-load-more"
+              totalCount={matchingCount}
+            />
+          </>
         )}
       </Surface>
     </div>

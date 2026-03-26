@@ -125,6 +125,23 @@ function mapNotePublishedRecord(note: NotePublishedRow) {
   };
 }
 
+function buildPublishedNoteWhere(query?: string) {
+  const normalizedQuery = query?.trim();
+
+  if (!normalizedQuery) {
+    return {
+      isPublished: true
+    };
+  }
+
+  return {
+    isPublished: true,
+    title: {
+      contains: normalizedQuery
+    }
+  };
+}
+
 export const notesRepo = {
   async listForOwner(ownerId: string) {
     const notes = await prisma.note.findMany({
@@ -138,6 +155,43 @@ export const notesRepo = {
     });
 
     return notes.map(mapNoteSummaryRecord);
+  },
+  async listForOwnerPage(ownerId: string, take: number) {
+    const notes = await prisma.note.findMany({
+      where: {
+        ownerId
+      },
+      orderBy: {
+        updatedAt: "desc"
+      },
+      select: noteSummarySelect,
+      take
+    });
+
+    return notes.map(mapNoteSummaryRecord);
+  },
+  async countForOwner(ownerId: string) {
+    return prisma.note.count({
+      where: {
+        ownerId
+      }
+    });
+  },
+  async countPublishedForOwner(ownerId: string) {
+    return prisma.note.count({
+      where: {
+        ownerId,
+        isPublished: true
+      }
+    });
+  },
+  async countPendingForOwner(ownerId: string) {
+    return prisma.note.count({
+      where: {
+        ownerId,
+        enrichmentStatus: normalizeEnrichmentStatus("pending")
+      }
+    });
   },
   async listForOwnerByTag(ownerId: string, tagName: string) {
     const notes = await prisma.note.findMany({
@@ -203,6 +257,28 @@ export const notesRepo = {
     });
 
     return notes.map(mapNotePublishedSummaryRecord);
+  },
+  async listPublishedPage(take: number, query?: string) {
+    const notes = await prisma.note.findMany({
+      where: buildPublishedNoteWhere(query),
+      orderBy: [
+        {
+          publishedAt: "desc"
+        },
+        {
+          updatedAt: "desc"
+        }
+      ],
+      select: notePublishedSummarySelect,
+      take
+    });
+
+    return notes.map(mapNotePublishedSummaryRecord);
+  },
+  async countPublished(query?: string) {
+    return prisma.note.count({
+      where: buildPublishedNoteWhere(query)
+    });
   },
   async findByIdForOwner(ownerId: string, id: string) {
     const note = await prisma.note.findFirst({

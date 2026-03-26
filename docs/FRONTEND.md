@@ -28,7 +28,7 @@ Describe the user-facing structure of Minakeep so an agent can implement the UI 
 
 ## Primary Screens
 ### Public homepage
-Acts as a mixed public showroom first. It should emphasize a dynamic masonry-style archive of published note and published link previews, remove the old owner-entrance side section, keep framing copy minimal, use a compact archive header instead of a hero block, and keep the public title-only search control collapsed into a small button-and-summary row until the visitor explicitly expands it.
+Acts as a mixed public showroom first. It should emphasize a dynamic masonry-style archive of published note and published link previews, remove the old owner-entrance side section, keep framing copy minimal, use a compact archive header instead of a hero block, keep the public title-only search control collapsed into a small button-and-summary row until the visitor explicitly expands it, and load only the first 10 matching public items before continuing automatically from a bottom `Load more` control.
 
 ### Public note page
 Prioritizes reading comfort with narrower measure, calmer human-made typography, quieter metadata, uploaded note images, and supporting AI summary/tags.
@@ -40,7 +40,7 @@ Appear in the public showroom alongside note cards, with a cached favicon head i
 Simple credentials screen with reduced visual bulk and cleaner desktop/mobile balance. Public navigation should preserve owner continuity when an authenticated owner moves between public and private routes. When demo credentials are configured, the login surface should also admit the demonstration user without implying write access.
 
 ### Private dashboard
-Compact professional workspace with slimmer navigation, tighter lists, and more visible note content above the fold on desktop. Secondary route-promoting blocks should not steal prime desktop width from the Notes section.
+Compact professional workspace with slimmer navigation, tighter lists, and more visible note content above the fold on desktop. Secondary route-promoting blocks should not steal prime desktop width from the Notes section. The notes list should load the first 20 items and continue from a bottom `Load more` control when the owner reaches it.
 
 ### Demonstration workspace mode
 The demonstration user should see the same owner workspace routes and content model, but all mutating actions must be unavailable or clearly disabled. The demo experience is for product inspection, not content editing.
@@ -49,7 +49,7 @@ The demonstration user should see the same owner workspace routes and content mo
 Smaller typographic hierarchy, reduced padding, and reusable form/layout primitives without changing existing logic flows. The note editor should evolve into a source-first markdown workbench with syntax-aware editing, a compact formatting toolbar, `Source / Split / Preview` modes on desktop, a cleaner `Edit / Preview` toggle on mobile, and an upload path that inserts note images into markdown automatically.
 
 ### Links, tags, and search
-Secondary owner surfaces should inherit the same density and responsive behavior as the dashboard rather than looking like oversized standalone cards.
+Secondary owner surfaces should inherit the same density and responsive behavior as the dashboard rather than looking like oversized standalone cards. The links route should load the first 20 saved links and continue from a bottom `Load more` control when the owner reaches it.
 
 ### Settings
 The owner workspace should expose a dedicated settings section for service configuration. The first wave needs only title and description, but the route and storage model should feel like the start of an extendable settings area rather than an isolated one-off form.
@@ -89,6 +89,7 @@ The owner workspace should expose a dedicated settings section for service confi
 
 ## Search / Share / Admin Notes
 - public search is homepage-only and title-only
+- public search resets the visible window to the first 10 matching items whenever the query changes
 - public discovery for search engines should expose only routes that are already first-party public pages
 - the public search affordance is collapsed or compact by default, shows title-only scope in its collapsed state, and expands only on explicit user action
 - closing the expanded public search returns to the collapsed state and clears the active query

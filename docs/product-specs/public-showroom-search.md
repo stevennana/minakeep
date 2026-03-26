@@ -15,6 +15,7 @@ An anonymous visitor types into the public homepage search bar.
 - On mobile, the collapsed summary can stack beneath the trigger, but it should still stay inside the same compact search shell without pushing the visitor into a header-only state.
 - The search bar filters published notes and published links together.
 - Search matches titles only.
+- Changing the query resets the visible showroom window to the first 10 matching items before bottom continuation resumes.
 - Closing the expanded search clears the active query and returns the control to its collapsed state.
 - There is no type selector and no separate public results route in this wave.
 - Search updates the homepage showroom in place.
@@ -28,5 +29,6 @@ An anonymous visitor types into the public homepage search bar.
 - Dismissing the expanded search returns the homepage to the compact collapsed-search state without preserving stale filters.
 - Title matches for published notes and published links appear in one filtered homepage feed.
 - Non-matching public content is removed from the current view as the query changes.
+- Matching results beyond the first 10 items remain reachable through the same bottom continuation behavior as the default showroom feed.
 - The search does not expose unpublished content.
 - `npm run verify` passes.

@@ -2445,6 +2445,24 @@ textarea {
   gap: var(--space-3);
 }
 
+.collection-load-more {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-top: 1.1rem;
+  padding: 0.35rem 0 0.1rem;
+}
+
+.collection-load-more-summary {
+  margin: 0;
+  text-align: center;
+}
+
+.collection-load-more-button {
+  min-width: 11.5rem;
+}
+
 .tag-list,
 .ui-tag-list {
   align-items: flex-start;
