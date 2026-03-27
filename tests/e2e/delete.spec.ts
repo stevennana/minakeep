@@ -73,7 +73,7 @@ async function seedDeleteFixture(label: string): Promise<DeleteFixture> {
   const noteSlug = `delete-note-${uniqueId}`;
   const linkTitle = `Delete link ${uniqueId}`;
   const linkUrl = `https://example.com/delete-link-${uniqueId}`;
-  const updatedAt = new Date("2026-03-23T05:00:00.000Z");
+  const updatedAt = new Date("2026-03-27T05:00:00.000Z");
 
   await prisma.note.deleteMany({
     where: {

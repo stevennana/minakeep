@@ -23,6 +23,8 @@ import {
   continueMarkdownStructure,
   getViewportSyncedViewMode,
   indentSelectedLines,
+  insertBlockMath,
+  insertInlineMath,
   insertMarkdownImage,
   insertMarkdownLink,
   toggleBlockquote,
@@ -168,8 +170,8 @@ export function NoteEditor({
   const characterCount = markdown.length;
   const workbenchBodyClassName = `note-editor-workbench-body note-editor-workbench-body-${viewMode}`;
   const toolbarHint = isDesktopViewport
-    ? "Syntax-aware editing keeps the source visible and saves one markdown string."
-    : "Edit in markdown, then switch to preview without compressing both panes onto the phone screen.";
+    ? "Syntax-aware editing keeps the source visible, supports $...$ and $$...$$ math, and still saves one markdown string."
+    : "Edit in markdown, including $...$ or $$...$$ math, then switch to preview without compressing both panes onto the phone screen.";
   const noteFormProps = readOnly ? ({ as: "div" as const }) : ({ action, as: "form" as const });
 
   function runEditorAction(action: (currentMarkdown: string, selection: SelectionRange) => MarkdownEditResult) {
@@ -570,6 +572,18 @@ export function NoteEditor({
       name: "Link",
       run: insertMarkdownLink,
       shortcut: "Ctrl/Cmd+K"
+    },
+    {
+      label: "$x$",
+      name: "Inline math",
+      run: insertInlineMath,
+      shortcut: "Selection"
+    },
+    {
+      label: "$$",
+      name: "Block math",
+      run: insertBlockMath,
+      shortcut: "Selection"
     }
   ];
   const viewModes: Array<{ desktopLabel: string; description: string; mobileLabel: string; value: NoteEditorViewMode }> = isDesktopViewport
@@ -716,7 +730,7 @@ export function NoteEditor({
 
           <FormField
             className="note-body-field"
-            hint="Markdown stays the saved note body. Tab indents selected lines and Enter continues lists or blockquotes."
+            hint="Markdown stays the saved note body. Inline math uses $...$, block math uses $$...$$, Tab indents selected lines, and Enter continues lists or blockquotes."
             label="Markdown body"
           >
             <div
@@ -828,7 +842,7 @@ export function NoteEditor({
                         onSelect={(event) => syncEditorState(event.currentTarget)}
                         placeholder={`# Start writing
 
-Use headings, lists, quotes, links, and code without leaving markdown source.`}
+Use headings, lists, quotes, links, code, and $...$ math without leaving markdown source.`}
                         ref={textareaRef}
                         readOnly={readOnly}
                         spellCheck="true"

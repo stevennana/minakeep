@@ -304,7 +304,7 @@ test("@ui-note-editor-toolbar desktop toolbar stays compact without breaking hie
 
   await expect(page.getByRole("heading", { name: "Edit draft note" })).toBeVisible();
   await expect(page.getByTestId("note-markdown-workbench")).toBeVisible();
-  await expect(page.getByTestId("note-editor-toolbar").getByRole("button")).toHaveCount(10);
+  await expect(page.getByTestId("note-editor-toolbar").getByRole("button")).toHaveCount(12);
   await expect(page.locator(".note-editor-statusbar")).toContainText("lines");
   await expect(page.getByTestId("note-markdown-preview")).toContainText("Keep shortcuts natural");
   await expectAccessibleStructure(page);

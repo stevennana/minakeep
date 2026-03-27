@@ -1,3 +1,5 @@
+import katex from "katex";
+
 function escapeHtml(value: string) {
   return value
     .replaceAll("&", "&amp;")
@@ -34,33 +36,108 @@ export type EmbeddedMarkdownImage = {
   src: string;
 };
 
+function isEscaped(markdown: string, index: number) {
+  let slashCount = 0;
+
+  for (let cursor = index - 1; cursor >= 0 && markdown[cursor] === "\\"; cursor -= 1) {
+    slashCount += 1;
+  }
+
+  return slashCount % 2 === 1;
+}
+
+function renderMathExpression(expression: string, displayMode: boolean) {
+  return katex.renderToString(expression.trim(), {
+    displayMode,
+    output: "htmlAndMathml",
+    strict: "ignore",
+    throwOnError: false
+  });
+}
+
+function findInlineMathEnd(markdown: string, start: number) {
+  for (let index = start + 1; index < markdown.length; index += 1) {
+    if (markdown[index] !== "$" || isEscaped(markdown, index)) {
+      continue;
+    }
+
+    const expression = markdown.slice(start + 1, index);
+
+    if (!expression.trim() || /\s$/.test(expression)) {
+      continue;
+    }
+
+    return index;
+  }
+
+  return -1;
+}
+
 function renderInlineMarkdown(markdown: string): string {
-  const pattern = /(`[^`]+`)|(!\[([^\]]*)\]\(([^)]+)\))|(\[([^\]]+)\]\(([^)]+)\))|(\*\*([^*]+)\*\*)|(\*([^*]+)\*)/g;
   let result = "";
   let cursor = 0;
 
-  for (const match of markdown.matchAll(pattern)) {
-    const matchedText = match[0];
-    const matchIndex = match.index ?? 0;
+  while (cursor < markdown.length) {
+    const codeMatch = markdown.slice(cursor).match(/^`([^`]+)`/);
 
-    result += escapeHtml(markdown.slice(cursor, matchIndex));
-
-    if (match[1]) {
-      result += `<code>${escapeHtml(matchedText.slice(1, -1))}</code>`;
-    } else if (match[2]) {
-      result += `<img alt="${escapeHtml(match[3] ?? "")}" loading="lazy" src="${escapeHtml(sanitizeUrl(match[4] ?? ""))}" />`;
-    } else if (match[5]) {
-      result += `<a href="${escapeHtml(sanitizeUrl(match[7] ?? ""))}" rel="noreferrer noopener" target="_blank">${renderInlineMarkdown(match[6] ?? "")}</a>`;
-    } else if (match[8]) {
-      result += `<strong>${renderInlineMarkdown(match[9] ?? "")}</strong>`;
-    } else if (match[10]) {
-      result += `<em>${renderInlineMarkdown(match[11] ?? "")}</em>`;
+    if (codeMatch) {
+      result += `<code>${escapeHtml(codeMatch[1] ?? "")}</code>`;
+      cursor += codeMatch[0].length;
+      continue;
     }
 
-    cursor = matchIndex + matchedText.length;
-  }
+    const imageMatch = markdown.slice(cursor).match(/^!\[([^\]]*)\]\(([^)]+)\)/);
 
-  result += escapeHtml(markdown.slice(cursor));
+    if (imageMatch) {
+      result += `<img alt="${escapeHtml(imageMatch[1] ?? "")}" loading="lazy" src="${escapeHtml(sanitizeUrl(imageMatch[2] ?? ""))}" />`;
+      cursor += imageMatch[0].length;
+      continue;
+    }
+
+    const linkMatch = markdown.slice(cursor).match(/^\[([^\]]+)\]\(([^)]+)\)/);
+
+    if (linkMatch) {
+      result += `<a href="${escapeHtml(sanitizeUrl(linkMatch[2] ?? ""))}" rel="noreferrer noopener" target="_blank">${renderInlineMarkdown(linkMatch[1] ?? "")}</a>`;
+      cursor += linkMatch[0].length;
+      continue;
+    }
+
+    const strongMatch = markdown.slice(cursor).match(/^\*\*([^*]+)\*\*/);
+
+    if (strongMatch) {
+      result += `<strong>${renderInlineMarkdown(strongMatch[1] ?? "")}</strong>`;
+      cursor += strongMatch[0].length;
+      continue;
+    }
+
+    const emphasisMatch = markdown.slice(cursor).match(/^\*([^*]+)\*/);
+
+    if (emphasisMatch) {
+      result += `<em>${renderInlineMarkdown(emphasisMatch[1] ?? "")}</em>`;
+      cursor += emphasisMatch[0].length;
+      continue;
+    }
+
+    if (
+      markdown[cursor] === "$" &&
+      !isEscaped(markdown, cursor) &&
+      markdown[cursor + 1] !== "$" &&
+      markdown[cursor + 1] &&
+      !/\s/.test(markdown[cursor + 1] ?? "")
+    ) {
+      const mathEnd = findInlineMathEnd(markdown, cursor);
+
+      if (mathEnd !== -1) {
+        const expression = markdown.slice(cursor + 1, mathEnd);
+        result += `<span class="markdown-math-inline">${renderMathExpression(expression, false)}</span>`;
+        cursor = mathEnd + 1;
+        continue;
+      }
+    }
+
+    result += escapeHtml(markdown[cursor]);
+    cursor += 1;
+  }
 
   return result;
 }
@@ -94,6 +171,8 @@ function isTableRow(line: string) {
 function stripMarkdown(value: string) {
   return value
     .replace(/```[\s\S]*?```/g, " ")
+    .replace(/\$\$([\s\S]*?)\$\$/g, "$1")
+    .replace(/\$([^\n$]+)\$/g, "$1")
     .replace(/^\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?$/gm, " ")
     .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, "$1")
     .replace(/`([^`]+)`/g, "$1")
@@ -158,6 +237,29 @@ export function renderMarkdownToHtml(markdown: string) {
       }
 
       blocks.push(`<pre><code>${escapeHtml(codeLines.join("\n"))}</code></pre>`);
+      continue;
+    }
+
+    if (trimmedLine === "$$" || /^\$\$.+\$\$$/.test(trimmedLine)) {
+      if (trimmedLine !== "$$") {
+        blocks.push(`<div class="markdown-math-block">${renderMathExpression(trimmedLine.slice(2, -2), true)}</div>`);
+        index += 1;
+        continue;
+      }
+
+      const mathLines: string[] = [];
+      index += 1;
+
+      while (index < normalizedLines.length && normalizedLines[index].trim() !== "$$") {
+        mathLines.push(normalizedLines[index]);
+        index += 1;
+      }
+
+      if (index < normalizedLines.length) {
+        index += 1;
+      }
+
+      blocks.push(`<div class="markdown-math-block">${renderMathExpression(mathLines.join("\n"), true)}</div>`);
       continue;
     }
 
@@ -247,6 +349,8 @@ export function renderMarkdownToHtml(markdown: string) {
 
       if (
         trimmedCandidate.startsWith("```") ||
+        trimmedCandidate === "$$" ||
+        /^\$\$.+\$\$$/.test(trimmedCandidate) ||
         trimmedCandidate.startsWith(">") ||
         /^---+$/.test(trimmedCandidate) ||
         /^(#{1,6})\s+/.test(trimmedCandidate) ||

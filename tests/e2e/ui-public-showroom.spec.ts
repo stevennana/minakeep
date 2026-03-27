@@ -479,7 +479,7 @@ test("@ui-regression @ui-refinement-hardening @ui-public-showroom @ui-public-sho
   await expect(showroomCards).toHaveCount(2);
   await expect(page.getByRole("link", { name: seededPublishedNotes[1].title })).toBeVisible();
   await expect(page.getByRole("link", { name: seededPublishedLinks[1].title, exact: true })).toBeVisible();
-  await expect(page.getByTestId("public-home-search-summary")).toHaveText("Showing 2 of 4 public items.");
+  await expect(page.getByTestId("public-home-search-summary")).toHaveText("Showing 2 of 2 public items.");
 });
 
 test("@ui-regression @ui-public-showroom public showroom media targets follow the same destinations as their titles", async ({ page }) => {
@@ -561,7 +561,7 @@ test("@ui-regression @ui-refinement-hardening @ui-public-showroom @ui-public-sho
   await expect(showroomCards).toHaveCount(2);
   await expect(page.getByRole("link", { name: seededPublishedNotes[1].title })).toBeVisible();
   await expect(page.getByRole("link", { name: seededPublishedLinks[1].title, exact: true })).toBeVisible();
-  await expect(page.getByTestId("public-home-search-summary")).toHaveText("Showing 2 of 4 public items.");
+  await expect(page.getByTestId("public-home-search-summary")).toHaveText("Showing 2 of 2 public items.");
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
 });

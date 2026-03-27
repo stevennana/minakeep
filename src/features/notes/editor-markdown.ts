@@ -229,6 +229,38 @@ export function insertMarkdownImage(
   };
 }
 
+export function insertInlineMath(markdown: string, selection: SelectionRange): MarkdownEditResult {
+  return toggleInlineWrap(markdown, selection, "$");
+}
+
+export function insertBlockMath(markdown: string, selection: SelectionRange): MarkdownEditResult {
+  const selectedText = markdown.slice(selection.start, selection.end);
+
+  if (selection.start === selection.end) {
+    const replacement = "$$\n\n$$";
+    const cursor = selection.start + 3;
+
+    return {
+      nextMarkdown: `${markdown.slice(0, selection.start)}${replacement}${markdown.slice(selection.end)}`,
+      nextSelection: {
+        end: cursor,
+        start: cursor
+      }
+    };
+  }
+
+  const replacement = `$$\n${selectedText}\n$$`;
+  const nextStart = selection.start + 3;
+
+  return {
+    nextMarkdown: `${markdown.slice(0, selection.start)}${replacement}${markdown.slice(selection.end)}`,
+    nextSelection: {
+      end: nextStart + selectedText.length,
+      start: nextStart
+    }
+  };
+}
+
 export function toggleBlockquote(markdown: string, selection: SelectionRange): MarkdownEditResult {
   return replaceSelectedLines(markdown, selection, (lines) => {
     const hasContent = lines.some((line) => line.trim().length > 0);

@@ -22,7 +22,7 @@ const seededDraftNote = {
   markdown: "# Demo workspace note",
   slug: "demo-workspace-note",
   title: "Demo workspace note",
-  updatedAt: new Date("2024-07-12T08:15:00.000Z")
+  updatedAt: new Date("2026-03-27T08:15:00.000Z")
 } as const;
 
 const seededPublishedNote = {
@@ -30,20 +30,20 @@ const seededPublishedNote = {
   markdown: "# Demo published note",
   slug: "demo-published-note",
   title: "Demo published note",
-  updatedAt: new Date("2024-07-14T10:30:00.000Z")
+  updatedAt: new Date("2026-03-27T10:30:00.000Z")
 } as const;
 
 const seededDraftLink = {
   summary: "A seeded owner link that stays visible while demo mutation controls remain disabled.",
   title: "Demo workspace link",
-  updatedAt: new Date("2024-07-13T09:45:00.000Z"),
+  updatedAt: new Date("2026-03-27T09:45:00.000Z"),
   url: "https://example.com/demo-workspace-link"
 } as const;
 
 const seededPublishedLink = {
   summary: "A published owner link used to verify demo unpublish requests fail at the server boundary.",
   title: "Demo published link",
-  updatedAt: new Date("2024-07-15T11:20:00.000Z"),
+  updatedAt: new Date("2026-03-27T11:20:00.000Z"),
   url: "https://example.com/demo-published-link"
 } as const;
 

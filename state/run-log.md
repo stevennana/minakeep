@@ -1599,3 +1599,14 @@ No remaining task. Stopping loop.
 - health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxoooxxooxoxxxoo
 - cycle: finished
 No remaining task. Stopping loop.
+## loop start 2026-03-27T22:49:59+09:00
+
+### cycle 2026-03-27T22:49:59+09:00 task=091-note-math-verification
+- artifacts: state/artifacts/20260327T224959-091-note-math-verification
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260327T224959-091-note-math-verification/worker.jsonl
+- worker-summary: The shipped note-math slice is aligned and promotable. I did not broaden the implementation; I verified that owner preview and published notes both render from the same shared markdown path in [markdown.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/markdown.ts#L213), with the owner workbench preview calling that renderer in [note-editor.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/components/note-editor.tsx#L163) and the public note page using the same renderer in [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/notes/[slug]/page.tsx#L72). I recorded the concrete verification notes in [091-note-math-verification.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/091-note-math-verification.md#L74) and wrote the operator handoff to [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt#L1).
+- evaluator: started
+- evaluator: status=not_done promotion=false The core note-math slice looks shipped: the editor inserts raw `$...$` and `$$...$$`, owner preview and public note pages both render through the shared `renderMarkdownToHtml` path, math styles are loaded globally, the math-focused unit/E2E coverage and snapshots are present, the docs were updated, and the recorded required commands passed. I am not marking task 091 done because the working tree still contains unrelated drift outside the stated note-math closeout, especially in `tests/e2e/delete.spec.ts`, `tests/e2e/demo-user.spec.ts`, `tests/e2e/public-home-search.spec.ts`, and `tests/e2e/ui-public-showroom.spec.ts`. Those edits are not part of the task contract or progress log, so promoting 091 would not read as a clean, queue-aligned verification tranche. -> state/artifacts/20260327T224959-091-note-math-verification/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260327T224959-091-note-math-verification/npm-run-test-e2e-grep-ui-note-math-next-server.log

@@ -5,6 +5,8 @@ import {
   continueMarkdownStructure,
   getViewportSyncedViewMode,
   indentSelectedLines,
+  insertBlockMath,
+  insertInlineMath,
   insertMarkdownImage,
   insertMarkdownLink,
   toggleBlockquote,
@@ -43,6 +45,28 @@ test("inline markdown transforms stay reversible without introducing a second do
   const imageInserted = insertMarkdownImage("Alpha paragraph", { end: 15, start: 15 }, { alt: "Desk shot", url: "/media/asset-1" });
   assert.equal(imageInserted.nextMarkdown, "Alpha paragraph\n\n![Desk shot](/media/asset-1)");
   assert.deepEqual(imageInserted.nextSelection, { end: 45, start: 45 });
+});
+
+test("math helpers keep note authoring markdown-native", () => {
+  const inlineMath = insertInlineMath("mass", { end: 4, start: 0 });
+  assert.equal(inlineMath.nextMarkdown, "$mass$");
+  assert.deepEqual(inlineMath.nextSelection, { end: 5, start: 1 });
+
+  const inlineEmpty = insertInlineMath("", { end: 0, start: 0 });
+  assert.equal(inlineEmpty.nextMarkdown, "$$");
+  assert.deepEqual(inlineEmpty.nextSelection, { end: 1, start: 1 });
+
+  const inlineReset = insertInlineMath(inlineMath.nextMarkdown, inlineMath.nextSelection);
+  assert.equal(inlineReset.nextMarkdown, "mass");
+  assert.deepEqual(inlineReset.nextSelection, { end: 4, start: 0 });
+
+  const blockMath = insertBlockMath("x^2 + y^2", selectAll("x^2 + y^2"));
+  assert.equal(blockMath.nextMarkdown, "$$\nx^2 + y^2\n$$");
+  assert.deepEqual(blockMath.nextSelection, { end: 12, start: 3 });
+
+  const emptyBlockMath = insertBlockMath("", { end: 0, start: 0 });
+  assert.equal(emptyBlockMath.nextMarkdown, "$$\n\n$$");
+  assert.deepEqual(emptyBlockMath.nextSelection, { end: 3, start: 3 });
 });
 
 test("line-oriented toolbar transforms add and remove markdown markers predictably", () => {

@@ -6,9 +6,9 @@ Only task files in this directory that contain a `taskmeta` JSON block are eligi
 
 ## Current recommended sequence
 
-The active queue is currently exhausted.
+1. `091-note-math-verification.md` -> verify the shipped LaTeX note wave, confirm doc and smoke alignment, and close the tranche cleanly.
 
-Task `090` is preserved in completed history as the incremental loading tranche. Tasks `087` through `089` remain preserved as the finished sitemap/SEO tranche. Tasks `080` through `086` remain preserved as the earlier settings/delete/upgrade tranche, and earlier completed tranches remain available as history.
+Task `090` is preserved in completed history as the incremental loading tranche. This active queue picks up with the post-implementation verification pass for note math. Tasks `087` through `089` remain preserved as the finished sitemap/SEO tranche. Tasks `080` through `086` remain preserved as the earlier settings/delete/upgrade tranche, and earlier completed tranches remain available as history.
 
 ## Operating rule
 

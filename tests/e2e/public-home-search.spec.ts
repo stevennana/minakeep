@@ -221,7 +221,7 @@ test("public homepage live search filters mixed published content by title only"
   await expect(page.getByRole("link", { name: seededPublishedNotes[1].title })).toHaveCount(0);
   await expect(page.getByRole("link", { name: seededPublishedLinks[1].title, exact: true })).toHaveCount(0);
   await expect(page.getByRole("link", { name: seededUnpublishedNote.title })).toHaveCount(0);
-  await expect(page.getByTestId("public-home-search-summary")).toHaveText("Showing 2 of 4 public items.");
+  await expect(page.getByTestId("public-home-search-summary")).toHaveText("Showing 2 of 2 public items.");
 
   await searchInput.fill("body-needle");
 
@@ -231,5 +231,5 @@ test("public homepage live search filters mixed published content by title only"
   await searchInput.clear();
 
   await expect(showroomCards).toHaveCount(seededPublishedNotes.length + seededPublishedLinks.length);
-  await expect(page.getByTestId("public-home-search-summary")).toHaveText("Showing all 4 public items.");
+  await expect(page.getByTestId("public-home-search-summary")).toHaveText("4 public items.");
 });

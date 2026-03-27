@@ -22,10 +22,11 @@ Upgrade note authoring from a plain textarea into a compact markdown workbench w
 ## Toolbar Rules
 - toolbar stays compact, not word-processor heavy
 - prioritize headings, bold, italic, lists, quote, code, and link actions
-- the first toolbar wave should stay to one compact row of source transforms: `H2`, bold, italic, inline code, bullet list, numbered list, quote, code block, and link
+- the first toolbar wave should stay to one compact row of source transforms: `H2`, bold, italic, inline code, bullet list, numbered list, quote, code block, link, inline math, and block math
 - keyboard shortcuts remain first-class for experienced users
 - common shortcut coverage should focus on low-surprise markdown conventions such as bold, italic, link insertion, heading insertion, tab indentation, and enter-based list continuation
 - toolbar actions should insert or transform markdown directly and predictably
+- math helpers should insert raw `$...$` or `$$...$$` delimiters instead of introducing a separate equation editor state
 
 ## Mobile Rules
 - avoid permanent split view on phone widths
@@ -36,6 +37,7 @@ Upgrade note authoring from a plain textarea into a compact markdown workbench w
 ## Fidelity Rules
 - mode switches must not rewrite markdown unexpectedly
 - preview output should match the renderer used in public note reading
+- inline and block LaTeX math should be rendered by the same shared note-rendering path used for published notes
 - richer editing affordances should improve authoring speed without hiding the underlying markdown too aggressively
 
 ## Anti-Goals

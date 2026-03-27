@@ -32,6 +32,27 @@ test("renderMarkdownToHtml renders markdown tables as semantic table markup", ()
   assert.match(html, /<td>Prompt &amp; LLM chaining<\/td>/);
 });
 
+test("renderMarkdownToHtml renders inline and block LaTeX math for note preview and public reading", () => {
+  const html = renderMarkdownToHtml(`Euler wrote $e^{i\\pi} + 1 = 0$ in the margin.
+
+$$
+\\int_0^1 x^2 \\, dx
+$$`);
+
+  assert.match(html, /markdown-math-inline/);
+  assert.match(html, /class="katex"/);
+  assert.ok(html.includes(String.raw`annotation encoding="application/x-tex">e^{i\pi} + 1 = 0</annotation>`));
+  assert.match(html, /markdown-math-block/);
+  assert.ok(html.includes(String.raw`annotation encoding="application/x-tex">\int_0^1 x^2 \, dx</annotation>`));
+});
+
+test("renderMarkdownToHtml keeps fenced code literal even when it contains math delimiters", () => {
+  const html = renderMarkdownToHtml("```\nconst sample = '$not-math$';\n```");
+
+  assert.doesNotMatch(html, /class="katex"/);
+  assert.match(html, /&apos;\$not-math\$&apos;|&#39;\$not-math\$&#39;/);
+});
+
 test("createNoteExcerpt turns markdown into readable summary text", () => {
   const excerpt = createNoteExcerpt("## Draft note\n\n![Desk shot](/media/image-1)\n\nThis is a private note with `inline code`.", "Fallback title");
 
@@ -44,4 +65,10 @@ test("createNoteExcerpt strips markdown table separators into readable text", ()
 | Purpose | Workflow engine | LLM framework |`, "Fallback title");
 
   assert.equal(excerpt, "Feature Deer Flow LangChain Purpose Workflow engine LLM framework");
+});
+
+test("createNoteExcerpt strips math delimiters into readable summary text", () => {
+  const excerpt = createNoteExcerpt("We keep $e^{i\\pi} + 1 = 0$ visible.\n\n$$\\int_0^1 x^2 \\, dx$$", "Fallback title");
+
+  assert.equal(excerpt, String.raw`We keep e^{i\pi} + 1 = 0 visible. \int 0^1 x^2 \, dx`);
 });

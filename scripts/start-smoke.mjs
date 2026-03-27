@@ -188,7 +188,8 @@ const legacyEnv = {
   DATABASE_URL: `file:${legacyDatabasePath}`,
   MEDIA_ROOT: path.join(legacySmokeDirectory, "media"),
   OWNER_USERNAME: process.env.OWNER_USERNAME ?? "owner",
-  OWNER_PASSWORD: process.env.OWNER_PASSWORD ?? "owner-password"
+  OWNER_PASSWORD: process.env.OWNER_PASSWORD ?? "owner-password",
+  SITE_URL: ""
 };
 
 createLegacyUpgradeFixture(legacyDatabasePath);

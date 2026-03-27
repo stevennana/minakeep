@@ -1125,7 +1125,8 @@ textarea {
 
 .public-note-body > img,
 .public-note-body pre,
-.public-note-body figure {
+.public-note-body figure,
+.public-note-body .markdown-math-block {
   max-width: min(100%, var(--public-note-wide-measure));
 }
 
@@ -2670,6 +2671,31 @@ textarea {
   height: auto;
   margin: 1.1rem 0;
   max-width: 100%;
+}
+
+.markdown-preview .markdown-math-inline {
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.markdown-preview .markdown-math-inline .katex {
+  max-width: 100%;
+}
+
+.markdown-preview .markdown-math-block {
+  margin: 1.05rem 0 1.2rem;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 0.1rem;
+}
+
+.markdown-preview .katex-display {
+  margin: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
 }
 
 .markdown-preview table {

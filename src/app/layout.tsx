@@ -5,6 +5,7 @@ import { getSiteSettings } from "@/features/site-settings/service";
 import { getWorkspaceSession } from "@/lib/auth/owner-session";
 import { isReadOnlyWorkspaceRole } from "@/lib/auth/roles";
 
+import "katex/dist/katex.min.css";
 import "./globals.css";
 
 export async function generateMetadata(): Promise<Metadata> {
