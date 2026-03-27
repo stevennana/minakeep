@@ -5,7 +5,7 @@
   "id": "091-note-math-verification",
   "title": "Note math verification",
   "order": 91,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "standard",
   "next_task_on_success": "NONE",
   "prompt_docs": [
@@ -33,7 +33,8 @@
     "Owner preview and published notes render math differently from the same markdown source.",
     "Math helpers broaden the editor into a second document model or heavyweight equation UI.",
     "The verification pass leaves startup-smoke, doc, or regression drift behind the shipped note-math behavior."
-  ]
+  ],
+  "completed_at": "2026-03-27T14:35:50.928Z"
 }
 ```
 
@@ -82,3 +83,4 @@ Promote only when the note-math tranche reads as a finished shipped slice rather
 - 2026-03-27T23:14:38+0900: reran the task contract after the smoke and snapshot alignment changes; `npm run test:e2e -- --grep @ui-note-math`, `npm run test:e2e -- --grep @ui-public-note-math`, and `npm run verify` all passed, including full unit, full E2E, and startup-smoke coverage.
 - 2026-03-27T23:22:08+0900: reran the full task contract on the current tree after reading the task docs and verifying the shared renderer, workbench helpers, public note path, and active queue alignment; the shipped slice still passes `npm run test:e2e -- --grep @ui-note-math`, `npm run test:e2e -- --grep @ui-public-note-math`, and `npm run verify` without further code changes.
 - 2026-03-27T23:30:01+0900: reread the required repo docs for task `091`, revalidated that owner preview and published notes still share `renderMarkdownToHtml`, and reran the promotion contract on the current tree; `npm run test:e2e -- --grep @ui-note-math`, `npm run test:e2e -- --grep @ui-public-note-math`, and `npm run verify` all passed locally, including the legacy-upgrade startup-smoke path.
+- 2026-03-27T14:35:50.928Z: automatically promoted after deterministic checks and evaluator approval.

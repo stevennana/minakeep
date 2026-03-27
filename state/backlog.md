@@ -78,5 +78,5 @@
 - [x] 088-public-sitemap-and-robots — Public sitemap and robots
 - [x] 089-public-seo-discovery-hardening — Public SEO discovery hardening
 - [x] 090-incremental-content-loading — Incremental content loading
-- [ ] 091-note-math-verification — Note math verification ← current
+- [x] 091-note-math-verification — Note math verification
 
