@@ -1,8 +1,8 @@
 {
   "task_id": "091-note-math-verification",
-  "started_at": "2026-03-27T22:49:59+09:00",
-  "artifact_dir": "state/artifacts/20260327T224959-091-note-math-verification",
+  "started_at": "2026-03-27T23:26:15+09:00",
+  "artifact_dir": "state/artifacts/20260327T232615-091-note-math-verification",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-03-27T14:02:00.499Z"
+  "updated_at": "2026-03-27T14:35:50.745Z"
 }

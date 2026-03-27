@@ -44,6 +44,13 @@ function run(command: string, args: string[], env: NodeJS.ProcessEnv) {
 
 function createLegacyUpgradeFixture(databasePath: string) {
   const database = new Database(databasePath);
+  const legacyNoteMarkdown = `# Legacy note
+
+Euler kept $e^{i\\pi} + 1 = 0$ in the margin.
+
+$$
+\\int_0^1 x^2 \\, dx
+$$`;
 
   try {
     database.exec(`
@@ -130,7 +137,7 @@ function createLegacyUpgradeFixture(databasePath: string) {
       .prepare(
         `INSERT INTO "Note" ("id", "ownerId", "title", "slug", "markdown", "excerpt", "summary", "isPublished") VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
       )
-      .run("note-1", "owner-1", "Legacy note", "legacy-note", "# Legacy note", "Legacy excerpt", "Legacy summary", 1);
+      .run("note-1", "owner-1", "Legacy note", "legacy-note", legacyNoteMarkdown, "Legacy excerpt", "Legacy summary", 1);
     database
       .prepare(`INSERT INTO "Link" ("id", "ownerId", "url", "title", "summary", "isPublished") VALUES (?, ?, ?, ?, ?, ?)`)
       .run("link-1", "owner-1", "https://example.com/legacy", "Legacy link", "Legacy link summary", 1);

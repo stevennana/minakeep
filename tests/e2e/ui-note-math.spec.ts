@@ -112,6 +112,9 @@ test("@ui-note-math desktop workbench renders inline and block math from raw mar
 
   const editor = page.getByTestId("note-markdown-input");
   const preview = page.getByTestId("note-markdown-preview");
+  const previewPane = page.getByTestId("note-editor-preview-pane");
+  const modeSwitcher = page.getByTestId("note-editor-mode-switcher");
+  const sourcePane = page.getByTestId("note-editor-source-pane");
   const toolbar = page.getByTestId("note-editor-toolbar");
 
   await page.getByRole("textbox", { name: "Title" }).fill("Math note");
@@ -130,11 +133,14 @@ test("@ui-note-math desktop workbench renders inline and block math from raw mar
   await expect(editor).toHaveValue("$$\nx^2 + y^2 = z^2\n$$");
   await expect(preview.locator(".katex-display")).toHaveCount(1);
   await expect(preview).not.toContainText("$$");
+  await expect(modeSwitcher.getByRole("button", { name: "Split" })).toHaveAttribute("aria-pressed", "true");
+  await expect(sourcePane).toBeVisible();
+  await expect(previewPane).toBeVisible();
 
   await expectAccessibleStructure(page);
   await expectNoHorizontalOverflow(page);
 
-  await expect(page.locator(".note-editor-shell")).toHaveScreenshot("ui-note-math-desktop.png", {
+  await expect(previewPane).toHaveScreenshot("ui-note-math-desktop.png", {
     animations: "disabled"
   });
 });

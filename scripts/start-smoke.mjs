@@ -99,6 +99,13 @@ function expectCanonical(html, expectedHref, context) {
   }
 }
 
+function expectRenderedLegacyNoteMath(html, context) {
+  expectIncludes(html, "markdown-math-inline", context);
+  expectIncludes(html, "markdown-math-block", context);
+  expectIncludes(html, 'class="katex"', context);
+  expectExcludes(html, "$$", context);
+}
+
 function extractLocs(xml) {
   return Array.from(xml.matchAll(/<loc>(.*?)<\/loc>/g), (match) => match[1] ?? "");
 }
@@ -117,7 +124,9 @@ async function verifyDiscoveryFailsClosed(baseUrl) {
   }
 
   expectCanonical(await fetchRequiredText(`${baseUrl}/`), null, "homepage");
-  expectCanonical(await fetchRequiredText(`${baseUrl}/notes/legacy-note`), null, "public note page");
+  const publicNoteHtml = await fetchRequiredText(`${baseUrl}/notes/legacy-note`);
+  expectCanonical(publicNoteHtml, null, "public note page");
+  expectRenderedLegacyNoteMath(publicNoteHtml, "public note page");
 }
 
 async function verifyDiscoveryConfigured(baseUrl, canonicalOrigin) {
@@ -136,7 +145,9 @@ async function verifyDiscoveryConfigured(baseUrl, canonicalOrigin) {
 
   expectExcludes(sitemapText, "https://example.com/legacy", "sitemap.xml");
   expectCanonical(await fetchRequiredText(`${baseUrl}/`), `${canonicalOrigin}/`, "homepage");
-  expectCanonical(await fetchRequiredText(`${baseUrl}/notes/legacy-note`), `${canonicalOrigin}/notes/legacy-note`, "public note page");
+  const publicNoteHtml = await fetchRequiredText(`${baseUrl}/notes/legacy-note`);
+  expectCanonical(publicNoteHtml, `${canonicalOrigin}/notes/legacy-note`, "public note page");
+  expectRenderedLegacyNoteMath(publicNoteHtml, "public note page");
 }
 
 async function runSmokeScenario({ env = process.env, probePaths: scenarioProbePaths = [], verify } = {}) {
