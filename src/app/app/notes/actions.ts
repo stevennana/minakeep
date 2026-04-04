@@ -12,10 +12,14 @@ class DeleteConfirmationRequiredError extends Error {
   }
 }
 
+function normalizeMarkdownInput(markdown: string) {
+  return markdown.replace(/\r\n?/g, "\n");
+}
+
 function getNoteInput(formData: FormData) {
   return {
     title: String(formData.get("title") ?? ""),
-    markdown: String(formData.get("markdown") ?? "")
+    markdown: normalizeMarkdownInput(String(formData.get("markdown") ?? ""))
   };
 }
 

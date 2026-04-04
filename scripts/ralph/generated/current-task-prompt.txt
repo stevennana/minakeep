@@ -2,47 +2,51 @@ Read the following repository documents before making changes:
 - AGENTS.md
 - ARCHITECTURE.md
 - docs/FRONTEND.md
-- docs/product-specs/public-note-reading.md
+- docs/product-specs/note-authoring.md
+- docs/product-specs/markdown-editor-workbench.md
 - docs/product-specs/markdown-mermaid-diagrams.md
+- docs/design-docs/markdown-editor-workbench.md
 - docs/design-docs/markdown-diagram-rendering.md
 - docs/references/ui-verification-contract.md
-- docs/exec-plans/active/093-public-mermaid-note-surfaces.md
+- docs/exec-plans/active/094-editor-mermaid-preview.md
 
-Current task id: 093-public-mermaid-note-surfaces
-Current task title: Public Mermaid note reading
+Current task id: 094-editor-mermaid-preview
+Current task title: Editor Mermaid preview
 
 Objective:
-Expose Mermaid diagrams on published note pages through the existing shared note-reading path.
+Bring the Mermaid rendering contract into the owner workbench preview so authors can validate diagrams before publishing.
 
 Scope:
-- Mermaid rendering on `/notes/[slug]`
-- responsive and accessibility-safe public styling for diagrams
-- dedicated public-surface Playwright coverage
+- Mermaid rendering in split and preview-only editor modes
+- mobile preview containment and readability
+- invalid Mermaid fallback visibility in the authoring preview
+- dedicated editor Playwright coverage
 
 Out of scope:
-- owner workbench preview
-- Mermaid toolbar helpers
-- non-note public surfaces
+- Mermaid text-snippet insertion helpers
+- non-note authoring surfaces
+- public-note card preview heuristics beyond what task 093 defines
 
 Exit criteria:
-1. Published note pages render Mermaid diagrams inline with the article body through the shared note renderer.
-2. Desktop and mobile public note surfaces stay readable, bounded, and accessible.
-3. `npm run test:e2e -- --grep @ui-public-note-mermaid` and `npm run verify` pass.
+1. Split mode and preview-only mode render Mermaid diagrams through the same shared note-rendering path used publicly.
+2. Invalid Mermaid syntax stays visible as a bounded fallback state without blocking save.
+3. Desktop and mobile editor preview remain readable and do not rewrite the markdown source.
+4. `npm run test:e2e -- --grep @ui-note-editor-mermaid` and `npm run verify` pass.
 
 Required checks:
-- `npm run test:e2e -- --grep @ui-public-note-mermaid`
+- `npm run test:e2e -- --grep @ui-note-editor-mermaid`
 - `npm run verify`
 
 Evaluator notes:
-Promote only when the public Mermaid wave feels like part of the shipped note-reading experience and does not leak diagram-specific chrome or raw fenced content.
+Promote only when Mermaid preview genuinely helps authors review the note body and does not degrade the source-first workbench into a second editor model.
 
 Required repository artifacts for this task:
-- src/app/notes/[slug]/page.tsx
+- src/features/notes/components/note-editor.tsx
 - src/app/globals.css
 - tests/e2e
 
 Required commands for this task:
-- npm run test:e2e -- --grep @ui-public-note-mermaid
+- npm run test:e2e -- --grep @ui-note-editor-mermaid
 - npm run verify
 
 Previous known gaps from the last evaluation:

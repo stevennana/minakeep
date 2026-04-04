@@ -2719,6 +2719,11 @@ textarea {
   overflow-y: hidden;
 }
 
+.note-editor-pane-preview .markdown-mermaid--rendered .markdown-mermaid-shell {
+  overscroll-behavior-x: contain;
+  scrollbar-gutter: stable both-edges;
+}
+
 .public-note-body--published .markdown-mermaid--rendered .markdown-mermaid-shell {
   overscroll-behavior-x: contain;
   scrollbar-gutter: stable both-edges;
@@ -2729,6 +2734,10 @@ textarea {
   height: auto;
   min-width: 32rem;
   width: 100%;
+}
+
+.note-editor-pane-preview .markdown-mermaid-svg {
+  min-width: min(32rem, 100%);
 }
 
 .public-note-body--published .markdown-mermaid-svg {
@@ -2826,6 +2835,11 @@ textarea {
   margin: 0;
 }
 
+.note-editor-pane-preview .markdown-mermaid--fallback pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
 .public-note-body--published .markdown-mermaid--fallback pre {
   max-width: 100%;
   overflow-x: auto;
@@ -2834,6 +2848,10 @@ textarea {
 @media (max-width: 640px) {
   .markdown-preview .markdown-mermaid-svg {
     min-width: 26rem;
+  }
+
+  .note-editor-pane-preview .markdown-mermaid-svg {
+    min-width: 100%;
   }
 
   .public-note-body--published .markdown-mermaid-shell {

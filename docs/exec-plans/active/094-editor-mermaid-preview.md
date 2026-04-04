@@ -5,7 +5,7 @@
   "id": "094-editor-mermaid-preview",
   "title": "Editor Mermaid preview",
   "order": 94,
-  "status": "queued",
+  "status": "active",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "095-mermaid-wave-hardening",
   "prompt_docs": [
@@ -72,3 +72,7 @@ Promote only when Mermaid preview genuinely helps authors review the note body a
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-04-04T04:05:43.217Z: restored as current task after 093-public-mermaid-note-surfaces promotion.
+- 2026-04-04T04:09:40Z: confirmed owner preview already uses `renderMarkdownToHtml()` like the public note page; task gap was missing editor-specific Mermaid coverage plus bounded fallback styling in authoring preview.
+- 2026-04-04T04:09:40Z: tightened editor-preview Mermaid containment in `src/app/globals.css`, updated workbench preview copy to mention Mermaid fences, and added dedicated `@ui-note-editor-mermaid` Playwright coverage for split, preview-only, invalid fallback, and mobile preview behavior.
+- 2026-04-04T04:18:30Z: normalized owner note form markdown line endings on save so preview-only review does not rewrite authored Mermaid fences, refreshed the affected editor snapshots, and verified `npm run test:e2e -- --grep @ui-note-editor-mermaid` plus `npm run verify` successfully.

@@ -1,8 +1,8 @@
 {
-  "task_id": "093-public-mermaid-note-surfaces",
-  "started_at": "2026-04-04T12:57:38+09:00",
-  "artifact_dir": "state/artifacts/20260404T125738-093-public-mermaid-note-surfaces",
+  "task_id": "094-editor-mermaid-preview",
+  "started_at": "2026-04-04T13:06:13+09:00",
+  "artifact_dir": "state/artifacts/20260404T130613-094-editor-mermaid-preview",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-04-04T04:05:43.014Z"
+  "updated_at": "2026-04-04T04:21:23.206Z"
 }
