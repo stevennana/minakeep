@@ -1,56 +1,56 @@
 Read the following repository documents before making changes:
 - AGENTS.md
-- docs/PLANS.md
-- docs/exec-plans/active/100-flowchart-advanced-mermaid-features.md
 - ARCHITECTURE.md
 - docs/FRONTEND.md
 - docs/product-specs/markdown-mermaid-diagrams.md
 - docs/design-docs/markdown-diagram-rendering.md
 - docs/references/ui-verification-contract.md
-- docs/exec-plans/active/100-flowchart-advanced-mermaid-features-rca-npm-run-verify-auth-spec-delete-spec-7828b3cc.md
+- docs/exec-plans/active/100-flowchart-advanced-mermaid-features.md
 
-Current task id: 100-flowchart-advanced-mermaid-features-rca-npm-run-verify-auth-spec-delete-spec-7828b3cc
-Current task title: RCA: Flowchart advanced Mermaid features blocker
+Current task id: 100-flowchart-advanced-mermaid-features
+Current task title: Flowchart advanced Mermaid features
 
 Objective:
-Resolve the repeated blocker that is preventing `100-flowchart-advanced-mermaid-features` from promoting, then return the queue to the parent task automatically.
+Extend Mermaid flowchart support so styled and grouped flowcharts render as real diagrams instead of requiring users to stay within the basic node-and-edge subset.
 
 Scope:
-- isolate the repeated blocker signature without broadening back into the parent feature
-- restore the failing required command path: npm run verify
-- update the parent task log and blocker evidence so the return path is explicit
+- `classDef`, `class`, `subgraph`, `linkStyle`, and `style` for Mermaid flowcharts
+- public note and owner preview verification for the styled flowchart path
+- deterministic screenshot and responsive coverage for advanced flowcharts
 
 Out of scope:
-- new product scope beyond 100-flowchart-advanced-mermaid-features
-- unrelated cleanup outside the blocker signature `deterministic_failure|npm-run-verify|tests/e2e/auth.spec.ts|tests/e2e/delete.spec.ts|tests/e2e/demo-user.spec.ts|tests/e2e/home.spec.ts|tests/e2e/incremental-loading.spec.ts|tests/e2e/link-ai-real.spec.ts|tests/e2e/link-favicon.spec.ts|tests/e2e/media-foundation.spec.ts|tests/e2e/note-ai-real.spec.ts|tests/e2e/note-api.spec.ts|tests/e2e/note-image-upload.spec.ts|tests/e2e/owner-session.spec.ts|tests/e2e/public-home-search.spec.ts|tests/e2e/seo-discovery.spec.ts|tests/e2e/settings.spec.ts|tests/e2e/ui-forms.spec.ts|tests/e2e/ui-home-grid.spec.ts|tests/e2e/ui-home-shell.spec.ts|tests/e2e/ui-information-density.spec.ts|tests/e2e/ui-note-editor-foundation.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts-snapshots/ui-note-editor-mermaid-desktop-darwin.png|tests/e2e/ui-note-editor-mobile.spec.ts|tests/e2e/ui-note-editor-modes.spec.ts|tests/e2e/ui-note-editor-toolbar.spec.ts|tests/e2e/ui-note-images.spec.ts|tests/e2e/ui-note-math.spec.ts|tests/e2e/ui-owner-dashboard.spec.ts|tests/e2e/ui-owner-secondary.spec.ts|tests/e2e/ui-public-home-density.spec.ts|tests/e2e/ui-public-note-math.spec.ts|tests/e2e/ui-public-note-mermaid.spec.ts|tests/e2e/ui-public-note.spec.ts|tests/e2e/ui-public-showroom.spec.ts|tests/e2e/ui-public-tag-fit.spec.ts|tests/e2e/ui-system.spec.ts`
-- manual queue edits that bypass the normal promotion return path
+- broader Mermaid root families
+- Mermaid click handlers or other interactive commands
+- homepage/showroom rendering
 
 Exit criteria:
-1. The repeated blocker is reproduced or conclusively explained with concrete evidence.
-2. npm run verify pass without the blocker signature recurring.
-3. The RCA task can promote back to `100-flowchart-advanced-mermaid-features` without manual queue surgery.
-4. The parent task log records the blocker resolution before work returns to `100-flowchart-advanced-mermaid-features`.
+1. Flowcharts that use `classDef`, `class`, `subgraph`, `linkStyle`, and `style` render successfully through the shared Mermaid renderer.
+2. Owner preview and public note pages present the same styled flowchart output from the same markdown source.
+3. Desktop and mobile surfaces remain bounded and readable.
+4. `npm run test:e2e -- --grep @ui-public-note-mermaid`, `npm run test:e2e -- --grep @ui-note-editor-mermaid`, and `npm run verify` pass.
 
 Required checks:
+- `npm run test:e2e -- --grep @ui-public-note-mermaid`
+- `npm run test:e2e -- --grep @ui-note-editor-mermaid`
 - `npm run verify`
 
 Evaluator notes:
-Promote only when the blocker-specific evidence is explicit and the queue can safely return to `100-flowchart-advanced-mermaid-features`.
+Promote only when flowchart styling support is demonstrably broader than the current subset and is protected by deterministic coverage rather than one hand-tested sample.
 
 Required repository artifacts for this task:
-- none
+- src/features/notes/markdown.ts
+- src/app/globals.css
+- tests/e2e
+- tests/unit
 
 Required commands for this task:
+- npm run test:e2e -- --grep @ui-public-note-mermaid
+- npm run test:e2e -- --grep @ui-note-editor-mermaid
 - npm run verify
 
 Previous known gaps from the last evaluation:
 - none
 
-RCA context:
-- This is an auto-generated blocker RCA task for parent task: 100-flowchart-advanced-mermaid-features
-- Blocker kind: deterministic_failure
-- Blocker summary: Repeated required-command failure: npm run verify (auth.spec.ts, delete.spec.ts, demo-user.spec.ts, home.spec.ts, incremental-loading.spec.ts, link-ai-real.spec.ts, link-favicon.spec.ts, media-foundation.spec.ts, note-ai-real.spec.ts, note-api.spec.ts, note-image-upload.spec.ts, owner-session.spec.ts, public-home-search.spec.ts, seo-discovery.spec.ts, settings.spec.ts, ui-forms.spec.ts, ui-home-grid.spec.ts, ui-home-shell.spec.ts, ui-information-density.spec.ts, ui-note-editor-foundation.spec.ts, ui-note-editor-mermaid.spec.ts, ui-note-editor-mermaid-desktop-darwin.png, ui-note-editor-mobile.spec.ts, ui-note-editor-modes.spec.ts, ui-note-editor-toolbar.spec.ts, ui-note-images.spec.ts, ui-note-math.spec.ts, ui-owner-dashboard.spec.ts, ui-owner-secondary.spec.ts, ui-public-home-density.spec.ts, ui-public-note-math.spec.ts, ui-public-note-mermaid.spec.ts, ui-public-note.spec.ts, ui-public-showroom.spec.ts, ui-public-tag-fit.spec.ts, ui-system.spec.ts)
-- Blocker signature: deterministic_failure|npm-run-verify|tests/e2e/auth.spec.ts|tests/e2e/delete.spec.ts|tests/e2e/demo-user.spec.ts|tests/e2e/home.spec.ts|tests/e2e/incremental-loading.spec.ts|tests/e2e/link-ai-real.spec.ts|tests/e2e/link-favicon.spec.ts|tests/e2e/media-foundation.spec.ts|tests/e2e/note-ai-real.spec.ts|tests/e2e/note-api.spec.ts|tests/e2e/note-image-upload.spec.ts|tests/e2e/owner-session.spec.ts|tests/e2e/public-home-search.spec.ts|tests/e2e/seo-discovery.spec.ts|tests/e2e/settings.spec.ts|tests/e2e/ui-forms.spec.ts|tests/e2e/ui-home-grid.spec.ts|tests/e2e/ui-home-shell.spec.ts|tests/e2e/ui-information-density.spec.ts|tests/e2e/ui-note-editor-foundation.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts-snapshots/ui-note-editor-mermaid-desktop-darwin.png|tests/e2e/ui-note-editor-mobile.spec.ts|tests/e2e/ui-note-editor-modes.spec.ts|tests/e2e/ui-note-editor-toolbar.spec.ts|tests/e2e/ui-note-images.spec.ts|tests/e2e/ui-note-math.spec.ts|tests/e2e/ui-owner-dashboard.spec.ts|tests/e2e/ui-owner-secondary.spec.ts|tests/e2e/ui-public-home-density.spec.ts|tests/e2e/ui-public-note-math.spec.ts|tests/e2e/ui-public-note-mermaid.spec.ts|tests/e2e/ui-public-note.spec.ts|tests/e2e/ui-public-showroom.spec.ts|tests/e2e/ui-public-tag-fit.spec.ts|tests/e2e/ui-system.spec.ts
 
 
 Rules:
@@ -62,9 +62,7 @@ Rules:
 - Update this task doc's progress log with concrete notes.
 - Keep the repository in a state where the required commands can pass.
 - If the task is not done, leave the next task untouched.
-- Work only on the blocker evidence described above.
-- Do not resume or broaden into parent task 100-flowchart-advanced-mermaid-features inside this RCA task.
-- Leave the queue return path to normal promotion back to 100-flowchart-advanced-mermaid-features.
+
 
 At the end of the run, write a concise operator handoff summary into state/last-result.txt via your final response:
 - what changed

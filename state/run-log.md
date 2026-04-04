@@ -2147,3 +2147,18 @@ run-once failed with exit code 1. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true The RCA task is complete in substance. The required blocker evidence is explicit in the RCA plan and parent plan logs, the latest deterministic artifact shows `npm run verify` passing end-to-end with preflight port cleanup on `127.0.0.1:3210`, `scripts/ralph/promote-task.mjs` now imports `normalizeTaskId` and supports the normal `next_task_on_success` return path, and the RCA task metadata points back to `100-flowchart-advanced-mermaid-features` without requiring manual queue edits. -> state/artifacts/20260405T004931-100-flowchart-advanced-mermaid-features-rca-npm-run-verify-auth-spec-delete-spec-7828b3cc/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260405T004931-100-flowchart-advanced-mermaid-features-rca-npm-run-verify-auth-spec-delete-spec-7828b3cc/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 100-flowchart-advanced-mermaid-features-rca-npm-run-verify-auth-spec-delete-spec-7828b3cc -> 100-flowchart-advanced-mermaid-features
+- backlog: rendered current=100-flowchart-advanced-mermaid-features
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxoooxxooxoxxxooxxxoxxoooxxxxxxxxxooooxxxxxxxxxxxxxo
+- cycle: finished
+
+### cycle 2026-04-05T00:58:51+09:00 task=100-flowchart-advanced-mermaid-features
+- artifacts: state/artifacts/20260405T005851-100-flowchart-advanced-mermaid-features
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260405T005851-100-flowchart-advanced-mermaid-features/worker.jsonl
+- worker-summary: No product-code changes were needed in this run. I revalidated the existing advanced Mermaid flowchart implementation, then appended the current result to [100-flowchart-advanced-mermaid-features.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/100-flowchart-advanced-mermaid-features.md) and wrote the operator handoff to [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260405T005851-100-flowchart-advanced-mermaid-features/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260405T005851-100-flowchart-advanced-mermaid-features/npm-run-test-e2e-grep-ui-public-note-mermaid-next-server.log

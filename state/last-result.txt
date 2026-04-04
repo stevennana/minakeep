@@ -1,3 +1,8 @@
-Refreshed the RCA evidence only. A fresh `npm run verify` exited `0` with unit `85/85`, Playwright `92/92`, and `start:smoke` passing; the E2E preflight also reclaimed `127.0.0.1:3210` before Playwright, so the old blocker signature did not recur.
+No product-code changes were needed in this run. I revalidated the existing advanced Mermaid flowchart implementation, then appended the current result to [100-flowchart-advanced-mermaid-features.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/100-flowchart-advanced-mermaid-features.md) and wrote the operator handoff to [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
 
-I recorded that in the RCA log at [100-flowchart-advanced-mermaid-features-rca-npm-run-verify-auth-spec-delete-spec-7828b3cc.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/100-flowchart-advanced-mermaid-features-rca-npm-run-verify-auth-spec-delete-spec-7828b3cc.md#L121), mirrored the resolution in the parent task log at [100-flowchart-advanced-mermaid-features.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/100-flowchart-advanced-mermaid-features.md#L95), and wrote the operator handoff to [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt#L1). Exit criteria appear satisfied; the next step is normal evaluator promotion so the queue returns to `100-flowchart-advanced-mermaid-features` automatically.
+The required gates passed from the current workspace state:
+- `npm run test:e2e -- --grep @ui-public-note-mermaid`
+- `npm run test:e2e -- --grep @ui-note-editor-mermaid`
+- `npm run verify`
+
+`npm run verify` finished cleanly with unit `85/85`, Playwright `92/92`, and `start:smoke` passing. Exit criteria appear satisfied; nothing task-scoped remains from this run.
