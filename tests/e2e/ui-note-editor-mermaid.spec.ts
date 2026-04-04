@@ -28,9 +28,17 @@ The editor preview should render Mermaid from the same markdown source without r
 
 \`\`\`mermaid
 flowchart LR
-  Draft[Draft note] --> Review{Ready to publish?}
+  subgraph Studio[Owner studio]
+    Draft[Draft note] --> Review{Ready to publish?}
+  end
   Review -->|yes| Public[Public note page]
   Review -->|no| Revise[Keep editing]
+  classDef muted fill:#e2e8f0,stroke:#64748b,color:#0f172a
+  classDef accent fill:#dbeafe,stroke:#2563eb,color:#0f172a,stroke-width:2px
+  class Draft,Revise muted
+  class Public accent
+  style Review fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#7c2d12
+  linkStyle 1 stroke:#2563eb,stroke-width:3px,color:#1d4ed8
 \`\`\`
 
 ### Invalid Mermaid should fail softly
@@ -158,16 +166,41 @@ async function expectMermaidPreviewSurface(page: Page, viewport: "desktop" | "mo
   expect(metrics.fallbackWidth).toBeLessThanOrEqual(metrics.previewWidth + 1);
   expect(metrics.fallbackPreWidth).toBeLessThanOrEqual(metrics.fallbackWidth + 1);
   expect(metrics.diagramShellWidth).toBeGreaterThanOrEqual(Math.max(220, metrics.previewWidth - 40));
+
+  const styledSignals = await page.evaluate(() => {
+    const flowchartSvg = document.querySelector<SVGElement>("[data-testid='note-markdown-preview'] .markdown-mermaid--rendered .markdown-mermaid-svg");
+
+    if (!flowchartSvg) {
+      throw new Error("Expected rendered flowchart SVG to exist in the note preview.");
+    }
+
+    const svgMarkup = flowchartSvg.outerHTML;
+    return {
+      hasAccentClass: svgMarkup.includes("accent"),
+      hasCluster: svgMarkup.includes("cluster"),
+      hasLinkStyle: svgMarkup.includes("#2563eb") || svgMarkup.includes("#1d4ed8"),
+      hasMutedClass: svgMarkup.includes("muted"),
+      hasReviewStyle: svgMarkup.includes("#fef3c7") && svgMarkup.includes("#d97706")
+    };
+  });
+
+  expect(styledSignals.hasCluster).toBe(true);
+  expect(styledSignals.hasMutedClass).toBe(true);
+  expect(styledSignals.hasAccentClass).toBe(true);
+  expect(styledSignals.hasReviewStyle).toBe(true);
+  expect(styledSignals.hasLinkStyle).toBe(true);
 }
 
 async function expectMermaidPreviewContent(page: Page) {
   const editor = page.getByTestId("note-markdown-input");
   const preview = page.getByTestId("note-markdown-preview");
   const sharedDiagram = preview.locator(".markdown-mermaid").first();
+  const renderedDiagram = preview.locator(".markdown-mermaid--rendered").first();
 
   await expect(editor).toHaveValue(seededNote.markdown);
   await expect(editor).toHaveValue(/```mermaid/);
   await expect(sharedDiagram).toBeVisible();
+  await expect(renderedDiagram).toBeVisible({ timeout: 15000 });
   await expect(sharedDiagram).toHaveAttribute("data-mermaid-source", /flowchart%20LR/);
   await expect(preview.locator(".markdown-mermaid--fallback")).toContainText("Diagram preview unavailable");
   await expect(preview.locator(".markdown-mermaid--fallback")).toContainText("This is not valid Mermaid source.");

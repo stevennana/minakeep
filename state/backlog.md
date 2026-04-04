@@ -86,8 +86,9 @@
 - [x] 096-mermaid-semantic-rendering-foundation — Mermaid semantic rendering foundation
 - [x] 097-public-mermaid-contract-realignment — Public Mermaid contract realignment
 - [x] 098-editor-mermaid-regression-closeout — Editor Mermaid regression closeout
-- [ ] 099-mermaid-library-renderer-foundation — Mermaid library renderer foundation ← current
+- [x] 099-mermaid-library-renderer-foundation — Mermaid library renderer foundation
 - [ ] 100-flowchart-advanced-mermaid-features — Flowchart advanced Mermaid features
+- [ ] 100-flowchart-advanced-mermaid-features-rca-npm-run-verify-auth-spec-delete-spec-e5cc86b6 — RCA: Flowchart advanced Mermaid features blocker ← current
 - [ ] 101-broader-mermaid-root-support — Broader Mermaid root support
 - [ ] 102-mermaid-expansion-hardening — Mermaid expansion hardening
 

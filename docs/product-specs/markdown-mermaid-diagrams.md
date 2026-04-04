@@ -12,7 +12,7 @@ The owner writes a fenced code block with the info string `mermaid` inside a not
 - The owner preview renders the Mermaid block as a diagram or a bounded readable fallback when the Mermaid source is invalid.
 - Published note pages render the same Mermaid block from the same markdown source instead of showing raw fenced code.
 - Supported Mermaid roots should render as real diagram output for that root type; a diagram-themed summary card is not sufficient.
-- The next expansion wave should cover richer flowchart features including `classDef`, `class`, `subgraph`, `linkStyle`, and `style` rather than limiting flowcharts to plain nodes and edges.
+- Flowchart support includes richer styling and grouping features including `classDef`, `class`, `subgraph`, `linkStyle`, and `style`; authors do not need to stay inside a plain node-and-edge subset.
 - The next expansion wave should also broaden supported Mermaid roots beyond the current baseline, with deterministic coverage anchored on `classDiagram` and `stateDiagram` / `stateDiagram-v2` in addition to the existing `flowchart` / `graph` and `sequenceDiagram` paths.
 - Mermaid rendering must not require third-party iframes, remote image fetches, or inline script execution inside note content.
 - Invalid Mermaid syntax does not block note save, publish, or public reading; it degrades to a visible non-crashing fallback state.

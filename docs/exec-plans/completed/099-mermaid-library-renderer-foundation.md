@@ -5,7 +5,7 @@
   "id": "099-mermaid-library-renderer-foundation",
   "title": "Mermaid library renderer foundation",
   "order": 99,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "standard",
   "next_task_on_success": "100-flowchart-advanced-mermaid-features",
   "prompt_docs": [
@@ -29,7 +29,8 @@
     "The new Mermaid renderer still relies on the hand-built faux-diagram path for roots that the docs claim as supported.",
     "The library-backed path introduces client-side script execution, unsafe raw markup, or a second persisted diagram model.",
     "Malformed Mermaid input no longer reaches a bounded fallback shell."
-  ]
+  ],
+  "completed_at": "2026-04-04T13:23:43.647Z"
 }
 ```
 
@@ -70,3 +71,4 @@ Promote only when the renderer foundation clearly shifts the repo onto a library
 
 - Start here. Append timestamped progress notes as work lands.
 - 2026-04-04 22:03 KST: Replaced the custom Mermaid parser/SVG subset with a shared Mermaid library boundary. `markdown.ts` now emits one bounded Mermaid shell contract, public note pages and owner preview both upgrade that contract through the same client-side Mermaid renderer, unsupported roots stay on the fallback shell, and unit coverage now targets library render success plus fallback behavior.
+- 2026-04-04T13:23:43.647Z: automatically promoted after deterministic checks and evaluator approval.

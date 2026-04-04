@@ -59,28 +59,41 @@ test("renderMarkdownToHtml turns supported mermaid fences into the shared librar
 
 \`\`\`mermaid
 flowchart TD
-  A[Start] --> B{Ship it?}
+  subgraph Studio[Owner studio]
+    A[Start] --> B{Ship it?}
+  end
   B -->|yes| C[Done]
+  classDef accent fill:#dbeafe,stroke:#2563eb,color:#0f172a
+  class C accent
+  style B fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#7c2d12
+  linkStyle 1 stroke:#2563eb,stroke-width:3px,color:#1d4ed8
 \`\`\``;
   const html = renderMarkdownToHtml(markdown);
 
   assert.match(html, /markdown-mermaid markdown-mermaid--pending/);
-  assert.match(html, /data-mermaid-source="flowchart%20TD%0A%20%20A%5BStart%5D%20--%3E%20B%7BShip%20it%3F%7D%0A%20%20B%20--%3E%7Cyes%7C%20C%5BDone%5D"/);
+  assert.match(
+    html,
+    /data-mermaid-source="flowchart%20TD%0A%20%20subgraph%20Studio%5BOwner%20studio%5D%0A%20%20%20%20A%5BStart%5D%20--%3E%20B%7BShip%20it%3F%7D%0A%20%20end%0A%20%20B%20--%3E%7Cyes%7C%20C%5BDone%5D%0A%20%20classDef%20accent%20fill%3A%23dbeafe%2Cstroke%3A%232563eb%2Ccolor%3A%230f172a%0A%20%20class%20C%20accent%0A%20%20style%20B%20fill%3A%23fef3c7%2Cstroke%3A%23d97706%2Cstroke-width%3A2px%2Ccolor%3A%237c2d12%0A%20%20linkStyle%201%20stroke%3A%232563eb%2Cstroke-width%3A3px%2Ccolor%3A%231d4ed8"/
+  );
   assert.match(html, /Diagram preview loading/);
   assert.match(html, /Rendering Mermaid diagram from the saved markdown source\./);
   assert.match(html, /flowchart TD/);
-  assert.match(html, /A\[Start\] --&gt; B\{Ship it\?\}/);
+  assert.match(html, /subgraph Studio\[Owner studio\]/);
+  assert.match(html, /classDef accent fill:#dbeafe,stroke:#2563eb,color:#0f172a/);
+  assert.match(html, /style B fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#7c2d12/);
   assert.doesNotMatch(html, /```mermaid/);
 });
 
 test("renderMermaidShell returns sanitized SVG markup when the library render succeeds", async () => {
   const result = await renderMermaidShell("flowchart TD\nA-->B", async () =>
-    `<svg class="flowchart" onclick="alert(1)" xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script><text>Hello</text></svg>`
+    `<svg class="flowchart" onclick="alert(1)" xmlns="http://www.w3.org/2000/svg"><style>.accent{fill:#dbeafe;stroke:#2563eb;}.accent-text{fill:#0f172a;}</style><script>alert(1)</script><g class="cluster accent"><text class="accent-text">Hello</text></g></svg>`
   );
 
   assert.equal(result.state, "rendered");
   assert.match(result.markup, /<svg class="flowchart markdown-mermaid-svg"/);
   assert.match(result.markup, /aria-label="Rendered Mermaid diagram"/);
+  assert.match(result.markup, /<style>\.accent\{fill:#dbeafe;stroke:#2563eb;\}\.accent-text\{fill:#0f172a;\}<\/style>/);
+  assert.match(result.markup, /class="cluster accent"/);
   assert.match(result.markup, />Hello</);
   assert.doesNotMatch(result.markup, /<script/);
   assert.doesNotMatch(result.markup, /onclick=/);

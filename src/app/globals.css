@@ -2762,7 +2762,6 @@ textarea {
 .markdown-preview .markdown-mermaid--rendered .markdown-mermaid-shell .messageText,
 .markdown-preview .markdown-mermaid--rendered .markdown-mermaid-shell .nodeLabel,
 .markdown-preview .markdown-mermaid--rendered .markdown-mermaid-shell text {
-  fill: var(--ink);
   font-family: var(--font-ui);
 }
 

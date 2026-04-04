@@ -24,13 +24,21 @@ const seededNote = {
   slug: "published-mermaid-diagrams-should-read-like-part-of-the-note",
   markdown: `## Diagram rhythm should stay in the article
 
-The public note should render a Mermaid block inline without surfacing raw fences or diagram-specific chrome.
+The public note should render a styled Mermaid flowchart inline without surfacing raw fences or diagram-specific chrome.
 
 \`\`\`mermaid
 flowchart LR
-  Draft[Draft note] --> Review{Ready to publish?}
+  subgraph Studio[Owner studio]
+    Draft[Draft note] --> Review{Ready to publish?}
+  end
   Review -->|yes| Public[Public note page]
   Review -->|no| Revise[Keep editing]
+  classDef muted fill:#e2e8f0,stroke:#64748b,color:#0f172a
+  classDef accent fill:#dbeafe,stroke:#2563eb,color:#0f172a,stroke-width:2px
+  class Draft,Revise muted
+  class Public accent
+  style Review fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#7c2d12
+  linkStyle 1 stroke:#2563eb,stroke-width:3px,color:#1d4ed8
 \`\`\`
 
 ### Supported non-flowchart diagrams should render semantically
@@ -147,6 +155,29 @@ async function expectMermaidSurface(page: Page, viewport: "desktop" | "mobile") 
   expect(metrics.svgWidth).toBeLessThanOrEqual(metrics.bodyWidth + 1);
   expect(metrics.sequenceSvgWidth).toBeGreaterThanOrEqual(viewport === "desktop" ? 440 : metrics.viewportWidth - 80);
   expect(metrics.sequenceSvgWidth).toBeLessThanOrEqual(metrics.bodyWidth + 1);
+
+  const styledSignals = await page.evaluate(() => {
+    const flowchartSvg = document.querySelector<SVGElement>(".markdown-mermaid--rendered .markdown-mermaid-svg");
+
+    if (!flowchartSvg) {
+      throw new Error("Expected rendered flowchart SVG to exist.");
+    }
+
+    const svgMarkup = flowchartSvg.outerHTML;
+    return {
+      hasAccentClass: svgMarkup.includes("accent"),
+      hasCluster: svgMarkup.includes("cluster"),
+      hasLinkStyle: svgMarkup.includes("#2563eb") || svgMarkup.includes("#1d4ed8"),
+      hasMutedClass: svgMarkup.includes("muted"),
+      hasReviewStyle: svgMarkup.includes("#fef3c7") && svgMarkup.includes("#d97706")
+    };
+  });
+
+  expect(styledSignals.hasCluster).toBe(true);
+  expect(styledSignals.hasMutedClass).toBe(true);
+  expect(styledSignals.hasAccentClass).toBe(true);
+  expect(styledSignals.hasReviewStyle).toBe(true);
+  expect(styledSignals.hasLinkStyle).toBe(true);
 }
 
 test.describe.configure({ mode: "serial" });
