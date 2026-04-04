@@ -5,7 +5,7 @@
   "id": "100-flowchart-advanced-mermaid-features",
   "title": "Flowchart advanced Mermaid features",
   "order": 100,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "101-broader-mermaid-root-support",
   "prompt_docs": [
@@ -31,7 +31,8 @@
     "Flowcharts using `classDef`, `class`, `subgraph`, `linkStyle`, or `style` still degrade unexpectedly or fall back without the docs saying so.",
     "Styled flowcharts render differently between public note reading and owner preview.",
     "Advanced flowchart styling causes overflow, clipping, or unreadable labels on mobile."
-  ]
+  ],
+  "completed_at": "2026-04-04T16:05:09.724Z"
 }
 ```
 
@@ -92,3 +93,4 @@ Promote only when flowchart styling support is demonstrably broader than the cur
 - 2026-04-04T15:53:00Z: the RCA refreshed the blocker evidence from the current workspace state and `npm run verify` passed again without the signature recurring. The rerun finished with unit `85/85`, Playwright `92/92`, and `start:smoke` green, while the E2E preflight reclaimed `127.0.0.1:3210` before Playwright, so the return path to this parent task remains the normal promotion flow from `100-flowchart-advanced-mermaid-features-rca-npm-run-verify-auth-spec-delete-spec-7828b3cc`.
 - 2026-04-04T15:58:21.430Z: blocker RCA task 100-flowchart-advanced-mermaid-features-rca-npm-run-verify-auth-spec-delete-spec-7828b3cc completed; restored as current task after resolving blocker deterministic_failure|npm-run-verify|tests/e2e/auth.spec.ts|tests/e2e/delete.spec.ts|tests/e2e/demo-user.spec.ts|tests/e2e/home.spec.ts|tests/e2e/incremental-loading.spec.ts|tests/e2e/link-ai-real.spec.ts|tests/e2e/link-favicon.spec.ts|tests/e2e/media-foundation.spec.ts|tests/e2e/note-ai-real.spec.ts|tests/e2e/note-api.spec.ts|tests/e2e/note-image-upload.spec.ts|tests/e2e/owner-session.spec.ts|tests/e2e/public-home-search.spec.ts|tests/e2e/seo-discovery.spec.ts|tests/e2e/settings.spec.ts|tests/e2e/ui-forms.spec.ts|tests/e2e/ui-home-grid.spec.ts|tests/e2e/ui-home-shell.spec.ts|tests/e2e/ui-information-density.spec.ts|tests/e2e/ui-note-editor-foundation.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts-snapshots/ui-note-editor-mermaid-desktop-darwin.png|tests/e2e/ui-note-editor-mobile.spec.ts|tests/e2e/ui-note-editor-modes.spec.ts|tests/e2e/ui-note-editor-toolbar.spec.ts|tests/e2e/ui-note-images.spec.ts|tests/e2e/ui-note-math.spec.ts|tests/e2e/ui-owner-dashboard.spec.ts|tests/e2e/ui-owner-secondary.spec.ts|tests/e2e/ui-public-home-density.spec.ts|tests/e2e/ui-public-note-math.spec.ts|tests/e2e/ui-public-note-mermaid.spec.ts|tests/e2e/ui-public-note.spec.ts|tests/e2e/ui-public-showroom.spec.ts|tests/e2e/ui-public-tag-fit.spec.ts|tests/e2e/ui-system.spec.ts.
 - 2026-04-04T16:02:05Z: revalidated the current workspace state without additional product-code edits. `npm run test:e2e -- --grep @ui-public-note-mermaid` passed with 2/2 tests, `npm run test:e2e -- --grep @ui-note-editor-mermaid` passed with 2/2 tests when run sequentially, and `npm run verify` exited `0` with unit `85/85`, Playwright `92/92`, and `start:smoke` passing; the styled flowchart coverage still proves `classDef`, `class`, `subgraph`, `linkStyle`, and `style` on both owner preview and public note surfaces.
+- 2026-04-04T16:05:09.724Z: automatically promoted after deterministic checks and evaluator approval.

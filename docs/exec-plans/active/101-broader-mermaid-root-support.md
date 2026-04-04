@@ -5,7 +5,7 @@
   "id": "101-broader-mermaid-root-support",
   "title": "Broader Mermaid root support",
   "order": 101,
-  "status": "queued",
+  "status": "active",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "102-mermaid-expansion-hardening",
   "prompt_docs": [
@@ -77,3 +77,5 @@ Promote only when broader-root support is test-backed and the renderer does not 
 - 2026-04-04 14:58 KST: Updated the Mermaid product and design docs to claim only the roots covered by deterministic tests in this wave.
 - 2026-04-04 23:23 KST: Verified the task gates locally. `npm run test:e2e -- --grep @ui-public-note-mermaid`, `npm run test:e2e -- --grep @ui-note-editor-mermaid`, and `npm run verify` all passed; the only retry needed was a transient `EADDRINUSE` on port `3100` during the first public-note Mermaid run.
 - 2026-04-04 23:30 KST: Re-ran the required task gates for this handoff. The two Mermaid-scoped Playwright commands and `npm run verify` all passed locally; the only non-product issue observed was the same avoidable `EADDRINUSE` collision when the two scoped Playwright commands were launched in parallel on the shared port.
+- 2026-04-04T16:05:09.724Z: restored as current task after 100-flowchart-advanced-mermaid-features promotion.
+- 2026-04-05 01:08 KST: Re-validated the shipped broader-root implementation already present in the shared Mermaid renderer and deterministic tests. `npm run test:e2e -- --grep @ui-public-note-mermaid`, `npm run test:e2e -- --grep @ui-note-editor-mermaid`, and `npm run verify` all passed locally; the only transient failure during this run was an `EADDRINUSE` collision when the two scoped Playwright commands were started in parallel against port `3210`, and the public-note command passed immediately when re-run sequentially.

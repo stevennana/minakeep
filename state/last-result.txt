@@ -1,8 +1,8 @@
-No product-code changes were needed in this run. I revalidated the existing advanced Mermaid flowchart implementation, then appended the current result to [100-flowchart-advanced-mermaid-features.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/100-flowchart-advanced-mermaid-features.md) and wrote the operator handoff to [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
+The broader Mermaid root work was already present in the current tree, so I did not change product code. I verified the shared renderer and tests cover `classDiagram` plus `stateDiagram` / `stateDiagram-v2`, and I recorded the fresh verification in [101-broader-mermaid-root-support.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/101-broader-mermaid-root-support.md). I also wrote the operator handoff summary to [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
 
-The required gates passed from the current workspace state:
-- `npm run test:e2e -- --grep @ui-public-note-mermaid`
-- `npm run test:e2e -- --grep @ui-note-editor-mermaid`
-- `npm run verify`
+The task gates passed locally:
+`npm run test:e2e -- --grep @ui-public-note-mermaid`
+`npm run test:e2e -- --grep @ui-note-editor-mermaid`
+`npm run verify`
 
-`npm run verify` finished cleanly with unit `85/85`, Playwright `92/92`, and `start:smoke` passing. Exit criteria appear satisfied; nothing task-scoped remains from this run.
+Exit criteria appear satisfied. The only issue observed was operational, not product-facing: launching the two scoped Playwright commands in parallel can hit `EADDRINUSE` on fixed port `3210`, but the public-note suite passed immediately when rerun sequentially.

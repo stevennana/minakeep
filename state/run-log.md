@@ -2162,3 +2162,18 @@ run-once failed with exit code 1. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260405T005851-100-flowchart-advanced-mermaid-features/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260405T005851-100-flowchart-advanced-mermaid-features/npm-run-test-e2e-grep-ui-public-note-mermaid-next-server.log
+- commit: commit: created
+- promote: Promoted 100-flowchart-advanced-mermaid-features -> 101-broader-mermaid-root-support
+- backlog: rendered current=101-broader-mermaid-root-support
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxoooxxooxoxxxooxxxoxxoooxxxxxxxxxooooxxxxxxxxxxxxxoo
+- cycle: finished
+
+### cycle 2026-04-05T01:05:39+09:00 task=101-broader-mermaid-root-support
+- artifacts: state/artifacts/20260405T010539-101-broader-mermaid-root-support
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260405T010539-101-broader-mermaid-root-support/worker.jsonl
+- worker-summary: The broader Mermaid root work was already present in the current tree, so I did not change product code. I verified the shared renderer and tests cover `classDiagram` plus `stateDiagram` / `stateDiagram-v2`, and I recorded the fresh verification in [101-broader-mermaid-root-support.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/101-broader-mermaid-root-support.md). I also wrote the operator handoff summary to [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260405T010539-101-broader-mermaid-root-support/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260405T010539-101-broader-mermaid-root-support/npm-run-test-e2e-grep-ui-public-note-mermaid-next-server.log

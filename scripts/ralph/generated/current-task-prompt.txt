@@ -5,28 +5,28 @@ Read the following repository documents before making changes:
 - docs/product-specs/markdown-mermaid-diagrams.md
 - docs/design-docs/markdown-diagram-rendering.md
 - docs/references/ui-verification-contract.md
-- docs/exec-plans/active/100-flowchart-advanced-mermaid-features.md
+- docs/exec-plans/active/101-broader-mermaid-root-support.md
 
-Current task id: 100-flowchart-advanced-mermaid-features
-Current task title: Flowchart advanced Mermaid features
+Current task id: 101-broader-mermaid-root-support
+Current task title: Broader Mermaid root support
 
 Objective:
-Extend Mermaid flowchart support so styled and grouped flowcharts render as real diagrams instead of requiring users to stay within the basic node-and-edge subset.
+Broaden Mermaid root coverage through the new renderer, with deterministic support anchored on `classDiagram` and `stateDiagram` / `stateDiagram-v2` beyond the existing flowchart and sequence support.
 
 Scope:
-- `classDef`, `class`, `subgraph`, `linkStyle`, and `style` for Mermaid flowcharts
-- public note and owner preview verification for the styled flowchart path
-- deterministic screenshot and responsive coverage for advanced flowcharts
+- broader Mermaid roots, with `classDiagram` and `stateDiagram` / `stateDiagram-v2` as the minimum roots for this wave
+- owner preview and public note verification for those roots
+- malformed-syntax fallback behavior for newly claimed roots
 
 Out of scope:
-- broader Mermaid root families
-- Mermaid click handlers or other interactive commands
-- homepage/showroom rendering
+- roots that are not explicitly documented and tested in this wave
+- interactive Mermaid features
+- Mermaid use outside note markdown
 
 Exit criteria:
-1. Flowcharts that use `classDef`, `class`, `subgraph`, `linkStyle`, and `style` render successfully through the shared Mermaid renderer.
-2. Owner preview and public note pages present the same styled flowchart output from the same markdown source.
-3. Desktop and mobile surfaces remain bounded and readable.
+1. `classDiagram` and `stateDiagram` / `stateDiagram-v2` render through the shared Mermaid path in both public note reading and owner preview.
+2. Malformed syntax for those newly supported roots reaches the documented fallback shell.
+3. The docs claim only the Mermaid roots that the deterministic tests actually prove.
 4. `npm run test:e2e -- --grep @ui-public-note-mermaid`, `npm run test:e2e -- --grep @ui-note-editor-mermaid`, and `npm run verify` pass.
 
 Required checks:
@@ -35,7 +35,7 @@ Required checks:
 - `npm run verify`
 
 Evaluator notes:
-Promote only when flowchart styling support is demonstrably broader than the current subset and is protected by deterministic coverage rather than one hand-tested sample.
+Promote only when broader-root support is test-backed and the renderer does not silently treat unsupported syntax as a successful diagram.
 
 Required repository artifacts for this task:
 - src/features/notes/markdown.ts
