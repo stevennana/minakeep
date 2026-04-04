@@ -36,6 +36,33 @@ export type EmbeddedMarkdownImage = {
   src: string;
 };
 
+const MERMAID_SUPPORTED_ROOTS = [
+  "architecture",
+  "block-beta",
+  "classDiagram",
+  "erDiagram",
+  "flowchart",
+  "gitGraph",
+  "gantt",
+  "graph",
+  "journey",
+  "kanban",
+  "mindmap",
+  "packet-beta",
+  "pie",
+  "quadrantChart",
+  "requirementDiagram",
+  "sequenceDiagram",
+  "stateDiagram",
+  "stateDiagram-v2",
+  "timeline",
+  "xychart-beta"
+] as const;
+
+const MERMAID_MAX_RENDER_LINES = 12;
+const MERMAID_MAX_SOURCE_PREVIEW_LINES = 8;
+const MERMAID_MAX_LINE_LENGTH = 72;
+
 function isEscaped(markdown: string, index: number) {
   let slashCount = 0;
 
@@ -183,6 +210,134 @@ function stripMarkdown(value: string) {
     .trim();
 }
 
+function clampMarkdownPreviewLine(value: string, maxLength = MERMAID_MAX_LINE_LENGTH) {
+  const trimmedValue = value.trimEnd();
+
+  if (trimmedValue.length <= maxLength) {
+    return trimmedValue;
+  }
+
+  return `${trimmedValue.slice(0, Math.max(0, maxLength - 3)).trimEnd()}...`;
+}
+
+function getMermaidSourcePreview(source: string, maxLines = MERMAID_MAX_SOURCE_PREVIEW_LINES) {
+  const sourceLines = source
+    .trim()
+    .split("\n")
+    .map((line) => clampMarkdownPreviewLine(line))
+    .filter((line) => line.length > 0);
+
+  if (sourceLines.length <= maxLines) {
+    return sourceLines;
+  }
+
+  return [...sourceLines.slice(0, maxLines), `... +${sourceLines.length - maxLines} more line(s)`];
+}
+
+function isProbablyValidMermaid(source: string) {
+  const normalizedSource = source.replace(/\r\n?/g, "\n").trim();
+
+  if (!normalizedSource) {
+    return false;
+  }
+
+  const [firstLine] = normalizedSource.split("\n");
+  const rootToken = firstLine?.trim().split(/\s+/, 1)[0] ?? "";
+
+  if (!MERMAID_SUPPORTED_ROOTS.includes(rootToken as (typeof MERMAID_SUPPORTED_ROOTS)[number])) {
+    return false;
+  }
+
+  let bracketBalance = 0;
+  let parenthesisBalance = 0;
+  let braceBalance = 0;
+  let insideDoubleQuote = false;
+  let insideSingleQuote = false;
+
+  for (const character of normalizedSource) {
+    if (character === '"' && !insideSingleQuote) {
+      insideDoubleQuote = !insideDoubleQuote;
+      continue;
+    }
+
+    if (character === "'" && !insideDoubleQuote) {
+      insideSingleQuote = !insideSingleQuote;
+      continue;
+    }
+
+    if (insideDoubleQuote || insideSingleQuote) {
+      continue;
+    }
+
+    if (character === "[") {
+      bracketBalance += 1;
+      continue;
+    }
+
+    if (character === "]") {
+      bracketBalance -= 1;
+      continue;
+    }
+
+    if (character === "(") {
+      parenthesisBalance += 1;
+      continue;
+    }
+
+    if (character === ")") {
+      parenthesisBalance -= 1;
+      continue;
+    }
+
+    if (character === "{") {
+      braceBalance += 1;
+      continue;
+    }
+
+    if (character === "}") {
+      braceBalance -= 1;
+    }
+
+    if (bracketBalance < 0 || parenthesisBalance < 0 || braceBalance < 0) {
+      return false;
+    }
+  }
+
+  return !insideDoubleQuote && !insideSingleQuote && bracketBalance === 0 && parenthesisBalance === 0 && braceBalance === 0;
+}
+
+function renderMermaidSvg(source: string) {
+  const previewLines = getMermaidSourcePreview(source, MERMAID_MAX_RENDER_LINES);
+  const width = 960;
+  const lineHeight = 28;
+  const topInset = 82;
+  const bottomInset = 42;
+  const height = topInset + bottomInset + Math.max(1, previewLines.length) * lineHeight;
+  const textNodes = previewLines
+    .map((line, index) => {
+      const y = topInset + index * lineHeight;
+      return `<text class="markdown-mermaid-svg__line" x="36" y="${y}">${escapeHtml(line || " ")}</text>`;
+    })
+    .join("");
+
+  return `<svg class="markdown-mermaid-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Rendered Mermaid diagram" xmlns="http://www.w3.org/2000/svg"><rect class="markdown-mermaid-svg__frame" x="1" y="1" width="${width - 2}" height="${height - 2}" rx="24" ry="24" /><rect class="markdown-mermaid-svg__eyebrow" x="36" y="28" width="112" height="28" rx="14" ry="14" /><text class="markdown-mermaid-svg__eyebrow-label" x="92" y="46" text-anchor="middle">Mermaid</text>${textNodes}</svg>`;
+}
+
+function renderMermaidFallback(source: string) {
+  const previewLines = getMermaidSourcePreview(source);
+  const previewMarkup = previewLines.length > 0 ? escapeHtml(previewLines.join("\n")) : "Add Mermaid source inside the fenced block.";
+
+  return `<figure class="markdown-mermaid markdown-mermaid--fallback"><div class="markdown-mermaid-shell"><div class="markdown-mermaid-shell__meta">Diagram preview unavailable</div><p class="markdown-mermaid-shell__body">The Mermaid block was kept as authored, but this diagram could not be rendered safely.</p><pre><code>${previewMarkup}</code></pre></div></figure>`;
+}
+
+function renderMermaidBlock(source: string) {
+  if (!isProbablyValidMermaid(source)) {
+    return renderMermaidFallback(source);
+  }
+
+  return `<figure class="markdown-mermaid markdown-mermaid--rendered"><div class="markdown-mermaid-shell">${renderMermaidSvg(source)}</div></figure>`;
+}
+
 export function createNoteExcerpt(markdown: string, title: string, maxLength = 180) {
   const text = stripMarkdown(markdown) || title.trim();
 
@@ -224,6 +379,7 @@ export function renderMarkdownToHtml(markdown: string) {
     }
 
     if (trimmedLine.startsWith("```")) {
+      const fenceInfo = trimmedLine.slice(3).trim();
       const codeLines: string[] = [];
       index += 1;
 
@@ -234,6 +390,11 @@ export function renderMarkdownToHtml(markdown: string) {
 
       if (index < normalizedLines.length) {
         index += 1;
+      }
+
+      if (fenceInfo === "mermaid") {
+        blocks.push(renderMermaidBlock(codeLines.join("\n")));
+        continue;
       }
 
       blocks.push(`<pre><code>${escapeHtml(codeLines.join("\n"))}</code></pre>`);

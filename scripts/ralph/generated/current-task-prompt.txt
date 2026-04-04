@@ -4,51 +4,49 @@ Read the following repository documents before making changes:
 - docs/FRONTEND.md
 - docs/product-specs/note-authoring.md
 - docs/product-specs/markdown-editor-workbench.md
+- docs/product-specs/markdown-mermaid-diagrams.md
 - docs/design-docs/markdown-editor-workbench.md
-- docs/exec-plans/active/091-note-math-verification.md
+- docs/design-docs/markdown-diagram-rendering.md
+- docs/exec-plans/active/092-mermaid-renderer-foundation.md
 
-Current task id: 091-note-math-verification
-Current task title: Note math verification
+Current task id: 092-mermaid-renderer-foundation
+Current task title: Mermaid renderer foundation
 
 Objective:
-Close the note-math wave by verifying the shipped LaTeX behavior, aligning the queue with the implementation, and catching any residual regression or startup-smoke drift before promotion.
+Extend the shared note-markdown pipeline so Mermaid fenced blocks become a first-class supported note syntax without changing the markdown-native save contract.
 
 Scope:
-- verification of inline `$...$` and block `$$...$$` note math rendering
-- owner workbench helper and preview coverage
-- published note math coverage
-- doc, snapshot, and startup-smoke alignment for the shipped wave
+- Mermaid fenced-block detection in the shared note renderer
+- sanitized static diagram output or bounded fallback output
+- unit coverage for valid and invalid Mermaid cases
+- shared CSS primitives needed for stable rendered-diagram containers
 
 Out of scope:
-- new math syntaxes beyond inline and block LaTeX
-- link math support
-- richer equation editing beyond the current markdown-native helpers
+- public note-page wiring
+- showroom card preview wiring
+- owner editor preview wiring
+- Mermaid authoring helpers or toolbar buttons
 
 Exit criteria:
-1. Owner preview and published note pages render the same inline and block math from one markdown source.
-2. The note workbench stays markdown-native while exposing the shipped light math helpers.
-3. Regression coverage and snapshots protect the added math surfaces without leaving unrelated queue drift.
-4. `npm run test:e2e -- --grep @ui-note-math`, `npm run test:e2e -- --grep @ui-public-note-math`, and `npm run verify` pass.
+1. The shared note renderer recognizes fenced `mermaid` blocks and emits stable rendered output or a stable fallback shell.
+2. Stored note markdown remains the raw authored fence text.
+3. Unit coverage protects both successful and failed Mermaid rendering paths.
+4. `npm run test:unit` and `npm run verify` pass.
 
 Required checks:
-- `npm run test:e2e -- --grep @ui-note-math`
-- `npm run test:e2e -- --grep @ui-public-note-math`
+- `npm run test:unit`
 - `npm run verify`
 
 Evaluator notes:
-Promote only when the note-math tranche reads as a finished shipped slice rather than a local implementation that bypassed the Ralph queue.
+Promote only when Mermaid support is clearly a shared rendering primitive rather than a one-off patch hidden inside one route or component.
 
 Required repository artifacts for this task:
-- docs
-- scripts/start-smoke.mjs
-- src/app
-- src/features/notes
-- tests/e2e
+- src/features/notes/markdown.ts
+- src/app/globals.css
 - tests/unit
 
 Required commands for this task:
-- npm run test:e2e -- --grep @ui-note-math
-- npm run test:e2e -- --grep @ui-public-note-math
+- npm run test:unit
 - npm run verify
 
 Previous known gaps from the last evaluation:

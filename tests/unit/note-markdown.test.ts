@@ -53,6 +53,52 @@ test("renderMarkdownToHtml keeps fenced code literal even when it contains math 
   assert.match(html, /&apos;\$not-math\$&apos;|&#39;\$not-math\$&#39;/);
 });
 
+test("renderMarkdownToHtml turns valid mermaid fences into sanitized static diagram markup", () => {
+  const markdown = `# Diagram
+
+\`\`\`mermaid
+flowchart TD
+  A[Start] --> B{Ship it?}
+  B -->|yes| C[Done]
+\`\`\``;
+  const html = renderMarkdownToHtml(markdown);
+
+  assert.match(html, /markdown-mermaid markdown-mermaid--rendered/);
+  assert.match(html, /<svg class="markdown-mermaid-svg"/);
+  assert.match(html, /aria-label="Rendered Mermaid diagram"/);
+  assert.match(html, /flowchart TD/);
+  assert.doesNotMatch(html, /```mermaid/);
+});
+
+test("renderMarkdownToHtml falls back cleanly for invalid mermaid fences", () => {
+  const html = renderMarkdownToHtml(`\`\`\`mermaid
+flowchart TD
+  A[Start --> B[Broken
+\`\`\``);
+
+  assert.match(html, /markdown-mermaid markdown-mermaid--fallback/);
+  assert.match(html, /Diagram preview unavailable/);
+  assert.match(html, /A\[Start --&gt; B\[Broken/);
+  assert.doesNotMatch(html, /aria-label="Rendered Mermaid diagram"/);
+});
+
+test("renderMarkdownToHtml does not rewrite the authored mermaid fence source", () => {
+  const markdown = `\`\`\`mermaid
+sequenceDiagram
+  Alice->>Bob: hello
+\`\`\``;
+
+  renderMarkdownToHtml(markdown);
+
+  assert.equal(
+    markdown,
+    `\`\`\`mermaid
+sequenceDiagram
+  Alice->>Bob: hello
+\`\`\``
+  );
+});
+
 test("createNoteExcerpt turns markdown into readable summary text", () => {
   const excerpt = createNoteExcerpt("## Draft note\n\n![Desk shot](/media/image-1)\n\nThis is a private note with `inline code`.", "Fallback title");
 

@@ -72,3 +72,6 @@ Promote only when Mermaid support is clearly a shared rendering primitive rather
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-04-04 12:31 KST: Extended `src/features/notes/markdown.ts` so fenced `mermaid` blocks are detected in the shared renderer, produce sanitized static SVG-backed output for supported Mermaid roots, and degrade to a bounded fallback shell when validation fails.
+- 2026-04-04 12:31 KST: Added shared Mermaid container primitives in `src/app/globals.css` for bounded overflow, stable panel framing, and readable mobile behavior inside the shared markdown preview surface.
+- 2026-04-04 12:31 KST: Added unit coverage in `tests/unit/note-markdown.test.ts` for successful Mermaid rendering, invalid Mermaid fallback behavior, and preserving the raw authored fence text.

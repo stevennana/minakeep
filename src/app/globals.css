@@ -2691,6 +2691,90 @@ textarea {
   padding-bottom: 0.1rem;
 }
 
+.markdown-preview .markdown-mermaid {
+  margin: 1.05rem 0 1.2rem;
+}
+
+.markdown-preview .markdown-mermaid-shell {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(241, 245, 249, 0.78)),
+    linear-gradient(135deg, rgba(148, 163, 184, 0.08), transparent 55%);
+  border: 1px solid rgba(100, 116, 139, 0.18);
+  border-radius: calc(var(--radius-2) + 0.15rem);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.markdown-preview .markdown-mermaid--rendered .markdown-mermaid-shell {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.markdown-preview .markdown-mermaid-svg {
+  display: block;
+  height: auto;
+  min-width: 32rem;
+  width: 100%;
+}
+
+.markdown-preview .markdown-mermaid-svg__frame {
+  fill: rgba(248, 250, 252, 0.96);
+  stroke: rgba(100, 116, 139, 0.22);
+  stroke-width: 1.5;
+}
+
+.markdown-preview .markdown-mermaid-svg__eyebrow {
+  fill: rgba(50, 72, 99, 0.11);
+}
+
+.markdown-preview .markdown-mermaid-svg__eyebrow-label {
+  fill: var(--accent-strong);
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.markdown-preview .markdown-mermaid-svg__line {
+  fill: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  white-space: pre;
+}
+
+.markdown-preview .markdown-mermaid--fallback .markdown-mermaid-shell {
+  display: grid;
+  gap: 0.65rem;
+  padding: 1rem;
+}
+
+.markdown-preview .markdown-mermaid-shell__meta {
+  color: var(--accent-strong);
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.markdown-preview .markdown-mermaid-shell__body {
+  color: var(--ink-muted);
+  margin: 0;
+}
+
+.markdown-preview .markdown-mermaid--fallback pre {
+  background: rgba(15, 23, 42, 0.94);
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .markdown-preview .markdown-mermaid-svg {
+    min-width: 26rem;
+  }
+}
+
 .markdown-preview .katex-display {
   margin: 0;
   overflow-x: auto;
