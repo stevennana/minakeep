@@ -1,5 +1,5 @@
-No Mermaid implementation changes were needed. I re-audited the shipped renderer, docs, and E2E bundle, then recorded fresh task evidence in [102-mermaid-expansion-hardening.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/102-mermaid-expansion-hardening.md#L68) and updated the requested operator handoff in [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt#L1).
+No product code changes were needed. I revalidated the shipped Mermaid contract, reran the required gates, appended a fresh progress entry to [102-mermaid-expansion-hardening.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/102-mermaid-expansion-hardening.md#L68), and wrote the requested operator handoff to [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt#L1).
 
-The exit criteria appear satisfied from the current workspace state. `npm run test:e2e -- --grep @ui-mermaid-regression` passed with 4 Mermaid replay tests, and `npm run verify` passed with lint, db prepare, typecheck, build, 85 unit tests, 92 Playwright tests, and startup smoke.
+The exit criteria appear satisfied from the current workspace. `npm run test:e2e -- --grep @ui-mermaid-regression` passed with 4 tests covering owner preview and published note on desktop and mobile. `npm run verify` also passed end to end with lint, `db:prepare`, typecheck, build, 85 unit tests, 92 Playwright tests, and startup smoke.
 
-There were already unrelated state-file changes present in `state/current-cycle.json` and `state/run-log.md`; I left those untouched.
+The worktree still has unrelated pre-existing edits in `state/current-cycle.json` and `state/run-log.md`, which I left untouched.
