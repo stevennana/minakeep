@@ -77,20 +77,36 @@ flowchart TD
   assert.doesNotMatch(html, /```mermaid/);
 });
 
-test("renderMarkdownToHtml renders supported non-flowchart mermaid fences without falling back", () => {
+test("renderMarkdownToHtml renders supported sequence mermaid fences with semantic SVG content", () => {
   const html = renderMarkdownToHtml(`\`\`\`mermaid
 sequenceDiagram
+  participant A as Alice
+  participant B as Bob
   Alice->>Bob: hello
   Bob-->>Alice: shipped
 \`\`\``);
 
   assert.match(html, /markdown-mermaid markdown-mermaid--rendered/);
-  assert.match(html, /markdown-mermaid-svg markdown-mermaid-svg--generic/);
-  assert.match(html, />Sequence Diagram</);
-  assert.match(html, />Alice-&gt;&gt;Bob: hello</);
-  assert.match(html, />Bob--&gt;&gt;Alice: shipped</);
-  assert.doesNotMatch(html, /Diagram preview unavailable/);
+  assert.match(html, /markdown-mermaid-svg markdown-mermaid-svg--sequence/);
+  assert.match(html, /class="markdown-mermaid-sequence__participant"/);
+  assert.match(html, /class="markdown-mermaid-sequence__message-line"/);
+  assert.match(html, />Alice</);
+  assert.match(html, />Bob</);
+  assert.match(html, />hello</);
+  assert.match(html, />shipped</);
   assert.doesNotMatch(html, /markdown-mermaid markdown-mermaid--fallback/);
+  assert.doesNotMatch(html, /Alice-&gt;&gt;Bob: hello/);
+});
+
+test("renderMarkdownToHtml falls back for unsupported mermaid roots instead of claiming a rendered diagram", () => {
+  const html = renderMarkdownToHtml(`\`\`\`mermaid
+gantt
+  title Release train
+\`\`\``);
+
+  assert.match(html, /markdown-mermaid markdown-mermaid--fallback/);
+  assert.match(html, /Diagram preview unavailable/);
+  assert.doesNotMatch(html, /markdown-mermaid markdown-mermaid--rendered/);
 });
 
 test("renderMarkdownToHtml falls back cleanly for invalid mermaid fences", () => {
@@ -103,6 +119,17 @@ flowchart TD
   assert.match(html, /Diagram preview unavailable/);
   assert.match(html, /A\[Start --&gt; B\[Broken/);
   assert.doesNotMatch(html, /aria-label="Rendered Mermaid diagram"/);
+});
+
+test("renderMarkdownToHtml falls back for malformed supported sequence diagrams", () => {
+  const html = renderMarkdownToHtml(`\`\`\`mermaid
+sequenceDiagram
+  Alice hello Bob
+\`\`\``);
+
+  assert.match(html, /markdown-mermaid markdown-mermaid--fallback/);
+  assert.match(html, /Alice hello Bob/);
+  assert.doesNotMatch(html, /markdown-mermaid-svg markdown-mermaid-svg--sequence/);
 });
 
 test("renderMarkdownToHtml does not rewrite the authored mermaid fence source", () => {

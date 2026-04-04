@@ -186,7 +186,7 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-note-editor-mermaid desktop split and preview-only modes render Mermaid through the shared preview path", async ({ page }) => {
+test("@ui-note-editor-mermaid @ui-mermaid-regression desktop split and preview-only modes render Mermaid through the shared preview path", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await signIn(page);
   await page.goto(`/app/notes/${seededNoteId}/edit`);
@@ -230,7 +230,7 @@ test("@ui-note-editor-mermaid desktop split and preview-only modes render Mermai
   });
 });
 
-test("@ui-note-editor-mermaid mobile preview keeps Mermaid diagrams and fallbacks bounded without rewriting markdown", async ({ page }) => {
+test("@ui-note-editor-mermaid @ui-mermaid-regression mobile preview keeps Mermaid diagrams and fallbacks bounded without rewriting markdown", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await signIn(page);
   await page.goto(`/app/notes/${seededNoteId}/edit`);

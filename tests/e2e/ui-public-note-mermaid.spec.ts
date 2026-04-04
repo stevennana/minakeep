@@ -139,7 +139,7 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-public-note-mermaid published note renders Mermaid diagrams inline on desktop", async ({ page }) => {
+test("@ui-public-note-mermaid @ui-mermaid-regression published note renders Mermaid diagrams inline on desktop", async ({ page }) => {
   await page.setViewportSize(desktopViewport);
   await page.goto(`/notes/${seededNote.slug}`);
 
@@ -163,7 +163,7 @@ test("@ui-public-note-mermaid published note renders Mermaid diagrams inline on 
   });
 });
 
-test("@ui-public-note-mermaid published note keeps Mermaid diagrams bounded on mobile", async ({ page }) => {
+test("@ui-public-note-mermaid @ui-mermaid-regression published note keeps Mermaid diagrams bounded on mobile", async ({ page }) => {
   await page.setViewportSize(mobileViewport);
   await page.goto(`/notes/${seededNote.slug}`);
 

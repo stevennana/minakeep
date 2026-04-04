@@ -131,6 +131,8 @@ If no reason is supplied, the override records the default reason `operator manu
 - Prefer deterministic gates over “try harder” loops, and use evaluator review only when the task contract still needs semantic judgment.
 - Do not mix multiple feature fronts into one task.
 - `run-once.sh` always rewrites `state/current-cycle.json`, `state/evaluation.json`, `state/backlog.md`, and `state/last-result.txt`; treat those as loop-owned state.
+- `ensure-state.mjs` now keeps `state/current-task.txt` synchronized with runnable task docs in `docs/exec-plans/active/` and writes `NONE` only when that runnable queue is actually exhausted.
+- if `render-task-prompt.mjs` fails, `run-once.sh` must abort the cycle immediately before worker, evaluator, commit, or promotion so the loop never reuses a stale prompt artifact.
 - if the worker goes silent and `worker.jsonl` stops changing past the stall timeout, the harness marks the cycle as `stalled`, writes a stall artifact, appends `!` to the health line, and stops the unattended loop for operator triage unless that identical stall has already repeated enough times to auto-branch into RCA
 - Required commands come from each task doc’s `taskmeta.required_commands`; `evaluate-task.mjs` runs exactly those commands plus required-file checks.
 - If `taskmeta.promotion_mode` is `deterministic_only`, `evaluate-task.mjs` promotes the task based on required command and required-file results alone.

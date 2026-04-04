@@ -4,12 +4,12 @@ import {
   COMPLETED_TASK_DIR,
   STATE_DIR,
   listTaskDocs,
-  readCurrentTaskId,
   renderBacklogMarkdown,
+  syncCurrentTaskState,
   writeText,
 } from "./lib/task-utils.mjs";
 
-const currentTaskId = readCurrentTaskId();
+const currentTaskId = syncCurrentTaskState();
 const tasks = [
   ...listTaskDocs(ACTIVE_TASK_DIR),
   ...listTaskDocs(COMPLETED_TASK_DIR),

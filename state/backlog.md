@@ -81,6 +81,9 @@
 - [x] 091-note-math-verification — Note math verification
 - [x] 092-mermaid-renderer-foundation — Mermaid renderer foundation
 - [x] 093-public-mermaid-note-surfaces — Public Mermaid note reading
-- [ ] 094-editor-mermaid-preview — Editor Mermaid preview ← current
-- [ ] 095-mermaid-wave-hardening — Mermaid wave hardening
+- [x] 094-editor-mermaid-preview — Editor Mermaid preview
+- [x] 095-mermaid-wave-hardening — Mermaid wave hardening
+- [ ] 096-mermaid-semantic-rendering-foundation — Mermaid semantic rendering foundation ← current
+- [ ] 097-public-mermaid-contract-realignment — Public Mermaid contract realignment
+- [ ] 098-editor-mermaid-regression-closeout — Editor Mermaid regression closeout
 

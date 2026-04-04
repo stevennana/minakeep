@@ -2,51 +2,47 @@ Read the following repository documents before making changes:
 - AGENTS.md
 - ARCHITECTURE.md
 - docs/FRONTEND.md
-- docs/product-specs/note-authoring.md
-- docs/product-specs/markdown-editor-workbench.md
 - docs/product-specs/markdown-mermaid-diagrams.md
-- docs/design-docs/markdown-editor-workbench.md
 - docs/design-docs/markdown-diagram-rendering.md
-- docs/references/ui-verification-contract.md
-- docs/exec-plans/active/094-editor-mermaid-preview.md
+- docs/exec-plans/active/096-mermaid-semantic-rendering-foundation.md
 
-Current task id: 094-editor-mermaid-preview
-Current task title: Editor Mermaid preview
+Current task id: 096-mermaid-semantic-rendering-foundation
+Current task title: Mermaid semantic rendering foundation
 
 Objective:
-Bring the Mermaid rendering contract into the owner workbench preview so authors can validate diagrams before publishing.
+Reset the shared Mermaid renderer so every Mermaid root Minakeep treats as supported has a real semantic rendering path, while malformed syntax for supported roots reliably falls back.
 
 Scope:
-- Mermaid rendering in split and preview-only editor modes
-- mobile preview containment and readability
-- invalid Mermaid fallback visibility in the authoring preview
-- dedicated editor Playwright coverage
+- shared Mermaid renderer contract in `src/features/notes/markdown.ts`
+- supported-root validation and fallback rules
+- unit coverage for real rendered output versus fallback across flowchart and non-flowchart roots
+- shared CSS adjustments only where the stricter renderer needs different container treatment
 
 Out of scope:
-- Mermaid text-snippet insertion helpers
-- non-note authoring surfaces
-- public-note card preview heuristics beyond what task 093 defines
+- public note page route wiring beyond consuming the shared renderer
+- editor mode behavior beyond consuming the shared renderer
+- Mermaid authoring helpers or toolbar additions
 
 Exit criteria:
-1. Split mode and preview-only mode render Mermaid diagrams through the same shared note-rendering path used publicly.
-2. Invalid Mermaid syntax stays visible as a bounded fallback state without blocking save.
-3. Desktop and mobile editor preview remain readable and do not rewrite the markdown source.
-4. `npm run test:e2e -- --grep @ui-note-editor-mermaid` and `npm run verify` pass.
+1. Supported Mermaid roots that Minakeep claims to render no longer collapse into generic summary cards.
+2. Malformed syntax for supported Mermaid roots reaches the fallback shell rather than appearing as a successful render.
+3. The shared renderer contract remains markdown-native and server-safe.
+4. `npm run test:unit` and `npm run verify` pass.
 
 Required checks:
-- `npm run test:e2e -- --grep @ui-note-editor-mermaid`
+- `npm run test:unit`
 - `npm run verify`
 
 Evaluator notes:
-Promote only when Mermaid preview genuinely helps authors review the note body and does not degrade the source-first workbench into a second editor model.
+Promote only when the shared renderer contract is materially stricter than the shipped faux-diagram implementation and the new supported-root behavior is protected by unit tests rather than narrative claims.
 
 Required repository artifacts for this task:
-- src/features/notes/components/note-editor.tsx
+- src/features/notes/markdown.ts
 - src/app/globals.css
-- tests/e2e
+- tests/unit
 
 Required commands for this task:
-- npm run test:e2e -- --grep @ui-note-editor-mermaid
+- npm run test:unit
 - npm run verify
 
 Previous known gaps from the last evaluation:

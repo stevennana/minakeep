@@ -1,16 +1,3 @@
-what changed
+Updated the shared Mermaid renderer in [markdown.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/markdown.ts) so Minakeep now only claims support for roots with a real semantic path: `flowchart`, `graph`, and `sequenceDiagram`. The faux generic success renderer is gone, `sequenceDiagram` now produces semantic SVG output, and unsupported or malformed Mermaid falls back through the existing bounded fallback shell. I also updated the shared Mermaid styling in [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css) and expanded unit coverage in [note-markdown.test.ts](/Users/stevenna/WebstormProjects/minakeep/tests/unit/note-markdown.test.ts). The task progress log was appended in [096-mermaid-semantic-rendering-foundation.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/096-mermaid-semantic-rendering-foundation.md), and the operator handoff was written to [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
 
-- Added dedicated Mermaid editor coverage in [tests/e2e/ui-note-editor-mermaid.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-note-editor-mermaid.spec.ts) with new snapshots under [tests/e2e/ui-note-editor-mermaid.spec.ts-snapshots](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-note-editor-mermaid.spec.ts-snapshots). The spec verifies split mode, preview-only mode, invalid Mermaid fallback visibility, mobile containment, and that saving does not rewrite the authored Mermaid source.
-- Tightened owner-preview Mermaid containment in [src/app/globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css): rendered diagrams now keep bounded horizontal behavior in the editor preview, fallback `pre` blocks stay contained, and mobile preview scales Mermaid SVGs to the available width.
-- Normalized owner note form markdown line endings in [src/app/app/notes/actions.ts](/Users/stevenna/WebstormProjects/minakeep/src/app/app/notes/actions.ts) so preview/save round-trips do not rewrite Mermaid fences via textarea CRLF conversion.
-- Updated the task progress log in [docs/exec-plans/active/094-editor-mermaid-preview.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/094-editor-mermaid-preview.md) and refreshed the two affected mobile editor baselines:
-  [tests/e2e/ui-note-editor-mobile.spec.ts-snapshots/ui-note-editor-mobile-phone-darwin.png](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-note-editor-mobile.spec.ts-snapshots/ui-note-editor-mobile-phone-darwin.png)
-  [tests/e2e/ui-note-editor-modes.spec.ts-snapshots/ui-note-editor-modes-mobile-darwin.png](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-note-editor-modes.spec.ts-snapshots/ui-note-editor-modes-mobile-darwin.png)
-
-whether the exit criteria appear satisfied
-
-- Yes. The editor preview uses the same shared markdown renderer path as public notes, invalid Mermaid stays visible in a bounded fallback, desktop and mobile preview remain readable without rewriting source, `npm run test:e2e -- --grep @ui-note-editor-mermaid` passed, and `npm run verify` passed.
-
-what remains if the task is still incomplete
-
-- Nothing for task 094.
+Validation: `npm run test:unit` passed, and `npm run start:smoke` passed. `npm run verify` advanced through lint, `db:prepare`, typecheck, build, and unit-test success, but the session did not return control once it entered the Playwright portion, so I cannot claim a completed `verify` exit code from this run. Based on the code changes, exit criteria 1-3 appear satisfied; criterion 4 is still blocked on getting a clean finished `npm run verify` result in this environment.

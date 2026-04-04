@@ -262,6 +262,52 @@ if node scripts/ralph/render-task-prompt.mjs >"$TASK_PROMPT_LOG" 2>&1; then
   append_log "- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt"
 else
   append_log "- prompt: failed -> ${TASK_PROMPT_LOG}"
+  cat > state/last-result.txt <<EOF
+**Result**
+
+Task \`${TASK_ID}\` stopped before the worker phase because Ralph could not render a fresh task prompt.
+
+Inspect:
+- \`${TASK_PROMPT_LOG}\`
+- \`state/current-task.txt\`
+- \`docs/exec-plans/active/\`
+
+The cycle aborted before worker, evaluator, commit, and promotion so Ralph would not continue with a stale prompt artifact.
+EOF
+  node - "$TASK_ID" "$TASK_PROMPT_LOG" <<'NODE'
+const fs = require("fs");
+const [taskId, promptLogPath] = process.argv.slice(2);
+const payload = {
+  checked_at: new Date().toISOString(),
+  task_id: taskId,
+  status: "blocked",
+  promotion_eligible: false,
+  deterministic: {
+    checked_at: new Date().toISOString(),
+    task_id: taskId,
+    pass: false,
+    commands: [],
+    missing_files: [],
+  },
+  summary: `Task prompt rendering failed before the worker phase. Inspect ${promptLogPath}.`,
+  missing_requirements: [
+    `Prompt rendering failed: ${promptLogPath}`
+  ],
+};
+fs.writeFileSync("state/evaluation.json", `${JSON.stringify(payload, null, 2)}\n`, "utf8");
+NODE
+  BACKLOG_LOG="${CYCLE_DIR}/backlog.log"
+  write_cycle_state "backlog" "running"
+  if node scripts/ralph/render-backlog.mjs >"$BACKLOG_LOG" 2>&1; then
+    NEXT_TASK="$(tr -d '\n' < state/current-task.txt || true)"
+    append_log "- backlog: rendered current=${NEXT_TASK:-NONE}"
+  else
+    append_log "- backlog: failed -> ${BACKLOG_LOG}"
+  fi
+  append_health_mark "x"
+  write_cycle_state "finished" "finished"
+  append_log "- cycle: finished"
+  exit 1
 fi
 
 WORKER_LOG="${CYCLE_DIR}/worker.jsonl"

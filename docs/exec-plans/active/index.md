@@ -6,12 +6,11 @@ Only task files in this directory that contain a `taskmeta` JSON block are eligi
 
 ## Current recommended sequence
 
-1. `092-mermaid-renderer-foundation.md` -> extend the shared note-markdown pipeline to recognize Mermaid fences and fail soft without changing stored markdown.
-2. `093-public-mermaid-note-surfaces.md` -> render Mermaid diagrams on published note pages through the shared note-reading path.
-3. `094-editor-mermaid-preview.md` -> bring the same Mermaid rendering contract into the owner workbench preview on desktop and mobile.
-4. `095-mermaid-wave-hardening.md` -> close the Mermaid tranche with regression coverage, queue alignment, and deterministic replay.
+1. `096-mermaid-semantic-rendering-foundation.md` -> replace the fake non-flowchart Mermaid summary renderer with a real shared semantic rendering contract and strengthen invalid-syntax fallback detection.
+2. `097-public-mermaid-contract-realignment.md` -> prove published note pages reflect the stricter Mermaid contract for supported roots and supported-root failures.
+3. `098-editor-mermaid-regression-closeout.md` -> bring the same stricter Mermaid contract through the owner preview path and close the next Mermaid wave with deterministic replay.
 
-Task `091` is preserved in completed history as the note-math verification tranche. This active queue starts the Mermaid markdown wave with a shared-renderer foundation task, then splits public note reading, editor preview, and hardening into separate promotion slices. The homepage remains excerpt and summary based in this wave; Mermaid support reaches only the surfaces that already render note markdown.
+Tasks `092` through `095` remain preserved in completed history as the first Mermaid tranche. This new queue exists because review found two gaps in the shipped renderer: non-flowchart roots are still represented by generic diagram-themed summary cards, and malformed syntax for some supported roots can still appear as a successful render instead of falling back.
 
 ## Operating rule
 

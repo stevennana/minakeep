@@ -1,0 +1,71 @@
+# Public Mermaid contract realignment
+
+```json taskmeta
+{
+  "id": "097-public-mermaid-contract-realignment",
+  "title": "Public Mermaid contract realignment",
+  "order": 97,
+  "status": "queued",
+  "promotion_mode": "deterministic_only",
+  "next_task_on_success": "098-editor-mermaid-regression-closeout",
+  "prompt_docs": [
+    "AGENTS.md",
+    "ARCHITECTURE.md",
+    "docs/FRONTEND.md",
+    "docs/product-specs/public-note-reading.md",
+    "docs/product-specs/markdown-mermaid-diagrams.md",
+    "docs/design-docs/markdown-diagram-rendering.md",
+    "docs/references/ui-verification-contract.md"
+  ],
+  "required_commands": [
+    "npm run test:e2e -- --grep @ui-public-note-mermaid",
+    "npm run verify"
+  ],
+  "required_files": [
+    "src/app/notes/[slug]/page.tsx",
+    "src/app/globals.css",
+    "tests/e2e"
+  ],
+  "human_review_triggers": [
+    "Published note pages still show generic diagram-summary shells for supported non-flowchart Mermaid roots.",
+    "Malformed syntax for a supported Mermaid root still appears as a successful public render instead of a visible fallback.",
+    "The stricter public Mermaid renderer causes overflow, unreadable labels, or unstable mobile note reading."
+  ]
+}
+```
+
+## Objective
+
+Prove the stricter Mermaid renderer contract holds on published note pages for both supported-root success cases and supported-root failure cases.
+
+## Scope
+
+- public note reading for supported Mermaid roots
+- public fallback behavior for malformed supported-root Mermaid
+- responsive and screenshot verification for the stricter public note output
+
+## Out of scope
+
+- editor preview mode switching
+- new Mermaid roots beyond what task 096 explicitly supports
+- homepage/showroom behavior
+
+## Exit criteria
+
+1. Public note pages show real semantic Mermaid output for at least one supported non-flowchart root in addition to flowchart coverage.
+2. Public note pages show the documented fallback shell for malformed syntax in a supported Mermaid root.
+3. Desktop and mobile public note reading remain bounded and readable under the stricter renderer.
+4. `npm run test:e2e -- --grep @ui-public-note-mermaid` and `npm run verify` pass.
+
+## Required checks
+
+- `npm run test:e2e -- --grep @ui-public-note-mermaid`
+- `npm run verify`
+
+## Evaluator notes
+
+Promote only when the public note page no longer gives a false impression that non-flowchart Mermaid is implemented by hiding source inside decorative summary art.
+
+## Progress log
+
+- Start here. Append timestamped progress notes as work lands.

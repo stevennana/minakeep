@@ -36,34 +36,14 @@ export type EmbeddedMarkdownImage = {
   src: string;
 };
 
-const MERMAID_SUPPORTED_ROOTS = [
-  "architecture",
-  "block-beta",
-  "classDiagram",
-  "erDiagram",
-  "flowchart",
-  "gitGraph",
-  "gantt",
-  "graph",
-  "journey",
-  "kanban",
-  "mindmap",
-  "packet-beta",
-  "pie",
-  "quadrantChart",
-  "requirementDiagram",
-  "sequenceDiagram",
-  "stateDiagram",
-  "stateDiagram-v2",
-  "timeline",
-  "xychart-beta"
-] as const;
+const MERMAID_SUPPORTED_ROOTS = ["flowchart", "graph", "sequenceDiagram"] as const;
 
 const MERMAID_MAX_SOURCE_PREVIEW_LINES = 8;
 const MERMAID_MAX_LINE_LENGTH = 72;
-const MERMAID_MAX_RENDER_LINES = 6;
 const MERMAID_FLOWCHART_ROOTS = new Set(["flowchart", "graph"]);
 const MERMAID_FLOWCHART_DIRECTIONS = new Set(["TB", "TD", "BT", "LR", "RL"]);
+const MERMAID_SEQUENCE_PARTICIPANT_DECLARATION = /^participant\s+([A-Za-z0-9_:-]+)(?:\s+as\s+(.+))?$/;
+const MERMAID_SEQUENCE_MESSAGE = /^([A-Za-z0-9_:-]+)\s*([-.<>=x+]+)\s*([A-Za-z0-9_:-]+)\s*(?::\s*(.+))?$/;
 
 type MermaidNodeShape = "circle" | "diamond" | "rect" | "stadium";
 
@@ -83,6 +63,23 @@ type MermaidFlowchartDiagram = {
   direction: "BT" | "LR" | "RL" | "TB" | "TD";
   edges: MermaidFlowchartEdge[];
   nodes: MermaidFlowchartNode[];
+};
+
+type MermaidSequenceParticipant = {
+  id: string;
+  label: string;
+};
+
+type MermaidSequenceMessage = {
+  from: string;
+  lineStyle: "dashed" | "solid";
+  text: string | null;
+  to: string;
+};
+
+type MermaidSequenceDiagram = {
+  messages: MermaidSequenceMessage[];
+  participants: MermaidSequenceParticipant[];
 };
 
 function isEscaped(markdown: string, index: number) {
@@ -256,78 +253,6 @@ function getMermaidSourcePreview(source: string, maxLines = MERMAID_MAX_SOURCE_P
   return [...sourceLines.slice(0, maxLines), `... +${sourceLines.length - maxLines} more line(s)`];
 }
 
-function isProbablyValidMermaid(source: string) {
-  const normalizedSource = source.replace(/\r\n?/g, "\n").trim();
-
-  if (!normalizedSource) {
-    return false;
-  }
-
-  const [firstLine] = normalizedSource.split("\n");
-  const rootToken = firstLine?.trim().split(/\s+/, 1)[0] ?? "";
-
-  if (!MERMAID_SUPPORTED_ROOTS.includes(rootToken as (typeof MERMAID_SUPPORTED_ROOTS)[number])) {
-    return false;
-  }
-
-  let bracketBalance = 0;
-  let parenthesisBalance = 0;
-  let braceBalance = 0;
-  let insideDoubleQuote = false;
-  let insideSingleQuote = false;
-
-  for (const character of normalizedSource) {
-    if (character === '"' && !insideSingleQuote) {
-      insideDoubleQuote = !insideDoubleQuote;
-      continue;
-    }
-
-    if (character === "'" && !insideDoubleQuote) {
-      insideSingleQuote = !insideSingleQuote;
-      continue;
-    }
-
-    if (insideDoubleQuote || insideSingleQuote) {
-      continue;
-    }
-
-    if (character === "[") {
-      bracketBalance += 1;
-      continue;
-    }
-
-    if (character === "]") {
-      bracketBalance -= 1;
-      continue;
-    }
-
-    if (character === "(") {
-      parenthesisBalance += 1;
-      continue;
-    }
-
-    if (character === ")") {
-      parenthesisBalance -= 1;
-      continue;
-    }
-
-    if (character === "{") {
-      braceBalance += 1;
-      continue;
-    }
-
-    if (character === "}") {
-      braceBalance -= 1;
-    }
-
-    if (bracketBalance < 0 || parenthesisBalance < 0 || braceBalance < 0) {
-      return false;
-    }
-  }
-
-  return !insideDoubleQuote && !insideSingleQuote && bracketBalance === 0 && parenthesisBalance === 0 && braceBalance === 0;
-}
-
 function normalizeMermaidLines(source: string) {
   return source
     .replace(/\r\n?/g, "\n")
@@ -339,6 +264,10 @@ function normalizeMermaidLines(source: string) {
 function getMermaidRoot(source: string) {
   const [firstLine = ""] = normalizeMermaidLines(source);
   return firstLine.split(/\s+/, 1)[0] ?? "";
+}
+
+function isSupportedMermaidRoot(root: string): root is (typeof MERMAID_SUPPORTED_ROOTS)[number] {
+  return MERMAID_SUPPORTED_ROOTS.includes(root as (typeof MERMAID_SUPPORTED_ROOTS)[number]);
 }
 
 function parseMermaidFlowchartNode(token: string): MermaidFlowchartNode | null {
@@ -621,46 +550,118 @@ function renderMermaidFlowchartSvg(diagram: MermaidFlowchartDiagram) {
   return `<svg class="markdown-mermaid-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Rendered Mermaid diagram" xmlns="http://www.w3.org/2000/svg"><defs><marker id="mermaid-arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth"><path class="markdown-mermaid-edge__arrowhead" d="M 0 0 L 12 6 L 0 12 z" /></marker></defs><rect class="markdown-mermaid-svg__frame" x="1" y="1" width="${width - 2}" height="${height - 2}" rx="24" ry="24" />${edgeMarkup}${nodeMarkup}</svg>`;
 }
 
-function formatMermaidRootLabel(root: string) {
-  return root
-    .replace(/-beta$/i, "")
-    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
-    .replace(/[-_]+/g, " ")
-    .trim()
-    .replace(/\b\w/g, (character) => character.toUpperCase());
-}
-
-function renderGenericMermaidSvg(source: string) {
+function parseMermaidSequence(source: string): MermaidSequenceDiagram | null {
   const normalizedLines = normalizeMermaidLines(source);
-  const [header = "", ...bodyLines] = normalizedLines;
-  const root = header.split(/\s+/, 1)[0] ?? "";
-  const title = formatMermaidRootLabel(root || "Mermaid");
-  const headerDetail = header.slice(root.length).trim();
-  const renderedLines = bodyLines.length > 0 ? bodyLines : ["Diagram source ready for shared rendering."];
-  const previewLines = renderedLines
-    .slice(0, MERMAID_MAX_RENDER_LINES)
-    .map((line) => clampMarkdownPreviewLine(line, 54));
+  const [header, ...statementLines] = normalizedLines;
 
-  if (renderedLines.length > MERMAID_MAX_RENDER_LINES) {
-    previewLines.push(`+${renderedLines.length - MERMAID_MAX_RENDER_LINES} more line(s)`);
+  if (header !== "sequenceDiagram") {
+    return null;
   }
 
-  const width = 760;
-  const headerHeight = 104;
-  const lineHeight = 52;
-  const insetX = 40;
-  const detailMarkup = headerDetail
-    ? `<text class="markdown-mermaid-generic__detail" x="${insetX}" y="78">${escapeHtml(headerDetail)}</text>`
-    : "";
-  const lineMarkup = previewLines
-    .map((line, index) => {
-      const y = headerHeight + index * lineHeight;
-      return `<g class="markdown-mermaid-generic__row" transform="translate(${insetX}, ${y})"><rect class="markdown-mermaid-generic__row-frame" x="0" y="0" width="${width - insetX * 2}" height="36" rx="18" ry="18" /><text class="markdown-mermaid-generic__row-text" x="18" y="23">${escapeHtml(line)}</text></g>`;
+  const participants = new Map<string, MermaidSequenceParticipant>();
+  const participantOrder: string[] = [];
+  const messages: MermaidSequenceMessage[] = [];
+
+  const upsertParticipant = (id: string, label: string) => {
+    const existingParticipant = participants.get(id);
+
+    if (!existingParticipant) {
+      participants.set(id, { id, label });
+      participantOrder.push(id);
+      return;
+    }
+
+    if (existingParticipant.label === existingParticipant.id && label !== id) {
+      participants.set(id, { id, label });
+    }
+  };
+
+  for (const statementLine of statementLines) {
+    const participantMatch = statementLine.match(MERMAID_SEQUENCE_PARTICIPANT_DECLARATION);
+
+    if (participantMatch) {
+      const participantId = participantMatch[1] ?? "";
+      const participantLabel = participantMatch[2]?.trim() || participantId;
+      upsertParticipant(participantId, participantLabel);
+      continue;
+    }
+
+    const messageMatch = statementLine.match(MERMAID_SEQUENCE_MESSAGE);
+
+    if (!messageMatch) {
+      return null;
+    }
+
+    const from = messageMatch[1] ?? "";
+    const arrowToken = messageMatch[2] ?? "";
+    const to = messageMatch[3] ?? "";
+
+    if (!(arrowToken.includes(">") || arrowToken.includes("x"))) {
+      return null;
+    }
+
+    upsertParticipant(from, from);
+    upsertParticipant(to, to);
+    messages.push({
+      from,
+      lineStyle: arrowToken.includes("--") ? "dashed" : "solid",
+      text: messageMatch[4]?.trim() || null,
+      to
+    });
+  }
+
+  if (participantOrder.length === 0 || messages.length === 0) {
+    return null;
+  }
+
+  return {
+    messages,
+    participants: participantOrder.map((participantId) => participants.get(participantId)).filter(Boolean) as MermaidSequenceParticipant[]
+  };
+}
+
+function renderMermaidSequenceSvg(diagram: MermaidSequenceDiagram) {
+  const insetX = 48;
+  const participantGap = 184;
+  const participantBoxWidth = 132;
+  const participantBoxHeight = 42;
+  const participantY = 34;
+  const messageRowHeight = 72;
+  const firstMessageY = participantY + 86;
+  const width = insetX * 2 + Math.max(diagram.participants.length - 1, 0) * participantGap + participantBoxWidth;
+  const height = firstMessageY + Math.max(diagram.messages.length, 1) * messageRowHeight + 36;
+  const participantPositions = new Map(
+    diagram.participants.map((participant, index) => [participant.id, insetX + participantBoxWidth / 2 + index * participantGap] as const)
+  );
+
+  const participantMarkup = diagram.participants
+    .map((participant) => {
+      const centerX = participantPositions.get(participant.id) ?? 0;
+      const x = centerX - participantBoxWidth / 2;
+      const lifelineY = participantY + participantBoxHeight;
+
+      return `<g class="markdown-mermaid-sequence__participant" data-participant-id="${escapeHtml(participant.id)}"><rect class="markdown-mermaid-sequence__participant-box" x="${x}" y="${participantY}" width="${participantBoxWidth}" height="${participantBoxHeight}" rx="16" ry="16" /><text class="markdown-mermaid-sequence__participant-label" x="${centerX}" y="${participantY + participantBoxHeight / 2 + 1}" text-anchor="middle" dominant-baseline="middle">${escapeHtml(participant.label)}</text><line class="markdown-mermaid-sequence__lifeline" x1="${centerX}" y1="${lifelineY}" x2="${centerX}" y2="${height - 24}" /></g>`;
     })
     .join("");
-  const height = headerHeight + Math.max(previewLines.length, 1) * lineHeight + 28;
 
-  return `<svg class="markdown-mermaid-svg markdown-mermaid-svg--generic" viewBox="0 0 ${width} ${height}" role="img" aria-label="Rendered Mermaid diagram" xmlns="http://www.w3.org/2000/svg"><rect class="markdown-mermaid-svg__frame" x="1" y="1" width="${width - 2}" height="${height - 2}" rx="24" ry="24" /><text class="markdown-mermaid-generic__title" x="${insetX}" y="52">${escapeHtml(title)}</text>${detailMarkup}${lineMarkup}</svg>`;
+  const messageMarkup = diagram.messages
+    .map((message, index) => {
+      const fromX = participantPositions.get(message.from);
+      const toX = participantPositions.get(message.to);
+
+      if (typeof fromX !== "number" || typeof toX !== "number") {
+        return "";
+      }
+
+      const y = firstMessageY + index * messageRowHeight;
+      const textY = y - 14;
+      const lineAttributes = message.lineStyle === "dashed" ? ` stroke-dasharray="9 8"` : "";
+
+      return `<g class="markdown-mermaid-sequence__message"><line class="markdown-mermaid-sequence__message-line" x1="${fromX}" y1="${y}" x2="${toX}" y2="${y}"${lineAttributes} marker-end="url(#mermaid-sequence-arrowhead)" />${message.text ? `<text class="markdown-mermaid-sequence__message-label" x="${(fromX + toX) / 2}" y="${textY}" text-anchor="middle">${escapeHtml(message.text)}</text>` : ""}</g>`;
+    })
+    .join("");
+
+  return `<svg class="markdown-mermaid-svg markdown-mermaid-svg--sequence" viewBox="0 0 ${width} ${height}" role="img" aria-label="Rendered Mermaid diagram" xmlns="http://www.w3.org/2000/svg"><defs><marker id="mermaid-sequence-arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth"><path class="markdown-mermaid-sequence__arrowhead" d="M 0 0 L 12 6 L 0 12 z" /></marker></defs><rect class="markdown-mermaid-svg__frame" x="1" y="1" width="${width - 2}" height="${height - 2}" rx="24" ry="24" />${participantMarkup}${messageMarkup}</svg>`;
 }
 
 function renderMermaidFallback(source: string) {
@@ -671,23 +672,23 @@ function renderMermaidFallback(source: string) {
 }
 
 function renderMermaidBlock(source: string) {
-  if (!isProbablyValidMermaid(source)) {
+  const root = getMermaidRoot(source);
+
+  if (!isSupportedMermaidRoot(root)) {
     return renderMermaidFallback(source);
   }
 
-  const root = getMermaidRoot(source);
-
-  if (!MERMAID_FLOWCHART_ROOTS.has(root)) {
-    return `<figure class="markdown-mermaid markdown-mermaid--rendered"><div class="markdown-mermaid-shell">${renderGenericMermaidSvg(source)}</div></figure>`;
-  }
-
-  const diagram = parseMermaidFlowchart(source);
+  const diagram = MERMAID_FLOWCHART_ROOTS.has(root) ? parseMermaidFlowchart(source) : parseMermaidSequence(source);
 
   if (!diagram) {
     return renderMermaidFallback(source);
   }
 
-  return `<figure class="markdown-mermaid markdown-mermaid--rendered"><div class="markdown-mermaid-shell">${renderMermaidFlowchartSvg(diagram)}</div></figure>`;
+  const svg = MERMAID_FLOWCHART_ROOTS.has(root)
+    ? renderMermaidFlowchartSvg(diagram as MermaidFlowchartDiagram)
+    : renderMermaidSequenceSvg(diagram as MermaidSequenceDiagram);
+
+  return `<figure class="markdown-mermaid markdown-mermaid--rendered"><div class="markdown-mermaid-shell">${svg}</div></figure>`;
 }
 
 export function createNoteExcerpt(markdown: string, title: string, maxLength = 180) {

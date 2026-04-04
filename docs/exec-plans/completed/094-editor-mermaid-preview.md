@@ -5,7 +5,7 @@
   "id": "094-editor-mermaid-preview",
   "title": "Editor Mermaid preview",
   "order": 94,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "095-mermaid-wave-hardening",
   "prompt_docs": [
@@ -32,7 +32,8 @@
     "Owner preview renders Mermaid differently from the public note page for the same markdown source.",
     "Preview mode mutates or normalizes the raw Mermaid fence content inside the editor.",
     "Mermaid blocks make split mode or mobile preview overflow badly enough that the workbench stops being usable."
-  ]
+  ],
+  "completed_at": "2026-04-04T04:21:23.431Z"
 }
 ```
 
@@ -76,3 +77,4 @@ Promote only when Mermaid preview genuinely helps authors review the note body a
 - 2026-04-04T04:09:40Z: confirmed owner preview already uses `renderMarkdownToHtml()` like the public note page; task gap was missing editor-specific Mermaid coverage plus bounded fallback styling in authoring preview.
 - 2026-04-04T04:09:40Z: tightened editor-preview Mermaid containment in `src/app/globals.css`, updated workbench preview copy to mention Mermaid fences, and added dedicated `@ui-note-editor-mermaid` Playwright coverage for split, preview-only, invalid fallback, and mobile preview behavior.
 - 2026-04-04T04:18:30Z: normalized owner note form markdown line endings on save so preview-only review does not rewrite authored Mermaid fences, refreshed the affected editor snapshots, and verified `npm run test:e2e -- --grep @ui-note-editor-mermaid` plus `npm run verify` successfully.
+- 2026-04-04T04:21:23.431Z: automatically promoted after deterministic checks and evaluator approval.

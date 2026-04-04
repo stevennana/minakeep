@@ -5,9 +5,9 @@ import {
   STATE_DIR,
   ensureDir,
   findTaskDoc,
-  readCurrentTaskId,
   readText,
   safeJsonParse,
+  syncCurrentTaskState,
   timestamp,
   writeText,
   fileExists,
@@ -132,7 +132,7 @@ function usesDeterministicOnlyPromotion(taskMeta) {
 ensureDir(STATE_DIR);
 ensureDir(GENERATED_DIR);
 
-const taskId = readCurrentTaskId();
+const taskId = syncCurrentTaskState();
 if (!taskId || taskId === "NONE") {
   writeText(
     path.join(STATE_DIR, "evaluation.json"),

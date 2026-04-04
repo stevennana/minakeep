@@ -4,9 +4,7 @@ import {
   STATE_DIR,
   ensureDir,
   fileExists,
-  getFirstQueuedOrActiveTask,
-  readCurrentTaskId,
-  writeCurrentTaskId,
+  syncCurrentTaskState,
   writeText,
 } from "./lib/task-utils.mjs";
 
@@ -14,15 +12,7 @@ ensureDir(STATE_DIR);
 ensureDir(GENERATED_DIR);
 ensureDir(path.join(STATE_DIR, "artifacts"));
 
-const currentTaskId = readCurrentTaskId();
-if (!currentTaskId) {
-  const firstTask = getFirstQueuedOrActiveTask();
-  if (firstTask) {
-    writeCurrentTaskId(firstTask.id);
-  } else {
-    writeText(path.join(STATE_DIR, "current-task.txt"), "NONE\n");
-  }
-}
+syncCurrentTaskState();
 
 const defaults = [
   ["run-log.md", "# Ralph Loop Run Log\n"],

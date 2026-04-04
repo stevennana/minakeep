@@ -3,14 +3,14 @@ import {
   GENERATED_DIR,
   extractSection,
   findTaskDoc,
-  readCurrentTaskId,
   safeJsonParse,
+  syncCurrentTaskState,
   writeText,
   fileExists,
   readText,
 } from "./lib/task-utils.mjs";
 
-const taskId = readCurrentTaskId();
+const taskId = syncCurrentTaskState();
 if (!taskId || taskId === "NONE") {
   throw new Error("No current task is configured.");
 }

@@ -92,6 +92,39 @@ export function getFirstQueuedOrActiveTask() {
   return tasks.find((task) => ["active", "queued"].includes(task.meta.status)) ?? null;
 }
 
+export function resolveRunnableTaskId(preferredTaskId = readCurrentTaskId()) {
+  const normalizedPreferredTaskId = preferredTaskId ? normalizeTaskId(preferredTaskId) : null;
+  const activeTasks = listTaskDocs(ACTIVE_TASK_DIR);
+  const runnableTask = activeTasks.find((task) => ["active", "queued"].includes(task.meta.status)) ?? null;
+
+  if (!normalizedPreferredTaskId || normalizedPreferredTaskId === "NONE") {
+    return runnableTask?.id ?? "NONE";
+  }
+
+  const preferredTask = activeTasks.find(
+    (task) =>
+      task.id === normalizedPreferredTaskId &&
+      ["active", "queued"].includes(task.meta.status),
+  );
+
+  if (preferredTask) {
+    return preferredTask.id;
+  }
+
+  return runnableTask?.id ?? "NONE";
+}
+
+export function syncCurrentTaskState(preferredTaskId = readCurrentTaskId()) {
+  const resolvedTaskId = resolveRunnableTaskId(preferredTaskId);
+  const normalizedCurrentTaskId = preferredTaskId ? normalizeTaskId(preferredTaskId) : null;
+
+  if (resolvedTaskId !== (normalizedCurrentTaskId || null)) {
+    writeCurrentTaskId(resolvedTaskId);
+  }
+
+  return resolvedTaskId;
+}
+
 export function extractSection(markdown, heading) {
   const escaped = heading.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const regex = new RegExp(`^## ${escaped}\\n([\\s\\S]*?)(?=^## |\\Z)`, "m");

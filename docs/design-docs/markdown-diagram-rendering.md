@@ -12,6 +12,8 @@ Add Mermaid diagrams to the existing note-markdown pipeline without breaking the
 ## Rendering Direction
 - Extend the existing `src/features/notes/markdown.ts` pipeline rather than introducing a separate markdown stack for one syntax.
 - Keep one Mermaid-to-HTML/SVG boundary so owner preview and public reading cannot drift.
+- If Minakeep advertises a Mermaid root as supported, the renderer should emit real diagram output for that root rather than a diagram-styled text summary.
+- Validation should be strong enough that malformed syntax for a supported Mermaid root reaches the fallback shell instead of being treated as a successful render.
 
 ## Fallback Rules
 - Invalid Mermaid source should render a stable fallback shell that explains the diagram could not render without crashing the page.

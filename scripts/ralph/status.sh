@@ -4,6 +4,8 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
 
+node scripts/ralph/ensure-state.mjs >/dev/null
+
 echo "Current task:"
 cat state/current-task.txt
 echo ""

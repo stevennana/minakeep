@@ -11,12 +11,15 @@ The owner writes a fenced code block with the info string `mermaid` inside a not
 - The saved note body remains raw markdown; Minakeep does not store a second diagram document model.
 - The owner preview renders the Mermaid block as a diagram or a bounded readable fallback when the Mermaid source is invalid.
 - Published note pages render the same Mermaid block from the same markdown source instead of showing raw fenced code.
+- Supported Mermaid roots should render as real diagram output for that root type; a diagram-themed summary card is not sufficient.
 - Mermaid rendering must not require third-party iframes, remote image fetches, or inline script execution inside note content.
 - Invalid Mermaid syntax does not block note save, publish, or public reading; it degrades to a visible non-crashing fallback state.
 
 ## Validation
 - A note that contains Mermaid fences persists the original markdown unchanged.
 - Owner preview and public note pages use the same Mermaid rendering contract.
+- Supported Mermaid roots that Minakeep claims to render do not collapse into generic source-summary shells.
 - Invalid Mermaid content fails soft with a readable fallback rather than breaking the page.
+- Invalid syntax for supported Mermaid roots also reaches the fallback path instead of appearing as a successful render.
 - Diagram output stays readable on desktop and mobile without overflowing its container.
 - `npm run verify` passes.

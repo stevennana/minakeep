@@ -1,1 +1,1 @@
-094-editor-mermaid-preview
+096-mermaid-semantic-rendering-foundation
