@@ -1689,3 +1689,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=not_done promotion=false The shared renderer work is real and the required commands passed, but the task is not complete in substance because the shipped behavior only renders `flowchart`/`graph` Mermaid roots and falls back for every other valid Mermaid diagram type. The current product/spec docs describe Mermaid fenced blocks as generally rendering, with fallback reserved for invalid Mermaid source, so the shipped implementation does not yet match the documented contract. -> state/artifacts/20260404T123823-092-mermaid-renderer-foundation/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260404T123823-092-mermaid-renderer-foundation/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Task 092-mermaid-renderer-foundation not eligible for promotion.
+- backlog: rendered current=092-mermaid-renderer-foundation
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxoooxxooxoxxxooxxxoxx
+- cycle: finished
+
+### cycle 2026-04-04T12:48:59+09:00 task=092-mermaid-renderer-foundation
+- artifacts: state/artifacts/20260404T124859-092-mermaid-renderer-foundation
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260404T124859-092-mermaid-renderer-foundation/worker.jsonl
+- worker-summary: Extended the shared Mermaid path in [markdown.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/markdown.ts) so valid non-flowchart Mermaid roots no longer drop into fallback. `flowchart` and `graph` still use the deterministic node/edge SVG renderer, other supported Mermaid roots now render through a deterministic sanitized generic SVG shell, and invalid Mermaid source still gets the bounded fallback. The raw authored fence text remains unchanged.
+- evaluator: started
+- evaluator: status=done promotion=true The task is complete in substance. Mermaid handling lives in the shared note markdown pipeline, not in a route-local patch: `renderMarkdownToHtml` detects exact `mermaid` fences, routes them through shared Mermaid rendering/fallback helpers, and that same renderer is used by both owner preview and public note pages. The implementation preserves the raw authored markdown, emits deterministic sanitized static SVG shells for supported Mermaid input, emits a bounded escaped fallback shell for invalid input, and adds shared CSS primitives for stable containers and overflow behavior. Unit coverage explicitly protects valid flowchart rendering, supported non-flowchart rendering, invalid fallback behavior, and non-mutation of authored fence source. Required commands are documented as passing. -> state/artifacts/20260404T124859-092-mermaid-renderer-foundation/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260404T124859-092-mermaid-renderer-foundation/npm-run-verify-next-server.log

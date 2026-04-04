@@ -61,6 +61,7 @@ const MERMAID_SUPPORTED_ROOTS = [
 
 const MERMAID_MAX_SOURCE_PREVIEW_LINES = 8;
 const MERMAID_MAX_LINE_LENGTH = 72;
+const MERMAID_MAX_RENDER_LINES = 6;
 const MERMAID_FLOWCHART_ROOTS = new Set(["flowchart", "graph"]);
 const MERMAID_FLOWCHART_DIRECTIONS = new Set(["TB", "TD", "BT", "LR", "RL"]);
 
@@ -620,6 +621,48 @@ function renderMermaidFlowchartSvg(diagram: MermaidFlowchartDiagram) {
   return `<svg class="markdown-mermaid-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Rendered Mermaid diagram" xmlns="http://www.w3.org/2000/svg"><defs><marker id="mermaid-arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth"><path class="markdown-mermaid-edge__arrowhead" d="M 0 0 L 12 6 L 0 12 z" /></marker></defs><rect class="markdown-mermaid-svg__frame" x="1" y="1" width="${width - 2}" height="${height - 2}" rx="24" ry="24" />${edgeMarkup}${nodeMarkup}</svg>`;
 }
 
+function formatMermaidRootLabel(root: string) {
+  return root
+    .replace(/-beta$/i, "")
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .replace(/[-_]+/g, " ")
+    .trim()
+    .replace(/\b\w/g, (character) => character.toUpperCase());
+}
+
+function renderGenericMermaidSvg(source: string) {
+  const normalizedLines = normalizeMermaidLines(source);
+  const [header = "", ...bodyLines] = normalizedLines;
+  const root = header.split(/\s+/, 1)[0] ?? "";
+  const title = formatMermaidRootLabel(root || "Mermaid");
+  const headerDetail = header.slice(root.length).trim();
+  const renderedLines = bodyLines.length > 0 ? bodyLines : ["Diagram source ready for shared rendering."];
+  const previewLines = renderedLines
+    .slice(0, MERMAID_MAX_RENDER_LINES)
+    .map((line) => clampMarkdownPreviewLine(line, 54));
+
+  if (renderedLines.length > MERMAID_MAX_RENDER_LINES) {
+    previewLines.push(`+${renderedLines.length - MERMAID_MAX_RENDER_LINES} more line(s)`);
+  }
+
+  const width = 760;
+  const headerHeight = 104;
+  const lineHeight = 52;
+  const insetX = 40;
+  const detailMarkup = headerDetail
+    ? `<text class="markdown-mermaid-generic__detail" x="${insetX}" y="78">${escapeHtml(headerDetail)}</text>`
+    : "";
+  const lineMarkup = previewLines
+    .map((line, index) => {
+      const y = headerHeight + index * lineHeight;
+      return `<g class="markdown-mermaid-generic__row" transform="translate(${insetX}, ${y})"><rect class="markdown-mermaid-generic__row-frame" x="0" y="0" width="${width - insetX * 2}" height="36" rx="18" ry="18" /><text class="markdown-mermaid-generic__row-text" x="18" y="23">${escapeHtml(line)}</text></g>`;
+    })
+    .join("");
+  const height = headerHeight + Math.max(previewLines.length, 1) * lineHeight + 28;
+
+  return `<svg class="markdown-mermaid-svg markdown-mermaid-svg--generic" viewBox="0 0 ${width} ${height}" role="img" aria-label="Rendered Mermaid diagram" xmlns="http://www.w3.org/2000/svg"><rect class="markdown-mermaid-svg__frame" x="1" y="1" width="${width - 2}" height="${height - 2}" rx="24" ry="24" /><text class="markdown-mermaid-generic__title" x="${insetX}" y="52">${escapeHtml(title)}</text>${detailMarkup}${lineMarkup}</svg>`;
+}
+
 function renderMermaidFallback(source: string) {
   const previewLines = getMermaidSourcePreview(source);
   const previewMarkup = previewLines.length > 0 ? escapeHtml(previewLines.join("\n")) : "Add Mermaid source inside the fenced block.";
@@ -632,8 +675,10 @@ function renderMermaidBlock(source: string) {
     return renderMermaidFallback(source);
   }
 
-  if (!MERMAID_FLOWCHART_ROOTS.has(getMermaidRoot(source))) {
-    return renderMermaidFallback(source);
+  const root = getMermaidRoot(source);
+
+  if (!MERMAID_FLOWCHART_ROOTS.has(root)) {
+    return `<figure class="markdown-mermaid markdown-mermaid--rendered"><div class="markdown-mermaid-shell">${renderGenericMermaidSvg(source)}</div></figure>`;
   }
 
   const diagram = parseMermaidFlowchart(source);

@@ -50,9 +50,9 @@ Required commands for this task:
 - npm run verify
 
 Previous known gaps from the last evaluation:
-- Valid Mermaid fences are not rendered as actual diagrams; the current 'rendered' output is a stylized source-preview SVG, not Mermaid diagram output.
-- The current tests do not protect real diagram rendering semantics, so they would pass even if valid Mermaid never becomes a true rendered diagram.
-- Because the success path is heuristic and not Mermaid-backed, the implementation does not yet satisfy the documented promise that valid Mermaid blocks render the same diagram in shared preview/public surfaces.
+- `src/features/notes/markdown.ts` hard-gates rendered output to `flowchart` and `graph` only, and sends all other Mermaid roots to fallback (`src/features/notes/markdown.ts#L630`). That is narrower than the documented Mermaid feature contract.
+- The relevant specs say Mermaid fenced blocks render as diagrams, with fallback for invalid Mermaid source, not for any valid non-flowchart diagram. See `docs/product-specs/markdown-mermaid-diagrams.md#L4`, `docs/product-specs/markdown-mermaid-diagrams.md#L12`, `docs/product-specs/note-authoring.md#L13`, and `docs/product-specs/markdown-editor-workbench.md#L22`.
+- Because AGENTS done-definition requires the relevant spec/design docs to match shipped behavior, this spec/implementation mismatch blocks promotion even though the tests are green.
 
 
 

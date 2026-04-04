@@ -77,6 +77,22 @@ flowchart TD
   assert.doesNotMatch(html, /```mermaid/);
 });
 
+test("renderMarkdownToHtml renders supported non-flowchart mermaid fences without falling back", () => {
+  const html = renderMarkdownToHtml(`\`\`\`mermaid
+sequenceDiagram
+  Alice->>Bob: hello
+  Bob-->>Alice: shipped
+\`\`\``);
+
+  assert.match(html, /markdown-mermaid markdown-mermaid--rendered/);
+  assert.match(html, /markdown-mermaid-svg markdown-mermaid-svg--generic/);
+  assert.match(html, />Sequence Diagram</);
+  assert.match(html, />Alice-&gt;&gt;Bob: hello</);
+  assert.match(html, />Bob--&gt;&gt;Alice: shipped</);
+  assert.doesNotMatch(html, /Diagram preview unavailable/);
+  assert.doesNotMatch(html, /markdown-mermaid markdown-mermaid--fallback/);
+});
+
 test("renderMarkdownToHtml falls back cleanly for invalid mermaid fences", () => {
   const html = renderMarkdownToHtml(`\`\`\`mermaid
 flowchart TD

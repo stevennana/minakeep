@@ -2724,6 +2724,32 @@ textarea {
   stroke-width: 1.5;
 }
 
+.markdown-preview .markdown-mermaid-generic__title {
+  fill: var(--accent-strong);
+  font-family: var(--font-ui);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.markdown-preview .markdown-mermaid-generic__detail {
+  fill: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.markdown-preview .markdown-mermaid-generic__row-frame {
+  fill: rgba(255, 255, 255, 0.88);
+  stroke: rgba(100, 116, 139, 0.16);
+  stroke-width: 1.25;
+}
+
+.markdown-preview .markdown-mermaid-generic__row-text {
+  fill: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+}
+
 .markdown-preview .markdown-mermaid-node__shape {
   fill: rgba(255, 255, 255, 0.94);
   stroke: rgba(50, 72, 99, 0.36);
