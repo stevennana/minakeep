@@ -5,7 +5,7 @@
   "id": "102-mermaid-expansion-hardening",
   "title": "Mermaid expansion hardening",
   "order": 102,
-  "status": "queued",
+  "status": "active",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "NONE",
   "prompt_docs": [
@@ -68,3 +68,7 @@ Promote only when the expanded Mermaid wave reads as a finished shipped slice ra
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-04-04T16:11:57.064Z: restored as current task after 101-broader-mermaid-root-support promotion.
+- 2026-04-05 01:33 KST: audited the existing Mermaid renderer, unit coverage, and `@ui-mermaid-regression` bundle; confirmed the library-backed path, styled flowchart support, and broader roots were already shipped, then found queue drift in `docs/exec-plans/active/index.md`, which still listed `101` as active after completion.
+- 2026-04-05 01:33 KST: expanded the bundled public-note and owner-preview Mermaid regression fixtures to include `sequenceDiagram` alongside advanced flowchart styling, `classDiagram`, `stateDiagram-v2`, and malformed-supported-root fallback so the single hardening replay now matches the full documented shipped root set.
+- 2026-04-05 01:33 KST: reconciled the Mermaid product/design docs and active queue index with the shipped hardening contract so the docs describe the deterministic replay bundle and no longer imply that completed expansion steps are still active queue items.

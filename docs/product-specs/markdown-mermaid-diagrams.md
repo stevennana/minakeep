@@ -20,6 +20,7 @@ The owner writes a fenced code block with the info string `mermaid` inside a not
 ## Validation
 - A note that contains Mermaid fences persists the original markdown unchanged.
 - Owner preview and public note pages use the same Mermaid rendering contract.
+- The deterministic Mermaid regression replay covers the shipped public-note and owner-preview surfaces for styled flowcharts plus `sequenceDiagram`, `classDiagram`, and `stateDiagram` / `stateDiagram-v2`.
 - Supported Mermaid roots that Minakeep claims to render do not collapse into generic source-summary shells.
 - Invalid Mermaid content fails soft with a readable fallback rather than breaking the page.
 - Invalid syntax for supported Mermaid roots also reaches the fallback path instead of appearing as a successful render.

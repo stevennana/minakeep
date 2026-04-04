@@ -46,6 +46,14 @@ flowchart LR
 ### Class and state diagrams should share the preview path
 
 \`\`\`mermaid
+sequenceDiagram
+  participant Owner as Owner preview
+  participant Public as Public note
+  Owner->>Public: shared markdown
+  Public-->>Owner: same renderer
+\`\`\`
+
+\`\`\`mermaid
 classDiagram
   class OwnerNote {
     +String title
@@ -168,9 +176,10 @@ async function expectMermaidPreviewSurface(page: Page) {
     const fallback = document.querySelector<HTMLElement>("[data-testid='note-markdown-preview'] .markdown-mermaid--fallback");
     const firstDiagram = diagrams[0];
     const diagramShell = firstDiagram?.querySelector<HTMLElement>(".markdown-mermaid-shell");
+    const sequenceSvg = diagrams[1]?.querySelector<SVGElement>(".markdown-mermaid-svg");
     const fallbackPre = fallback?.querySelector<HTMLElement>("pre");
 
-    if (!preview || diagrams.length < 3 || !firstDiagram || !diagramShell || !fallback || !fallbackPre) {
+    if (!preview || diagrams.length < 4 || !firstDiagram || !diagramShell || !sequenceSvg || !fallback || !fallbackPre) {
       throw new Error("Expected Mermaid editor preview anchors to exist.");
     }
 
@@ -186,6 +195,7 @@ async function expectMermaidPreviewSurface(page: Page) {
       fallbackPreWidth: Math.round(fallbackPreRect.width),
       fallbackWidth: Math.round(fallbackRect.width),
       previewWidth: Math.round(previewRect.width),
+      sequenceText: sequenceSvg.textContent ?? "",
       viewportWidth: document.documentElement.clientWidth
     };
   });
@@ -199,6 +209,8 @@ async function expectMermaidPreviewSurface(page: Page) {
   expect(metrics.fallbackWidth).toBeLessThanOrEqual(metrics.previewWidth + 1);
   expect(metrics.fallbackPreWidth).toBeLessThanOrEqual(metrics.fallbackWidth + 1);
   expect(metrics.diagramShellWidth).toBeGreaterThanOrEqual(Math.max(220, metrics.previewWidth - 40));
+  expect(metrics.sequenceText).toContain("Owner preview");
+  expect(metrics.sequenceText).toContain("Public note");
 
   const styledSignals = await page.evaluate(() => {
     const flowchartSvg = document.querySelector<SVGElement>("[data-testid='note-markdown-preview'] .markdown-mermaid--rendered .markdown-mermaid-svg");
@@ -233,11 +245,13 @@ async function expectMermaidPreviewContent(page: Page) {
   await expect(editor).toHaveValue(seededNote.markdown);
   await expect(editor).toHaveValue(/```mermaid/);
   await expect(sharedDiagram).toBeVisible();
-  await expect(renderedDiagrams).toHaveCount(3, { timeout: 15000 });
+  await expect(renderedDiagrams).toHaveCount(4, { timeout: 15000 });
   await expect(sharedDiagram).toHaveAttribute("data-mermaid-source", /flowchart%20LR/);
   await expect(preview.locator(".markdown-mermaid--fallback")).toContainText("Diagram preview unavailable");
   await expect(preview.locator(".markdown-mermaid--fallback")).toContainText("classDiagram");
   await expect(preview.locator(".markdown-mermaid--fallback")).toContainText("This is not valid Mermaid source.");
+  await expect(preview).not.toContainText("sequenceDiagram");
+  await expect(preview).not.toContainText("participant Owner as Owner preview");
   await expect(preview).not.toContainText("OwnerNote --> PublicNotePage : ships to");
   await expect(preview).not.toContainText("Draft --> Review: save");
   await expect(preview).not.toContainText("```mermaid");

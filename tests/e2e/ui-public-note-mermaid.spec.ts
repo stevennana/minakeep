@@ -46,6 +46,14 @@ flowchart LR
 ### Supported class and state diagrams should render semantically
 
 \`\`\`mermaid
+sequenceDiagram
+  participant Owner as Owner preview
+  participant Public as Public note
+  Owner->>Public: shared markdown
+  Public-->>Owner: same renderer
+\`\`\`
+
+\`\`\`mermaid
 classDiagram
   class OwnerNote {
     +String title
@@ -136,25 +144,28 @@ async function expectMermaidSurface(page: Page, viewport: "desktop" | "mobile") 
     const rendered = document.querySelectorAll<HTMLElement>(".markdown-mermaid--rendered");
     const fallback = document.querySelector<HTMLElement>(".markdown-mermaid--fallback");
     const flowchartSvg = rendered[0]?.querySelector<SVGElement>(".markdown-mermaid-svg");
-    const classSvg = rendered[1]?.querySelector<SVGElement>(".markdown-mermaid-svg");
-    const stateSvg = rendered[2]?.querySelector<SVGElement>(".markdown-mermaid-svg");
+    const sequenceSvg = rendered[1]?.querySelector<SVGElement>(".markdown-mermaid-svg");
+    const classSvg = rendered[2]?.querySelector<SVGElement>(".markdown-mermaid-svg");
+    const stateSvg = rendered[3]?.querySelector<SVGElement>(".markdown-mermaid-svg");
     const fallbackPre = fallback?.querySelector<HTMLElement>("pre");
 
-    if (!body || rendered.length < 3 || !fallback || !flowchartSvg || !classSvg || !stateSvg || !fallbackPre) {
+    if (!body || rendered.length < 4 || !fallback || !flowchartSvg || !sequenceSvg || !classSvg || !stateSvg || !fallbackPre) {
       throw new Error("Expected Mermaid public note anchors to exist.");
     }
 
     const bodyRect = body.getBoundingClientRect();
     const renderedWidths = Array.from(rendered, (figure) => Math.round(figure.getBoundingClientRect().width));
-    const svgWidths = [flowchartSvg, classSvg, stateSvg].map((svg) => Math.round(svg.getBoundingClientRect().width));
+    const svgWidths = [flowchartSvg, sequenceSvg, classSvg, stateSvg].map((svg) => Math.round(svg.getBoundingClientRect().width));
     const fallbackRect = fallback.getBoundingClientRect();
     const fallbackPreRect = fallbackPre.getBoundingClientRect();
+    const sequenceText = sequenceSvg.textContent ?? "";
 
     return {
       bodyWidth: Math.round(bodyRect.width),
       fallbackPreWidth: Math.round(fallbackPreRect.width),
       fallbackWidth: Math.round(fallbackRect.width),
       renderedWidths,
+      sequenceText,
       svgWidths,
       viewportWidth: document.documentElement.clientWidth
     };
@@ -172,6 +183,9 @@ async function expectMermaidSurface(page: Page, viewport: "desktop" | "mobile") 
     expect(svgWidth).toBeLessThanOrEqual(metrics.bodyWidth + 1);
     expect(svgWidth).toBeGreaterThanOrEqual(220);
   }
+
+  expect(metrics.sequenceText).toContain("Owner preview");
+  expect(metrics.sequenceText).toContain("Public note");
 
   const styledSignals = await page.evaluate(() => {
     const flowchartSvg = document.querySelector<SVGElement>(".markdown-mermaid--rendered .markdown-mermaid-svg");
@@ -214,22 +228,26 @@ test("@ui-public-note-mermaid @ui-mermaid-regression published note renders Merm
   const noteBody = page.getByTestId("public-note-markdown");
   const renderedDiagrams = noteBody.locator(".markdown-mermaid--rendered");
   const flowchartDiagram = renderedDiagrams.nth(0);
-  const classDiagram = renderedDiagrams.nth(1);
-  const stateDiagram = renderedDiagrams.nth(2);
+  const sequenceDiagram = renderedDiagrams.nth(1);
+  const classDiagram = renderedDiagrams.nth(2);
+  const stateDiagram = renderedDiagrams.nth(3);
   const fallbackDiagram = noteBody.locator(".markdown-mermaid--fallback");
 
   await expect(page.getByRole("heading", { name: seededNote.title })).toBeVisible();
   await expect(noteBody.getByRole("heading", { name: "Diagram rhythm should stay in the article" })).toBeVisible();
   await expect(noteBody.getByRole("heading", { name: "Supported class and state diagrams should render semantically" })).toBeVisible();
   await expect(flowchartDiagram.locator("svg[aria-label='Rendered Mermaid diagram']")).toBeVisible();
+  await expect(sequenceDiagram.locator("svg.markdown-mermaid-svg[aria-label='Rendered Mermaid diagram']")).toBeVisible();
   await expect(classDiagram.locator("svg.markdown-mermaid-svg[aria-label='Rendered Mermaid diagram']")).toBeVisible();
   await expect(stateDiagram.locator("svg.markdown-mermaid-svg[aria-label='Rendered Mermaid diagram']")).toBeVisible();
-  await expect(renderedDiagrams).toHaveCount(3);
+  await expect(renderedDiagrams).toHaveCount(4);
   await expect(fallbackDiagram).toContainText("Diagram preview unavailable");
   await expect(fallbackDiagram).toContainText("classDiagram");
   await expect(fallbackDiagram).toContainText("This is not valid Mermaid source.");
   await expect(noteBody).not.toContainText("```mermaid");
   await expect(noteBody).not.toContainText("flowchart LR");
+  await expect(noteBody).not.toContainText("sequenceDiagram");
+  await expect(noteBody).not.toContainText("participant Owner as Owner preview");
   await expect(noteBody).not.toContainText("OwnerNote --> PublicNotePage : ships to");
   await expect(noteBody).not.toContainText("Draft --> Review: save");
   await expect(noteBody.locator("[data-processed='true']")).toHaveCount(0);
@@ -249,19 +267,23 @@ test("@ui-public-note-mermaid @ui-mermaid-regression published note keeps Mermai
   const noteBody = page.getByTestId("public-note-markdown");
   const renderedDiagrams = noteBody.locator(".markdown-mermaid--rendered");
   const flowchartDiagram = renderedDiagrams.nth(0);
-  const classDiagram = renderedDiagrams.nth(1);
-  const stateDiagram = renderedDiagrams.nth(2);
+  const sequenceDiagram = renderedDiagrams.nth(1);
+  const classDiagram = renderedDiagrams.nth(2);
+  const stateDiagram = renderedDiagrams.nth(3);
   const fallbackDiagram = noteBody.locator(".markdown-mermaid--fallback");
 
   await expect(page.getByRole("heading", { name: seededNote.title })).toBeVisible();
   await expect(flowchartDiagram.locator("svg[aria-label='Rendered Mermaid diagram']")).toBeVisible();
+  await expect(sequenceDiagram.locator("svg.markdown-mermaid-svg[aria-label='Rendered Mermaid diagram']")).toBeVisible();
   await expect(classDiagram.locator("svg.markdown-mermaid-svg[aria-label='Rendered Mermaid diagram']")).toBeVisible();
   await expect(stateDiagram.locator("svg.markdown-mermaid-svg[aria-label='Rendered Mermaid diagram']")).toBeVisible();
-  await expect(renderedDiagrams).toHaveCount(3);
+  await expect(renderedDiagrams).toHaveCount(4);
   await expect(fallbackDiagram).toContainText("Diagram preview unavailable");
   await expect(fallbackDiagram).toContainText("classDiagram");
   await expect(noteBody).not.toContainText("```mermaid");
   await expect(noteBody).not.toContainText("flowchart LR");
+  await expect(noteBody).not.toContainText("sequenceDiagram");
+  await expect(noteBody).not.toContainText("participant Owner as Owner preview");
   await expect(noteBody).not.toContainText("OwnerNote --> PublicNotePage : ships to");
   await expect(noteBody).not.toContainText("Draft --> Review: save");
   await expectMermaidSurface(page, "mobile");

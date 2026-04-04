@@ -2177,3 +2177,18 @@ run-once failed with exit code 1. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260405T010539-101-broader-mermaid-root-support/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260405T010539-101-broader-mermaid-root-support/npm-run-test-e2e-grep-ui-public-note-mermaid-next-server.log
+- commit: commit: created
+- promote: Promoted 101-broader-mermaid-root-support -> 102-mermaid-expansion-hardening
+- backlog: rendered current=102-mermaid-expansion-hardening
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxoooxxooxoxxxooxxxoxxoooxxxxxxxxxooooxxxxxxxxxxxxxooo
+- cycle: finished
+
+### cycle 2026-04-05T01:12:27+09:00 task=102-mermaid-expansion-hardening
+- artifacts: state/artifacts/20260405T011227-102-mermaid-expansion-hardening
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260405T011227-102-mermaid-expansion-hardening/worker.jsonl
+- worker-summary: Closed task `102` by tightening the hardening bundle rather than broadening renderer scope. The bundled Mermaid regression now replays `sequenceDiagram` in both shipped surfaces alongside the existing advanced flowchart, `classDiagram`, `stateDiagram-v2`, and malformed-supported-root fallback coverage in [ui-note-editor-mermaid.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-note-editor-mermaid.spec.ts) and [ui-public-note-mermaid.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-public-note-mermaid.spec.ts). I also reconciled the contract/docs in [markdown-mermaid-diagrams.md](/Users/stevenna/WebstormProjects/minakeep/docs/product-specs/markdown-mermaid-diagrams.md), [markdown-diagram-rendering.md](/Users/stevenna/WebstormProjects/minakeep/docs/design-docs/markdown-diagram-rendering.md), [index.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/index.md), and the task log in [102-mermaid-expansion-hardening.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/102-mermaid-expansion-hardening.md). The affected Mermaid snapshots were refreshed, and the operator handoff summary was written to [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260405T011227-102-mermaid-expansion-hardening/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260405T011227-102-mermaid-expansion-hardening/npm-run-test-e2e-grep-ui-mermaid-regression-next-server.log

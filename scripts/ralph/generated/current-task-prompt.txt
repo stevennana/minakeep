@@ -5,47 +5,44 @@ Read the following repository documents before making changes:
 - docs/product-specs/markdown-mermaid-diagrams.md
 - docs/design-docs/markdown-diagram-rendering.md
 - docs/references/ui-verification-contract.md
-- docs/exec-plans/active/101-broader-mermaid-root-support.md
+- docs/exec-plans/active/102-mermaid-expansion-hardening.md
 
-Current task id: 101-broader-mermaid-root-support
-Current task title: Broader Mermaid root support
+Current task id: 102-mermaid-expansion-hardening
+Current task title: Mermaid expansion hardening
 
 Objective:
-Broaden Mermaid root coverage through the new renderer, with deterministic support anchored on `classDiagram` and `stateDiagram` / `stateDiagram-v2` beyond the existing flowchart and sequence support.
+Close the Mermaid expansion wave by proving the library-backed renderer, advanced flowchart features, and broader root support all replay under one deterministic hardening bundle.
 
 Scope:
-- broader Mermaid roots, with `classDiagram` and `stateDiagram` / `stateDiagram-v2` as the minimum roots for this wave
-- owner preview and public note verification for those roots
-- malformed-syntax fallback behavior for newly claimed roots
+- bundled Mermaid regression replay
+- final doc and queue reconciliation for the expanded Mermaid contract
+- remaining fallback and responsive-proof cleanup for the expanded root set
 
 Out of scope:
-- roots that are not explicitly documented and tested in this wave
-- interactive Mermaid features
-- Mermaid use outside note markdown
+- additional Mermaid roots beyond what the earlier tasks explicitly shipped
+- editor productivity features
+- non-note markdown enhancements unrelated to Mermaid
 
 Exit criteria:
-1. `classDiagram` and `stateDiagram` / `stateDiagram-v2` render through the shared Mermaid path in both public note reading and owner preview.
-2. Malformed syntax for those newly supported roots reaches the documented fallback shell.
-3. The docs claim only the Mermaid roots that the deterministic tests actually prove.
-4. `npm run test:e2e -- --grep @ui-public-note-mermaid`, `npm run test:e2e -- --grep @ui-note-editor-mermaid`, and `npm run verify` pass.
+1. One Mermaid regression command replays the shipped public-note and owner-preview surfaces for advanced flowcharts and broader roots.
+2. Docs and queue history reflect the actual shipped Mermaid contract without overclaiming unsupported syntax.
+3. `npm run test:e2e -- --grep @ui-mermaid-regression` and `npm run verify` pass.
 
 Required checks:
-- `npm run test:e2e -- --grep @ui-public-note-mermaid`
-- `npm run test:e2e -- --grep @ui-note-editor-mermaid`
+- `npm run test:e2e -- --grep @ui-mermaid-regression`
 - `npm run verify`
 
 Evaluator notes:
-Promote only when broader-root support is test-backed and the renderer does not silently treat unsupported syntax as a successful diagram.
+Promote only when the expanded Mermaid wave reads as a finished shipped slice rather than a partially broadened renderer with aspirational docs.
 
 Required repository artifacts for this task:
-- src/features/notes/markdown.ts
-- src/app/globals.css
+- docs
 - tests/e2e
 - tests/unit
+- src/features/notes
 
 Required commands for this task:
-- npm run test:e2e -- --grep @ui-public-note-mermaid
-- npm run test:e2e -- --grep @ui-note-editor-mermaid
+- npm run test:e2e -- --grep @ui-mermaid-regression
 - npm run verify
 
 Previous known gaps from the last evaluation:

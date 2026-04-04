@@ -25,6 +25,7 @@ Add Mermaid diagrams to the existing note-markdown pipeline without breaking the
 ## UI Rules
 - Public note pages render Mermaid blocks inline with the article body.
 - Editor preview should render the same Mermaid output in both split and preview-only modes.
+- The bundled Mermaid regression replay should cover both surfaces with one command across advanced flowchart styling, `sequenceDiagram`, `classDiagram`, `stateDiagram` / `stateDiagram-v2`, and malformed-supported-root fallback.
 - Mobile layouts should prefer scaling or contained overflow treatment over horizontal page growth.
 - Styled flowcharts and broader Mermaid roots should keep the same bounded shell treatment as the current note markdown renderer instead of introducing route-specific diagram chrome.
 
