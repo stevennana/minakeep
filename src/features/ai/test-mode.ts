@@ -7,7 +7,7 @@ import path from "node:path";
 export const PLAYWRIGHT_AI_TEST_MODE_FILE =
   process.env.PLAYWRIGHT_AI_TEST_MODE_FILE ?? path.join(tmpdir(), "minakeep-playwright-ai-mode.json");
 
-export type PlaywrightAiTestMode = "passthrough" | "success" | "timeout";
+export type PlaywrightAiTestMode = "disabled" | "passthrough" | "success" | "timeout";
 
 type StoredPlaywrightAiTestMode = {
   mode?: string;
@@ -25,6 +25,10 @@ export function getPlaywrightAiTestMode(): PlaywrightAiTestMode {
   try {
     const storedMode = JSON.parse(readFileSync(PLAYWRIGHT_AI_TEST_MODE_FILE, "utf8")) as StoredPlaywrightAiTestMode;
 
+    if (storedMode.mode === "passthrough") {
+      return "passthrough";
+    }
+
     if (storedMode.mode === "timeout") {
       return "timeout";
     }
@@ -33,14 +37,14 @@ export function getPlaywrightAiTestMode(): PlaywrightAiTestMode {
       return "success";
     }
 
-    return "passthrough";
+    return "disabled";
   } catch {
-    return "passthrough";
+    return "disabled";
   }
 }
 
 export function getPlaywrightAiTestBaseUrl() {
-  const port = process.env.PLAYWRIGHT_WEB_SERVER_PORT ?? "3100";
+  const port = process.env.PLAYWRIGHT_WEB_SERVER_PORT ?? "3210";
 
   return `http://127.0.0.1:${port}/api/test/mina/`;
 }

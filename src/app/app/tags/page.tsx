@@ -1,5 +1,6 @@
 import type { Route } from "next";
 import Link from "next/link";
+import { unstable_noStore as noStore } from "next/cache";
 
 import { IntroBlock, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
 import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pending-refresh";
@@ -18,6 +19,8 @@ type TagsPageProps = {
 };
 
 export default async function TagsPage({ searchParams }: TagsPageProps) {
+  noStore();
+
   const workspace = await requireWorkspaceSession();
   const isReadOnly = isReadOnlyWorkspaceRole(workspace.actor.role);
   const resolvedSearchParams = (await searchParams) ?? {};

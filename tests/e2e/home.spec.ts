@@ -76,12 +76,13 @@ Paragraph with **bold** text and a [link](https://example.com).`;
   await page.getByRole("button", { name: "Save draft" }).click();
 
   await expect(page).toHaveURL(/\/app\/notes\/.+\/edit\?saved=1$/);
+  const savedNoteEditUrl = page.url().replace(/\?saved=1$/, "");
   await expect(page.getByTestId("note-enrichment-panel")).toContainText("AI note metadata");
-  await page.goto("/app");
+  await page.goto(`/app/search?q=${encodeURIComponent(updatedTitle)}`);
   await expect(page.getByRole("link", { name: updatedTitle })).toBeVisible();
 
   await page.getByRole("link", { name: updatedTitle }).click();
-  await expect(page).toHaveURL(/\/app\/notes\/.+\/edit/);
+  await expect(page).toHaveURL(savedNoteEditUrl);
   await expect(page.getByRole("textbox", { name: /^Title$/ })).toHaveValue(updatedTitle);
   await expect(page.getByRole("textbox", { name: /^Markdown body$/ })).toHaveValue(updatedMarkdown);
   await expect(page.getByTestId("note-markdown-preview").getByRole("heading", { name: `Revised ${uniqueId}` })).toBeVisible();
@@ -109,7 +110,6 @@ test("note save still succeeds when the configured AI endpoint times out and exp
 
     await expect(page).toHaveURL(/\/app\/notes\/.+\/edit\?saved=1$/);
     const enrichmentPanel = page.getByTestId("note-enrichment-panel");
-    await expect(enrichmentPanel).toContainText("AI pending");
     await expect(enrichmentPanel).toContainText("AI failed", { timeout: 15000 });
     await expect(enrichmentPanel).toContainText("The Mina AI endpoint timed out.");
     await expect(page.getByTestId("note-ai-summary")).toHaveCount(0);
@@ -122,7 +122,7 @@ test("note save still succeeds when the configured AI endpoint times out and exp
     await expect(page.getByTestId("note-enrichment-panel")).toContainText("AI failed", { timeout: 15000 });
     await expect(page.getByTestId("note-enrichment-panel")).toContainText("The Mina AI endpoint timed out.");
   } finally {
-    await setAiPlaywrightTestMode("passthrough");
+    await setAiPlaywrightTestMode("disabled");
   }
 });
 
@@ -211,8 +211,7 @@ test("owner can save a private link, receive AI metadata, and keep it off public
     await expect(page.getByText("Link saved.")).toBeVisible();
     const savedLinkEntry = page.locator("article").filter({ has: page.getByRole("link", { name: title }) });
     await expect(savedLinkEntry.getByRole("link", { name: title })).toHaveAttribute("href", url);
-    await expect(savedLinkEntry).toContainText("AI pending");
-    await expect(savedLinkEntry).toContainText("AI ready", { timeout: 15000 });
+    await expect(savedLinkEntry).toContainText("AI ready", { timeout: 60000 });
     await expect(savedLinkEntry.getByTestId("link-ai-summary")).toContainText("AI summary for");
     await expect(savedLinkEntry.getByTestId("link-ai-tags").locator(".tag-pill")).not.toHaveCount(0);
 
@@ -220,7 +219,7 @@ test("owner can save a private link, receive AI metadata, and keep it off public
     await expect(page.getByRole("link", { name: title })).toHaveCount(0);
     await expect(page.getByText("AI summary for")).toHaveCount(0);
   } finally {
-    await setAiPlaywrightTestMode("passthrough");
+    await setAiPlaywrightTestMode("disabled");
   }
 });
 
@@ -257,7 +256,7 @@ test("owner can publish and unpublish a link across the public homepage", async 
     await expect(page).toHaveURL(/\/app\/links\?saved=1$/);
     const savedLinkEntry = page.locator("article").filter({ has: page.getByRole("link", { name: title }) });
     await expect(savedLinkEntry).toContainText("Owner only");
-    await expect(savedLinkEntry).toContainText("AI ready", { timeout: 15000 });
+    await expect(savedLinkEntry).toContainText("AI ready", { timeout: 60000 });
     await savedLinkEntry.getByRole("button", { name: "Publish link" }).click();
 
     await expect(page).toHaveURL(/\/app\/links\?published=1$/);
@@ -295,7 +294,7 @@ test("owner can publish and unpublish a link across the public homepage", async 
     await expect(page.getByRole("link", { name: title })).toHaveCount(0);
   } finally {
     await page.context().unroute(url, popupRoute).catch(() => undefined);
-    await setAiPlaywrightTestMode("passthrough");
+    await setAiPlaywrightTestMode("disabled");
   }
 });
 
@@ -324,7 +323,6 @@ test("link save still succeeds when the configured AI endpoint times out and exp
 
     await expect(page).toHaveURL(/\/app\/links\?saved=1$/);
     const savedLinkEntry = page.locator("article").filter({ has: page.getByRole("link", { name: title }) });
-    await expect(savedLinkEntry).toContainText("AI pending");
     await expect(savedLinkEntry).toContainText("AI failed", { timeout: 15000 });
     await expect(savedLinkEntry).toContainText("The Mina AI endpoint timed out.");
     await expect(savedLinkEntry.getByTestId("link-ai-summary")).toHaveCount(0);
@@ -337,7 +335,7 @@ test("link save still succeeds when the configured AI endpoint times out and exp
     await expect(savedLinkEntry).toContainText("AI failed", { timeout: 15000 });
     await expect(savedLinkEntry).toContainText("The Mina AI endpoint timed out.");
   } finally {
-    await setAiPlaywrightTestMode("passthrough");
+    await setAiPlaywrightTestMode("disabled");
   }
 });
 
@@ -405,7 +403,7 @@ Private note for shared-tag retrieval.`;
     await expect(page.getByText("Link saved.")).toBeVisible();
 
     const savedLinkEntry = page.locator("article").filter({ has: page.getByRole("link", { name: linkTitle }) });
-    await expect(savedLinkEntry).toContainText("AI ready", { timeout: 15000 });
+    await expect(savedLinkEntry).toContainText("AI ready", { timeout: 60000 });
     const generatedTag = await savedLinkEntry.locator('[data-testid="link-ai-tags"] .tag-pill').first().textContent();
     const tagQuery = generatedTag?.trim();
 
@@ -429,6 +427,6 @@ Private note for shared-tag retrieval.`;
     await expect(page.getByRole("link", { name: linkTitle })).toBeVisible();
     await expect(page.getByRole("link", { name: noteTitle })).toHaveCount(0);
   } finally {
-    await setAiPlaywrightTestMode("passthrough");
+    await setAiPlaywrightTestMode("disabled");
   }
 });

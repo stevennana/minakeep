@@ -71,3 +71,9 @@ Promote only when broader-root support is test-backed and the renderer does not 
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-04-04 14:41 KST: Confirmed the shared Mermaid root gate in `src/features/notes/mermaid.ts` only allowed `flowchart` / `graph` and `sequenceDiagram`, while the task docs targeted broader deterministic root coverage.
+- 2026-04-04 14:47 KST: Expanded the shared Mermaid root allowlist to include `classDiagram`, `stateDiagram`, and `stateDiagram-v2`, keeping unsupported roots on the fallback shell and malformed supported syntax on the render-time fallback path.
+- 2026-04-04 14:55 KST: Extended unit coverage and the public-note / owner-preview Mermaid E2E fixtures to prove valid `classDiagram` and `stateDiagram-v2` rendering plus malformed `classDiagram` fallback behavior through the shared renderer.
+- 2026-04-04 14:58 KST: Updated the Mermaid product and design docs to claim only the roots covered by deterministic tests in this wave.
+- 2026-04-04 23:23 KST: Verified the task gates locally. `npm run test:e2e -- --grep @ui-public-note-mermaid`, `npm run test:e2e -- --grep @ui-note-editor-mermaid`, and `npm run verify` all passed; the only retry needed was a transient `EADDRINUSE` on port `3100` during the first public-note Mermaid run.
+- 2026-04-04 23:30 KST: Re-ran the required task gates for this handoff. The two Mermaid-scoped Playwright commands and `npm run verify` all passed locally; the only non-product issue observed was the same avoidable `EADDRINUSE` collision when the two scoped Playwright commands were launched in parallel on the shared port.

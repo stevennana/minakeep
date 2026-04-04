@@ -9,7 +9,9 @@ import { PrismaClient } from "@prisma/client";
 import { expect, test, type Page } from "@playwright/test";
 
 const desktopViewport = { width: 1440, height: 900 };
-const databaseUrl = process.env.DATABASE_URL;
+const databaseUrl = process.env.DATABASE_URL?.startsWith("file:./")
+  ? "file:" + process.cwd() + "/" + process.env.DATABASE_URL.slice("file:./".length)
+  : process.env.DATABASE_URL;
 const mediaRoot = path.resolve(process.env.MEDIA_ROOT ?? path.join(tmpdir(), "minakeep-media"));
 const pngFixture = Buffer.from(
   "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9pY3S7EAAAAASUVORK5CYII=",

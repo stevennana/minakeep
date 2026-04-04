@@ -10,7 +10,8 @@ import {
   readText,
 } from "./lib/task-utils.mjs";
 
-const taskId = syncCurrentTaskState();
+const taskState = syncCurrentTaskState();
+const taskId = taskState.current_task_id;
 if (!taskId || taskId === "NONE") {
   throw new Error("No current task is configured.");
 }

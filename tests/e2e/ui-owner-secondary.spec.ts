@@ -7,7 +7,9 @@ import { expect, test, type Page } from "@playwright/test";
 const desktopViewport = { width: 1440, height: 900 };
 const mobileViewport = { width: 390, height: 844 };
 
-const databaseUrl = process.env.DATABASE_URL;
+const databaseUrl = process.env.DATABASE_URL?.startsWith("file:./")
+  ? "file:" + process.cwd() + "/" + process.env.DATABASE_URL.slice("file:./".length)
+  : process.env.DATABASE_URL;
 
 if (!databaseUrl) {
   throw new Error("DATABASE_URL must be set before running owner secondary UI tests.");

@@ -182,6 +182,36 @@ test("getMinaAiRequestTimeoutMs falls back to the default timeout", () => {
   }
 });
 
+test("getMinaAiRequestTimeoutMs uses the Playwright timeout when the request mode is pinned to timeout", () => {
+  const originalTimeout = process.env.MINA_AI_TIMEOUT_MS;
+  delete process.env.MINA_AI_TIMEOUT_MS;
+
+  try {
+    assert.equal(getMinaAiRequestTimeoutMs("timeout"), 1500);
+  } finally {
+    if (originalTimeout === undefined) {
+      delete process.env.MINA_AI_TIMEOUT_MS;
+    } else {
+      process.env.MINA_AI_TIMEOUT_MS = originalTimeout;
+    }
+  }
+});
+
+test("getMinaAiRequestTimeoutMs keeps timeout mode deterministic even when MINA_AI_TIMEOUT_MS is configured", () => {
+  const originalTimeout = process.env.MINA_AI_TIMEOUT_MS;
+  process.env.MINA_AI_TIMEOUT_MS = "60000";
+
+  try {
+    assert.equal(getMinaAiRequestTimeoutMs("timeout"), 1500);
+  } finally {
+    if (originalTimeout === undefined) {
+      delete process.env.MINA_AI_TIMEOUT_MS;
+    } else {
+      process.env.MINA_AI_TIMEOUT_MS = originalTimeout;
+    }
+  }
+});
+
 test("requestMinaEnrichment aborts hung requests at the configured timeout", async () => {
   const originalFetch = global.fetch;
 

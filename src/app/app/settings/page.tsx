@@ -1,3 +1,5 @@
+import { unstable_noStore as noStore } from "next/cache";
+
 import { saveSiteSettingsAction } from "@/app/app/settings/actions";
 import { Button, Disclosure, FormField, IntroBlock, MetadataRow, SectionHeading, Surface } from "@/components/ui/primitives";
 import { getSiteSettings } from "@/features/site-settings/service";
@@ -20,6 +22,8 @@ function getStatusMessage(error?: string) {
 }
 
 export default async function SettingsPage({ searchParams }: SettingsPageProps) {
+  noStore();
+
   const [workspace, siteSettings, resolvedSearchParams] = await Promise.all([
     requireWorkspaceSession(),
     getSiteSettings(),

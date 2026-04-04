@@ -6,7 +6,9 @@ import { expect, test, type Page } from "@playwright/test";
 
 import { setAiPlaywrightTestMode } from "./ai-test-mode";
 
-const databaseUrl = process.env.DATABASE_URL;
+const databaseUrl = process.env.DATABASE_URL?.startsWith("file:./")
+  ? "file:" + process.cwd() + "/" + process.env.DATABASE_URL.slice("file:./".length)
+  : process.env.DATABASE_URL;
 
 if (!databaseUrl) {
   throw new Error("DATABASE_URL must be set before running external note API tests.");
@@ -110,7 +112,7 @@ This note should stay private unless publish-on-create is requested.`;
     await page.goto("/");
     await expect(page.getByRole("link", { name: title })).toHaveCount(0);
   } finally {
-    await setAiPlaywrightTestMode("passthrough");
+    await setAiPlaywrightTestMode("disabled");
 
     if (createdNoteId) {
       await prisma.note.delete({
@@ -190,7 +192,7 @@ This note should be publicly reachable immediately after the keyed create reques
     await expect(page).toHaveURL(new RegExp(`/notes/${body.note.slug}$`));
     await expect(page.getByTestId("public-note-markdown").getByRole("heading", { name: `API published ${uniqueId}` })).toBeVisible();
   } finally {
-    await setAiPlaywrightTestMode("passthrough");
+    await setAiPlaywrightTestMode("disabled");
 
     if (createdNoteId) {
       await prisma.note.delete({

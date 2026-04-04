@@ -1,8 +1,8 @@
 {
-  "task_id": "100-flowchart-advanced-mermaid-features-rca-npm-run-verify-auth-spec-delete-spec-e5cc86b6",
-  "started_at": "2026-04-04T23:01:07+09:00",
-  "artifact_dir": "state/artifacts/20260404T230107-100-flowchart-advanced-mermaid-features-rca-npm-run-verify-auth-spec-delete-spec-e5cc86b6",
+  "task_id": "100-flowchart-advanced-mermaid-features-rca-npm-run-verify-auth-spec-delete-spec-7828b3cc",
+  "started_at": "2026-04-05T00:49:31+09:00",
+  "artifact_dir": "state/artifacts/20260405T004931-100-flowchart-advanced-mermaid-features-rca-npm-run-verify-auth-spec-delete-spec-7828b3cc",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-04-04T14:09:15.183Z"
+  "updated_at": "2026-04-04T15:58:21.124Z"
 }

@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit",
     "db:prepare": "node scripts/db-prepare.mjs",
     "test:unit": "NODE_PATH=./node_modules/next/dist/compiled node --conditions=react-server --import tsx --test tests/unit/**/*.test.ts",
-    "test:e2e": "npm run db:prepare && playwright test",
+    "test:e2e": "./scripts/ralph/ensure-e2e-port-free.sh ${PLAYWRIGHT_WEB_SERVER_PORT:-3210} && npm run db:prepare && playwright test",
     "test": "npm run test:unit && npm run test:e2e",
     "start:smoke": "node scripts/start-smoke.mjs",
     "start:logged": "node scripts/start-logged.mjs",

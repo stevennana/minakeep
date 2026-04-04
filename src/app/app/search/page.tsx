@@ -1,5 +1,6 @@
 import type { Route } from "next";
 import Link from "next/link";
+import { unstable_noStore as noStore } from "next/cache";
 
 import {
   Button,
@@ -27,6 +28,8 @@ type SearchPageProps = {
 };
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
+  noStore();
+
   const workspace = await requireWorkspaceSession();
   const isReadOnly = isReadOnlyWorkspaceRole(workspace.actor.role);
   const resolvedSearchParams = (await searchParams) ?? {};

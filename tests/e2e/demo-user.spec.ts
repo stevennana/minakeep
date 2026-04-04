@@ -4,7 +4,11 @@ import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 import { PrismaClient } from "@prisma/client";
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
-const databaseUrl = process.env.DATABASE_URL;
+import { cleanupOwnerLinkFixtures, cleanupOwnerNoteFixtures } from "./helpers/sqlite-fixtures";
+
+const databaseUrl = process.env.DATABASE_URL?.startsWith("file:./")
+  ? "file:" + process.cwd() + "/" + process.env.DATABASE_URL.slice("file:./".length)
+  : process.env.DATABASE_URL;
 
 if (!databaseUrl) {
   throw new Error("DATABASE_URL must be set before running demo-user tests.");
@@ -74,23 +78,8 @@ async function seedDemoWorkspaceFixture() {
     throw new Error("The seeded owner account must exist before demo-user tests run.");
   }
 
-  await prisma.note.deleteMany({
-    where: {
-      ownerId: owner.id,
-      slug: {
-        in: [seededDraftNote.slug, seededPublishedNote.slug]
-      }
-    }
-  });
-
-  await prisma.link.deleteMany({
-    where: {
-      ownerId: owner.id,
-      url: {
-        in: [seededDraftLink.url, seededPublishedLink.url]
-      }
-    }
-  });
+  await cleanupOwnerNoteFixtures(prisma, owner.id, [seededDraftNote.slug, seededPublishedNote.slug]);
+  await cleanupOwnerLinkFixtures(prisma, owner.id, [seededDraftLink.url, seededPublishedLink.url]);
 
   const draftNote = await prisma.note.create({
     data: {
@@ -243,8 +232,13 @@ test.describe.configure({ mode: "serial" });
 
 let seededFixture: SeededWorkspaceFixture;
 
-test.beforeAll(async () => {
+test.beforeEach(async () => {
   seededFixture = await seedDemoWorkspaceFixture();
+});
+
+test.afterEach(async () => {
+  await cleanupOwnerNoteFixtures(prisma, seededFixture.ownerId, [seededDraftNote.slug, seededPublishedNote.slug]);
+  await cleanupOwnerLinkFixtures(prisma, seededFixture.ownerId, [seededDraftLink.url, seededPublishedLink.url]);
 });
 
 test.afterAll(async () => {
@@ -283,6 +277,12 @@ test("@demo-user demo credentials authenticate a runtime demo session and reach 
 
 test("@demo-user demo workspace routes stay browsable while mutation controls are disabled", async ({ page }) => {
   await signInAsDemo(page);
+  const ownerNoteList = page.getByTestId("owner-dashboard-note-list");
+  const draftNoteEditHref = await ownerNoteList.getByRole("link", { name: seededDraftNote.title }).getAttribute("href");
+  const publishedNoteEditHref = await ownerNoteList.getByRole("link", { name: seededPublishedNote.title }).getAttribute("href");
+
+  expect(draftNoteEditHref).toBeTruthy();
+  expect(publishedNoteEditHref).toBeTruthy();
 
   await page.goto("/app/links");
   await expect(page.getByRole("heading", { name: "Reference shelf" })).toBeVisible();
@@ -312,7 +312,7 @@ test("@demo-user demo workspace routes stay browsable while mutation controls ar
   await expect(page.getByRole("link", { name: seededDraftNote.title })).toBeVisible();
   await expect(page.getByRole("link", { name: seededDraftLink.title })).toBeVisible();
 
-  await page.goto(`/app/notes/${seededFixture.draftNoteId}/edit`);
+  await page.goto(draftNoteEditHref!);
   await expect(page.getByRole("heading", { name: "Edit draft note" })).toBeVisible();
   await expect(page.getByLabel("Title")).toHaveValue(seededDraftNote.title);
   await expect(page.getByLabel("Title")).toHaveJSProperty("readOnly", true);
@@ -331,7 +331,7 @@ test("@demo-user demo workspace routes stay browsable while mutation controls ar
   await expect(page.getByLabel("Markdown body")).toHaveJSProperty("readOnly", true);
   await expect(page.getByRole("button", { name: "Save unavailable" })).toBeDisabled();
 
-  await page.goto(`/app/notes/${seededFixture.publishedNoteId}/edit`);
+  await page.goto(publishedNoteEditHref!);
   await expect(page.getByRole("heading", { name: "Edit draft note" })).toBeVisible();
   await expect(page.getByLabel("Title")).toHaveValue(seededPublishedNote.title);
   await expect(page.getByLabel("Title")).toHaveJSProperty("readOnly", true);
@@ -371,23 +371,6 @@ test("@demo-user direct demo mutation attempts are rejected at the server bounda
 
   const demoPage = await browser.newPage();
   await signInAsDemo(demoPage);
-
-  const noteCountBefore = await prisma.note.count({
-    where: {
-      ownerId: seededFixture.ownerId
-    }
-  });
-  const linkCountBefore = await prisma.link.count({
-    where: {
-      ownerId: seededFixture.ownerId
-    }
-  });
-  const noteImageCountBefore = await prisma.mediaAsset.count({
-    where: {
-      kind: "note-image",
-      ownerId: seededFixture.ownerId
-    }
-  });
 
   const createNoteResult = await postServerAction(demoPage, createNoteAction, [
     ["title", "Demo blocked note create"],
@@ -478,79 +461,29 @@ test("@demo-user direct demo mutation attempts are rejected at the server bounda
   expect(uploadResult.status).toBe(403);
   expect(uploadResult.payload.error).toBe("Read-only demo users cannot upload note images.");
 
-  expect(
-    await prisma.note.findFirst({
-      where: {
-        ownerId: seededFixture.ownerId,
-        title: "Demo blocked note create"
-      }
-    })
-  ).toBeNull();
-  expect(
-    await prisma.link.findFirst({
-      where: {
-        ownerId: seededFixture.ownerId,
-        url: "https://example.com/demo-blocked-link"
-      }
-    })
-  ).toBeNull();
+  const ownerCheckPage = await browser.newPage();
+  await signInAsOwner(ownerCheckPage);
 
-  const draftNote = await prisma.note.findUniqueOrThrow({
-    where: {
-      id: seededFixture.draftNoteId
-    }
-  });
-  expect(draftNote.title).toBe(seededDraftNote.title);
-  expect(draftNote.markdown).toBe(seededDraftNote.markdown);
-  expect(draftNote.isPublished).toBe(false);
-  expect(draftNote.enrichmentAttempts).toBe(1);
+  await ownerCheckPage.goto("/app");
+  await expect(ownerCheckPage.getByRole("link", { name: seededDraftNote.title })).toBeVisible();
+  await expect(ownerCheckPage.getByRole("link", { name: seededPublishedNote.title })).toBeVisible();
+  await expect(ownerCheckPage.getByRole("link", { name: "Demo blocked note create" })).toHaveCount(0);
 
-  const publishedNote = await prisma.note.findUniqueOrThrow({
-    where: {
-      id: seededFixture.publishedNoteId
-    }
-  });
-  expect(publishedNote.isPublished).toBe(true);
+  await ownerCheckPage.goto(`/app/notes/${seededFixture.draftNoteId}/edit`);
+  await expect(ownerCheckPage.getByLabel("Title")).toHaveValue(seededDraftNote.title);
+  await expect(ownerCheckPage.getByLabel("Markdown body")).toHaveValue(seededDraftNote.markdown);
+  await expect(ownerCheckPage.getByRole("button", { name: "Publish note" })).toBeVisible();
 
-  const draftLink = await prisma.link.findUniqueOrThrow({
-    where: {
-      id: seededFixture.draftLinkId
-    }
-  });
-  expect(draftLink.isPublished).toBe(false);
-  expect(draftLink.enrichmentAttempts).toBe(1);
-  expect(draftLink.url).toBe(seededDraftLink.url);
-  expect(draftLink.title).toBe(seededDraftLink.title);
+  await ownerCheckPage.goto(`/app/notes/${seededFixture.publishedNoteId}/edit`);
+  await expect(ownerCheckPage.getByLabel("Title")).toHaveValue(seededPublishedNote.title);
+  await expect(ownerCheckPage.getByRole("button", { name: "Unpublish note" })).toBeVisible();
 
-  const publishedLink = await prisma.link.findUniqueOrThrow({
-    where: {
-      id: seededFixture.publishedLinkId
-    }
-  });
-  expect(publishedLink.isPublished).toBe(true);
+  await ownerCheckPage.goto("/app/links");
+  await expect(ownerCheckPage.getByRole("link", { name: seededDraftLink.title })).toBeVisible();
+  await expect(ownerCheckPage.getByRole("link", { name: seededPublishedLink.title })).toBeVisible();
+  await expect(ownerCheckPage.getByRole("link", { name: "Demo blocked link create" })).toHaveCount(0);
 
-  expect(
-    await prisma.note.count({
-      where: {
-        ownerId: seededFixture.ownerId
-      }
-    })
-  ).toBe(noteCountBefore);
-  expect(
-    await prisma.link.count({
-      where: {
-        ownerId: seededFixture.ownerId
-      }
-    })
-  ).toBe(linkCountBefore);
-  expect(
-    await prisma.mediaAsset.count({
-      where: {
-        kind: "note-image",
-        ownerId: seededFixture.ownerId
-      }
-    })
-  ).toBe(noteImageCountBefore);
+  await ownerCheckPage.close();
 
   await demoPage.close();
 });

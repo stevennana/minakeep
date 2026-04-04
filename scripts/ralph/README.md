@@ -29,17 +29,18 @@ contracts and adding a separate evaluator step before promotion.
 - `scripts/ralph/run-once.sh`: one full worker/evaluator/promotion cycle
 - `scripts/ralph/run-loop.sh`: repeated unattended cycles
 - `scripts/ralph/ensure-e2e-port-free.sh`: clears port `3100` before E2E-capable verification commands
+- `scripts/ralph/ensure-state.mjs`: repairs obvious task-state drift and refreshes loop-owned state files
 - `scripts/ralph/status.sh`: inspect current task, latest evaluation, and backlog
 - `scripts/ralph/render-task-prompt.mjs`: build the worker prompt from the current task
-- `scripts/ralph/evaluate-task.mjs`: run deterministic checks and either auto-promote deterministic-only tasks or fall through to a read-only evaluator
+- `scripts/ralph/evaluate-task.mjs`: run deterministic checks and a read-only evaluator
+- `scripts/ralph/record-blocker.mjs`: normalize and persist repeated blocker signatures
+- `scripts/ralph/branch-rca-task.mjs`: auto-create blocker RCA tasks and switch queue priority
 - `scripts/ralph/promote-task.mjs`: move a finished task forward
 - `scripts/ralph/manual-promote.sh`: manually promote the current task with a recorded reason and optional artifact reference
-- `scripts/ralph/record-blocker.mjs`: record repeated deterministic or stall blocker signatures for the current task
-- `scripts/ralph/branch-rca-task.mjs`: auto-create and switch to a blocker RCA task after the repeat threshold is reached
 - `state/current-task.txt`: current task id
 - `state/current-cycle.json`: live cycle phase/status for the current run
 - `state/evaluation.json`: latest decision
-- `state/blocker-tracker.json`: repeated blocker signatures and RCA branch state
+- `state/blocker-tracker.json`: repeat-blocker signature history and RCA branching state
 - `state/backlog.md`: rendered queue snapshot
 - `state/artifacts/`: per-cycle raw worker/evaluator/commit artifacts
 
@@ -71,17 +72,7 @@ local work that is bound to that port.
 - generated repos should document a server log level environment variable such as `LOG_LEVEL`, with at least `trace`, `debug`, `info`, `warn`, and `error`
 - server wrappers default `MINAKEEP_DEBUG_SERVER=1`, so AI-tagging failures include debug details in the Next server logs without logging note bodies or tokens
 - inspect artifact files when the compact log points to a failed phase
-- `state/run-log.md` also appends a compact health line after each cycle: `o` for promoted success, `x` for completed non-promotion/failure, and `!` for stalled worker recovery
-
-Generated Ralph loops now support a compact cycle-health line inside `state/run-log.md`:
-
-- `o` = cycle completed and task promoted
-- `x` = cycle completed but stayed not-done, failed, or auto-branched into RCA
-- `!` = worker stalled during that cycle
-
-A single `!` does not mean the blocker RCA exec-plan should be created immediately.
-It means the unattended loop preserved stall evidence and recorded the blocker signature first.
-Only repeated environment-specific blockers on the same task should branch into the RCA/fix exec-plan flow, and generated loops now auto-create that RCA task on the third identical blocker.
+- `state/run-log.md` also appends a compact health line after each cycle: `o` for promoted success, `x` for completed non-promotion/failure or RCA auto-branch, and `!` for a stalled worker cycle
 
 ## Recommended usage
 
@@ -134,12 +125,18 @@ If no reason is supplied, the override records the default reason `operator manu
 - `ensure-state.mjs` now keeps `state/current-task.txt` synchronized with runnable task docs in `docs/exec-plans/active/` and writes `NONE` only when that runnable queue is actually exhausted.
 - if `render-task-prompt.mjs` fails, `run-once.sh` must abort the cycle immediately before worker, evaluator, commit, or promotion so the loop never reuses a stale prompt artifact.
 - if the worker goes silent and `worker.jsonl` stops changing past the stall timeout, the harness marks the cycle as `stalled`, writes a stall artifact, appends `!` to the health line, and stops the unattended loop for operator triage unless that identical stall has already repeated enough times to auto-branch into RCA
+- a single `!` does not automatically mean “create the RCA task now”; the loop records the blocker signature first and only auto-branches into the RCA/fix plan after the same blocker repeats enough times to satisfy the environment-blocker rule
+- when a repeated blocker hits the threshold, the loop auto-generates a blocker-specific RCA task, marks the original task as blocked, switches `state/current-task.txt` to the RCA task, and restores the original task when the RCA task promotes
+- promotion fails closed: if the successor task cannot be restored or validated, `promote-task.mjs` exits non-zero and leaves the current task unchanged instead of advancing `state/current-task.txt`
 - Required commands come from each task doc’s `taskmeta.required_commands`; `evaluate-task.mjs` runs exactly those commands plus required-file checks.
 - If `taskmeta.promotion_mode` is `deterministic_only`, `evaluate-task.mjs` promotes the task based on required command and required-file results alone.
 - `manual-promote.sh` is an explicit operator override; use it only for exceptional stalled-but-done cases. If you omit `--reason`, it records `operator manual promotion`.
 - Port cleanup is executed automatically only by the evaluator path for `npm run verify`, `npm run test:e2e`, or other Playwright-bearing commands. Manual local runs do not get that cleanup for free.
 - `ensure-e2e-port-free.sh` is intentionally aggressive and may terminate unrelated processes bound to `127.0.0.1:3100`.
+- `state/current-task.txt` must point at a task that still exists in `docs/exec-plans/active/` with status `active` or `queued`, or be `NONE` only when the runnable queue is exhausted.
+- `docs/exec-plans/completed/` is history only. Plans in that directory are never runnable current tasks.
+- `ensure-state.mjs` repairs obvious drift before status/loop runs by rewriting `state/current-task.txt` to the current runnable task or `NONE`, and it refreshes `state/backlog.md`.
+- if `current-task.txt` is invalid and there is no runnable task to repair to, treat that as queue exhaustion or operator repair work; do not keep rerunning the loop expecting progress.
 - UI hardening passes may use `npm run test:e2e -- --grep @ui-regression` as the full-wave deterministic gate once the per-surface UI specs all carry that tag.
 - If the evaluator repeatedly returns `not_done`, tighten the active task doc instead of making the prompt larger.
-- If the same environment-specific blocker repeats three times for the same task, the loop records the blocker signature first and only auto-branches into the RCA/fix plan on the third identical occurrence.
 - If a task is semantically done but not promotable, fix the contract or the deterministic checks; if you must override, use `manual-promote.sh` so the reason is recorded instead of silently skipping ahead.

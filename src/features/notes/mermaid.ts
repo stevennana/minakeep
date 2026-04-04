@@ -1,4 +1,11 @@
-const MERMAID_SUPPORTED_ROOTS = ["flowchart", "graph", "sequenceDiagram"] as const;
+const MERMAID_SUPPORTED_ROOTS = [
+  "flowchart",
+  "graph",
+  "sequenceDiagram",
+  "classDiagram",
+  "stateDiagram",
+  "stateDiagram-v2"
+] as const;
 const MERMAID_MAX_SOURCE_PREVIEW_LINES = 8;
 const MERMAID_MAX_LINE_LENGTH = 72;
 

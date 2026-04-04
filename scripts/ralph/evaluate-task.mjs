@@ -35,14 +35,20 @@ function commandNeedsE2ePortCleanup(command) {
   return /playwright|test:e2e/.test(command) || command.includes("npm run verify");
 }
 
+function getE2ePort() {
+  return process.env.PLAYWRIGHT_WEB_SERVER_PORT ?? "3210";
+}
+
 function ensureE2ePortIsFree(command) {
   if (!commandNeedsE2ePortCleanup(command)) {
     return null;
   }
 
+  const port = getE2ePort();
+
   const cleanup = spawnSync(
     path.join("scripts", "ralph", "ensure-e2e-port-free.sh"),
-    ["3100"],
+    [port],
     {
       cwd: process.cwd(),
       encoding: "utf8",
@@ -51,7 +57,7 @@ function ensureE2ePortIsFree(command) {
   );
 
   return {
-    command: "ensure-e2e-port-free.sh 3100",
+    command: `ensure-e2e-port-free.sh ${port}`,
     error: cleanup.stderr ?? "",
     ok: cleanup.status === 0,
     output: cleanup.stdout ?? "",
@@ -132,7 +138,8 @@ function usesDeterministicOnlyPromotion(taskMeta) {
 ensureDir(STATE_DIR);
 ensureDir(GENERATED_DIR);
 
-const taskId = syncCurrentTaskState();
+const taskState = syncCurrentTaskState();
+const taskId = taskState.current_task_id;
 if (!taskId || taskId === "NONE") {
   writeText(
     path.join(STATE_DIR, "evaluation.json"),

@@ -4,7 +4,9 @@ import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 import { PrismaClient } from "@prisma/client";
 import { expect, test, type Page } from "@playwright/test";
 
-const databaseUrl = process.env.DATABASE_URL;
+const databaseUrl = process.env.DATABASE_URL?.startsWith("file:./")
+  ? "file:" + process.cwd() + "/" + process.env.DATABASE_URL.slice("file:./".length)
+  : process.env.DATABASE_URL;
 
 if (!databaseUrl) {
   throw new Error("DATABASE_URL must be set before running incremental loading UI tests.");
@@ -96,6 +98,8 @@ async function seedIncrementalLoadingFixtures() {
       }
     });
   }
+
+  return owner.id;
 }
 
 async function signIn(page: Page) {
@@ -108,10 +112,12 @@ async function signIn(page: Page) {
   await expect(page).toHaveURL(/\/app$/);
 }
 
+let ownerId: string;
+
 test.describe.configure({ mode: "serial" });
 
 test.beforeEach(async () => {
-  await seedIncrementalLoadingFixtures();
+  ownerId = await seedIncrementalLoadingFixtures();
 });
 
 test.afterAll(async () => {
@@ -154,7 +160,12 @@ test("@incremental-loading public and owner collections use bounded initial slic
   const ownerLinks = page.locator(".link-list article");
 
   await expect(ownerLinks).toHaveCount(20);
+  const totalOwnerLinks = await prisma.link.count({
+    where: {
+      ownerId
+    }
+  });
   await page.getByTestId("owner-links-load-more").scrollIntoViewIfNeeded();
-  await expect.poll(async () => ownerLinks.count()).toBe(22);
-  await expect(page).toHaveURL(/\/app\/links\?limit=22$/);
+  await expect.poll(async () => ownerLinks.count()).toBe(totalOwnerLinks);
+  await expect(page).toHaveURL(new RegExp(`/app/links\\?limit=${totalOwnerLinks}$`));
 });

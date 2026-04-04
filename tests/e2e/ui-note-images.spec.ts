@@ -10,7 +10,9 @@ import { expect, test, type Page } from "@playwright/test";
 
 import { getMediaAssetPath } from "../../src/features/media/types";
 
-const databaseUrl = process.env.DATABASE_URL;
+const databaseUrl = process.env.DATABASE_URL?.startsWith("file:./")
+  ? "file:" + process.cwd() + "/" + process.env.DATABASE_URL.slice("file:./".length)
+  : process.env.DATABASE_URL;
 const mediaRoot = path.resolve(process.env.MEDIA_ROOT ?? path.join(tmpdir(), "minakeep-media"));
 
 if (!databaseUrl) {

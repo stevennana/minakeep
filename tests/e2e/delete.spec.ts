@@ -4,7 +4,11 @@ import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 import { PrismaClient } from "@prisma/client";
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
-const databaseUrl = process.env.DATABASE_URL;
+import { cleanupOwnerLinkFixtures, cleanupOwnerNoteFixtures } from "./helpers/sqlite-fixtures";
+
+const databaseUrl = process.env.DATABASE_URL?.startsWith("file:./")
+  ? "file:" + process.cwd() + "/" + process.env.DATABASE_URL.slice("file:./".length)
+  : process.env.DATABASE_URL;
 
 if (!databaseUrl) {
   throw new Error("DATABASE_URL must be set before running delete tests.");
@@ -75,19 +79,8 @@ async function seedDeleteFixture(label: string): Promise<DeleteFixture> {
   const linkUrl = `https://example.com/delete-link-${uniqueId}`;
   const updatedAt = new Date("2026-03-27T05:00:00.000Z");
 
-  await prisma.note.deleteMany({
-    where: {
-      ownerId: owner.id,
-      slug: noteSlug
-    }
-  });
-
-  await prisma.link.deleteMany({
-    where: {
-      ownerId: owner.id,
-      url: linkUrl
-    }
-  });
+  await cleanupOwnerNoteFixtures(prisma, owner.id, [noteSlug]);
+  await cleanupOwnerLinkFixtures(prisma, owner.id, [linkUrl]);
 
   const note = await prisma.note.create({
     data: {
@@ -137,24 +130,39 @@ async function seedDeleteFixture(label: string): Promise<DeleteFixture> {
 
 async function cleanupDeleteFixtures() {
   const owner = await getOwnerRecord();
-
-  await prisma.link.deleteMany({
-    where: {
-      ownerId: owner.id,
-      url: {
-        startsWith: "https://example.com/delete-link-"
-      }
-    }
-  });
-
-  await prisma.note.deleteMany({
+  const notes = await prisma.note.findMany({
     where: {
       ownerId: owner.id,
       slug: {
         startsWith: "delete-note-"
       }
+    },
+    select: {
+      slug: true
     }
   });
+  const links = await prisma.link.findMany({
+    where: {
+      ownerId: owner.id,
+      url: {
+        startsWith: "https://example.com/delete-link-"
+      }
+    },
+    select: {
+      url: true
+    }
+  });
+
+  await cleanupOwnerLinkFixtures(
+    prisma,
+    owner.id,
+    links.map((link) => link.url)
+  );
+  await cleanupOwnerNoteFixtures(
+    prisma,
+    owner.id,
+    notes.map((note) => note.slug)
+  );
 }
 
 async function signIn(page: Page, credentials: { username: string; password: string }) {

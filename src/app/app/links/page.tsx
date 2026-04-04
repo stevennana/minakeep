@@ -6,6 +6,7 @@ import {
   retryLinkEnrichmentAction,
   unpublishLinkAction
 } from "@/app/app/links/actions";
+import { unstable_noStore as noStore } from "next/cache";
 import { AutoLoadMore } from "@/components/ui/auto-load-more";
 import {
   Button,
@@ -62,6 +63,8 @@ function getStatusMessage(error?: string) {
 }
 
 export default async function LinksPage({ searchParams }: LinksPageProps) {
+  noStore();
+
   const workspace = await requireWorkspaceSession();
   const isReadOnly = isReadOnlyWorkspaceRole(workspace.actor.role);
   const captureSurfaceProps = isReadOnly ? ({ as: "div" as const }) : ({ action: createLinkAction, as: "form" as const });

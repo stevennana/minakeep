@@ -3,6 +3,7 @@ import "server-only";
 import { revalidatePath } from "next/cache";
 import { after } from "next/server";
 
+import { getPlaywrightAiTestMode } from "@/features/ai/test-mode";
 import { runNoteEnrichment } from "@/features/notes/enrichment";
 import { createDraftNote, publishNote, startNoteEnrichment } from "@/features/notes/service";
 import type { NoteDraftInput } from "@/features/notes/types";
@@ -23,6 +24,10 @@ export function revalidateNotePaths(note: NoteRouteRecord) {
 }
 
 export function scheduleNoteEnrichment(note: NoteRouteRecord, attempt: number) {
+  if (getPlaywrightAiTestMode() !== "passthrough") {
+    return runNoteEnrichment(note.id, attempt);
+  }
+
   after(async () => {
     await runNoteEnrichment(note.id, attempt);
     revalidateNotePaths(note);
@@ -33,7 +38,7 @@ export async function queueNoteEnrichment(note: NoteRouteRecord) {
   const enrichedNote = await startNoteEnrichment(note.id);
 
   if (enrichedNote.enrichment.status === "pending") {
-    scheduleNoteEnrichment(note, enrichedNote.enrichment.attempts);
+    await scheduleNoteEnrichment(note, enrichedNote.enrichment.attempts);
   }
 
   return enrichedNote;

@@ -114,6 +114,45 @@ sequenceDiagram
   assert.match(html, /B--&gt;&gt;A: shipped/);
 });
 
+test("renderMarkdownToHtml keeps supported class mermaid fences on the shared render path", () => {
+  const html = renderMarkdownToHtml(`\`\`\`mermaid
+classDiagram
+  class Note {
+    +String title
+    +publish()
+  }
+  class PublicArchive {
+    +render()
+  }
+  Note --> PublicArchive : ships to
+\`\`\``);
+
+  assert.match(html, /markdown-mermaid markdown-mermaid--pending/);
+  assert.match(
+    html,
+    /data-mermaid-source="classDiagram%0A%20%20class%20Note%20%7B%0A%20%20%20%20%2BString%20title%0A%20%20%20%20%2Bpublish\(\)%0A%20%20%7D%0A%20%20class%20PublicArchive%20%7B%0A%20%20%20%20%2Brender\(\)%0A%20%20%7D%0A%20%20Note%20--%3E%20PublicArchive%20%3A%20ships%20to"/
+  );
+  assert.match(html, /classDiagram/);
+  assert.match(html, /\.\.\. \+1 more line\(s\)/);
+});
+
+test("renderMarkdownToHtml keeps supported state mermaid fences on the shared render path", () => {
+  const html = renderMarkdownToHtml(`\`\`\`mermaid
+stateDiagram-v2
+  [*] --> Draft
+  Draft --> Review: save
+  Review --> Published: publish
+\`\`\``);
+
+  assert.match(html, /markdown-mermaid markdown-mermaid--pending/);
+  assert.match(
+    html,
+    /data-mermaid-source="stateDiagram-v2%0A%20%20%5B\*%5D%20--%3E%20Draft%0A%20%20Draft%20--%3E%20Review%3A%20save%0A%20%20Review%20--%3E%20Published%3A%20publish"/
+  );
+  assert.match(html, /stateDiagram-v2/);
+  assert.match(html, /Draft --&gt; Review: save/);
+});
+
 test("renderMarkdownToHtml falls back for unsupported mermaid roots instead of claiming a rendered diagram", () => {
   const html = renderMarkdownToHtml(`\`\`\`mermaid
 gantt
@@ -134,6 +173,18 @@ test("renderMermaidShell falls back cleanly when the library render rejects malf
   assert.equal(result.state, "fallback");
   assert.match(result.markup, /Diagram preview unavailable/);
   assert.match(result.markup, /Alice hello Bob/);
+  assert.doesNotMatch(result.markup, /<svg/);
+});
+
+test("renderMermaidShell falls back cleanly when malformed class diagrams fail inside the supported root set", async () => {
+  const result = await renderMermaidShell("classDiagram\nThis is not valid Mermaid source.", async () => {
+    throw new Error("Parse error");
+  });
+
+  assert.equal(result.state, "fallback");
+  assert.match(result.markup, /Diagram preview unavailable/);
+  assert.match(result.markup, /classDiagram/);
+  assert.match(result.markup, /This is not valid Mermaid source\./);
   assert.doesNotMatch(result.markup, /<svg/);
 });
 

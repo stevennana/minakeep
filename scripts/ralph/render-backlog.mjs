@@ -9,7 +9,8 @@ import {
   writeText,
 } from "./lib/task-utils.mjs";
 
-const currentTaskId = syncCurrentTaskState();
+const currentTaskState = syncCurrentTaskState();
+const currentTaskId = currentTaskState.current_task_id;
 const tasks = [
   ...listTaskDocs(ACTIVE_TASK_DIR),
   ...listTaskDocs(COMPLETED_TASK_DIR),

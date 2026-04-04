@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { unstable_noStore as noStore } from "next/cache";
 
 import { deleteNoteAction, publishNoteAction, retryNoteEnrichmentAction, unpublishNoteAction, updateNoteAction } from "@/app/app/notes/actions";
 import { Button, SectionHeading, Surface } from "@/components/ui/primitives";
@@ -21,6 +22,8 @@ type EditNotePageProps = {
 };
 
 export default async function EditNotePage({ params, searchParams }: EditNotePageProps) {
+  noStore();
+
   const workspace = await requireWorkspaceSession();
   const isReadOnly = isReadOnlyWorkspaceRole(workspace.actor.role);
   const { id } = await params;

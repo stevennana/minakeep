@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "updated_at": "2026-04-04T14:00:36.982Z",
+  "updated_at": "2026-04-04T15:25:27.603Z",
   "tasks": {
     "100-flowchart-advanced-mermaid-features": {
-      "last_signature": "deterministic_failure|npm-run-verify|tests/e2e/auth.spec.ts|tests/e2e/delete.spec.ts|tests/e2e/demo-user.spec.ts|tests/e2e/home.spec.ts|tests/e2e/incremental-loading.spec.ts|tests/e2e/link-ai-real.spec.ts|tests/e2e/link-favicon.spec.ts|tests/e2e/media-foundation.spec.ts|tests/e2e/note-ai-real.spec.ts|tests/e2e/note-api.spec.ts|tests/e2e/note-image-upload.spec.ts|tests/e2e/owner-session.spec.ts|tests/e2e/public-home-search.spec.ts|tests/e2e/seo-discovery.spec.ts|tests/e2e/settings.spec.ts|tests/e2e/ui-forms.spec.ts|tests/e2e/ui-home-grid.spec.ts|tests/e2e/ui-home-shell.spec.ts|tests/e2e/ui-information-density.spec.ts|tests/e2e/ui-note-editor-foundation.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts|tests/e2e/ui-note-editor-mobile.spec.ts|tests/e2e/ui-note-editor-modes.spec.ts|tests/e2e/ui-note-editor-toolbar.spec.ts|tests/e2e/ui-note-images.spec.ts|tests/e2e/ui-note-math.spec.ts|tests/e2e/ui-owner-dashboard.spec.ts|tests/e2e/ui-owner-secondary.spec.ts|tests/e2e/ui-public-home-density.spec.ts|tests/e2e/ui-public-note-math.spec.ts|tests/e2e/ui-public-note-mermaid.spec.ts|tests/e2e/ui-public-note.spec.ts|tests/e2e/ui-public-showroom.spec.ts|tests/e2e/ui-public-tag-fit.spec.ts|tests/e2e/ui-system.spec.ts",
-      "last_seen_at": "2026-04-04T14:00:36.835Z",
+      "last_signature": "deterministic_failure|npm-run-verify|tests/e2e/auth.spec.ts|tests/e2e/delete.spec.ts|tests/e2e/demo-user.spec.ts|tests/e2e/home.spec.ts|tests/e2e/incremental-loading.spec.ts|tests/e2e/link-ai-real.spec.ts|tests/e2e/link-favicon.spec.ts|tests/e2e/media-foundation.spec.ts|tests/e2e/note-ai-real.spec.ts|tests/e2e/note-api.spec.ts|tests/e2e/note-image-upload.spec.ts|tests/e2e/owner-session.spec.ts|tests/e2e/public-home-search.spec.ts|tests/e2e/seo-discovery.spec.ts|tests/e2e/settings.spec.ts|tests/e2e/ui-forms.spec.ts|tests/e2e/ui-home-grid.spec.ts|tests/e2e/ui-home-shell.spec.ts|tests/e2e/ui-information-density.spec.ts|tests/e2e/ui-note-editor-foundation.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts-snapshots/ui-note-editor-mermaid-desktop-darwin.png|tests/e2e/ui-note-editor-mobile.spec.ts|tests/e2e/ui-note-editor-modes.spec.ts|tests/e2e/ui-note-editor-toolbar.spec.ts|tests/e2e/ui-note-images.spec.ts|tests/e2e/ui-note-math.spec.ts|tests/e2e/ui-owner-dashboard.spec.ts|tests/e2e/ui-owner-secondary.spec.ts|tests/e2e/ui-public-home-density.spec.ts|tests/e2e/ui-public-note-math.spec.ts|tests/e2e/ui-public-note-mermaid.spec.ts|tests/e2e/ui-public-note.spec.ts|tests/e2e/ui-public-showroom.spec.ts|tests/e2e/ui-public-tag-fit.spec.ts|tests/e2e/ui-system.spec.ts",
+      "last_seen_at": "2026-04-04T14:58:21.956Z",
       "signatures": {
         "deterministic_failure|npm-run-verify|tests/e2e/auth.spec.ts|tests/e2e/delete.spec.ts|tests/e2e/demo-user.spec.ts|tests/e2e/home.spec.ts|tests/e2e/incremental-loading.spec.ts|tests/e2e/link-ai-real.spec.ts|tests/e2e/link-favicon.spec.ts|tests/e2e/media-foundation.spec.ts|tests/e2e/note-ai-real.spec.ts|tests/e2e/note-api.spec.ts|tests/e2e/note-image-upload.spec.ts|tests/e2e/owner-session.spec.ts|tests/e2e/public-home-search.spec.ts|tests/e2e/seo-discovery.spec.ts|tests/e2e/settings.spec.ts|tests/e2e/ui-forms.spec.ts|tests/e2e/ui-home-grid.spec.ts|tests/e2e/ui-home-shell.spec.ts|tests/e2e/ui-information-density.spec.ts|tests/e2e/ui-note-editor-foundation.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts|tests/e2e/ui-note-editor-mobile.spec.ts|tests/e2e/ui-note-editor-modes.spec.ts|tests/e2e/ui-note-editor-toolbar.spec.ts|tests/e2e/ui-note-images.spec.ts|tests/e2e/ui-note-math.spec.ts|tests/e2e/ui-owner-dashboard.spec.ts|tests/e2e/ui-owner-secondary.spec.ts|tests/e2e/ui-public-home-density.spec.ts|tests/e2e/ui-public-note-math.spec.ts|tests/e2e/ui-public-note-mermaid.spec.ts|tests/e2e/ui-public-note.spec.ts|tests/e2e/ui-public-showroom.spec.ts|tests/e2e/ui-public-tag-fit.spec.ts|tests/e2e/ui-system.spec.ts": {
           "signature": "deterministic_failure|npm-run-verify|tests/e2e/auth.spec.ts|tests/e2e/delete.spec.ts|tests/e2e/demo-user.spec.ts|tests/e2e/home.spec.ts|tests/e2e/incremental-loading.spec.ts|tests/e2e/link-ai-real.spec.ts|tests/e2e/link-favicon.spec.ts|tests/e2e/media-foundation.spec.ts|tests/e2e/note-ai-real.spec.ts|tests/e2e/note-api.spec.ts|tests/e2e/note-image-upload.spec.ts|tests/e2e/owner-session.spec.ts|tests/e2e/public-home-search.spec.ts|tests/e2e/seo-discovery.spec.ts|tests/e2e/settings.spec.ts|tests/e2e/ui-forms.spec.ts|tests/e2e/ui-home-grid.spec.ts|tests/e2e/ui-home-shell.spec.ts|tests/e2e/ui-information-density.spec.ts|tests/e2e/ui-note-editor-foundation.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts|tests/e2e/ui-note-editor-mobile.spec.ts|tests/e2e/ui-note-editor-modes.spec.ts|tests/e2e/ui-note-editor-toolbar.spec.ts|tests/e2e/ui-note-images.spec.ts|tests/e2e/ui-note-math.spec.ts|tests/e2e/ui-owner-dashboard.spec.ts|tests/e2e/ui-owner-secondary.spec.ts|tests/e2e/ui-public-home-density.spec.ts|tests/e2e/ui-public-note-math.spec.ts|tests/e2e/ui-public-note-mermaid.spec.ts|tests/e2e/ui-public-note.spec.ts|tests/e2e/ui-public-showroom.spec.ts|tests/e2e/ui-public-tag-fit.spec.ts|tests/e2e/ui-system.spec.ts",
@@ -62,6 +62,190 @@
           "last_seen_at": "2026-04-04T14:00:36.835Z",
           "branched_to_task_id": "100-flowchart-advanced-mermaid-features-rca-npm-run-verify-auth-spec-delete-spec-e5cc86b6",
           "branched_at": "2026-04-04T14:00:36.982Z"
+        },
+        "deterministic_failure|npm-run-verify|tests/e2e/auth.spec.ts|tests/e2e/delete.spec.ts|tests/e2e/demo-user.spec.ts|tests/e2e/home.spec.ts|tests/e2e/incremental-loading.spec.ts|tests/e2e/link-ai-real.spec.ts|tests/e2e/link-favicon.spec.ts|tests/e2e/media-foundation.spec.ts|tests/e2e/note-ai-real.spec.ts|tests/e2e/note-api.spec.ts|tests/e2e/note-image-upload.spec.ts|tests/e2e/owner-session.spec.ts|tests/e2e/public-home-search.spec.ts|tests/e2e/seo-discovery.spec.ts|tests/e2e/settings.spec.ts|tests/e2e/ui-forms.spec.ts|tests/e2e/ui-home-grid.spec.ts|tests/e2e/ui-home-shell.spec.ts|tests/e2e/ui-information-density.spec.ts|tests/e2e/ui-note-editor-foundation.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts-snapshots/ui-note-editor-mermaid-desktop-darwin.png|tests/e2e/ui-note-editor-mobile.spec.ts|tests/e2e/ui-note-editor-modes.spec.ts|tests/e2e/ui-note-editor-toolbar.spec.ts|tests/e2e/ui-note-images.spec.ts|tests/e2e/ui-note-math.spec.ts|tests/e2e/ui-owner-dashboard.spec.ts|tests/e2e/ui-owner-secondary.spec.ts|tests/e2e/ui-public-home-density.spec.ts|tests/e2e/ui-public-note-math.spec.ts|tests/e2e/ui-public-note-mermaid.spec.ts|tests/e2e/ui-public-note.spec.ts|tests/e2e/ui-public-showroom.spec.ts|tests/e2e/ui-public-tag-fit.spec.ts|tests/e2e/ui-system.spec.ts": {
+          "signature": "deterministic_failure|npm-run-verify|tests/e2e/auth.spec.ts|tests/e2e/delete.spec.ts|tests/e2e/demo-user.spec.ts|tests/e2e/home.spec.ts|tests/e2e/incremental-loading.spec.ts|tests/e2e/link-ai-real.spec.ts|tests/e2e/link-favicon.spec.ts|tests/e2e/media-foundation.spec.ts|tests/e2e/note-ai-real.spec.ts|tests/e2e/note-api.spec.ts|tests/e2e/note-image-upload.spec.ts|tests/e2e/owner-session.spec.ts|tests/e2e/public-home-search.spec.ts|tests/e2e/seo-discovery.spec.ts|tests/e2e/settings.spec.ts|tests/e2e/ui-forms.spec.ts|tests/e2e/ui-home-grid.spec.ts|tests/e2e/ui-home-shell.spec.ts|tests/e2e/ui-information-density.spec.ts|tests/e2e/ui-note-editor-foundation.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts-snapshots/ui-note-editor-mermaid-desktop-darwin.png|tests/e2e/ui-note-editor-mobile.spec.ts|tests/e2e/ui-note-editor-modes.spec.ts|tests/e2e/ui-note-editor-toolbar.spec.ts|tests/e2e/ui-note-images.spec.ts|tests/e2e/ui-note-math.spec.ts|tests/e2e/ui-owner-dashboard.spec.ts|tests/e2e/ui-owner-secondary.spec.ts|tests/e2e/ui-public-home-density.spec.ts|tests/e2e/ui-public-note-math.spec.ts|tests/e2e/ui-public-note-mermaid.spec.ts|tests/e2e/ui-public-note.spec.ts|tests/e2e/ui-public-showroom.spec.ts|tests/e2e/ui-public-tag-fit.spec.ts|tests/e2e/ui-system.spec.ts",
+          "kind": "deterministic_failure",
+          "summary": "Repeated required-command failure: npm run verify (auth.spec.ts, delete.spec.ts, demo-user.spec.ts, home.spec.ts, incremental-loading.spec.ts, link-ai-real.spec.ts, link-favicon.spec.ts, media-foundation.spec.ts, note-ai-real.spec.ts, note-api.spec.ts, note-image-upload.spec.ts, owner-session.spec.ts, public-home-search.spec.ts, seo-discovery.spec.ts, settings.spec.ts, ui-forms.spec.ts, ui-home-grid.spec.ts, ui-home-shell.spec.ts, ui-information-density.spec.ts, ui-note-editor-foundation.spec.ts, ui-note-editor-mermaid.spec.ts, ui-note-editor-mermaid-desktop-darwin.png, ui-note-editor-mobile.spec.ts, ui-note-editor-modes.spec.ts, ui-note-editor-toolbar.spec.ts, ui-note-images.spec.ts, ui-note-math.spec.ts, ui-owner-dashboard.spec.ts, ui-owner-secondary.spec.ts, ui-public-home-density.spec.ts, ui-public-note-math.spec.ts, ui-public-note-mermaid.spec.ts, ui-public-note.spec.ts, ui-public-showroom.spec.ts, ui-public-tag-fit.spec.ts, ui-system.spec.ts)",
+          "branch_slug": "npm-run-verify-auth-spec-delete-spec-7828b3cc",
+          "failed_commands": [
+            "npm run verify"
+          ],
+          "failing_spec_paths": [
+            "tests/e2e/auth.spec.ts",
+            "tests/e2e/delete.spec.ts",
+            "tests/e2e/demo-user.spec.ts",
+            "tests/e2e/home.spec.ts",
+            "tests/e2e/incremental-loading.spec.ts",
+            "tests/e2e/link-ai-real.spec.ts",
+            "tests/e2e/link-favicon.spec.ts",
+            "tests/e2e/media-foundation.spec.ts",
+            "tests/e2e/note-ai-real.spec.ts",
+            "tests/e2e/note-api.spec.ts",
+            "tests/e2e/note-image-upload.spec.ts",
+            "tests/e2e/owner-session.spec.ts",
+            "tests/e2e/public-home-search.spec.ts",
+            "tests/e2e/seo-discovery.spec.ts",
+            "tests/e2e/settings.spec.ts",
+            "tests/e2e/ui-forms.spec.ts",
+            "tests/e2e/ui-home-grid.spec.ts",
+            "tests/e2e/ui-home-shell.spec.ts",
+            "tests/e2e/ui-information-density.spec.ts",
+            "tests/e2e/ui-note-editor-foundation.spec.ts",
+            "tests/e2e/ui-note-editor-mermaid.spec.ts",
+            "tests/e2e/ui-note-editor-mermaid.spec.ts-snapshots/ui-note-editor-mermaid-desktop-darwin.png",
+            "tests/e2e/ui-note-editor-mobile.spec.ts",
+            "tests/e2e/ui-note-editor-modes.spec.ts",
+            "tests/e2e/ui-note-editor-toolbar.spec.ts",
+            "tests/e2e/ui-note-images.spec.ts",
+            "tests/e2e/ui-note-math.spec.ts",
+            "tests/e2e/ui-owner-dashboard.spec.ts",
+            "tests/e2e/ui-owner-secondary.spec.ts",
+            "tests/e2e/ui-public-home-density.spec.ts",
+            "tests/e2e/ui-public-note-math.spec.ts",
+            "tests/e2e/ui-public-note-mermaid.spec.ts",
+            "tests/e2e/ui-public-note.spec.ts",
+            "tests/e2e/ui-public-showroom.spec.ts",
+            "tests/e2e/ui-public-tag-fit.spec.ts",
+            "tests/e2e/ui-system.spec.ts"
+          ],
+          "missing_files": [],
+          "evidence_artifact_paths": [
+            "/Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260404T233650-100-flowchart-advanced-mermaid-features/npm-run-verify-next-server.log",
+            "/Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260404T234412-100-flowchart-advanced-mermaid-features/npm-run-verify-next-server.log",
+            "/Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260404T235132-100-flowchart-advanced-mermaid-features/npm-run-verify-next-server.log"
+          ],
+          "repeat_count": 3,
+          "first_seen_at": "2026-04-04T14:43:41.988Z",
+          "last_seen_at": "2026-04-04T14:58:21.956Z",
+          "branched_to_task_id": "100-flowchart-advanced-mermaid-features-rca-npm-run-verify-auth-spec-delete-spec-7828b3cc",
+          "branched_at": "2026-04-04T14:58:22.103Z"
+        }
+      }
+    },
+    "101-broader-mermaid-root-support": {
+      "last_signature": "deterministic_failure|npm-run-verify|tests/e2e/auth.spec.ts|tests/e2e/delete.spec.ts|tests/e2e/demo-user.spec.ts|tests/e2e/home.spec.ts|tests/e2e/incremental-loading.spec.ts|tests/e2e/link-ai-real.spec.ts|tests/e2e/link-favicon.spec.ts|tests/e2e/media-foundation.spec.ts|tests/e2e/note-ai-real.spec.ts|tests/e2e/note-api.spec.ts|tests/e2e/note-image-upload.spec.ts|tests/e2e/owner-session.spec.ts|tests/e2e/public-home-search.spec.ts|tests/e2e/seo-discovery.spec.ts|tests/e2e/settings.spec.ts|tests/e2e/ui-forms.spec.ts|tests/e2e/ui-home-grid.spec.ts|tests/e2e/ui-home-shell.spec.ts|tests/e2e/ui-information-density.spec.ts|tests/e2e/ui-note-editor-foundation.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts-snapshots/ui-note-editor-mermaid-desktop-darwin.png|tests/e2e/ui-note-editor-mobile.spec.ts|tests/e2e/ui-note-editor-modes.spec.ts|tests/e2e/ui-note-editor-toolbar.spec.ts|tests/e2e/ui-note-images.spec.ts|tests/e2e/ui-note-math.spec.ts|tests/e2e/ui-owner-dashboard.spec.ts|tests/e2e/ui-owner-secondary.spec.ts|tests/e2e/ui-public-home-density.spec.ts|tests/e2e/ui-public-note-math.spec.ts|tests/e2e/ui-public-note-mermaid.spec.ts|tests/e2e/ui-public-note.spec.ts|tests/e2e/ui-public-showroom.spec.ts|tests/e2e/ui-public-tag-fit.spec.ts|tests/e2e/ui-system.spec.ts",
+      "last_seen_at": "2026-04-04T14:26:52.900Z",
+      "signatures": {
+        "deterministic_failure|npm-run-verify|tests/e2e/auth.spec.ts|tests/e2e/delete.spec.ts|tests/e2e/demo-user.spec.ts|tests/e2e/home.spec.ts|tests/e2e/incremental-loading.spec.ts|tests/e2e/link-ai-real.spec.ts|tests/e2e/link-favicon.spec.ts|tests/e2e/media-foundation.spec.ts|tests/e2e/note-ai-real.spec.ts|tests/e2e/note-api.spec.ts|tests/e2e/note-image-upload.spec.ts|tests/e2e/owner-session.spec.ts|tests/e2e/public-home-search.spec.ts|tests/e2e/seo-discovery.spec.ts|tests/e2e/settings.spec.ts|tests/e2e/ui-forms.spec.ts|tests/e2e/ui-home-grid.spec.ts|tests/e2e/ui-home-shell.spec.ts|tests/e2e/ui-information-density.spec.ts|tests/e2e/ui-note-editor-foundation.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts-snapshots/ui-note-editor-mermaid-desktop-darwin.png|tests/e2e/ui-note-editor-mobile.spec.ts|tests/e2e/ui-note-editor-modes.spec.ts|tests/e2e/ui-note-editor-toolbar.spec.ts|tests/e2e/ui-note-images.spec.ts|tests/e2e/ui-note-math.spec.ts|tests/e2e/ui-owner-dashboard.spec.ts|tests/e2e/ui-owner-secondary.spec.ts|tests/e2e/ui-public-home-density.spec.ts|tests/e2e/ui-public-note-math.spec.ts|tests/e2e/ui-public-note-mermaid.spec.ts|tests/e2e/ui-public-note.spec.ts|tests/e2e/ui-public-showroom.spec.ts|tests/e2e/ui-public-tag-fit.spec.ts|tests/e2e/ui-system.spec.ts": {
+          "signature": "deterministic_failure|npm-run-verify|tests/e2e/auth.spec.ts|tests/e2e/delete.spec.ts|tests/e2e/demo-user.spec.ts|tests/e2e/home.spec.ts|tests/e2e/incremental-loading.spec.ts|tests/e2e/link-ai-real.spec.ts|tests/e2e/link-favicon.spec.ts|tests/e2e/media-foundation.spec.ts|tests/e2e/note-ai-real.spec.ts|tests/e2e/note-api.spec.ts|tests/e2e/note-image-upload.spec.ts|tests/e2e/owner-session.spec.ts|tests/e2e/public-home-search.spec.ts|tests/e2e/seo-discovery.spec.ts|tests/e2e/settings.spec.ts|tests/e2e/ui-forms.spec.ts|tests/e2e/ui-home-grid.spec.ts|tests/e2e/ui-home-shell.spec.ts|tests/e2e/ui-information-density.spec.ts|tests/e2e/ui-note-editor-foundation.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts-snapshots/ui-note-editor-mermaid-desktop-darwin.png|tests/e2e/ui-note-editor-mobile.spec.ts|tests/e2e/ui-note-editor-modes.spec.ts|tests/e2e/ui-note-editor-toolbar.spec.ts|tests/e2e/ui-note-images.spec.ts|tests/e2e/ui-note-math.spec.ts|tests/e2e/ui-owner-dashboard.spec.ts|tests/e2e/ui-owner-secondary.spec.ts|tests/e2e/ui-public-home-density.spec.ts|tests/e2e/ui-public-note-math.spec.ts|tests/e2e/ui-public-note-mermaid.spec.ts|tests/e2e/ui-public-note.spec.ts|tests/e2e/ui-public-showroom.spec.ts|tests/e2e/ui-public-tag-fit.spec.ts|tests/e2e/ui-system.spec.ts",
+          "kind": "deterministic_failure",
+          "summary": "Repeated required-command failure: npm run verify (auth.spec.ts, delete.spec.ts, demo-user.spec.ts, home.spec.ts, incremental-loading.spec.ts, link-ai-real.spec.ts, link-favicon.spec.ts, media-foundation.spec.ts, note-ai-real.spec.ts, note-api.spec.ts, note-image-upload.spec.ts, owner-session.spec.ts, public-home-search.spec.ts, seo-discovery.spec.ts, settings.spec.ts, ui-forms.spec.ts, ui-home-grid.spec.ts, ui-home-shell.spec.ts, ui-information-density.spec.ts, ui-note-editor-foundation.spec.ts, ui-note-editor-mermaid.spec.ts, ui-note-editor-mermaid-desktop-darwin.png, ui-note-editor-mobile.spec.ts, ui-note-editor-modes.spec.ts, ui-note-editor-toolbar.spec.ts, ui-note-images.spec.ts, ui-note-math.spec.ts, ui-owner-dashboard.spec.ts, ui-owner-secondary.spec.ts, ui-public-home-density.spec.ts, ui-public-note-math.spec.ts, ui-public-note-mermaid.spec.ts, ui-public-note.spec.ts, ui-public-showroom.spec.ts, ui-public-tag-fit.spec.ts, ui-system.spec.ts)",
+          "branch_slug": "npm-run-verify-auth-spec-delete-spec-7828b3cc",
+          "failed_commands": [
+            "npm run verify"
+          ],
+          "failing_spec_paths": [
+            "tests/e2e/auth.spec.ts",
+            "tests/e2e/delete.spec.ts",
+            "tests/e2e/demo-user.spec.ts",
+            "tests/e2e/home.spec.ts",
+            "tests/e2e/incremental-loading.spec.ts",
+            "tests/e2e/link-ai-real.spec.ts",
+            "tests/e2e/link-favicon.spec.ts",
+            "tests/e2e/media-foundation.spec.ts",
+            "tests/e2e/note-ai-real.spec.ts",
+            "tests/e2e/note-api.spec.ts",
+            "tests/e2e/note-image-upload.spec.ts",
+            "tests/e2e/owner-session.spec.ts",
+            "tests/e2e/public-home-search.spec.ts",
+            "tests/e2e/seo-discovery.spec.ts",
+            "tests/e2e/settings.spec.ts",
+            "tests/e2e/ui-forms.spec.ts",
+            "tests/e2e/ui-home-grid.spec.ts",
+            "tests/e2e/ui-home-shell.spec.ts",
+            "tests/e2e/ui-information-density.spec.ts",
+            "tests/e2e/ui-note-editor-foundation.spec.ts",
+            "tests/e2e/ui-note-editor-mermaid.spec.ts",
+            "tests/e2e/ui-note-editor-mermaid.spec.ts-snapshots/ui-note-editor-mermaid-desktop-darwin.png",
+            "tests/e2e/ui-note-editor-mobile.spec.ts",
+            "tests/e2e/ui-note-editor-modes.spec.ts",
+            "tests/e2e/ui-note-editor-toolbar.spec.ts",
+            "tests/e2e/ui-note-images.spec.ts",
+            "tests/e2e/ui-note-math.spec.ts",
+            "tests/e2e/ui-owner-dashboard.spec.ts",
+            "tests/e2e/ui-owner-secondary.spec.ts",
+            "tests/e2e/ui-public-home-density.spec.ts",
+            "tests/e2e/ui-public-note-math.spec.ts",
+            "tests/e2e/ui-public-note-mermaid.spec.ts",
+            "tests/e2e/ui-public-note.spec.ts",
+            "tests/e2e/ui-public-showroom.spec.ts",
+            "tests/e2e/ui-public-tag-fit.spec.ts",
+            "tests/e2e/ui-system.spec.ts"
+          ],
+          "missing_files": [],
+          "evidence_artifact_paths": [
+            "/Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260404T230945-101-broader-mermaid-root-support/npm-run-verify-next-server.log",
+            "/Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260404T232035-101-broader-mermaid-root-support/npm-run-verify-next-server.log"
+          ],
+          "repeat_count": 2,
+          "first_seen_at": "2026-04-04T14:20:05.211Z",
+          "last_seen_at": "2026-04-04T14:26:52.900Z",
+          "branched_to_task_id": null,
+          "branched_at": null
+        }
+      }
+    },
+    "100-flowchart-advanced-mermaid-features-rca-npm-run-verify-auth-spec-delete-spec-7828b3cc": {
+      "last_signature": "deterministic_failure|npm-run-verify|tests/e2e/auth.spec.ts|tests/e2e/delete.spec.ts|tests/e2e/demo-user.spec.ts|tests/e2e/home.spec.ts|tests/e2e/incremental-loading.spec.ts|tests/e2e/link-ai-real.spec.ts|tests/e2e/link-favicon.spec.ts|tests/e2e/media-foundation.spec.ts|tests/e2e/note-ai-real.spec.ts|tests/e2e/note-api.spec.ts|tests/e2e/note-image-upload.spec.ts|tests/e2e/owner-session.spec.ts|tests/e2e/public-home-search.spec.ts|tests/e2e/seo-discovery.spec.ts|tests/e2e/settings.spec.ts|tests/e2e/ui-forms.spec.ts|tests/e2e/ui-home-grid.spec.ts|tests/e2e/ui-home-shell.spec.ts|tests/e2e/ui-information-density.spec.ts|tests/e2e/ui-note-editor-foundation.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts-snapshots/ui-note-editor-mermaid-desktop-darwin.png|tests/e2e/ui-note-editor-mobile.spec.ts|tests/e2e/ui-note-editor-modes.spec.ts|tests/e2e/ui-note-editor-toolbar.spec.ts|tests/e2e/ui-note-images.spec.ts|tests/e2e/ui-note-math.spec.ts|tests/e2e/ui-owner-dashboard.spec.ts|tests/e2e/ui-owner-secondary.spec.ts|tests/e2e/ui-public-home-density.spec.ts|tests/e2e/ui-public-note-math.spec.ts|tests/e2e/ui-public-note-mermaid.spec.ts|tests/e2e/ui-public-note.spec.ts|tests/e2e/ui-public-showroom.spec.ts|tests/e2e/ui-public-tag-fit.spec.ts|tests/e2e/ui-system.spec.ts",
+      "last_seen_at": "2026-04-04T15:25:27.603Z",
+      "signatures": {
+        "deterministic_failure|npm-run-verify|tests/e2e/auth.spec.ts|tests/e2e/delete.spec.ts|tests/e2e/demo-user.spec.ts|tests/e2e/home.spec.ts|tests/e2e/incremental-loading.spec.ts|tests/e2e/link-ai-real.spec.ts|tests/e2e/link-favicon.spec.ts|tests/e2e/media-foundation.spec.ts|tests/e2e/note-ai-real.spec.ts|tests/e2e/note-api.spec.ts|tests/e2e/note-image-upload.spec.ts|tests/e2e/owner-session.spec.ts|tests/e2e/public-home-search.spec.ts|tests/e2e/seo-discovery.spec.ts|tests/e2e/settings.spec.ts|tests/e2e/ui-forms.spec.ts|tests/e2e/ui-home-grid.spec.ts|tests/e2e/ui-home-shell.spec.ts|tests/e2e/ui-information-density.spec.ts|tests/e2e/ui-note-editor-foundation.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts-snapshots/ui-note-editor-mermaid-desktop-darwin.png|tests/e2e/ui-note-editor-mobile.spec.ts|tests/e2e/ui-note-editor-modes.spec.ts|tests/e2e/ui-note-editor-toolbar.spec.ts|tests/e2e/ui-note-images.spec.ts|tests/e2e/ui-note-math.spec.ts|tests/e2e/ui-owner-dashboard.spec.ts|tests/e2e/ui-owner-secondary.spec.ts|tests/e2e/ui-public-home-density.spec.ts|tests/e2e/ui-public-note-math.spec.ts|tests/e2e/ui-public-note-mermaid.spec.ts|tests/e2e/ui-public-note.spec.ts|tests/e2e/ui-public-showroom.spec.ts|tests/e2e/ui-public-tag-fit.spec.ts|tests/e2e/ui-system.spec.ts": {
+          "signature": "deterministic_failure|npm-run-verify|tests/e2e/auth.spec.ts|tests/e2e/delete.spec.ts|tests/e2e/demo-user.spec.ts|tests/e2e/home.spec.ts|tests/e2e/incremental-loading.spec.ts|tests/e2e/link-ai-real.spec.ts|tests/e2e/link-favicon.spec.ts|tests/e2e/media-foundation.spec.ts|tests/e2e/note-ai-real.spec.ts|tests/e2e/note-api.spec.ts|tests/e2e/note-image-upload.spec.ts|tests/e2e/owner-session.spec.ts|tests/e2e/public-home-search.spec.ts|tests/e2e/seo-discovery.spec.ts|tests/e2e/settings.spec.ts|tests/e2e/ui-forms.spec.ts|tests/e2e/ui-home-grid.spec.ts|tests/e2e/ui-home-shell.spec.ts|tests/e2e/ui-information-density.spec.ts|tests/e2e/ui-note-editor-foundation.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts|tests/e2e/ui-note-editor-mermaid.spec.ts-snapshots/ui-note-editor-mermaid-desktop-darwin.png|tests/e2e/ui-note-editor-mobile.spec.ts|tests/e2e/ui-note-editor-modes.spec.ts|tests/e2e/ui-note-editor-toolbar.spec.ts|tests/e2e/ui-note-images.spec.ts|tests/e2e/ui-note-math.spec.ts|tests/e2e/ui-owner-dashboard.spec.ts|tests/e2e/ui-owner-secondary.spec.ts|tests/e2e/ui-public-home-density.spec.ts|tests/e2e/ui-public-note-math.spec.ts|tests/e2e/ui-public-note-mermaid.spec.ts|tests/e2e/ui-public-note.spec.ts|tests/e2e/ui-public-showroom.spec.ts|tests/e2e/ui-public-tag-fit.spec.ts|tests/e2e/ui-system.spec.ts",
+          "kind": "deterministic_failure",
+          "summary": "Repeated required-command failure: npm run verify (auth.spec.ts, delete.spec.ts, demo-user.spec.ts, home.spec.ts, incremental-loading.spec.ts, link-ai-real.spec.ts, link-favicon.spec.ts, media-foundation.spec.ts, note-ai-real.spec.ts, note-api.spec.ts, note-image-upload.spec.ts, owner-session.spec.ts, public-home-search.spec.ts, seo-discovery.spec.ts, settings.spec.ts, ui-forms.spec.ts, ui-home-grid.spec.ts, ui-home-shell.spec.ts, ui-information-density.spec.ts, ui-note-editor-foundation.spec.ts, ui-note-editor-mermaid.spec.ts, ui-note-editor-mermaid-desktop-darwin.png, ui-note-editor-mobile.spec.ts, ui-note-editor-modes.spec.ts, ui-note-editor-toolbar.spec.ts, ui-note-images.spec.ts, ui-note-math.spec.ts, ui-owner-dashboard.spec.ts, ui-owner-secondary.spec.ts, ui-public-home-density.spec.ts, ui-public-note-math.spec.ts, ui-public-note-mermaid.spec.ts, ui-public-note.spec.ts, ui-public-showroom.spec.ts, ui-public-tag-fit.spec.ts, ui-system.spec.ts)",
+          "branch_slug": "npm-run-verify-auth-spec-delete-spec-7828b3cc",
+          "failed_commands": [
+            "npm run verify"
+          ],
+          "failing_spec_paths": [
+            "tests/e2e/auth.spec.ts",
+            "tests/e2e/delete.spec.ts",
+            "tests/e2e/demo-user.spec.ts",
+            "tests/e2e/home.spec.ts",
+            "tests/e2e/incremental-loading.spec.ts",
+            "tests/e2e/link-ai-real.spec.ts",
+            "tests/e2e/link-favicon.spec.ts",
+            "tests/e2e/media-foundation.spec.ts",
+            "tests/e2e/note-ai-real.spec.ts",
+            "tests/e2e/note-api.spec.ts",
+            "tests/e2e/note-image-upload.spec.ts",
+            "tests/e2e/owner-session.spec.ts",
+            "tests/e2e/public-home-search.spec.ts",
+            "tests/e2e/seo-discovery.spec.ts",
+            "tests/e2e/settings.spec.ts",
+            "tests/e2e/ui-forms.spec.ts",
+            "tests/e2e/ui-home-grid.spec.ts",
+            "tests/e2e/ui-home-shell.spec.ts",
+            "tests/e2e/ui-information-density.spec.ts",
+            "tests/e2e/ui-note-editor-foundation.spec.ts",
+            "tests/e2e/ui-note-editor-mermaid.spec.ts",
+            "tests/e2e/ui-note-editor-mermaid.spec.ts-snapshots/ui-note-editor-mermaid-desktop-darwin.png",
+            "tests/e2e/ui-note-editor-mobile.spec.ts",
+            "tests/e2e/ui-note-editor-modes.spec.ts",
+            "tests/e2e/ui-note-editor-toolbar.spec.ts",
+            "tests/e2e/ui-note-images.spec.ts",
+            "tests/e2e/ui-note-math.spec.ts",
+            "tests/e2e/ui-owner-dashboard.spec.ts",
+            "tests/e2e/ui-owner-secondary.spec.ts",
+            "tests/e2e/ui-public-home-density.spec.ts",
+            "tests/e2e/ui-public-note-math.spec.ts",
+            "tests/e2e/ui-public-note-mermaid.spec.ts",
+            "tests/e2e/ui-public-note.spec.ts",
+            "tests/e2e/ui-public-showroom.spec.ts",
+            "tests/e2e/ui-public-tag-fit.spec.ts",
+            "tests/e2e/ui-system.spec.ts"
+          ],
+          "missing_files": [],
+          "evidence_artifact_paths": [
+            "/Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260404T235852-100-flowchart-advanced-mermaid-features-rca-npm-run-verify-auth-spec-delete-spec-7828b3cc/npm-run-verify-next-server.log",
+            "/Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260405T001851-100-flowchart-advanced-mermaid-features-rca-npm-run-verify-auth-spec-delete-spec-7828b3cc/npm-run-verify-next-server.log"
+          ],
+          "repeat_count": 2,
+          "first_seen_at": "2026-04-04T15:18:20.861Z",
+          "last_seen_at": "2026-04-04T15:25:27.603Z",
+          "branched_to_task_id": null,
+          "branched_at": null
         }
       }
     }

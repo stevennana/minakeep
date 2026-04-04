@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { after } from "next/server";
 
+import { getPlaywrightAiTestMode } from "@/features/ai/test-mode";
 import { runLinkEnrichment } from "@/features/links/enrichment";
 import { LinkValidationError } from "@/features/links/normalize";
 import {
@@ -18,6 +19,7 @@ import {
   startLinkEnrichment,
   unpublishLink
 } from "@/features/links/service";
+import { getPlaywrightLinkFaviconTestMode } from "@/features/links/test-mode";
 import { isReadOnlyWorkspaceMutationError, requireWritableOwnerSession } from "@/lib/auth/owner-session";
 
 class DeleteConfirmationRequiredError extends Error {
@@ -49,6 +51,10 @@ function revalidateLinkPaths() {
 }
 
 function scheduleLinkEnrichment(linkId: string, attempt: number) {
+  if (getPlaywrightAiTestMode() !== "passthrough") {
+    return runLinkEnrichment(linkId, attempt);
+  }
+
   after(async () => {
     await runLinkEnrichment(linkId, attempt);
     revalidateLinkPaths();
@@ -56,6 +62,10 @@ function scheduleLinkEnrichment(linkId: string, attempt: number) {
 }
 
 function scheduleLinkFaviconRefresh(linkId: string) {
+  if (getPlaywrightLinkFaviconTestMode() !== "passthrough") {
+    return startLinkFaviconRefresh(linkId);
+  }
+
   after(async () => {
     await startLinkFaviconRefresh(linkId);
     revalidateLinkPaths();
@@ -66,7 +76,7 @@ async function queueLinkEnrichment(linkId: string) {
   const link = await startLinkEnrichment(linkId);
 
   if (link.enrichment.status === "pending") {
-    scheduleLinkEnrichment(link.id, link.enrichment.attempts);
+    await scheduleLinkEnrichment(link.id, link.enrichment.attempts);
   }
 
   return link;
@@ -130,7 +140,7 @@ export async function retryLinkEnrichmentAction(linkId: string) {
   }
 
   if (link.enrichment.status === "pending") {
-    scheduleLinkEnrichment(link.id, link.enrichment.attempts);
+    await runLinkEnrichment(link.id, link.enrichment.attempts);
   }
 
   revalidateLinkPaths();

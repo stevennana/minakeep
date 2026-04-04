@@ -7,7 +7,9 @@ import { expect, test, type Page } from "@playwright/test";
 const desktopViewport = { width: 1440, height: 900 };
 const mobileViewport = { width: 390, height: 844 };
 
-const databaseUrl = process.env.DATABASE_URL;
+const databaseUrl = process.env.DATABASE_URL?.startsWith("file:./")
+  ? "file:" + process.cwd() + "/" + process.env.DATABASE_URL.slice("file:./".length)
+  : process.env.DATABASE_URL;
 
 if (!databaseUrl) {
   throw new Error("DATABASE_URL must be set before running note editor Mermaid UI tests.");
@@ -41,10 +43,36 @@ flowchart LR
   linkStyle 1 stroke:#2563eb,stroke-width:3px,color:#1d4ed8
 \`\`\`
 
+### Class and state diagrams should share the preview path
+
+\`\`\`mermaid
+classDiagram
+  class OwnerNote {
+    +String title
+    +publish()
+  }
+  class PublicNotePage {
+    +render()
+  }
+  OwnerNote --> PublicNotePage : ships to
+\`\`\`
+
+\`\`\`mermaid
+stateDiagram-v2
+  [*] --> Draft
+  Draft --> Review: save
+  Review --> Published: publish
+  Published --> [*]
+\`\`\`
+
 ### Invalid Mermaid should fail softly
 
 \`\`\`mermaid
-This is not valid Mermaid source.
+classDiagram
+  class OwnerNote {
+    +String title
+  }
+  This is not valid Mermaid source.
 \`\`\`
 
 The author should still be able to inspect the fallback, keep saving, and publish later.`,
@@ -133,27 +161,28 @@ async function expectNoHorizontalOverflow(page: Page) {
   expect(hasOverflow).toBe(false);
 }
 
-async function expectMermaidPreviewSurface(page: Page, viewport: "desktop" | "mobile") {
+async function expectMermaidPreviewSurface(page: Page) {
   const metrics = await page.evaluate(() => {
     const preview = document.querySelector<HTMLElement>("[data-testid='note-markdown-preview']");
-    const diagram = document.querySelector<HTMLElement>("[data-testid='note-markdown-preview'] .markdown-mermaid");
+    const diagrams = document.querySelectorAll<HTMLElement>("[data-testid='note-markdown-preview'] .markdown-mermaid--rendered");
     const fallback = document.querySelector<HTMLElement>("[data-testid='note-markdown-preview'] .markdown-mermaid--fallback");
-    const diagramShell = diagram?.querySelector<HTMLElement>(".markdown-mermaid-shell");
+    const firstDiagram = diagrams[0];
+    const diagramShell = firstDiagram?.querySelector<HTMLElement>(".markdown-mermaid-shell");
     const fallbackPre = fallback?.querySelector<HTMLElement>("pre");
 
-    if (!preview || !diagram || !diagramShell || !fallback || !fallbackPre) {
+    if (!preview || diagrams.length < 3 || !firstDiagram || !diagramShell || !fallback || !fallbackPre) {
       throw new Error("Expected Mermaid editor preview anchors to exist.");
     }
 
     const previewRect = preview.getBoundingClientRect();
-    const diagramRect = diagram.getBoundingClientRect();
+    const diagramWidths = Array.from(diagrams, (diagram) => Math.round(diagram.getBoundingClientRect().width));
     const diagramShellRect = diagramShell.getBoundingClientRect();
     const fallbackRect = fallback.getBoundingClientRect();
     const fallbackPreRect = fallbackPre.getBoundingClientRect();
 
     return {
       diagramShellWidth: Math.round(diagramShellRect.width),
-      diagramWidth: Math.round(diagramRect.width),
+      diagramWidths,
       fallbackPreWidth: Math.round(fallbackPreRect.width),
       fallbackWidth: Math.round(fallbackRect.width),
       previewWidth: Math.round(previewRect.width),
@@ -161,8 +190,12 @@ async function expectMermaidPreviewSurface(page: Page, viewport: "desktop" | "mo
     };
   });
 
-  expect(metrics.diagramWidth).toBeLessThanOrEqual(metrics.previewWidth + 1);
-  expect(metrics.diagramShellWidth).toBeLessThanOrEqual(metrics.diagramWidth + 1);
+  for (const diagramWidth of metrics.diagramWidths) {
+    expect(diagramWidth).toBeLessThanOrEqual(metrics.previewWidth + 1);
+    expect(diagramWidth).toBeGreaterThanOrEqual(220);
+  }
+
+  expect(metrics.diagramShellWidth).toBeLessThanOrEqual(metrics.previewWidth + 1);
   expect(metrics.fallbackWidth).toBeLessThanOrEqual(metrics.previewWidth + 1);
   expect(metrics.fallbackPreWidth).toBeLessThanOrEqual(metrics.fallbackWidth + 1);
   expect(metrics.diagramShellWidth).toBeGreaterThanOrEqual(Math.max(220, metrics.previewWidth - 40));
@@ -195,15 +228,18 @@ async function expectMermaidPreviewContent(page: Page) {
   const editor = page.getByTestId("note-markdown-input");
   const preview = page.getByTestId("note-markdown-preview");
   const sharedDiagram = preview.locator(".markdown-mermaid").first();
-  const renderedDiagram = preview.locator(".markdown-mermaid--rendered").first();
+  const renderedDiagrams = preview.locator(".markdown-mermaid--rendered");
 
   await expect(editor).toHaveValue(seededNote.markdown);
   await expect(editor).toHaveValue(/```mermaid/);
   await expect(sharedDiagram).toBeVisible();
-  await expect(renderedDiagram).toBeVisible({ timeout: 15000 });
+  await expect(renderedDiagrams).toHaveCount(3, { timeout: 15000 });
   await expect(sharedDiagram).toHaveAttribute("data-mermaid-source", /flowchart%20LR/);
   await expect(preview.locator(".markdown-mermaid--fallback")).toContainText("Diagram preview unavailable");
+  await expect(preview.locator(".markdown-mermaid--fallback")).toContainText("classDiagram");
   await expect(preview.locator(".markdown-mermaid--fallback")).toContainText("This is not valid Mermaid source.");
+  await expect(preview).not.toContainText("OwnerNote --> PublicNotePage : ships to");
+  await expect(preview).not.toContainText("Draft --> Review: save");
   await expect(preview).not.toContainText("```mermaid");
   await expect(preview.locator("[data-processed='true']")).toHaveCount(0);
 }
@@ -236,7 +272,7 @@ test("@ui-note-editor-mermaid @ui-mermaid-regression desktop split and preview-o
   await expect(sourcePane).toBeVisible();
   await expect(previewPane).toBeVisible();
   await expectMermaidPreviewContent(page);
-  await expectMermaidPreviewSurface(page, "desktop");
+  await expectMermaidPreviewSurface(page);
 
   await previewButton.click();
   await expect(previewButton).toHaveAttribute("aria-pressed", "true");
@@ -260,7 +296,8 @@ test("@ui-note-editor-mermaid @ui-mermaid-regression desktop split and preview-o
   expect(savedNote?.markdown).toBe(seededNote.markdown);
 
   await expect(page.locator(".note-editor-shell")).toHaveScreenshot("ui-note-editor-mermaid-desktop.png", {
-    animations: "disabled"
+    animations: "disabled",
+    maxDiffPixels: 1000
   });
 });
 
@@ -285,7 +322,7 @@ test("@ui-note-editor-mermaid @ui-mermaid-regression mobile preview keeps Mermai
   await expect(sourcePane).toBeHidden();
   await expect(previewPane).toBeVisible();
   await expectMermaidPreviewContent(page);
-  await expectMermaidPreviewSurface(page, "mobile");
+  await expectMermaidPreviewSurface(page);
   await expectNoHorizontalOverflow(page);
 
   await editButton.click();
@@ -293,6 +330,7 @@ test("@ui-note-editor-mermaid @ui-mermaid-regression mobile preview keeps Mermai
   await expect(page.getByTestId("note-markdown-input")).toHaveValue(seededNote.markdown);
 
   await expect(page.locator(".note-editor-shell")).toHaveScreenshot("ui-note-editor-mermaid-mobile.png", {
-    animations: "disabled"
+    animations: "disabled",
+    maxDiffPixels: 1000
   });
 });

@@ -1,6 +1,6 @@
 import "server-only";
 
-import { getPlaywrightAiTestMode } from "@/features/ai/test-mode";
+import { getPlaywrightAiTestMode, type PlaywrightAiTestMode } from "@/features/ai/test-mode";
 import { normalizeTagNames } from "@/features/tags/normalize";
 import { getMinaAiConfigStatus } from "@/features/ai/config";
 import { serverLogger } from "@/lib/logging/server-logger";
@@ -34,16 +34,21 @@ export class MinaAiClientError extends Error {
 }
 
 export const DEFAULT_MINA_AI_TIMEOUT_MS = 15000;
+const PLAYWRIGHT_REAL_AI_TIMEOUT_MS = 45000;
 
-export function getMinaAiRequestTimeoutMs() {
+export function getMinaAiRequestTimeoutMs(playwrightAiMode: PlaywrightAiTestMode = getPlaywrightAiTestMode()) {
+  if (playwrightAiMode === "timeout") {
+    return 1500;
+  }
+
   const rawValue = Number.parseInt(process.env.MINA_AI_TIMEOUT_MS ?? "", 10);
 
   if (Number.isFinite(rawValue) && rawValue > 0) {
     return rawValue;
   }
 
-  if (getPlaywrightAiTestMode() === "timeout") {
-    return 1500;
+  if (playwrightAiMode === "passthrough" && process.env.PLAYWRIGHT_TEST === "1") {
+    return PLAYWRIGHT_REAL_AI_TIMEOUT_MS;
   }
 
   return DEFAULT_MINA_AI_TIMEOUT_MS;
@@ -96,8 +101,10 @@ function parseEmbeddedJson(rawContent: string) {
   throw new MinaAiClientError("invalid-response", "The Mina AI endpoint returned non-JSON enrichment content.");
 }
 
-export function buildMinaChatCompletionsRequest(messages: MinaChatMessage[]) {
-  const configStatus = getMinaAiConfigStatus();
+export function buildMinaChatCompletionsRequest(
+  messages: MinaChatMessage[],
+  configStatus = getMinaAiConfigStatus()
+) {
 
   if (configStatus.state === "disabled") {
     throw new MinaAiClientError("disabled", "LLM_BASE, TOKEN, and MODEL must be set before AI enrichment can run.");
@@ -157,8 +164,9 @@ export function normalizeMinaEnrichmentResponse(payload: unknown): EnrichmentMet
 }
 
 export async function requestMinaEnrichment(messages: MinaChatMessage[]) {
-  const request = buildMinaChatCompletionsRequest(messages);
-  const timeoutMs = getMinaAiRequestTimeoutMs();
+  const playwrightAiMode = getPlaywrightAiTestMode();
+  const request = buildMinaChatCompletionsRequest(messages, getMinaAiConfigStatus(playwrightAiMode));
+  const timeoutMs = getMinaAiRequestTimeoutMs(playwrightAiMode);
   const controller = new AbortController();
   const timeoutId = setTimeout(() => {
     controller.abort(new MinaAiClientError("timeout", "The Mina AI endpoint timed out."));

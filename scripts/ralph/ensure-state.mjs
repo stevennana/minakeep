@@ -1,9 +1,14 @@
 import path from "node:path";
 import {
+  ACTIVE_TASK_DIR,
+  COMPLETED_TASK_DIR,
   GENERATED_DIR,
   STATE_DIR,
   ensureDir,
   fileExists,
+  listTaskDocs,
+  readCurrentTaskId,
+  renderBacklogMarkdown,
   syncCurrentTaskState,
   writeText,
 } from "./lib/task-utils.mjs";
@@ -30,3 +35,11 @@ for (const [name, content] of defaults) {
     writeText(fullPath, content);
   }
 }
+
+const currentTaskId = readCurrentTaskId();
+const tasks = [
+  ...listTaskDocs(ACTIVE_TASK_DIR),
+  ...listTaskDocs(COMPLETED_TASK_DIR),
+].sort((a, b) => (a.meta.order ?? Number.MAX_SAFE_INTEGER) - (b.meta.order ?? Number.MAX_SAFE_INTEGER));
+
+writeText(path.join(STATE_DIR, "backlog.md"), renderBacklogMarkdown(tasks, currentTaskId));

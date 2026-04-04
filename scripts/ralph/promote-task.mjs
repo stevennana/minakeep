@@ -5,18 +5,77 @@ import {
   ACTIVE_TASK_DIR,
   COMPLETED_TASK_DIR,
   appendTaskProgressNote,
+  ensureDir,
+  fileExists,
   findTaskDoc,
+  normalizeTaskId,
   readCurrentTaskId,
   readText,
   replaceTaskMeta,
   timestamp,
   writeCurrentTaskId,
   writeText,
-  fileExists,
-  ensureDir,
 } from "./lib/task-utils.mjs";
 
 const DEFAULT_MANUAL_PROMOTION_REASON = "operator manual promotion";
+
+function parseTaskMeta(markdown, label) {
+  const match = markdown.match(/```json taskmeta\s*([\s\S]*?)```/);
+  if (!match) {
+    throw new Error(`${label} is missing a taskmeta block.`);
+  }
+
+  try {
+    return JSON.parse(match[1].trim());
+  } catch (error) {
+    throw new Error(`${label} has invalid taskmeta JSON: ${error.message}`);
+  }
+}
+
+function buildNextTaskUpdate({ nextTaskId, parentTaskId, currentTaskId, completedAt, blockerSignature }) {
+  if (!nextTaskId) {
+    return {
+      nextCurrentTaskId: "NONE",
+      apply: null,
+    };
+  }
+
+  const nextTaskPath = path.join(ACTIVE_TASK_DIR, `${nextTaskId}.md`);
+  if (!fileExists(nextTaskPath)) {
+    throw new Error(`Next task '${nextTaskId}' does not exist in active plans.`);
+  }
+
+  const nextMarkdown = readText(nextTaskPath);
+  const nextMeta = parseTaskMeta(nextMarkdown, `Next task '${nextTaskId}'`);
+  if (nextMeta.status === "completed") {
+    throw new Error(`Next task '${nextTaskId}' is already marked completed and cannot become current.`);
+  }
+
+  const isRcaReturn =
+    parentTaskId && normalizeTaskId(parentTaskId) === normalizeTaskId(nextTaskId);
+  const restoredMeta = {
+    ...nextMeta,
+    status: "active",
+  };
+
+  if (isRcaReturn) {
+    delete restoredMeta.blocked_by_task_id;
+    delete restoredMeta.blocker_signature;
+    delete restoredMeta.blocked_at;
+  }
+
+  const progressNote = isRcaReturn
+    ? `${completedAt}: blocker RCA task ${currentTaskId} completed; restored as current task after resolving blocker ${blockerSignature ?? "unknown"}.`
+    : `${completedAt}: restored as current task after ${currentTaskId} promotion.`;
+
+  return {
+    nextCurrentTaskId: nextTaskId,
+    apply: {
+      path: nextTaskPath,
+      content: appendTaskProgressNote(replaceTaskMeta(nextMarkdown, restoredMeta), progressNote),
+    },
+  };
+}
 
 function parseArgs(argv) {
   const parsed = {
@@ -97,37 +156,20 @@ completedMarkdown = appendTaskProgressNote(
 
 ensureDir(COMPLETED_TASK_DIR);
 const completedPath = path.join(COMPLETED_TASK_DIR, path.basename(task.filePath));
+const nextTaskUpdate = buildNextTaskUpdate({
+  nextTaskId,
+  parentTaskId,
+  currentTaskId: task.id,
+  completedAt,
+  blockerSignature: task.meta.blocker_signature,
+});
+
+if (nextTaskUpdate.apply) {
+  writeText(nextTaskUpdate.apply.path, nextTaskUpdate.apply.content);
+}
 writeText(completedPath, completedMarkdown);
 fs.unlinkSync(task.filePath);
-
-if (nextTaskId) {
-  writeCurrentTaskId(nextTaskId);
-  const nextTaskPath = path.join(ACTIVE_TASK_DIR, `${nextTaskId}.md`);
-  if (fileExists(nextTaskPath)) {
-    const nextMarkdown = readText(nextTaskPath);
-    const match = nextMarkdown.match(/```json taskmeta\s*([\s\S]*?)```/);
-    if (match) {
-      const nextMeta = JSON.parse(match[1].trim());
-      if (nextMeta.status !== "completed") {
-        nextMeta.status = "active";
-        if (parentTaskId && normalizeTaskId(parentTaskId) === normalizeTaskId(nextTaskId)) {
-          delete nextMeta.blocked_by_task_id;
-          delete nextMeta.blocker_signature;
-          delete nextMeta.blocked_at;
-        }
-        const restoredMarkdown = appendTaskProgressNote(
-          replaceTaskMeta(nextMarkdown, nextMeta),
-          parentTaskId && normalizeTaskId(parentTaskId) === normalizeTaskId(nextTaskId)
-            ? `${completedAt}: blocker RCA task ${task.id} completed; restored as current task after resolving blocker ${task.meta.blocker_signature ?? "unknown"}.`
-            : `${completedAt}: restored as current task after ${task.id} promotion.`,
-        );
-        writeText(nextTaskPath, restoredMarkdown);
-      }
-    }
-  }
-} else {
-  writeCurrentTaskId("NONE");
-}
+writeCurrentTaskId(nextTaskUpdate.nextCurrentTaskId);
 
 const historyPath = path.join(process.cwd(), "state", "task-history.md");
 const historyEntry = manualOverride

@@ -1,7 +1,8 @@
 "use server";
 
 import { notFound, redirect } from "next/navigation";
-import { createOwnerNote, queueNoteEnrichment, revalidateNotePaths, scheduleNoteEnrichment } from "@/features/notes/runtime";
+import { createOwnerNote, queueNoteEnrichment, revalidateNotePaths } from "@/features/notes/runtime";
+import { runNoteEnrichment } from "@/features/notes/enrichment";
 import { deleteDraftNote, publishNote, PublishedNoteDeleteForbiddenError, retryNoteEnrichment, unpublishNote, updateDraftNote } from "@/features/notes/service";
 import { isReadOnlyWorkspaceMutationError, requireWritableOwnerSession } from "@/lib/auth/owner-session";
 
@@ -96,7 +97,7 @@ export async function retryNoteEnrichmentAction(noteId: string) {
   }
 
   if (note.enrichment.status === "pending") {
-    scheduleNoteEnrichment(note, note.enrichment.attempts);
+    await runNoteEnrichment(note.id, note.enrichment.attempts);
   }
 
   revalidateNotePaths(note);

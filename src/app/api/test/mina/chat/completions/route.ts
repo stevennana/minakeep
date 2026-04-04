@@ -6,7 +6,11 @@ function isPlaywrightTestServer() {
   return process.env.PLAYWRIGHT_TEST === "1";
 }
 
-function getStubDelayMs() {
+function getStubDelayMs(mode: ReturnType<typeof getPlaywrightAiTestMode>) {
+  if (mode === "timeout") {
+    return 2500;
+  }
+
   const timeoutMs = Number.parseInt(process.env.MINA_AI_TIMEOUT_MS ?? "", 10);
 
   if (Number.isFinite(timeoutMs) && timeoutMs > 0) {
@@ -55,7 +59,7 @@ export async function POST(request: Request) {
   }
 
   await new Promise((resolve) => {
-    setTimeout(resolve, getStubDelayMs());
+    setTimeout(resolve, getStubDelayMs(mode));
   });
 
   return NextResponse.json({

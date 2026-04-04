@@ -7,7 +7,9 @@ import { expect, test } from "@playwright/test";
 import { setAiPlaywrightTestMode } from "./ai-test-mode";
 import { setPublicSiteUrlPlaywrightTestMode } from "./public-site-test-mode";
 
-const databaseUrl = process.env.DATABASE_URL;
+const databaseUrl = process.env.DATABASE_URL?.startsWith("file:./")
+  ? "file:" + process.cwd() + "/" + process.env.DATABASE_URL.slice("file:./".length)
+  : process.env.DATABASE_URL;
 
 if (!databaseUrl) {
   throw new Error("DATABASE_URL must be set before running SEO discovery tests.");
@@ -19,7 +21,7 @@ const prisma = new PrismaClient({
   })
 });
 
-const configuredOrigin = "http://127.0.0.1:3100";
+const configuredOrigin = `http://127.0.0.1:${process.env.PLAYWRIGHT_WEB_SERVER_PORT ?? "3210"}`;
 const seedId = `seo-discovery-${Date.now()}`;
 const seededPublishedNote = {
   title: `SEO published note ${seedId}`,
@@ -174,11 +176,11 @@ test("@seo-discovery robots and sitemap fail closed when the canonical public or
 
   await page.goto("/");
   await expect(page.locator("link[rel='canonical']")).toHaveCount(0);
-  await expect(page.locator("meta[name='robots']")).toHaveAttribute("content", /noindex,\s*nofollow/i);
+  await expect(page.locator("meta[name='robots']").first()).toHaveAttribute("content", /noindex,\s*nofollow/i);
 
   await page.goto(`/notes/${seededPublishedNote.slug}`);
   await expect(page.locator("link[rel='canonical']")).toHaveCount(0);
-  await expect(page.locator("meta[name='robots']")).toHaveAttribute("content", /noindex,\s*nofollow/i);
+  await expect(page.locator("meta[name='robots']").first()).toHaveAttribute("content", /noindex,\s*nofollow/i);
 });
 
 test("@seo-discovery configured origin drives public robots, sitemap, and canonical metadata", async ({ page }) => {
@@ -286,6 +288,6 @@ test("@seo-discovery sitemap homepage lastmod stays fresh after link-side public
         OR: [{ title }, { url }]
       }
     });
-    await setAiPlaywrightTestMode("passthrough");
+    await setAiPlaywrightTestMode("disabled");
   }
 });

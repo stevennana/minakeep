@@ -14,8 +14,8 @@ Add Mermaid diagrams to the existing note-markdown pipeline without breaking the
 - Keep one Mermaid-to-HTML/SVG boundary so owner preview and public reading cannot drift.
 - If Minakeep advertises a Mermaid root as supported, the renderer should emit real diagram output for that root rather than a diagram-styled text summary.
 - Validation should be strong enough that malformed syntax for a supported Mermaid root reaches the fallback shell instead of being treated as a successful render.
+- The shared renderer currently claims deterministic support only for `flowchart` / `graph`, `sequenceDiagram`, `classDiagram`, and `stateDiagram` / `stateDiagram-v2`.
 - Flowchart support includes styling and grouping features such as `classDef`, `class`, `subgraph`, `linkStyle`, and `style`, and the shared renderer must preserve Mermaid-owned styling across public note and owner preview surfaces.
-- Broader Mermaid root coverage should be staged through deterministic examples, with `classDiagram` and `stateDiagram` / `stateDiagram-v2` as the minimum next roots for this wave.
 
 ## Fallback Rules
 - Invalid Mermaid source should render a stable fallback shell that explains the diagram could not render without crashing the page.

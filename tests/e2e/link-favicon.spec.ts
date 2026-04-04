@@ -78,7 +78,7 @@ test("@media-regression @link-favicon link save caches a favicon locally for own
     await expect(fallbackOwnerFavicon).toHaveAttribute("data-favicon-state", "cached", { timeout: 15000 });
     await expect(fallbackOwnerFavicon.locator("img")).toHaveAttribute("src", /\/media\/[a-zA-Z0-9-]+$/);
   } finally {
-    await setAiPlaywrightTestMode("passthrough");
+    await setAiPlaywrightTestMode("disabled");
     await setLinkFaviconPlaywrightTestMode("passthrough");
   }
 });

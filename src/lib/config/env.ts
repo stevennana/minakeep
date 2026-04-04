@@ -16,6 +16,23 @@ function readOptionalEnv(name: string) {
   return value ? value : null;
 }
 
+function normalizeDatabaseUrl(rawUrl: string) {
+  if (!rawUrl.startsWith("file:")) {
+    return rawUrl;
+  }
+
+  const sqlitePath = rawUrl.slice("file:".length);
+  const queryIndex = sqlitePath.indexOf("?");
+  const pathname = queryIndex === -1 ? sqlitePath : sqlitePath.slice(0, queryIndex);
+  const search = queryIndex === -1 ? "" : sqlitePath.slice(queryIndex);
+
+  if (!pathname.startsWith("./") && !pathname.startsWith("../")) {
+    return rawUrl;
+  }
+
+  return `file:${path.resolve(pathname)}${search}`;
+}
+
 function readOptionalCredentials(usernameKey: string, passwordKey: string) {
   const username = readOptionalEnv(usernameKey);
   const password = readOptionalEnv(passwordKey);
@@ -44,7 +61,7 @@ if (demoCredentials && demoCredentials.username === ownerUsername) {
 
 export const env = {
   authSecret: requireEnv("AUTH_SECRET"),
-  databaseUrl: requireEnv("DATABASE_URL"),
+  databaseUrl: normalizeDatabaseUrl(requireEnv("DATABASE_URL")),
   demoCredentials,
   ownerPassword,
   ownerUsername,
