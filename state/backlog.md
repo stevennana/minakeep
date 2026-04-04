@@ -85,5 +85,5 @@
 - [x] 095-mermaid-wave-hardening — Mermaid wave hardening
 - [x] 096-mermaid-semantic-rendering-foundation — Mermaid semantic rendering foundation
 - [x] 097-public-mermaid-contract-realignment — Public Mermaid contract realignment
-- [ ] 098-editor-mermaid-regression-closeout — Editor Mermaid regression closeout ← current
+- [x] 098-editor-mermaid-regression-closeout — Editor Mermaid regression closeout
 
