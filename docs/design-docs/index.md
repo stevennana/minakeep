@@ -25,6 +25,7 @@ This directory contains durable design decisions that are deeper than the top-le
 | `runtime-upgrade-and-backup.md` | confirmed | upgrade-safe schema changes and automatic SQLite backup rules for self-host/Docker paths |
 | `public-home-first-screen-density.md` | confirmed | collapsed search chrome, minimal framing copy, and first-screen showroom priority |
 | `markdown-editor-workbench.md` | confirmed | source-first note-editor architecture, view modes, toolbar rules, and mobile authoring behavior |
+| `markdown-diagram-rendering.md` | confirmed | Mermaid fenced-block rendering, fallback rules, and cross-surface note-preview constraints |
 | `owner-workspace-density.md` | confirmed | desktop density rules, slimmer navigation, and compact owner layouts |
 | `responsive-ui-rules.md` | confirmed | mobile-first collapse behavior and breakpoint-specific composition rules |
 | `../references/ui-verification-contract.md` | confirmed | deterministic screenshot/responsive/accessibility rules for the UI wave |

@@ -19,12 +19,14 @@ The owner opens `/app/notes/new` or `/app/notes/[id]/edit`.
 - The rendered preview continues to reflect the same markdown rendering rules used elsewhere in Minakeep.
 - Pipe-style markdown tables should render as readable tables in preview and on published note pages instead of showing raw `|` syntax.
 - Inline LaTeX math written as `$...$` and block LaTeX math written as `$$...$$` render in preview while the saved note body stays raw markdown.
+- Mermaid diagrams written as fenced ```` ```mermaid ```` blocks render in preview while the saved note body stays raw markdown.
 
 ## Validation
 - Note content still persists as markdown text, not a second document schema.
 - Owners can switch between the supported editor modes without losing text.
 - Toolbar actions and shortcuts insert, remove, or continue valid markdown predictably.
 - Math insertion helpers produce valid raw markdown delimiters without introducing a separate equation editor state.
+- Mermaid preview support does not introduce a second diagram state or mutate the authored fence content behind the editor.
 - Desktop split mode remains readable and useful during normal note writing.
 - Mobile authoring stays usable without horizontal compression.
 - `npm run verify` passes.

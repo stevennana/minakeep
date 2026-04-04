@@ -6,9 +6,12 @@ Only task files in this directory that contain a `taskmeta` JSON block are eligi
 
 ## Current recommended sequence
 
-1. `091-note-math-verification.md` -> verify the shipped LaTeX note wave, confirm doc and smoke alignment, and close the tranche cleanly.
+1. `092-mermaid-renderer-foundation.md` -> extend the shared note-markdown pipeline to recognize Mermaid fences and fail soft without changing stored markdown.
+2. `093-public-mermaid-note-surfaces.md` -> render Mermaid diagrams on published note pages through the shared note-reading path.
+3. `094-editor-mermaid-preview.md` -> bring the same Mermaid rendering contract into the owner workbench preview on desktop and mobile.
+4. `095-mermaid-wave-hardening.md` -> close the Mermaid tranche with regression coverage, queue alignment, and deterministic replay.
 
-Task `090` is preserved in completed history as the incremental loading tranche. This active queue picks up with the post-implementation verification pass for note math. Tasks `087` through `089` remain preserved as the finished sitemap/SEO tranche. Tasks `080` through `086` remain preserved as the earlier settings/delete/upgrade tranche, and earlier completed tranches remain available as history.
+Task `091` is preserved in completed history as the note-math verification tranche. This active queue starts the Mermaid markdown wave with a shared-renderer foundation task, then splits public note reading, editor preview, and hardening into separate promotion slices. The homepage remains excerpt and summary based in this wave; Mermaid support reaches only the surfaces that already render note markdown.
 
 ## Operating rule
 

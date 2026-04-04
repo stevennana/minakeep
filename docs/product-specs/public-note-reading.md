@@ -13,6 +13,7 @@ An anonymous visitor opens `/notes/[slug]`.
 - Supporting metadata such as date, tags, and AI summary remain visible but quieter.
 - AI summary and AI tags appear directly under the title block so readers can orient themselves before reading the full note.
 - The page shares the same cool monochrome visual system as the homepage.
+- Mermaid diagrams written in the note markdown render inline with the article body instead of exposing raw fenced code.
 - `h1` and `strong` no longer dominate the page with oversized scale or overly black emphasis.
 - Tag chips fit their content and support longer labels without overflow.
 - The note title should avoid premature wrapping; when the available page width comfortably fits it, it should stay on one line, while longer desktop titles may wrap to a second line without feeling cramped.
@@ -22,6 +23,7 @@ An anonymous visitor opens `/notes/[slug]`.
 - Metadata hierarchy is clear and non-dominant.
 - The title, tags, and AI summary feel refined rather than heavy-handed.
 - AI summary and tags appear before the article body.
+- Mermaid blocks remain readable on desktop and mobile without horizontal overflow or client-side script chrome leaking into the article.
 - Title wrapping feels intentional rather than prematurely narrow, especially on desktop widths.
 - Mobile reading remains comfortable.
 - `npm run verify` passes.

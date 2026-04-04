@@ -9,6 +9,7 @@ If a UI or API behavior is visible to users, it should be defined here before im
 |---|---|---|
 | `note-authoring.md` | confirmed | Private note drafting, preview, and note-side AI metadata visibility |
 | `markdown-editor-workbench.md` | confirmed | Source-first markdown editor modes, toolbar, shortcuts, and mobile authoring behavior |
+| `markdown-mermaid-diagrams.md` | confirmed | Mermaid fenced-diagram rendering across note preview and published note surfaces |
 | `note-image-attachments.md` | confirmed | Uploaded note images, markdown embedding, and derived note-card image behavior |
 | `external-note-api.md` | confirmed | Server-to-server note creation through one environment API key |
 | `workspace-settings.md` | confirmed | Owner-editable site title/description with an extensible settings surface |

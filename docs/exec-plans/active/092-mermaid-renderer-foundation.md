@@ -1,0 +1,74 @@
+# Mermaid renderer foundation
+
+```json taskmeta
+{
+  "id": "092-mermaid-renderer-foundation",
+  "title": "Mermaid renderer foundation",
+  "order": 92,
+  "status": "active",
+  "promotion_mode": "standard",
+  "next_task_on_success": "093-public-mermaid-note-surfaces",
+  "prompt_docs": [
+    "AGENTS.md",
+    "ARCHITECTURE.md",
+    "docs/FRONTEND.md",
+    "docs/product-specs/note-authoring.md",
+    "docs/product-specs/markdown-editor-workbench.md",
+    "docs/product-specs/markdown-mermaid-diagrams.md",
+    "docs/design-docs/markdown-editor-workbench.md",
+    "docs/design-docs/markdown-diagram-rendering.md"
+  ],
+  "required_commands": [
+    "npm run test:unit",
+    "npm run verify"
+  ],
+  "required_files": [
+    "src/features/notes/markdown.ts",
+    "src/app/globals.css",
+    "tests/unit"
+  ],
+  "human_review_triggers": [
+    "Mermaid support introduces a second persisted note-body format or rewrites stored markdown behind the author's back.",
+    "The renderer depends on inline note scripts, remote embeds, or other unsafe public-page execution paths.",
+    "Invalid Mermaid source crashes owner preview, published note rendering, or showroom preview derivation instead of failing soft."
+  ]
+}
+```
+
+## Objective
+
+Extend the shared note-markdown pipeline so Mermaid fenced blocks become a first-class supported note syntax without changing the markdown-native save contract.
+
+## Scope
+
+- Mermaid fenced-block detection in the shared note renderer
+- sanitized static diagram output or bounded fallback output
+- unit coverage for valid and invalid Mermaid cases
+- shared CSS primitives needed for stable rendered-diagram containers
+
+## Out of scope
+
+- public note-page wiring
+- showroom card preview wiring
+- owner editor preview wiring
+- Mermaid authoring helpers or toolbar buttons
+
+## Exit criteria
+
+1. The shared note renderer recognizes fenced `mermaid` blocks and emits stable rendered output or a stable fallback shell.
+2. Stored note markdown remains the raw authored fence text.
+3. Unit coverage protects both successful and failed Mermaid rendering paths.
+4. `npm run test:unit` and `npm run verify` pass.
+
+## Required checks
+
+- `npm run test:unit`
+- `npm run verify`
+
+## Evaluator notes
+
+Promote only when Mermaid support is clearly a shared rendering primitive rather than a one-off patch hidden inside one route or component.
+
+## Progress log
+
+- Start here. Append timestamped progress notes as work lands.
