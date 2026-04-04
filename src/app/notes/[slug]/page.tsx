@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { ButtonLink, MetadataRow, Surface, TagChip, TagList } from "@/components/ui/primitives";
+import { RenderedMarkdown } from "@/features/notes/components/rendered-markdown";
 import { renderMarkdownToHtml } from "@/features/notes/markdown";
 import { getPublishedNoteBySlug } from "@/features/notes/service";
 import { getPublicPageMetadata, getPublishedNotePath } from "@/features/public-site/metadata";
@@ -70,10 +71,10 @@ export default async function PublicNotePage({ params }: PublicNotePageProps) {
             </div>
           ) : null}
         </header>
-        <div
+        <RenderedMarkdown
           className="markdown-preview public-note-body public-note-body--published"
-          data-testid="public-note-markdown"
-          dangerouslySetInnerHTML={{ __html: renderedMarkdown }}
+          html={renderedMarkdown}
+          testId="public-note-markdown"
         />
       </Surface>
     </div>

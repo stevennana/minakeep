@@ -18,6 +18,7 @@ import { EnrichmentPendingRefresh } from "@/features/enrichment/components/pendi
 import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
 import type { EnrichmentState } from "@/features/enrichment/types";
 import { getEnrichmentStatusLabel } from "@/features/enrichment/types";
+import { RenderedMarkdown } from "@/features/notes/components/rendered-markdown";
 import {
   applyMarkdownReplacement,
   continueMarkdownStructure,
@@ -38,6 +39,7 @@ import {
   type SelectionRange
 } from "@/features/notes/editor-markdown";
 import { renderMarkdownToHtml } from "@/features/notes/markdown";
+import { enhanceMermaidFigures } from "@/features/notes/mermaid";
 import type { SavedTag } from "@/features/tags/types";
 
 type NoteEditorProps = {
@@ -149,6 +151,7 @@ export function NoteEditor({
   const markdownRef = useRef(initialMarkdown);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const measurementRef = useRef<HTMLDivElement | null>(null);
+  const previewRef = useRef<HTMLDivElement | null>(null);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
   const selectionRef = useRef<SelectionRange>({
     end: 0,
@@ -483,6 +486,14 @@ export function NoteEditor({
       resizeObserver.disconnect();
     };
   }, [isDesktopViewport, markdown]);
+
+  useEffect(() => {
+    if (previewPaneHidden || !previewRef.current) {
+      return;
+    }
+
+    void enhanceMermaidFigures(previewRef.current);
+  }, [previewHtml, previewPaneHidden]);
 
   useEffect(() => {
     const textarea = textareaRef.current;
@@ -877,12 +888,13 @@ Use headings, lists, quotes, links, code, and $...$ math without leaving markdow
                       </span>
                     </div>
                     <h2 id={previewHeadingId}>{previewTitle}</h2>
-                    <div
+                    <RenderedMarkdown
+                      autoEnhance={false}
                       className="markdown-preview"
-                      data-testid="note-markdown-preview"
-                      dangerouslySetInnerHTML={{
-                        __html: previewHtml || "<p>Start writing to see the rendered preview.</p>"
-                      }}
+                      containerRef={previewRef}
+                      html={previewHtml || "<p>Start writing to see the rendered preview.</p>"}
+                      key={previewPaneHidden ? "preview-hidden" : "preview-visible"}
+                      testId="note-markdown-preview"
                     />
                   </div>
                 </section>

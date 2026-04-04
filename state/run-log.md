@@ -1917,3 +1917,14 @@ No remaining task. Stopping loop.
 - health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxoooxxooxoxxxooxxxoxxoooxxxxxxxxxooo
 - cycle: finished
 No remaining task. Stopping loop.
+## loop start 2026-04-04T21:57:17+09:00
+
+### cycle 2026-04-04T21:57:17+09:00 task=099-mermaid-library-renderer-foundation
+- artifacts: state/artifacts/20260404T215717-099-mermaid-library-renderer-foundation
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260404T215717-099-mermaid-library-renderer-foundation/worker.jsonl
+- worker-summary: Implemented task `099-mermaid-library-renderer-foundation`.
+- evaluator: started
+- evaluator: status=done promotion=true Task 099 is complete in substance. The old hand-built Mermaid SVG/parser path is no longer present in the notes renderer. `src/features/notes/markdown.ts` now emits a shared Mermaid shell contract, `src/features/notes/mermaid.ts` provides the single library-backed render/sanitize boundary plus bounded fallback behavior, and both owner preview and public note pages consume that same contract through `RenderedMarkdown`. Unit coverage exercises both successful sanitized SVG output and fallback behavior for unsupported or malformed Mermaid input, and the required checks passed. -> state/artifacts/20260404T215717-099-mermaid-library-renderer-foundation/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260404T215717-099-mermaid-library-renderer-foundation/npm-run-verify-next-server.log

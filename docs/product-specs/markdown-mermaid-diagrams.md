@@ -12,6 +12,8 @@ The owner writes a fenced code block with the info string `mermaid` inside a not
 - The owner preview renders the Mermaid block as a diagram or a bounded readable fallback when the Mermaid source is invalid.
 - Published note pages render the same Mermaid block from the same markdown source instead of showing raw fenced code.
 - Supported Mermaid roots should render as real diagram output for that root type; a diagram-themed summary card is not sufficient.
+- The next expansion wave should cover richer flowchart features including `classDef`, `class`, `subgraph`, `linkStyle`, and `style` rather than limiting flowcharts to plain nodes and edges.
+- The next expansion wave should also broaden supported Mermaid roots beyond the current baseline, with deterministic coverage anchored on `classDiagram` and `stateDiagram` / `stateDiagram-v2` in addition to the existing `flowchart` / `graph` and `sequenceDiagram` paths.
 - Mermaid rendering must not require third-party iframes, remote image fetches, or inline script execution inside note content.
 - Invalid Mermaid syntax does not block note save, publish, or public reading; it degrades to a visible non-crashing fallback state.
 
@@ -21,5 +23,7 @@ The owner writes a fenced code block with the info string `mermaid` inside a not
 - Supported Mermaid roots that Minakeep claims to render do not collapse into generic source-summary shells.
 - Invalid Mermaid content fails soft with a readable fallback rather than breaking the page.
 - Invalid syntax for supported Mermaid roots also reaches the fallback path instead of appearing as a successful render.
+- Styled flowcharts that use `classDef`, `class`, `subgraph`, `linkStyle`, and `style` render consistently in owner preview and published note reading when Minakeep claims support for them.
+- Additional Mermaid roots should be documented only when deterministic tests prove their success and fallback behavior end to end.
 - Diagram output stays readable on desktop and mobile without overflowing its container.
 - `npm run verify` passes.

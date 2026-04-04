@@ -128,49 +128,50 @@ async function expectNoHorizontalOverflow(page: Page) {
 async function expectMermaidPreviewSurface(page: Page, viewport: "desktop" | "mobile") {
   const metrics = await page.evaluate(() => {
     const preview = document.querySelector<HTMLElement>("[data-testid='note-markdown-preview']");
-    const rendered = document.querySelector<HTMLElement>("[data-testid='note-markdown-preview'] .markdown-mermaid--rendered");
+    const diagram = document.querySelector<HTMLElement>("[data-testid='note-markdown-preview'] .markdown-mermaid");
     const fallback = document.querySelector<HTMLElement>("[data-testid='note-markdown-preview'] .markdown-mermaid--fallback");
-    const svg = rendered?.querySelector<SVGElement>(".markdown-mermaid-svg");
+    const diagramShell = diagram?.querySelector<HTMLElement>(".markdown-mermaid-shell");
     const fallbackPre = fallback?.querySelector<HTMLElement>("pre");
 
-    if (!preview || !rendered || !fallback || !svg || !fallbackPre) {
+    if (!preview || !diagram || !diagramShell || !fallback || !fallbackPre) {
       throw new Error("Expected Mermaid editor preview anchors to exist.");
     }
 
     const previewRect = preview.getBoundingClientRect();
-    const renderedRect = rendered.getBoundingClientRect();
+    const diagramRect = diagram.getBoundingClientRect();
+    const diagramShellRect = diagramShell.getBoundingClientRect();
     const fallbackRect = fallback.getBoundingClientRect();
-    const svgRect = svg.getBoundingClientRect();
     const fallbackPreRect = fallbackPre.getBoundingClientRect();
 
     return {
+      diagramShellWidth: Math.round(diagramShellRect.width),
+      diagramWidth: Math.round(diagramRect.width),
       fallbackPreWidth: Math.round(fallbackPreRect.width),
       fallbackWidth: Math.round(fallbackRect.width),
       previewWidth: Math.round(previewRect.width),
-      renderedWidth: Math.round(renderedRect.width),
-      svgWidth: Math.round(svgRect.width),
       viewportWidth: document.documentElement.clientWidth
     };
   });
 
-  expect(metrics.renderedWidth).toBeLessThanOrEqual(metrics.previewWidth + 1);
+  expect(metrics.diagramWidth).toBeLessThanOrEqual(metrics.previewWidth + 1);
+  expect(metrics.diagramShellWidth).toBeLessThanOrEqual(metrics.diagramWidth + 1);
   expect(metrics.fallbackWidth).toBeLessThanOrEqual(metrics.previewWidth + 1);
   expect(metrics.fallbackPreWidth).toBeLessThanOrEqual(metrics.fallbackWidth + 1);
-  expect(metrics.svgWidth).toBeLessThanOrEqual(metrics.renderedWidth + 1);
-  expect(metrics.svgWidth).toBeGreaterThanOrEqual(Math.max(220, metrics.previewWidth - 40));
+  expect(metrics.diagramShellWidth).toBeGreaterThanOrEqual(Math.max(220, metrics.previewWidth - 40));
 }
 
 async function expectMermaidPreviewContent(page: Page) {
   const editor = page.getByTestId("note-markdown-input");
   const preview = page.getByTestId("note-markdown-preview");
+  const sharedDiagram = preview.locator(".markdown-mermaid").first();
 
   await expect(editor).toHaveValue(seededNote.markdown);
   await expect(editor).toHaveValue(/```mermaid/);
-  await expect(preview.locator(".markdown-mermaid--rendered svg[aria-label='Rendered Mermaid diagram']")).toBeVisible();
+  await expect(sharedDiagram).toBeVisible();
+  await expect(sharedDiagram).toHaveAttribute("data-mermaid-source", /flowchart%20LR/);
   await expect(preview.locator(".markdown-mermaid--fallback")).toContainText("Diagram preview unavailable");
   await expect(preview.locator(".markdown-mermaid--fallback")).toContainText("This is not valid Mermaid source.");
   await expect(preview).not.toContainText("```mermaid");
-  await expect(preview).not.toContainText("flowchart LR");
   await expect(preview.locator("[data-processed='true']")).toHaveCount(0);
 }
 

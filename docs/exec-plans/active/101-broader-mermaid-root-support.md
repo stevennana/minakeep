@@ -1,0 +1,73 @@
+# Broader Mermaid root support
+
+```json taskmeta
+{
+  "id": "101-broader-mermaid-root-support",
+  "title": "Broader Mermaid root support",
+  "order": 101,
+  "status": "queued",
+  "promotion_mode": "deterministic_only",
+  "next_task_on_success": "102-mermaid-expansion-hardening",
+  "prompt_docs": [
+    "AGENTS.md",
+    "ARCHITECTURE.md",
+    "docs/FRONTEND.md",
+    "docs/product-specs/markdown-mermaid-diagrams.md",
+    "docs/design-docs/markdown-diagram-rendering.md",
+    "docs/references/ui-verification-contract.md"
+  ],
+  "required_commands": [
+    "npm run test:e2e -- --grep @ui-public-note-mermaid",
+    "npm run test:e2e -- --grep @ui-note-editor-mermaid",
+    "npm run verify"
+  ],
+  "required_files": [
+    "src/features/notes/markdown.ts",
+    "src/app/globals.css",
+    "tests/e2e",
+    "tests/unit"
+  ],
+  "human_review_triggers": [
+    "The docs claim broader Mermaid roots than the deterministic tests actually cover.",
+    "Newly supported roots such as `classDiagram` or `stateDiagram-v2` still fall back or render incorrectly while being advertised as shipped.",
+    "Malformed syntax for newly supported roots still appears as a successful render instead of failing soft."
+  ]
+}
+```
+
+## Objective
+
+Broaden Mermaid root coverage through the new renderer, with deterministic support anchored on `classDiagram` and `stateDiagram` / `stateDiagram-v2` beyond the existing flowchart and sequence support.
+
+## Scope
+
+- broader Mermaid roots, with `classDiagram` and `stateDiagram` / `stateDiagram-v2` as the minimum roots for this wave
+- owner preview and public note verification for those roots
+- malformed-syntax fallback behavior for newly claimed roots
+
+## Out of scope
+
+- roots that are not explicitly documented and tested in this wave
+- interactive Mermaid features
+- Mermaid use outside note markdown
+
+## Exit criteria
+
+1. `classDiagram` and `stateDiagram` / `stateDiagram-v2` render through the shared Mermaid path in both public note reading and owner preview.
+2. Malformed syntax for those newly supported roots reaches the documented fallback shell.
+3. The docs claim only the Mermaid roots that the deterministic tests actually prove.
+4. `npm run test:e2e -- --grep @ui-public-note-mermaid`, `npm run test:e2e -- --grep @ui-note-editor-mermaid`, and `npm run verify` pass.
+
+## Required checks
+
+- `npm run test:e2e -- --grep @ui-public-note-mermaid`
+- `npm run test:e2e -- --grep @ui-note-editor-mermaid`
+- `npm run verify`
+
+## Evaluator notes
+
+Promote only when broader-root support is test-backed and the renderer does not silently treat unsupported syntax as a successful diagram.
+
+## Progress log
+
+- Start here. Append timestamped progress notes as work lands.

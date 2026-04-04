@@ -2717,6 +2717,7 @@ textarea {
 .markdown-preview .markdown-mermaid--rendered .markdown-mermaid-shell {
   overflow-x: auto;
   overflow-y: hidden;
+  padding: 0.45rem;
 }
 
 .note-editor-pane-preview .markdown-mermaid--rendered .markdown-mermaid-shell {
@@ -2744,71 +2745,25 @@ textarea {
   min-width: min(100%, 30rem);
 }
 
-.public-note-body--published .markdown-mermaid-svg--sequence {
-  min-width: min(100%, 34rem);
-}
-
-.markdown-preview .markdown-mermaid-svg__frame {
-  fill: rgba(248, 250, 252, 0.96);
-  stroke: rgba(100, 116, 139, 0.22);
-  stroke-width: 1.5;
-}
-
-.markdown-preview .markdown-mermaid-node__shape {
-  fill: rgba(255, 255, 255, 0.94);
-  stroke: rgba(50, 72, 99, 0.36);
-  stroke-width: 2;
-}
-
-.markdown-preview .markdown-mermaid-node__label,
-.markdown-preview .markdown-mermaid-edge__label {
-  fill: var(--ink);
+.markdown-preview .markdown-mermaid--rendered .markdown-mermaid-shell svg {
   font-family: var(--font-ui);
-  font-size: 0.9rem;
-  font-weight: 600;
 }
 
-.markdown-preview .markdown-mermaid-edge__path {
-  fill: none;
-  stroke: rgba(50, 72, 99, 0.72);
+.markdown-preview .markdown-mermaid--rendered .markdown-mermaid-shell svg[id] {
+  max-width: none;
+}
+
+.markdown-preview .markdown-mermaid--rendered .markdown-mermaid-shell :is(rect, polygon, circle, ellipse, path) {
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 2.25;
 }
 
-.markdown-preview .markdown-mermaid-edge__arrowhead {
-  fill: rgba(50, 72, 99, 0.72);
-}
-
-.markdown-preview .markdown-mermaid-sequence__participant-box {
-  fill: rgba(255, 255, 255, 0.94);
-  stroke: rgba(50, 72, 99, 0.3);
-  stroke-width: 1.8;
-}
-
-.markdown-preview .markdown-mermaid-sequence__participant-label,
-.markdown-preview .markdown-mermaid-sequence__message-label {
+.markdown-preview .markdown-mermaid--rendered .markdown-mermaid-shell .label,
+.markdown-preview .markdown-mermaid--rendered .markdown-mermaid-shell .messageText,
+.markdown-preview .markdown-mermaid--rendered .markdown-mermaid-shell .nodeLabel,
+.markdown-preview .markdown-mermaid--rendered .markdown-mermaid-shell text {
   fill: var(--ink);
   font-family: var(--font-ui);
-  font-size: 0.88rem;
-  font-weight: 600;
-}
-
-.markdown-preview .markdown-mermaid-sequence__lifeline {
-  stroke: rgba(100, 116, 139, 0.4);
-  stroke-dasharray: 7 8;
-  stroke-width: 1.8;
-}
-
-.markdown-preview .markdown-mermaid-sequence__message-line {
-  fill: none;
-  stroke: rgba(50, 72, 99, 0.74);
-  stroke-linecap: round;
-  stroke-width: 2.1;
-}
-
-.markdown-preview .markdown-mermaid-sequence__arrowhead {
-  fill: rgba(50, 72, 99, 0.74);
 }
 
 .markdown-preview .markdown-mermaid--fallback .markdown-mermaid-shell {
@@ -2868,10 +2823,6 @@ textarea {
   }
 
   .public-note-body--published .markdown-mermaid-svg {
-    min-width: 100%;
-  }
-
-  .public-note-body--published .markdown-mermaid-svg--sequence {
     min-width: 100%;
   }
 

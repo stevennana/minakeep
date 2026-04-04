@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+import { renderMermaidShell } from "../../src/features/notes/mermaid";
 import { createNoteExcerpt, renderMarkdownToHtml } from "../../src/features/notes/markdown";
 
 test("renderMarkdownToHtml preserves common note-writing structures while escaping unsafe HTML", () => {
@@ -53,7 +54,7 @@ test("renderMarkdownToHtml keeps fenced code literal even when it contains math 
   assert.match(html, /&apos;\$not-math\$&apos;|&#39;\$not-math\$&#39;/);
 });
 
-test("renderMarkdownToHtml turns valid mermaid fences into sanitized static diagram markup", () => {
+test("renderMarkdownToHtml turns supported mermaid fences into the shared library render contract", () => {
   const markdown = `# Diagram
 
 \`\`\`mermaid
@@ -63,21 +64,29 @@ flowchart TD
 \`\`\``;
   const html = renderMarkdownToHtml(markdown);
 
-  assert.match(html, /markdown-mermaid markdown-mermaid--rendered/);
-  assert.match(html, /<svg class="markdown-mermaid-svg"/);
-  assert.match(html, /aria-label="Rendered Mermaid diagram"/);
-  assert.match(html, /class="markdown-mermaid-node"/);
-  assert.match(html, /class="markdown-mermaid-edge__path"/);
-  assert.match(html, />Start</);
-  assert.match(html, />Ship it\?</);
-  assert.match(html, />Done</);
-  assert.match(html, />yes</);
-  assert.doesNotMatch(html, /markdown-mermaid-svg__line/);
-  assert.doesNotMatch(html, /flowchart TD/);
+  assert.match(html, /markdown-mermaid markdown-mermaid--pending/);
+  assert.match(html, /data-mermaid-source="flowchart%20TD%0A%20%20A%5BStart%5D%20--%3E%20B%7BShip%20it%3F%7D%0A%20%20B%20--%3E%7Cyes%7C%20C%5BDone%5D"/);
+  assert.match(html, /Diagram preview loading/);
+  assert.match(html, /Rendering Mermaid diagram from the saved markdown source\./);
+  assert.match(html, /flowchart TD/);
+  assert.match(html, /A\[Start\] --&gt; B\{Ship it\?\}/);
   assert.doesNotMatch(html, /```mermaid/);
 });
 
-test("renderMarkdownToHtml renders supported sequence mermaid fences with semantic SVG content", () => {
+test("renderMermaidShell returns sanitized SVG markup when the library render succeeds", async () => {
+  const result = await renderMermaidShell("flowchart TD\nA-->B", async () =>
+    `<svg class="flowchart" onclick="alert(1)" xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script><text>Hello</text></svg>`
+  );
+
+  assert.equal(result.state, "rendered");
+  assert.match(result.markup, /<svg class="flowchart markdown-mermaid-svg"/);
+  assert.match(result.markup, /aria-label="Rendered Mermaid diagram"/);
+  assert.match(result.markup, />Hello</);
+  assert.doesNotMatch(result.markup, /<script/);
+  assert.doesNotMatch(result.markup, /onclick=/);
+});
+
+test("renderMarkdownToHtml keeps supported sequence mermaid fences on the shared render path", () => {
   const html = renderMarkdownToHtml(`\`\`\`mermaid
 sequenceDiagram
   participant A as Alice
@@ -86,22 +95,10 @@ sequenceDiagram
   B-->>A: shipped
 \`\`\``);
 
-  assert.match(html, /markdown-mermaid markdown-mermaid--rendered/);
-  assert.match(html, /markdown-mermaid-svg markdown-mermaid-svg--sequence/);
-  assert.match(html, /class="markdown-mermaid-sequence__participant"/);
-  assert.match(html, /class="markdown-mermaid-sequence__message-line"/);
-  assert.match(html, /data-participant-id="A"/);
-  assert.match(html, /data-participant-id="B"/);
-  assert.match(html, />Alice</);
-  assert.match(html, />Bob</);
-  assert.match(html, />hello</);
-  assert.match(html, />shipped</);
-  assert.equal((html.match(/data-participant-id="/g) ?? []).length, 2);
-  assert.equal((html.match(/class="markdown-mermaid-sequence__message">/g) ?? []).length, 2);
-  assert.doesNotMatch(html, /markdown-mermaid markdown-mermaid--fallback/);
-  assert.doesNotMatch(html, /A-&gt;&gt;B: hello/);
-  assert.doesNotMatch(html, /data-participant-id="Alice-"/);
-  assert.doesNotMatch(html, /data-participant-id="Bob--"/);
+  assert.match(html, /markdown-mermaid markdown-mermaid--pending/);
+  assert.match(html, /data-mermaid-source="sequenceDiagram%0A%20%20participant%20A%20as%20Alice%0A%20%20participant%20B%20as%20Bob%0A%20%20A-%3E%3EB%3A%20hello%0A%20%20B--%3E%3EA%3A%20shipped"/);
+  assert.match(html, /A-&gt;&gt;B: hello/);
+  assert.match(html, /B--&gt;&gt;A: shipped/);
 });
 
 test("renderMarkdownToHtml falls back for unsupported mermaid roots instead of claiming a rendered diagram", () => {
@@ -113,29 +110,18 @@ gantt
   assert.match(html, /markdown-mermaid markdown-mermaid--fallback/);
   assert.match(html, /Diagram preview unavailable/);
   assert.doesNotMatch(html, /markdown-mermaid markdown-mermaid--rendered/);
+  assert.doesNotMatch(html, /data-mermaid-source=/);
 });
 
-test("renderMarkdownToHtml falls back cleanly for invalid mermaid fences", () => {
-  const html = renderMarkdownToHtml(`\`\`\`mermaid
-flowchart TD
-  A[Start --> B[Broken
-\`\`\``);
+test("renderMermaidShell falls back cleanly when the library render rejects malformed input", async () => {
+  const result = await renderMermaidShell("sequenceDiagram\nAlice hello Bob", async () => {
+    throw new Error("Parse error");
+  });
 
-  assert.match(html, /markdown-mermaid markdown-mermaid--fallback/);
-  assert.match(html, /Diagram preview unavailable/);
-  assert.match(html, /A\[Start --&gt; B\[Broken/);
-  assert.doesNotMatch(html, /aria-label="Rendered Mermaid diagram"/);
-});
-
-test("renderMarkdownToHtml falls back for malformed supported sequence diagrams", () => {
-  const html = renderMarkdownToHtml(`\`\`\`mermaid
-sequenceDiagram
-  Alice hello Bob
-\`\`\``);
-
-  assert.match(html, /markdown-mermaid markdown-mermaid--fallback/);
-  assert.match(html, /Alice hello Bob/);
-  assert.doesNotMatch(html, /markdown-mermaid-svg markdown-mermaid-svg--sequence/);
+  assert.equal(result.state, "fallback");
+  assert.match(result.markup, /Diagram preview unavailable/);
+  assert.match(result.markup, /Alice hello Bob/);
+  assert.doesNotMatch(result.markup, /<svg/);
 });
 
 test("renderMarkdownToHtml does not rewrite the authored mermaid fence source", () => {

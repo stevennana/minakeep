@@ -10,10 +10,12 @@ Add Mermaid diagrams to the existing note-markdown pipeline without breaking the
 - Mermaid output must be inserted as sanitized static markup, not as executable inline note scripts.
 
 ## Rendering Direction
-- Extend the existing `src/features/notes/markdown.ts` pipeline rather than introducing a separate markdown stack for one syntax.
+- The next expansion wave should replace further custom-parser growth with one server-safe, library-backed Mermaid rendering boundary that both public note pages and owner preview consume.
 - Keep one Mermaid-to-HTML/SVG boundary so owner preview and public reading cannot drift.
 - If Minakeep advertises a Mermaid root as supported, the renderer should emit real diagram output for that root rather than a diagram-styled text summary.
 - Validation should be strong enough that malformed syntax for a supported Mermaid root reaches the fallback shell instead of being treated as a successful render.
+- Flowchart support should expand to styling and grouping features such as `classDef`, `class`, `subgraph`, `linkStyle`, and `style`.
+- Broader Mermaid root coverage should be staged through deterministic examples, with `classDiagram` and `stateDiagram` / `stateDiagram-v2` as the minimum next roots for this wave.
 
 ## Fallback Rules
 - Invalid Mermaid source should render a stable fallback shell that explains the diagram could not render without crashing the page.
@@ -24,6 +26,7 @@ Add Mermaid diagrams to the existing note-markdown pipeline without breaking the
 - Public note pages render Mermaid blocks inline with the article body.
 - Editor preview should render the same Mermaid output in both split and preview-only modes.
 - Mobile layouts should prefer scaling or contained overflow treatment over horizontal page growth.
+- Styled flowcharts and broader Mermaid roots should keep the same bounded shell treatment as the current note markdown renderer instead of introducing route-specific diagram chrome.
 
 ## Anti-Goals
 - no Mermaid authoring canvas or visual node editor

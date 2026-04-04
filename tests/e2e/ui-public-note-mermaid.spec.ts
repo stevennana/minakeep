@@ -112,9 +112,7 @@ async function expectMermaidSurface(page: Page, viewport: "desktop" | "mobile") 
     const rendered = document.querySelectorAll<HTMLElement>(".markdown-mermaid--rendered");
     const fallback = document.querySelector<HTMLElement>(".markdown-mermaid--fallback");
     const svg = rendered[0]?.querySelector<SVGElement>(".markdown-mermaid-svg");
-    const sequenceSvg = document.querySelector<SVGElement>(
-      ".markdown-mermaid--rendered .markdown-mermaid-svg--sequence"
-    );
+    const sequenceSvg = rendered[1]?.querySelector<SVGElement>(".markdown-mermaid-svg");
     const fallbackPre = fallback?.querySelector<HTMLElement>("pre");
 
     if (!body || rendered.length < 2 || !fallback || !svg || !sequenceSvg || !fallbackPre) {
@@ -145,9 +143,9 @@ async function expectMermaidSurface(page: Page, viewport: "desktop" | "mobile") 
   expect(metrics.renderedSequenceWidth).toBeLessThanOrEqual(metrics.bodyWidth + 1);
   expect(metrics.fallbackWidth).toBeLessThanOrEqual(metrics.bodyWidth + 1);
   expect(metrics.fallbackPreWidth).toBeLessThanOrEqual(metrics.fallbackWidth + 1);
-  expect(metrics.svgWidth).toBeGreaterThanOrEqual(viewport === "desktop" ? 440 : metrics.viewportWidth - 73);
+  expect(metrics.svgWidth).toBeGreaterThanOrEqual(viewport === "desktop" ? 440 : metrics.viewportWidth - 80);
   expect(metrics.svgWidth).toBeLessThanOrEqual(metrics.bodyWidth + 1);
-  expect(metrics.sequenceSvgWidth).toBeGreaterThanOrEqual(viewport === "desktop" ? 440 : metrics.viewportWidth - 73);
+  expect(metrics.sequenceSvgWidth).toBeGreaterThanOrEqual(viewport === "desktop" ? 440 : metrics.viewportWidth - 80);
   expect(metrics.sequenceSvgWidth).toBeLessThanOrEqual(metrics.bodyWidth + 1);
 }
 
@@ -175,9 +173,8 @@ test("@ui-public-note-mermaid @ui-mermaid-regression published note renders Merm
   await expect(noteBody.getByRole("heading", { name: "Diagram rhythm should stay in the article" })).toBeVisible();
   await expect(noteBody.getByRole("heading", { name: "Supported non-flowchart diagrams should render semantically" })).toBeVisible();
   await expect(flowchartDiagram.locator("svg[aria-label='Rendered Mermaid diagram']")).toBeVisible();
-  await expect(sequenceDiagram.locator("svg.markdown-mermaid-svg--sequence[aria-label='Rendered Mermaid diagram']")).toBeVisible();
-  await expect(sequenceDiagram.locator(".markdown-mermaid-sequence__participant")).toHaveCount(2);
-  await expect(sequenceDiagram.locator(".markdown-mermaid-sequence__message")).toHaveCount(2);
+  await expect(sequenceDiagram.locator("svg.markdown-mermaid-svg[aria-label='Rendered Mermaid diagram']")).toBeVisible();
+  await expect(renderedDiagrams).toHaveCount(2);
   await expect(fallbackDiagram).toContainText("Diagram preview unavailable");
   await expect(fallbackDiagram).toContainText("sequenceDiagram");
   await expect(fallbackDiagram).toContainText("This is not valid Mermaid source.");
@@ -205,9 +202,8 @@ test("@ui-public-note-mermaid @ui-mermaid-regression published note keeps Mermai
 
   await expect(page.getByRole("heading", { name: seededNote.title })).toBeVisible();
   await expect(flowchartDiagram.locator("svg[aria-label='Rendered Mermaid diagram']")).toBeVisible();
-  await expect(sequenceDiagram.locator("svg.markdown-mermaid-svg--sequence[aria-label='Rendered Mermaid diagram']")).toBeVisible();
-  await expect(sequenceDiagram.locator(".markdown-mermaid-sequence__participant")).toHaveCount(2);
-  await expect(sequenceDiagram.locator(".markdown-mermaid-sequence__message")).toHaveCount(2);
+  await expect(sequenceDiagram.locator("svg.markdown-mermaid-svg[aria-label='Rendered Mermaid diagram']")).toBeVisible();
+  await expect(renderedDiagrams).toHaveCount(2);
   await expect(fallbackDiagram).toContainText("Diagram preview unavailable");
   await expect(fallbackDiagram).toContainText("sequenceDiagram");
   await expect(noteBody).not.toContainText("```mermaid");

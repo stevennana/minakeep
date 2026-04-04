@@ -2,52 +2,48 @@ Read the following repository documents before making changes:
 - AGENTS.md
 - ARCHITECTURE.md
 - docs/FRONTEND.md
-- docs/product-specs/note-authoring.md
-- docs/product-specs/markdown-editor-workbench.md
 - docs/product-specs/markdown-mermaid-diagrams.md
 - docs/design-docs/markdown-diagram-rendering.md
-- docs/references/ui-verification-contract.md
-- docs/exec-plans/active/098-editor-mermaid-regression-closeout.md
+- docs/exec-plans/active/099-mermaid-library-renderer-foundation.md
 
-Current task id: 098-editor-mermaid-regression-closeout
-Current task title: Editor Mermaid regression closeout
+Current task id: 099-mermaid-library-renderer-foundation
+Current task title: Mermaid library renderer foundation
 
 Objective:
-Carry the stricter Mermaid renderer contract through the owner preview path and close the next Mermaid wave with one deterministic replay path.
+Replace the hand-built Mermaid subset with one server-safe, library-backed rendering boundary that public note pages and owner preview can both trust.
 
 Scope:
-- editor preview parity for supported Mermaid roots and supported-root failures
-- deterministic Mermaid regression replay across public note and editor surfaces
-- final doc and queue alignment for the stricter Mermaid contract
+- Mermaid renderer foundation in `src/features/notes/markdown.ts`
+- safe dependency and sanitization boundary for library-backed Mermaid rendering
+- shared fallback behavior for unsupported or malformed Mermaid input
+- unit coverage for successful render and fallback behavior under the new renderer
 
 Out of scope:
-- Mermaid authoring productivity features
-- new public surfaces beyond published note reading
-- broader markdown rendering changes unrelated to Mermaid
+- flowchart styling-specific assertions beyond foundation-level smoke coverage
+- broader-root UI screenshots
+- Mermaid authoring helpers or toolbar actions
 
 Exit criteria:
-1. Owner preview matches the stricter public Mermaid contract for supported roots and supported-root fallback behavior.
-2. Saving and reopening notes still preserves the raw Mermaid fence text unchanged.
-3. One Mermaid regression command replays the shipped public-note and editor Mermaid surfaces under the stricter contract.
-4. `npm run test:e2e -- --grep @ui-note-editor-mermaid`, `npm run test:e2e -- --grep @ui-mermaid-regression`, and `npm run verify` pass.
+1. The shared renderer uses one library-backed Mermaid path rather than continuing to grow the custom hand-built subset.
+2. Public note pages and owner preview still consume the same shared Mermaid rendering contract.
+3. Invalid Mermaid input still fails soft with a bounded fallback.
+4. `npm run test:unit` and `npm run verify` pass.
 
 Required checks:
-- `npm run test:e2e -- --grep @ui-note-editor-mermaid`
-- `npm run test:e2e -- --grep @ui-mermaid-regression`
+- `npm run test:unit`
 - `npm run verify`
 
 Evaluator notes:
-Promote only when the next Mermaid wave closes with the docs, queue, and regression bundle all describing the same stricter renderer that actually shipped.
+Promote only when the renderer foundation clearly shifts the repo onto a library-backed Mermaid path instead of hiding the old custom subset behind new docs wording.
 
 Required repository artifacts for this task:
-- src/features/notes/components/note-editor.tsx
+- package.json
+- src/features/notes/markdown.ts
 - src/app/globals.css
-- tests/e2e
-- docs
+- tests/unit
 
 Required commands for this task:
-- npm run test:e2e -- --grep @ui-note-editor-mermaid
-- npm run test:e2e -- --grep @ui-mermaid-regression
+- npm run test:unit
 - npm run verify
 
 Previous known gaps from the last evaluation:
