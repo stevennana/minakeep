@@ -50,7 +50,9 @@ Required commands for this task:
 - npm run verify
 
 Previous known gaps from the last evaluation:
-- none
+- Valid Mermaid fences are not rendered as actual diagrams; the current 'rendered' output is a stylized source-preview SVG, not Mermaid diagram output.
+- The current tests do not protect real diagram rendering semantics, so they would pass even if valid Mermaid never becomes a true rendered diagram.
+- Because the success path is heuristic and not Mermaid-backed, the implementation does not yet satisfy the documented promise that valid Mermaid blocks render the same diagram in shared preview/public surfaces.
 
 
 

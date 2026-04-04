@@ -1674,3 +1674,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=not_done promotion=false Task 092 is not complete in substance. The implementation is correctly shared through `src/features/notes/markdown.ts`, preserves raw fenced markdown, adds bounded fallback UI, and the reported `npm run test:unit` and `npm run verify` passes satisfy the command gates. But the success path for valid ` ```mermaid ` fences does not actually render a Mermaid diagram: `renderMermaidSvg()` builds a generic SVG that prints truncated source lines, gated only by a root-token/balance heuristic, with no Mermaid parser or diagram layout/render step. That falls short of the product/design docs, which require valid Mermaid fences to render as diagrams and invalid ones to use the fallback path. -> state/artifacts/20260404T122914-092-mermaid-renderer-foundation/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260404T122914-092-mermaid-renderer-foundation/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Task 092-mermaid-renderer-foundation not eligible for promotion.
+- backlog: rendered current=092-mermaid-renderer-foundation
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxoooxxooxoxxxooxxxox
+- cycle: finished
+
+### cycle 2026-04-04T12:38:23+09:00 task=092-mermaid-renderer-foundation
+- artifacts: state/artifacts/20260404T123823-092-mermaid-renderer-foundation
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260404T123823-092-mermaid-renderer-foundation/worker.jsonl
+- worker-summary: Implemented the shared Mermaid foundation in [markdown.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/markdown.ts#L399) by replacing the faux source-preview SVG with a deterministic static SVG renderer for `flowchart` and `graph` fences, while keeping invalid or unsupported Mermaid blocks on the bounded fallback path in [markdown.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/markdown.ts#L630). Stored note markdown is still untouched raw fence text.
+- evaluator: started
+- evaluator: status=not_done promotion=false The shared renderer work is real and the required commands passed, but the task is not complete in substance because the shipped behavior only renders `flowchart`/`graph` Mermaid roots and falls back for every other valid Mermaid diagram type. The current product/spec docs describe Mermaid fenced blocks as generally rendering, with fallback reserved for invalid Mermaid source, so the shipped implementation does not yet match the documented contract. -> state/artifacts/20260404T123823-092-mermaid-renderer-foundation/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260404T123823-092-mermaid-renderer-foundation/npm-run-verify-next-server.log

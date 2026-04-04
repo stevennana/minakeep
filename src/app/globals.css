@@ -2724,24 +2724,30 @@ textarea {
   stroke-width: 1.5;
 }
 
-.markdown-preview .markdown-mermaid-svg__eyebrow {
-  fill: rgba(50, 72, 99, 0.11);
+.markdown-preview .markdown-mermaid-node__shape {
+  fill: rgba(255, 255, 255, 0.94);
+  stroke: rgba(50, 72, 99, 0.36);
+  stroke-width: 2;
 }
 
-.markdown-preview .markdown-mermaid-svg__eyebrow-label {
-  fill: var(--accent-strong);
+.markdown-preview .markdown-mermaid-node__label,
+.markdown-preview .markdown-mermaid-edge__label {
+  fill: var(--ink);
   font-family: var(--font-ui);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
-.markdown-preview .markdown-mermaid-svg__line {
-  fill: var(--ink-soft);
-  font-family: var(--font-mono);
-  font-size: 0.92rem;
-  white-space: pre;
+.markdown-preview .markdown-mermaid-edge__path {
+  fill: none;
+  stroke: rgba(50, 72, 99, 0.72);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.25;
+}
+
+.markdown-preview .markdown-mermaid-edge__arrowhead {
+  fill: rgba(50, 72, 99, 0.72);
 }
 
 .markdown-preview .markdown-mermaid--fallback .markdown-mermaid-shell {

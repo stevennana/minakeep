@@ -59,9 +59,30 @@ const MERMAID_SUPPORTED_ROOTS = [
   "xychart-beta"
 ] as const;
 
-const MERMAID_MAX_RENDER_LINES = 12;
 const MERMAID_MAX_SOURCE_PREVIEW_LINES = 8;
 const MERMAID_MAX_LINE_LENGTH = 72;
+const MERMAID_FLOWCHART_ROOTS = new Set(["flowchart", "graph"]);
+const MERMAID_FLOWCHART_DIRECTIONS = new Set(["TB", "TD", "BT", "LR", "RL"]);
+
+type MermaidNodeShape = "circle" | "diamond" | "rect" | "stadium";
+
+type MermaidFlowchartNode = {
+  id: string;
+  label: string;
+  shape: MermaidNodeShape;
+};
+
+type MermaidFlowchartEdge = {
+  from: string;
+  label: string | null;
+  to: string;
+};
+
+type MermaidFlowchartDiagram = {
+  direction: "BT" | "LR" | "RL" | "TB" | "TD";
+  edges: MermaidFlowchartEdge[];
+  nodes: MermaidFlowchartNode[];
+};
 
 function isEscaped(markdown: string, index: number) {
   let slashCount = 0;
@@ -306,21 +327,297 @@ function isProbablyValidMermaid(source: string) {
   return !insideDoubleQuote && !insideSingleQuote && bracketBalance === 0 && parenthesisBalance === 0 && braceBalance === 0;
 }
 
-function renderMermaidSvg(source: string) {
-  const previewLines = getMermaidSourcePreview(source, MERMAID_MAX_RENDER_LINES);
-  const width = 960;
-  const lineHeight = 28;
-  const topInset = 82;
-  const bottomInset = 42;
-  const height = topInset + bottomInset + Math.max(1, previewLines.length) * lineHeight;
-  const textNodes = previewLines
-    .map((line, index) => {
-      const y = topInset + index * lineHeight;
-      return `<text class="markdown-mermaid-svg__line" x="36" y="${y}">${escapeHtml(line || " ")}</text>`;
+function normalizeMermaidLines(source: string) {
+  return source
+    .replace(/\r\n?/g, "\n")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0 && !line.startsWith("%%"));
+}
+
+function getMermaidRoot(source: string) {
+  const [firstLine = ""] = normalizeMermaidLines(source);
+  return firstLine.split(/\s+/, 1)[0] ?? "";
+}
+
+function parseMermaidFlowchartNode(token: string): MermaidFlowchartNode | null {
+  const trimmedToken = token.trim();
+
+  if (!trimmedToken) {
+    return null;
+  }
+
+  const shapedPatterns: Array<{ pattern: RegExp; shape: MermaidNodeShape }> = [
+    { pattern: /^([A-Za-z0-9_:-]+)\(\((.+)\)\)$/, shape: "circle" },
+    { pattern: /^([A-Za-z0-9_:-]+)\(\[(.+)\]\)$/, shape: "stadium" },
+    { pattern: /^([A-Za-z0-9_:-]+)\{(.+)\}$/, shape: "diamond" },
+    { pattern: /^([A-Za-z0-9_:-]+)\[(.+)\]$/, shape: "rect" },
+    { pattern: /^([A-Za-z0-9_:-]+)\((.+)\)$/, shape: "stadium" }
+  ];
+
+  for (const { pattern, shape } of shapedPatterns) {
+    const match = trimmedToken.match(pattern);
+
+    if (match) {
+      return {
+        id: match[1] ?? "",
+        label: match[2]?.trim() || match[1] || "",
+        shape
+      };
+    }
+  }
+
+  const plainMatch = trimmedToken.match(/^([A-Za-z0-9_:-]+)$/);
+
+  if (!plainMatch) {
+    return null;
+  }
+
+  return {
+    id: plainMatch[1] ?? "",
+    label: plainMatch[1] ?? "",
+    shape: "rect"
+  };
+}
+
+function upsertMermaidFlowchartNode(
+  nodes: Map<string, MermaidFlowchartNode>,
+  node: MermaidFlowchartNode
+) {
+  const existingNode = nodes.get(node.id);
+
+  if (!existingNode) {
+    nodes.set(node.id, node);
+    return;
+  }
+
+  if (existingNode.label === existingNode.id && node.label !== node.id) {
+    nodes.set(node.id, node);
+  }
+}
+
+function parseMermaidFlowchart(source: string): MermaidFlowchartDiagram | null {
+  const normalizedLines = normalizeMermaidLines(source);
+  const [header, ...statementLines] = normalizedLines;
+
+  if (!header) {
+    return null;
+  }
+
+  const [root, directionToken = "TD"] = header.split(/\s+/, 2);
+
+  if (!MERMAID_FLOWCHART_ROOTS.has(root) || !MERMAID_FLOWCHART_DIRECTIONS.has(directionToken)) {
+    return null;
+  }
+
+  const nodes = new Map<string, MermaidFlowchartNode>();
+  const edges: MermaidFlowchartEdge[] = [];
+
+  for (const statementLine of statementLines) {
+    const edgeMatch = statementLine.match(/^(.*?)\s*(-->|==>|---|-.->)\s*(?:\|([^|]+)\|)?\s*(.+)$/);
+
+    if (edgeMatch) {
+      const fromNode = parseMermaidFlowchartNode(edgeMatch[1] ?? "");
+      const toNode = parseMermaidFlowchartNode(edgeMatch[4] ?? "");
+
+      if (!fromNode || !toNode) {
+        return null;
+      }
+
+      upsertMermaidFlowchartNode(nodes, fromNode);
+      upsertMermaidFlowchartNode(nodes, toNode);
+      edges.push({
+        from: fromNode.id,
+        label: edgeMatch[3]?.trim() || null,
+        to: toNode.id
+      });
+      continue;
+    }
+
+    const standaloneNode = parseMermaidFlowchartNode(statementLine);
+
+    if (!standaloneNode) {
+      return null;
+    }
+
+    upsertMermaidFlowchartNode(nodes, standaloneNode);
+  }
+
+  if (nodes.size === 0) {
+    return null;
+  }
+
+  return {
+    direction: directionToken as MermaidFlowchartDiagram["direction"],
+    edges,
+    nodes: Array.from(nodes.values())
+  };
+}
+
+function getMermaidNodeBox(node: MermaidFlowchartNode) {
+  const labelLength = Math.max(node.label.length, 4);
+  const width = Math.min(240, Math.max(124, labelLength * 8 + 44));
+  const height = node.shape === "diamond" ? 104 : node.shape === "circle" ? 84 : 72;
+
+  return { height, width };
+}
+
+function renderMermaidFlowchartNode(node: MermaidFlowchartNode, centerX: number, centerY: number) {
+  const { height, width } = getMermaidNodeBox(node);
+  const x = centerX - width / 2;
+  const y = centerY - height / 2;
+
+  let shapeMarkup = "";
+
+  if (node.shape === "diamond") {
+    shapeMarkup = `<polygon class="markdown-mermaid-node__shape" points="${centerX},${y} ${x + width},${centerY} ${centerX},${y + height} ${x},${centerY}" />`;
+  } else if (node.shape === "circle") {
+    shapeMarkup = `<ellipse class="markdown-mermaid-node__shape" cx="${centerX}" cy="${centerY}" rx="${width / 2}" ry="${height / 2}" />`;
+  } else {
+    const radius = node.shape === "stadium" ? height / 2 : 18;
+    shapeMarkup = `<rect class="markdown-mermaid-node__shape" x="${x}" y="${y}" width="${width}" height="${height}" rx="${radius}" ry="${radius}" />`;
+  }
+
+  return `<g class="markdown-mermaid-node" data-node-id="${escapeHtml(node.id)}">${shapeMarkup}<text class="markdown-mermaid-node__label" x="${centerX}" y="${centerY}" text-anchor="middle" dominant-baseline="middle">${escapeHtml(node.label)}</text></g>`;
+}
+
+function renderMermaidFlowchartSvg(diagram: MermaidFlowchartDiagram) {
+  const layoutByNodeId = new Map<string, { x: number; y: number }>();
+  const indegree = new Map<string, number>();
+  const outgoing = new Map<string, string[]>();
+
+  for (const node of diagram.nodes) {
+    indegree.set(node.id, 0);
+    outgoing.set(node.id, []);
+  }
+
+  for (const edge of diagram.edges) {
+    indegree.set(edge.to, (indegree.get(edge.to) ?? 0) + 1);
+    outgoing.get(edge.from)?.push(edge.to);
+  }
+
+  const queue = diagram.nodes
+    .filter((node) => (indegree.get(node.id) ?? 0) === 0)
+    .map((node) => node.id);
+  const layerByNodeId = new Map<string, number>();
+  const visited = new Set<string>();
+
+  while (queue.length > 0) {
+    const nodeId = queue.shift();
+
+    if (!nodeId) {
+      continue;
+    }
+
+    visited.add(nodeId);
+    const nodeLayer = layerByNodeId.get(nodeId) ?? 0;
+
+    for (const targetNodeId of outgoing.get(nodeId) ?? []) {
+      const nextLayer = Math.max(layerByNodeId.get(targetNodeId) ?? 0, nodeLayer + 1);
+      layerByNodeId.set(targetNodeId, nextLayer);
+      indegree.set(targetNodeId, (indegree.get(targetNodeId) ?? 0) - 1);
+
+      if ((indegree.get(targetNodeId) ?? 0) === 0) {
+        queue.push(targetNodeId);
+      }
+    }
+  }
+
+  let fallbackLayer = 0;
+  for (const node of diagram.nodes) {
+    if (!visited.has(node.id) && !layerByNodeId.has(node.id)) {
+      layerByNodeId.set(node.id, fallbackLayer);
+      fallbackLayer += 1;
+    }
+  }
+
+  const layers = new Map<number, MermaidFlowchartNode[]>();
+  for (const node of diagram.nodes) {
+    const layer = layerByNodeId.get(node.id) ?? 0;
+    const bucket = layers.get(layer) ?? [];
+    bucket.push(node);
+    layers.set(layer, bucket);
+  }
+
+  const sortedLayerEntries = Array.from(layers.entries()).sort((left, right) => left[0] - right[0]);
+  const isHorizontal = diagram.direction === "LR" || diagram.direction === "RL";
+  const shouldReverse = diagram.direction === "BT" || diagram.direction === "RL";
+  const columnSize = 260;
+  const rowSize = 152;
+  const inset = 56;
+
+  const primaryCount = Math.max(sortedLayerEntries.length, 1);
+  const secondaryCount = Math.max(1, ...sortedLayerEntries.map(([, nodes]) => nodes.length));
+  const width = isHorizontal ? inset * 2 + primaryCount * columnSize : inset * 2 + secondaryCount * columnSize;
+  const height = isHorizontal ? inset * 2 + secondaryCount * rowSize : inset * 2 + primaryCount * rowSize;
+
+  sortedLayerEntries.forEach(([layerIndex, layerNodes], entryIndex) => {
+    const primaryIndex = shouldReverse ? primaryCount - entryIndex - 1 : entryIndex;
+
+    layerNodes.forEach((node, nodeIndex) => {
+      const secondaryIndex = nodeIndex;
+      const x = isHorizontal
+        ? inset + primaryIndex * columnSize + columnSize / 2
+        : inset + secondaryIndex * columnSize + columnSize / 2;
+      const y = isHorizontal
+        ? inset + secondaryIndex * rowSize + rowSize / 2
+        : inset + primaryIndex * rowSize + rowSize / 2;
+
+      layoutByNodeId.set(node.id, { x, y });
+    });
+  });
+
+  const nodeMarkup = diagram.nodes
+    .map((node) => {
+      const position = layoutByNodeId.get(node.id);
+
+      if (!position) {
+        return "";
+      }
+
+      return renderMermaidFlowchartNode(node, position.x, position.y);
     })
     .join("");
 
-  return `<svg class="markdown-mermaid-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Rendered Mermaid diagram" xmlns="http://www.w3.org/2000/svg"><rect class="markdown-mermaid-svg__frame" x="1" y="1" width="${width - 2}" height="${height - 2}" rx="24" ry="24" /><rect class="markdown-mermaid-svg__eyebrow" x="36" y="28" width="112" height="28" rx="14" ry="14" /><text class="markdown-mermaid-svg__eyebrow-label" x="92" y="46" text-anchor="middle">Mermaid</text>${textNodes}</svg>`;
+  const edgeMarkup = diagram.edges
+    .map((edge) => {
+      const fromNode = diagram.nodes.find((node) => node.id === edge.from);
+      const toNode = diagram.nodes.find((node) => node.id === edge.to);
+      const fromPosition = layoutByNodeId.get(edge.from);
+      const toPosition = layoutByNodeId.get(edge.to);
+
+      if (!fromNode || !toNode || !fromPosition || !toPosition) {
+        return "";
+      }
+
+      const fromBox = getMermaidNodeBox(fromNode);
+      const toBox = getMermaidNodeBox(toNode);
+      const startX = isHorizontal
+        ? fromPosition.x + (shouldReverse ? -fromBox.width / 2 : fromBox.width / 2)
+        : fromPosition.x;
+      const startY = isHorizontal
+        ? fromPosition.y
+        : fromPosition.y + (shouldReverse ? -fromBox.height / 2 : fromBox.height / 2);
+      const endX = isHorizontal
+        ? toPosition.x + (shouldReverse ? toBox.width / 2 : -toBox.width / 2)
+        : toPosition.x;
+      const endY = isHorizontal
+        ? toPosition.y
+        : toPosition.y + (shouldReverse ? toBox.height / 2 : -toBox.height / 2);
+      const midpointX = isHorizontal ? (startX + endX) / 2 : startX;
+      const midpointY = isHorizontal ? startY : (startY + endY) / 2;
+      const path = isHorizontal
+        ? `M ${startX} ${startY} L ${midpointX} ${startY} L ${midpointX} ${endY} L ${endX} ${endY}`
+        : `M ${startX} ${startY} L ${startX} ${midpointY} L ${endX} ${midpointY} L ${endX} ${endY}`;
+      const labelMarkup = edge.label
+        ? `<text class="markdown-mermaid-edge__label" x="${midpointX}" y="${midpointY - 10}" text-anchor="middle">${escapeHtml(edge.label)}</text>`
+        : "";
+
+      return `<g class="markdown-mermaid-edge"><path class="markdown-mermaid-edge__path" d="${path}" marker-end="url(#mermaid-arrowhead)" />${labelMarkup}</g>`;
+    })
+    .join("");
+
+  return `<svg class="markdown-mermaid-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Rendered Mermaid diagram" xmlns="http://www.w3.org/2000/svg"><defs><marker id="mermaid-arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth"><path class="markdown-mermaid-edge__arrowhead" d="M 0 0 L 12 6 L 0 12 z" /></marker></defs><rect class="markdown-mermaid-svg__frame" x="1" y="1" width="${width - 2}" height="${height - 2}" rx="24" ry="24" />${edgeMarkup}${nodeMarkup}</svg>`;
 }
 
 function renderMermaidFallback(source: string) {
@@ -335,7 +632,17 @@ function renderMermaidBlock(source: string) {
     return renderMermaidFallback(source);
   }
 
-  return `<figure class="markdown-mermaid markdown-mermaid--rendered"><div class="markdown-mermaid-shell">${renderMermaidSvg(source)}</div></figure>`;
+  if (!MERMAID_FLOWCHART_ROOTS.has(getMermaidRoot(source))) {
+    return renderMermaidFallback(source);
+  }
+
+  const diagram = parseMermaidFlowchart(source);
+
+  if (!diagram) {
+    return renderMermaidFallback(source);
+  }
+
+  return `<figure class="markdown-mermaid markdown-mermaid--rendered"><div class="markdown-mermaid-shell">${renderMermaidFlowchartSvg(diagram)}</div></figure>`;
 }
 
 export function createNoteExcerpt(markdown: string, title: string, maxLength = 180) {

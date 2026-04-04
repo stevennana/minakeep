@@ -66,7 +66,14 @@ flowchart TD
   assert.match(html, /markdown-mermaid markdown-mermaid--rendered/);
   assert.match(html, /<svg class="markdown-mermaid-svg"/);
   assert.match(html, /aria-label="Rendered Mermaid diagram"/);
-  assert.match(html, /flowchart TD/);
+  assert.match(html, /class="markdown-mermaid-node"/);
+  assert.match(html, /class="markdown-mermaid-edge__path"/);
+  assert.match(html, />Start</);
+  assert.match(html, />Ship it\?</);
+  assert.match(html, />Done</);
+  assert.match(html, />yes</);
+  assert.doesNotMatch(html, /markdown-mermaid-svg__line/);
+  assert.doesNotMatch(html, /flowchart TD/);
   assert.doesNotMatch(html, /```mermaid/);
 });
 
