@@ -33,10 +33,22 @@ flowchart LR
   Review -->|no| Revise[Keep editing]
 \`\`\`
 
-### Invalid Mermaid still fails softly
+### Supported non-flowchart diagrams should render semantically
 
 \`\`\`mermaid
-This is not valid Mermaid source.
+sequenceDiagram
+  participant Owner as Owner
+  participant Public as Public note
+  Owner->>Public: Publish note
+  Public-->>Owner: Render diagram inline
+\`\`\`
+
+### Malformed supported Mermaid still fails softly
+
+\`\`\`mermaid
+sequenceDiagram
+  participant Owner as Owner
+  This is not valid Mermaid source.
 \`\`\`
 
 The fallback should stay bounded and readable on narrow screens.`,
@@ -97,18 +109,23 @@ async function expectNoHorizontalOverflow(page: Page) {
 async function expectMermaidSurface(page: Page, viewport: "desktop" | "mobile") {
   const metrics = await page.evaluate(() => {
     const body = document.querySelector<HTMLElement>("[data-testid='public-note-markdown']");
-    const rendered = document.querySelector<HTMLElement>(".markdown-mermaid--rendered");
+    const rendered = document.querySelectorAll<HTMLElement>(".markdown-mermaid--rendered");
     const fallback = document.querySelector<HTMLElement>(".markdown-mermaid--fallback");
-    const svg = rendered?.querySelector<SVGElement>(".markdown-mermaid-svg");
+    const svg = rendered[0]?.querySelector<SVGElement>(".markdown-mermaid-svg");
+    const sequenceSvg = document.querySelector<SVGElement>(
+      ".markdown-mermaid--rendered .markdown-mermaid-svg--sequence"
+    );
     const fallbackPre = fallback?.querySelector<HTMLElement>("pre");
 
-    if (!body || !rendered || !fallback || !svg || !fallbackPre) {
+    if (!body || rendered.length < 2 || !fallback || !svg || !sequenceSvg || !fallbackPre) {
       throw new Error("Expected Mermaid public note anchors to exist.");
     }
 
     const bodyRect = body.getBoundingClientRect();
-    const renderedRect = rendered.getBoundingClientRect();
+    const renderedRect = rendered[0].getBoundingClientRect();
+    const renderedSequenceRect = rendered[1].getBoundingClientRect();
     const svgRect = svg.getBoundingClientRect();
+    const sequenceSvgRect = sequenceSvg.getBoundingClientRect();
     const fallbackRect = fallback.getBoundingClientRect();
     const fallbackPreRect = fallbackPre.getBoundingClientRect();
 
@@ -117,16 +134,21 @@ async function expectMermaidSurface(page: Page, viewport: "desktop" | "mobile") 
       fallbackPreWidth: Math.round(fallbackPreRect.width),
       fallbackWidth: Math.round(fallbackRect.width),
       renderedWidth: Math.round(renderedRect.width),
+      renderedSequenceWidth: Math.round(renderedSequenceRect.width),
       svgWidth: Math.round(svgRect.width),
+      sequenceSvgWidth: Math.round(sequenceSvgRect.width),
       viewportWidth: document.documentElement.clientWidth
     };
   });
 
   expect(metrics.renderedWidth).toBeLessThanOrEqual(metrics.bodyWidth + 1);
+  expect(metrics.renderedSequenceWidth).toBeLessThanOrEqual(metrics.bodyWidth + 1);
   expect(metrics.fallbackWidth).toBeLessThanOrEqual(metrics.bodyWidth + 1);
   expect(metrics.fallbackPreWidth).toBeLessThanOrEqual(metrics.fallbackWidth + 1);
   expect(metrics.svgWidth).toBeGreaterThanOrEqual(viewport === "desktop" ? 440 : metrics.viewportWidth - 73);
   expect(metrics.svgWidth).toBeLessThanOrEqual(metrics.bodyWidth + 1);
+  expect(metrics.sequenceSvgWidth).toBeGreaterThanOrEqual(viewport === "desktop" ? 440 : metrics.viewportWidth - 73);
+  expect(metrics.sequenceSvgWidth).toBeLessThanOrEqual(metrics.bodyWidth + 1);
 }
 
 test.describe.configure({ mode: "serial" });
@@ -144,16 +166,24 @@ test("@ui-public-note-mermaid @ui-mermaid-regression published note renders Merm
   await page.goto(`/notes/${seededNote.slug}`);
 
   const noteBody = page.getByTestId("public-note-markdown");
-  const renderedDiagram = noteBody.locator(".markdown-mermaid--rendered");
+  const renderedDiagrams = noteBody.locator(".markdown-mermaid--rendered");
+  const flowchartDiagram = renderedDiagrams.nth(0);
+  const sequenceDiagram = renderedDiagrams.nth(1);
   const fallbackDiagram = noteBody.locator(".markdown-mermaid--fallback");
 
   await expect(page.getByRole("heading", { name: seededNote.title })).toBeVisible();
   await expect(noteBody.getByRole("heading", { name: "Diagram rhythm should stay in the article" })).toBeVisible();
-  await expect(renderedDiagram.locator("svg[aria-label='Rendered Mermaid diagram']")).toBeVisible();
+  await expect(noteBody.getByRole("heading", { name: "Supported non-flowchart diagrams should render semantically" })).toBeVisible();
+  await expect(flowchartDiagram.locator("svg[aria-label='Rendered Mermaid diagram']")).toBeVisible();
+  await expect(sequenceDiagram.locator("svg.markdown-mermaid-svg--sequence[aria-label='Rendered Mermaid diagram']")).toBeVisible();
+  await expect(sequenceDiagram.locator(".markdown-mermaid-sequence__participant")).toHaveCount(2);
+  await expect(sequenceDiagram.locator(".markdown-mermaid-sequence__message")).toHaveCount(2);
   await expect(fallbackDiagram).toContainText("Diagram preview unavailable");
+  await expect(fallbackDiagram).toContainText("sequenceDiagram");
   await expect(fallbackDiagram).toContainText("This is not valid Mermaid source.");
   await expect(noteBody).not.toContainText("```mermaid");
   await expect(noteBody).not.toContainText("flowchart LR");
+  await expect(noteBody).not.toContainText("Owner->>Public: Publish note");
   await expect(noteBody.locator("[data-processed='true']")).toHaveCount(0);
   await expectMermaidSurface(page, "desktop");
   await expectNoHorizontalOverflow(page);
@@ -168,14 +198,21 @@ test("@ui-public-note-mermaid @ui-mermaid-regression published note keeps Mermai
   await page.goto(`/notes/${seededNote.slug}`);
 
   const noteBody = page.getByTestId("public-note-markdown");
-  const renderedDiagram = noteBody.locator(".markdown-mermaid--rendered");
+  const renderedDiagrams = noteBody.locator(".markdown-mermaid--rendered");
+  const flowchartDiagram = renderedDiagrams.nth(0);
+  const sequenceDiagram = renderedDiagrams.nth(1);
   const fallbackDiagram = noteBody.locator(".markdown-mermaid--fallback");
 
   await expect(page.getByRole("heading", { name: seededNote.title })).toBeVisible();
-  await expect(renderedDiagram.locator("svg[aria-label='Rendered Mermaid diagram']")).toBeVisible();
+  await expect(flowchartDiagram.locator("svg[aria-label='Rendered Mermaid diagram']")).toBeVisible();
+  await expect(sequenceDiagram.locator("svg.markdown-mermaid-svg--sequence[aria-label='Rendered Mermaid diagram']")).toBeVisible();
+  await expect(sequenceDiagram.locator(".markdown-mermaid-sequence__participant")).toHaveCount(2);
+  await expect(sequenceDiagram.locator(".markdown-mermaid-sequence__message")).toHaveCount(2);
   await expect(fallbackDiagram).toContainText("Diagram preview unavailable");
+  await expect(fallbackDiagram).toContainText("sequenceDiagram");
   await expect(noteBody).not.toContainText("```mermaid");
   await expect(noteBody).not.toContainText("flowchart LR");
+  await expect(noteBody).not.toContainText("Owner->>Public: Publish note");
   await expectMermaidSurface(page, "mobile");
   await expectNoHorizontalOverflow(page);
 

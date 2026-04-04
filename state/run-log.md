@@ -1881,3 +1881,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true The task is complete in substance. The shared Mermaid path in `src/features/notes/markdown.ts` is materially stricter than the prior faux-diagram implementation: Minakeep now only treats `flowchart`, `graph`, and `sequenceDiagram` as supported roots, renders supported roots through real static SVG output, and sends unsupported or malformed supported-root input to the fallback shell. The renderer remains markdown-native and server-safe, the authored fence source is not rewritten, unit tests explicitly cover valid flowchart output, valid non-flowchart output, unsupported-root fallback, and malformed supported-root fallback, and the provided deterministic check summary shows both `npm run test:unit` and `npm run verify` passing. -> state/artifacts/20260404T142940-096-mermaid-semantic-rendering-foundation/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260404T142940-096-mermaid-semantic-rendering-foundation/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 096-mermaid-semantic-rendering-foundation -> 097-public-mermaid-contract-realignment
+- backlog: rendered current=097-public-mermaid-contract-realignment
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxoooxxooxoxxxooxxxoxxoooxxxxxxxxxo
+- cycle: finished
+
+### cycle 2026-04-04T14:58:59+09:00 task=097-public-mermaid-contract-realignment
+- artifacts: state/artifacts/20260404T145859-097-public-mermaid-contract-realignment
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260404T145859-097-public-mermaid-contract-realignment/worker.jsonl
+- worker-summary: Strengthened the public Mermaid contract on published note pages. The main change is in [ui-public-note-mermaid.spec.ts](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-public-note-mermaid.spec.ts): it now proves flowchart success, real `sequenceDiagram` success, and malformed supported-root fallback on desktop and mobile, with refreshed snapshots. I also fixed the shared sequence parser in [markdown.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/markdown.ts) so arrow syntax no longer corrupts participant ids, added tighter unit coverage in [note-markdown.test.ts](/Users/stevenna/WebstormProjects/minakeep/tests/unit/note-markdown.test.ts), added a stable test id in [page.tsx](/Users/stevenna/WebstormProjects/minakeep/src/app/notes/[slug]/page.tsx), and made a small public sequence width adjustment in [globals.css](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css). The task log was updated in [097-public-mermaid-contract-realignment.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/097-public-mermaid-contract-realignment.md), and the operator handoff was written to [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260404T145859-097-public-mermaid-contract-realignment/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260404T145859-097-public-mermaid-contract-realignment/npm-run-test-e2e-grep-ui-public-note-mermaid-next-server.log

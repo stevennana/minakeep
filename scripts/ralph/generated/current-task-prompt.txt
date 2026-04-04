@@ -2,47 +2,48 @@ Read the following repository documents before making changes:
 - AGENTS.md
 - ARCHITECTURE.md
 - docs/FRONTEND.md
+- docs/product-specs/public-note-reading.md
 - docs/product-specs/markdown-mermaid-diagrams.md
 - docs/design-docs/markdown-diagram-rendering.md
-- docs/exec-plans/active/096-mermaid-semantic-rendering-foundation.md
+- docs/references/ui-verification-contract.md
+- docs/exec-plans/active/097-public-mermaid-contract-realignment.md
 
-Current task id: 096-mermaid-semantic-rendering-foundation
-Current task title: Mermaid semantic rendering foundation
+Current task id: 097-public-mermaid-contract-realignment
+Current task title: Public Mermaid contract realignment
 
 Objective:
-Reset the shared Mermaid renderer so every Mermaid root Minakeep treats as supported has a real semantic rendering path, while malformed syntax for supported roots reliably falls back.
+Prove the stricter Mermaid renderer contract holds on published note pages for both supported-root success cases and supported-root failure cases.
 
 Scope:
-- shared Mermaid renderer contract in `src/features/notes/markdown.ts`
-- supported-root validation and fallback rules
-- unit coverage for real rendered output versus fallback across flowchart and non-flowchart roots
-- shared CSS adjustments only where the stricter renderer needs different container treatment
+- public note reading for supported Mermaid roots
+- public fallback behavior for malformed supported-root Mermaid
+- responsive and screenshot verification for the stricter public note output
 
 Out of scope:
-- public note page route wiring beyond consuming the shared renderer
-- editor mode behavior beyond consuming the shared renderer
-- Mermaid authoring helpers or toolbar additions
+- editor preview mode switching
+- new Mermaid roots beyond what task 096 explicitly supports
+- homepage/showroom behavior
 
 Exit criteria:
-1. Supported Mermaid roots that Minakeep claims to render no longer collapse into generic summary cards.
-2. Malformed syntax for supported Mermaid roots reaches the fallback shell rather than appearing as a successful render.
-3. The shared renderer contract remains markdown-native and server-safe.
-4. `npm run test:unit` and `npm run verify` pass.
+1. Public note pages show real semantic Mermaid output for at least one supported non-flowchart root in addition to flowchart coverage.
+2. Public note pages show the documented fallback shell for malformed syntax in a supported Mermaid root.
+3. Desktop and mobile public note reading remain bounded and readable under the stricter renderer.
+4. `npm run test:e2e -- --grep @ui-public-note-mermaid` and `npm run verify` pass.
 
 Required checks:
-- `npm run test:unit`
+- `npm run test:e2e -- --grep @ui-public-note-mermaid`
 - `npm run verify`
 
 Evaluator notes:
-Promote only when the shared renderer contract is materially stricter than the shipped faux-diagram implementation and the new supported-root behavior is protected by unit tests rather than narrative claims.
+Promote only when the public note page no longer gives a false impression that non-flowchart Mermaid is implemented by hiding source inside decorative summary art.
 
 Required repository artifacts for this task:
-- src/features/notes/markdown.ts
+- src/app/notes/[slug]/page.tsx
 - src/app/globals.css
-- tests/unit
+- tests/e2e
 
 Required commands for this task:
-- npm run test:unit
+- npm run test:e2e -- --grep @ui-public-note-mermaid
 - npm run verify
 
 Previous known gaps from the last evaluation:

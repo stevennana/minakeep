@@ -5,7 +5,7 @@
   "id": "096-mermaid-semantic-rendering-foundation",
   "title": "Mermaid semantic rendering foundation",
   "order": 96,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "standard",
   "next_task_on_success": "097-public-mermaid-contract-realignment",
   "prompt_docs": [
@@ -28,7 +28,8 @@
     "Supported Mermaid roots still render as diagram-themed text summaries instead of semantic diagram output.",
     "The renderer claims success for malformed syntax in a supported Mermaid root instead of reaching the fallback shell.",
     "The new shared Mermaid path introduces client-only script execution or mutates stored markdown."
-  ]
+  ],
+  "completed_at": "2026-04-04T05:58:28.850Z"
 }
 ```
 
@@ -70,3 +71,4 @@ Promote only when the shared renderer contract is materially stricter than the s
 - Start here. Append timestamped progress notes as work lands.
 - 2026-04-04 14:32:31 KST: Replaced the faux generic Mermaid success path in `src/features/notes/markdown.ts` with a stricter supported-root contract. Minakeep now treats only `flowchart`, `graph`, and `sequenceDiagram` as supported roots, preserving the existing semantic flowchart renderer and adding a semantic SVG renderer for `sequenceDiagram`.
 - 2026-04-04 14:32:31 KST: Added unit coverage proving rendered output for supported flowchart and sequence diagrams, fallback for unsupported roots, and fallback for malformed syntax in supported roots. Updated shared Mermaid SVG styling in `src/app/globals.css` for the new sequence renderer without changing route wiring.
+- 2026-04-04T05:58:28.850Z: automatically promoted after deterministic checks and evaluator approval.

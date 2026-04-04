@@ -1,1 +1,1 @@
-096-mermaid-semantic-rendering-foundation
+097-public-mermaid-contract-realignment

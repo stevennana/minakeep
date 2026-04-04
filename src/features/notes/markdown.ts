@@ -42,8 +42,13 @@ const MERMAID_MAX_SOURCE_PREVIEW_LINES = 8;
 const MERMAID_MAX_LINE_LENGTH = 72;
 const MERMAID_FLOWCHART_ROOTS = new Set(["flowchart", "graph"]);
 const MERMAID_FLOWCHART_DIRECTIONS = new Set(["TB", "TD", "BT", "LR", "RL"]);
-const MERMAID_SEQUENCE_PARTICIPANT_DECLARATION = /^participant\s+([A-Za-z0-9_:-]+)(?:\s+as\s+(.+))?$/;
-const MERMAID_SEQUENCE_MESSAGE = /^([A-Za-z0-9_:-]+)\s*([-.<>=x+]+)\s*([A-Za-z0-9_:-]+)\s*(?::\s*(.+))?$/;
+const MERMAID_SEQUENCE_PARTICIPANT_TOKEN = "[A-Za-z0-9_:]+";
+const MERMAID_SEQUENCE_PARTICIPANT_DECLARATION = new RegExp(
+  `^participant\\s+(${MERMAID_SEQUENCE_PARTICIPANT_TOKEN})(?:\\s+as\\s+(.+))?$`
+);
+const MERMAID_SEQUENCE_MESSAGE = new RegExp(
+  `^(${MERMAID_SEQUENCE_PARTICIPANT_TOKEN})\\s*(-->>|->>|-->|->|--x|-x)\\s*(${MERMAID_SEQUENCE_PARTICIPANT_TOKEN})\\s*(?::\\s*(.+))?$`
+);
 
 type MermaidNodeShape = "circle" | "diamond" | "rect" | "stadium";
 

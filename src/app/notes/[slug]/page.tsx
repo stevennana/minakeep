@@ -32,7 +32,7 @@ export default async function PublicNotePage({ params }: PublicNotePageProps) {
 
   return (
     <div className="feature-layout public-note-layout">
-      <Surface as="article" className="public-note-card" tone="card">
+      <Surface as="article" className="public-note-card" data-testid="public-note-card" tone="card">
         <header className="public-note-header">
           <div className="public-note-header-row public-note-utility-row">
             <ButtonLink className="public-note-back-link" href="/" variant="ghost">

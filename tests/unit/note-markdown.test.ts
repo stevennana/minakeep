@@ -82,20 +82,26 @@ test("renderMarkdownToHtml renders supported sequence mermaid fences with semant
 sequenceDiagram
   participant A as Alice
   participant B as Bob
-  Alice->>Bob: hello
-  Bob-->>Alice: shipped
+  A->>B: hello
+  B-->>A: shipped
 \`\`\``);
 
   assert.match(html, /markdown-mermaid markdown-mermaid--rendered/);
   assert.match(html, /markdown-mermaid-svg markdown-mermaid-svg--sequence/);
   assert.match(html, /class="markdown-mermaid-sequence__participant"/);
   assert.match(html, /class="markdown-mermaid-sequence__message-line"/);
+  assert.match(html, /data-participant-id="A"/);
+  assert.match(html, /data-participant-id="B"/);
   assert.match(html, />Alice</);
   assert.match(html, />Bob</);
   assert.match(html, />hello</);
   assert.match(html, />shipped</);
+  assert.equal((html.match(/data-participant-id="/g) ?? []).length, 2);
+  assert.equal((html.match(/class="markdown-mermaid-sequence__message">/g) ?? []).length, 2);
   assert.doesNotMatch(html, /markdown-mermaid markdown-mermaid--fallback/);
-  assert.doesNotMatch(html, /Alice-&gt;&gt;Bob: hello/);
+  assert.doesNotMatch(html, /A-&gt;&gt;B: hello/);
+  assert.doesNotMatch(html, /data-participant-id="Alice-"/);
+  assert.doesNotMatch(html, /data-participant-id="Bob--"/);
 });
 
 test("renderMarkdownToHtml falls back for unsupported mermaid roots instead of claiming a rendered diagram", () => {
