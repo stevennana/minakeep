@@ -80,3 +80,4 @@
 - 2026-04-04T04:05:43.217Z: promoted 093-public-mermaid-note-surfaces -> 094-editor-mermaid-preview
 - 2026-04-04T04:21:23.431Z: promoted 094-editor-mermaid-preview -> 095-mermaid-wave-hardening
 - 2026-04-04T05:58:28.850Z: promoted 096-mermaid-semantic-rendering-foundation -> 097-public-mermaid-contract-realignment
+- 2026-04-04T06:09:03.938Z: promoted 097-public-mermaid-contract-realignment -> 098-editor-mermaid-regression-closeout

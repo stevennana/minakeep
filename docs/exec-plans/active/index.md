@@ -6,11 +6,9 @@ Only task files in this directory that contain a `taskmeta` JSON block are eligi
 
 ## Current recommended sequence
 
-1. `096-mermaid-semantic-rendering-foundation.md` -> replace the fake non-flowchart Mermaid summary renderer with a real shared semantic rendering contract and strengthen invalid-syntax fallback detection.
-2. `097-public-mermaid-contract-realignment.md` -> prove published note pages reflect the stricter Mermaid contract for supported roots and supported-root failures.
-3. `098-editor-mermaid-regression-closeout.md` -> bring the same stricter Mermaid contract through the owner preview path and close the next Mermaid wave with deterministic replay.
+1. `098-editor-mermaid-regression-closeout.md` -> close the Mermaid wave by proving owner preview and published notes replay the same stricter renderer contract under one deterministic regression tag.
 
-Tasks `092` through `095` remain preserved in completed history as the first Mermaid tranche. This new queue exists because review found two gaps in the shipped renderer: non-flowchart roots are still represented by generic diagram-themed summary cards, and malformed syntax for some supported roots can still appear as a successful render instead of falling back.
+Tasks `092` through `097` remain preserved in completed history as the shipped Mermaid foundation, hardening, and public-contract slices. The only active Mermaid task left is the closeout step that verifies the owner preview path, the bundled `@ui-mermaid-regression` replay command, and the final queue/docs wording all match the stricter renderer that shipped.
 
 ## Operating rule
 

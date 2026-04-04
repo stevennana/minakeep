@@ -2,48 +2,52 @@ Read the following repository documents before making changes:
 - AGENTS.md
 - ARCHITECTURE.md
 - docs/FRONTEND.md
-- docs/product-specs/public-note-reading.md
+- docs/product-specs/note-authoring.md
+- docs/product-specs/markdown-editor-workbench.md
 - docs/product-specs/markdown-mermaid-diagrams.md
 - docs/design-docs/markdown-diagram-rendering.md
 - docs/references/ui-verification-contract.md
-- docs/exec-plans/active/097-public-mermaid-contract-realignment.md
+- docs/exec-plans/active/098-editor-mermaid-regression-closeout.md
 
-Current task id: 097-public-mermaid-contract-realignment
-Current task title: Public Mermaid contract realignment
+Current task id: 098-editor-mermaid-regression-closeout
+Current task title: Editor Mermaid regression closeout
 
 Objective:
-Prove the stricter Mermaid renderer contract holds on published note pages for both supported-root success cases and supported-root failure cases.
+Carry the stricter Mermaid renderer contract through the owner preview path and close the next Mermaid wave with one deterministic replay path.
 
 Scope:
-- public note reading for supported Mermaid roots
-- public fallback behavior for malformed supported-root Mermaid
-- responsive and screenshot verification for the stricter public note output
+- editor preview parity for supported Mermaid roots and supported-root failures
+- deterministic Mermaid regression replay across public note and editor surfaces
+- final doc and queue alignment for the stricter Mermaid contract
 
 Out of scope:
-- editor preview mode switching
-- new Mermaid roots beyond what task 096 explicitly supports
-- homepage/showroom behavior
+- Mermaid authoring productivity features
+- new public surfaces beyond published note reading
+- broader markdown rendering changes unrelated to Mermaid
 
 Exit criteria:
-1. Public note pages show real semantic Mermaid output for at least one supported non-flowchart root in addition to flowchart coverage.
-2. Public note pages show the documented fallback shell for malformed syntax in a supported Mermaid root.
-3. Desktop and mobile public note reading remain bounded and readable under the stricter renderer.
-4. `npm run test:e2e -- --grep @ui-public-note-mermaid` and `npm run verify` pass.
+1. Owner preview matches the stricter public Mermaid contract for supported roots and supported-root fallback behavior.
+2. Saving and reopening notes still preserves the raw Mermaid fence text unchanged.
+3. One Mermaid regression command replays the shipped public-note and editor Mermaid surfaces under the stricter contract.
+4. `npm run test:e2e -- --grep @ui-note-editor-mermaid`, `npm run test:e2e -- --grep @ui-mermaid-regression`, and `npm run verify` pass.
 
 Required checks:
-- `npm run test:e2e -- --grep @ui-public-note-mermaid`
+- `npm run test:e2e -- --grep @ui-note-editor-mermaid`
+- `npm run test:e2e -- --grep @ui-mermaid-regression`
 - `npm run verify`
 
 Evaluator notes:
-Promote only when the public note page no longer gives a false impression that non-flowchart Mermaid is implemented by hiding source inside decorative summary art.
+Promote only when the next Mermaid wave closes with the docs, queue, and regression bundle all describing the same stricter renderer that actually shipped.
 
 Required repository artifacts for this task:
-- src/app/notes/[slug]/page.tsx
+- src/features/notes/components/note-editor.tsx
 - src/app/globals.css
 - tests/e2e
+- docs
 
 Required commands for this task:
-- npm run test:e2e -- --grep @ui-public-note-mermaid
+- npm run test:e2e -- --grep @ui-note-editor-mermaid
+- npm run test:e2e -- --grep @ui-mermaid-regression
 - npm run verify
 
 Previous known gaps from the last evaluation:

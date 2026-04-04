@@ -5,7 +5,7 @@
   "id": "097-public-mermaid-contract-realignment",
   "title": "Public Mermaid contract realignment",
   "order": 97,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "098-editor-mermaid-regression-closeout",
   "prompt_docs": [
@@ -30,7 +30,8 @@
     "Published note pages still show generic diagram-summary shells for supported non-flowchart Mermaid roots.",
     "Malformed syntax for a supported Mermaid root still appears as a successful public render instead of a visible fallback.",
     "The stricter public Mermaid renderer causes overflow, unreadable labels, or unstable mobile note reading."
-  ]
+  ],
+  "completed_at": "2026-04-04T06:09:03.938Z"
 }
 ```
 
@@ -73,3 +74,4 @@ Promote only when the public note page no longer gives a false impression that n
 - 2026-04-04T06:22:00.000Z: audited the public note Mermaid path and confirmed the shared markdown renderer already supports `sequenceDiagram`; the task gap was public-contract proof rather than missing renderer plumbing.
 - 2026-04-04T06:27:00.000Z: expanded `@ui-public-note-mermaid` coverage to seed three public cases in one note: flowchart success, `sequenceDiagram` success, and malformed `sequenceDiagram` fallback, with assertions against real sequence-diagram SVG structure plus bounded fallback output.
 - 2026-04-04T06:29:00.000Z: added a stable public-note article test id and a small public sequence-diagram width rule to keep stricter screenshot/readability checks deterministic across desktop and mobile.
+- 2026-04-04T06:09:03.938Z: automatically promoted after deterministic checks and evaluator approval.

@@ -5,7 +5,7 @@
   "id": "098-editor-mermaid-regression-closeout",
   "title": "Editor Mermaid regression closeout",
   "order": 98,
-  "status": "queued",
+  "status": "active",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "NONE",
   "prompt_docs": [
@@ -73,3 +73,6 @@ Promote only when the next Mermaid wave closes with the docs, queue, and regress
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-04-04T06:09:03.938Z: restored as current task after 097-public-mermaid-contract-realignment promotion.
+- 2026-04-04T15:13:23+0900: audited the shipped owner preview path against the stricter public Mermaid contract and confirmed `src/features/notes/components/note-editor.tsx` already renders preview through the shared `renderMarkdownToHtml()` boundary, so supported-root success and supported-root fallback behavior were already in parity.
+- 2026-04-04T15:13:23+0900: reran the required deterministic gates from the current workspace; `npm run test:e2e -- --grep @ui-note-editor-mermaid`, `npm run test:e2e -- --grep @ui-mermaid-regression`, and `npm run verify` all passed, including the bundled public-note plus owner-preview Mermaid replay and startup smoke.

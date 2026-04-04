@@ -1896,3 +1896,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260404T145859-097-public-mermaid-contract-realignment/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260404T145859-097-public-mermaid-contract-realignment/npm-run-test-e2e-grep-ui-public-note-mermaid-next-server.log
+- commit: commit: created
+- promote: Promoted 097-public-mermaid-contract-realignment -> 098-editor-mermaid-regression-closeout
+- backlog: rendered current=098-editor-mermaid-regression-closeout
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxoooxxooxoxxxooxxxoxxoooxxxxxxxxxoo
+- cycle: finished
+
+### cycle 2026-04-04T15:09:34+09:00 task=098-editor-mermaid-regression-closeout
+- artifacts: state/artifacts/20260404T150934-098-editor-mermaid-regression-closeout
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260404T150934-098-editor-mermaid-regression-closeout/worker.jsonl
+- worker-summary: The renderer path did not need code changes. I verified that owner preview in [note-editor.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/components/note-editor.tsx) already uses the shared `renderMarkdownToHtml()` contract, so supported Mermaid roots and supported-root fallback behavior were already in parity with the public note surface. I then updated the task log in [098-editor-mermaid-regression-closeout.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/098-editor-mermaid-regression-closeout.md), tightened the active Mermaid queue wording in [index.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/index.md), and wrote the operator handoff to [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260404T150934-098-editor-mermaid-regression-closeout/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260404T150934-098-editor-mermaid-regression-closeout/npm-run-test-e2e-grep-ui-note-editor-mermaid-next-server.log
