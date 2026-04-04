@@ -76,3 +76,4 @@
 - 2026-03-23T10:44:56.760Z: promoted 088-public-sitemap-and-robots -> 089-public-seo-discovery-hardening
 - 2026-03-23T10:57:22.796Z: promoted 089-public-seo-discovery-hardening -> NONE
 - 2026-03-27T14:35:50.928Z: promoted 091-note-math-verification -> NONE
+- 2026-04-04T03:57:08.721Z: promoted 092-mermaid-renderer-foundation -> 093-public-mermaid-note-surfaces

@@ -5,7 +5,7 @@
   "id": "093-public-mermaid-note-surfaces",
   "title": "Public Mermaid note reading",
   "order": 93,
-  "status": "queued",
+  "status": "active",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "094-editor-mermaid-preview",
   "prompt_docs": [
@@ -68,3 +68,5 @@ Promote only when the public Mermaid wave feels like part of the shipped note-re
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-04-04T03:57:08.721Z: restored as current task after 092-mermaid-renderer-foundation promotion.
+- 2026-04-04T03:59:00Z: added a public-note Mermaid surface hook, tightened published-note Mermaid sizing and fallback containment in `src/app/globals.css`, and added dedicated Playwright coverage tagged `@ui-public-note-mermaid` for rendered and fallback Mermaid blocks on desktop and mobile.

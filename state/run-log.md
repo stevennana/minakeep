@@ -1704,3 +1704,18 @@ No remaining task. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true The task is complete in substance. Mermaid handling lives in the shared note markdown pipeline, not in a route-local patch: `renderMarkdownToHtml` detects exact `mermaid` fences, routes them through shared Mermaid rendering/fallback helpers, and that same renderer is used by both owner preview and public note pages. The implementation preserves the raw authored markdown, emits deterministic sanitized static SVG shells for supported Mermaid input, emits a bounded escaped fallback shell for invalid input, and adds shared CSS primitives for stable containers and overflow behavior. Unit coverage explicitly protects valid flowchart rendering, supported non-flowchart rendering, invalid fallback behavior, and non-mutation of authored fence source. Required commands are documented as passing. -> state/artifacts/20260404T124859-092-mermaid-renderer-foundation/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260404T124859-092-mermaid-renderer-foundation/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 092-mermaid-renderer-foundation -> 093-public-mermaid-note-surfaces
+- backlog: rendered current=093-public-mermaid-note-surfaces
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxoooxxooxoxxxooxxxoxxo
+- cycle: finished
+
+### cycle 2026-04-04T12:57:38+09:00 task=093-public-mermaid-note-surfaces
+- artifacts: state/artifacts/20260404T125738-093-public-mermaid-note-surfaces
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260404T125738-093-public-mermaid-note-surfaces/worker.jsonl
+- worker-summary: Mermaid diagrams now read as part of the published note surface on [`src/app/notes/[slug]/page.tsx`](/Users/stevenna/WebstormProjects/minakeep/src/app/notes/[slug]/page.tsx) through the existing shared renderer, with public-note-specific containment and spacing in [`src/app/globals.css`](/Users/stevenna/WebstormProjects/minakeep/src/app/globals.css). I added dedicated public regression coverage in [`tests/e2e/ui-public-note-mermaid.spec.ts`](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-public-note-mermaid.spec.ts) and recorded the desktop/mobile baselines under [`tests/e2e/ui-public-note-mermaid.spec.ts-snapshots`](/Users/stevenna/WebstormProjects/minakeep/tests/e2e/ui-public-note-mermaid.spec.ts-snapshots). The task log was updated in [`docs/exec-plans/active/093-public-mermaid-note-surfaces.md`](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/093-public-mermaid-note-surfaces.md), and the operator handoff summary is in [`state/last-result.txt`](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt).
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260404T125738-093-public-mermaid-note-surfaces/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260404T125738-093-public-mermaid-note-surfaces/npm-run-test-e2e-grep-ui-public-note-mermaid-next-server.log

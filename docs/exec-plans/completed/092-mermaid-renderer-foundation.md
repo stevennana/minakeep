@@ -5,7 +5,7 @@
   "id": "092-mermaid-renderer-foundation",
   "title": "Mermaid renderer foundation",
   "order": 92,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "standard",
   "next_task_on_success": "093-public-mermaid-note-surfaces",
   "prompt_docs": [
@@ -31,7 +31,8 @@
     "Mermaid support introduces a second persisted note-body format or rewrites stored markdown behind the author's back.",
     "The renderer depends on inline note scripts, remote embeds, or other unsafe public-page execution paths.",
     "Invalid Mermaid source crashes owner preview, published note rendering, or showroom preview derivation instead of failing soft."
-  ]
+  ],
+  "completed_at": "2026-04-04T03:57:08.721Z"
 }
 ```
 
@@ -80,3 +81,4 @@ Promote only when Mermaid support is clearly a shared rendering primitive rather
 - 2026-04-04 12:42 KST: Tightened `tests/unit/note-markdown.test.ts` so the success path now asserts rendered diagram structure and labels instead of accepting a styled source-preview SVG.
 - 2026-04-04 12:50 KST: Extended the shared Mermaid renderer so valid non-flowchart roots now emit deterministic sanitized SVG output instead of being routed into the fallback shell, keeping invalid Mermaid fences on the bounded fallback path.
 - 2026-04-04 12:50 KST: Added unit coverage for a valid `sequenceDiagram` fence and kept the invalid Mermaid assertions focused on the fallback shell contract rather than root-type support gaps.
+- 2026-04-04T03:57:08.721Z: automatically promoted after deterministic checks and evaluator approval.

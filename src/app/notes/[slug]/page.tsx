@@ -28,6 +28,7 @@ export default async function PublicNotePage({ params }: PublicNotePageProps) {
   const publishedAt = note.publishedAt ?? note.updatedAt;
   const formattedPublishedAt = new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(publishedAt);
   const hasSupportContent = Boolean(note.summary) || note.tags.length > 0;
+  const renderedMarkdown = renderMarkdownToHtml(note.markdown);
 
   return (
     <div className="feature-layout public-note-layout">
@@ -70,9 +71,9 @@ export default async function PublicNotePage({ params }: PublicNotePageProps) {
           ) : null}
         </header>
         <div
-          className="markdown-preview public-note-body"
+          className="markdown-preview public-note-body public-note-body--published"
           data-testid="public-note-markdown"
-          dangerouslySetInnerHTML={{ __html: renderMarkdownToHtml(note.markdown) }}
+          dangerouslySetInnerHTML={{ __html: renderedMarkdown }}
         />
       </Surface>
     </div>

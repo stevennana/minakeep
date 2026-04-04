@@ -2695,6 +2695,10 @@ textarea {
   margin: 1.05rem 0 1.2rem;
 }
 
+.public-note-body--published .markdown-mermaid {
+  margin: 1.35rem 0 1.55rem;
+}
+
 .markdown-preview .markdown-mermaid-shell {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(241, 245, 249, 0.78)),
@@ -2706,9 +2710,18 @@ textarea {
   overflow: hidden;
 }
 
+.public-note-body--published .markdown-mermaid-shell {
+  padding: 0.45rem;
+}
+
 .markdown-preview .markdown-mermaid--rendered .markdown-mermaid-shell {
   overflow-x: auto;
   overflow-y: hidden;
+}
+
+.public-note-body--published .markdown-mermaid--rendered .markdown-mermaid-shell {
+  overscroll-behavior-x: contain;
+  scrollbar-gutter: stable both-edges;
 }
 
 .markdown-preview .markdown-mermaid-svg {
@@ -2716,6 +2729,10 @@ textarea {
   height: auto;
   min-width: 32rem;
   width: 100%;
+}
+
+.public-note-body--published .markdown-mermaid-svg {
+  min-width: min(100%, 30rem);
 }
 
 .markdown-preview .markdown-mermaid-svg__frame {
@@ -2782,6 +2799,10 @@ textarea {
   padding: 1rem;
 }
 
+.public-note-body--published .markdown-mermaid--fallback .markdown-mermaid-shell {
+  padding: 1rem 1rem 0.95rem;
+}
+
 .markdown-preview .markdown-mermaid-shell__meta {
   color: var(--accent-strong);
   font-family: var(--font-ui);
@@ -2796,14 +2817,35 @@ textarea {
   margin: 0;
 }
 
+.public-note-body--published .markdown-mermaid-shell__body {
+  max-width: 56ch;
+}
+
 .markdown-preview .markdown-mermaid--fallback pre {
   background: rgba(15, 23, 42, 0.94);
   margin: 0;
 }
 
+.public-note-body--published .markdown-mermaid--fallback pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
 @media (max-width: 640px) {
   .markdown-preview .markdown-mermaid-svg {
     min-width: 26rem;
+  }
+
+  .public-note-body--published .markdown-mermaid-shell {
+    padding: 0.35rem;
+  }
+
+  .public-note-body--published .markdown-mermaid-svg {
+    min-width: 100%;
+  }
+
+  .public-note-body--published .markdown-mermaid--fallback .markdown-mermaid-shell {
+    padding: 0.85rem 0.85rem 0.8rem;
   }
 }
 

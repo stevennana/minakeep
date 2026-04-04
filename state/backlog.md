@@ -79,8 +79,8 @@
 - [x] 089-public-seo-discovery-hardening — Public SEO discovery hardening
 - [x] 090-incremental-content-loading — Incremental content loading
 - [x] 091-note-math-verification — Note math verification
-- [ ] 092-mermaid-renderer-foundation — Mermaid renderer foundation ← current
-- [ ] 093-public-mermaid-note-surfaces — Public Mermaid note reading
+- [x] 092-mermaid-renderer-foundation — Mermaid renderer foundation
+- [ ] 093-public-mermaid-note-surfaces — Public Mermaid note reading ← current
 - [ ] 094-editor-mermaid-preview — Editor Mermaid preview
 - [ ] 095-mermaid-wave-hardening — Mermaid wave hardening
 

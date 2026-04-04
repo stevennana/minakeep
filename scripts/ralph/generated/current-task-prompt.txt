@@ -2,57 +2,51 @@ Read the following repository documents before making changes:
 - AGENTS.md
 - ARCHITECTURE.md
 - docs/FRONTEND.md
-- docs/product-specs/note-authoring.md
-- docs/product-specs/markdown-editor-workbench.md
+- docs/product-specs/public-note-reading.md
 - docs/product-specs/markdown-mermaid-diagrams.md
-- docs/design-docs/markdown-editor-workbench.md
 - docs/design-docs/markdown-diagram-rendering.md
-- docs/exec-plans/active/092-mermaid-renderer-foundation.md
+- docs/references/ui-verification-contract.md
+- docs/exec-plans/active/093-public-mermaid-note-surfaces.md
 
-Current task id: 092-mermaid-renderer-foundation
-Current task title: Mermaid renderer foundation
+Current task id: 093-public-mermaid-note-surfaces
+Current task title: Public Mermaid note reading
 
 Objective:
-Extend the shared note-markdown pipeline so Mermaid fenced blocks become a first-class supported note syntax without changing the markdown-native save contract.
+Expose Mermaid diagrams on published note pages through the existing shared note-reading path.
 
 Scope:
-- Mermaid fenced-block detection in the shared note renderer
-- sanitized static diagram output or bounded fallback output
-- unit coverage for valid and invalid Mermaid cases
-- shared CSS primitives needed for stable rendered-diagram containers
+- Mermaid rendering on `/notes/[slug]`
+- responsive and accessibility-safe public styling for diagrams
+- dedicated public-surface Playwright coverage
 
 Out of scope:
-- public note-page wiring
-- showroom card preview wiring
-- owner editor preview wiring
-- Mermaid authoring helpers or toolbar buttons
+- owner workbench preview
+- Mermaid toolbar helpers
+- non-note public surfaces
 
 Exit criteria:
-1. The shared note renderer recognizes fenced `mermaid` blocks and emits stable rendered output or a stable fallback shell.
-2. Stored note markdown remains the raw authored fence text.
-3. Unit coverage protects both successful and failed Mermaid rendering paths.
-4. `npm run test:unit` and `npm run verify` pass.
+1. Published note pages render Mermaid diagrams inline with the article body through the shared note renderer.
+2. Desktop and mobile public note surfaces stay readable, bounded, and accessible.
+3. `npm run test:e2e -- --grep @ui-public-note-mermaid` and `npm run verify` pass.
 
 Required checks:
-- `npm run test:unit`
+- `npm run test:e2e -- --grep @ui-public-note-mermaid`
 - `npm run verify`
 
 Evaluator notes:
-Promote only when Mermaid support is clearly a shared rendering primitive rather than a one-off patch hidden inside one route or component.
+Promote only when the public Mermaid wave feels like part of the shipped note-reading experience and does not leak diagram-specific chrome or raw fenced content.
 
 Required repository artifacts for this task:
-- src/features/notes/markdown.ts
+- src/app/notes/[slug]/page.tsx
 - src/app/globals.css
-- tests/unit
+- tests/e2e
 
 Required commands for this task:
-- npm run test:unit
+- npm run test:e2e -- --grep @ui-public-note-mermaid
 - npm run verify
 
 Previous known gaps from the last evaluation:
-- `src/features/notes/markdown.ts` hard-gates rendered output to `flowchart` and `graph` only, and sends all other Mermaid roots to fallback (`src/features/notes/markdown.ts#L630`). That is narrower than the documented Mermaid feature contract.
-- The relevant specs say Mermaid fenced blocks render as diagrams, with fallback for invalid Mermaid source, not for any valid non-flowchart diagram. See `docs/product-specs/markdown-mermaid-diagrams.md#L4`, `docs/product-specs/markdown-mermaid-diagrams.md#L12`, `docs/product-specs/note-authoring.md#L13`, and `docs/product-specs/markdown-editor-workbench.md#L22`.
-- Because AGENTS done-definition requires the relevant spec/design docs to match shipped behavior, this spec/implementation mismatch blocks promotion even though the tests are green.
+- none
 
 
 
