@@ -1,34 +1,58 @@
 # Minakeep
 
-Minakeep is a self-hosted notes-and-bookmarks site with private capture, selective publishing, AI enrichment, and a polished knowledge-studio UI.
+Minakeep is a self-hosted personal Blog & News platform for people who want one place to collect ideas, draft markdown posts, save reference links, and publish a curated public site without handing their writing workflow over to a hosted service.
 
-This bookmark site is inspired by the Karakeep project and is built as a demo for the Mina-Ralph loop skill.
+It combines a private capture workspace with a polished public-facing surface: you can write long-form notes, save interesting links, enrich both with AI-generated metadata, and selectively publish the items that deserve to appear on your public homepage.
 
 ## Online Demo
 
 - demonstration site: https://minakeep.mina.asia/
 - demouser: `demo`
 - demopassword: `demo`
-- you can explore the website using this id and password
+- the demo workspace is read-only, so you can inspect the real product surfaces safely
 
-## What it does
+## Why Minakeep
 
-- private markdown note authoring
-- private bookmark capture and management
-- selective publishing for notes and links
-- public showroom for published content
-- AI-generated summaries and tags through a Mina-hosted OpenAI-compatible endpoint
-- responsive owner and public UI
+Most tools force a tradeoff between private capture and public publishing. Minakeep is designed for a single owner who wants both:
 
-## Tech stack
+- a private workspace for markdown drafts, saved links, and lightweight organization
+- a public homepage that feels like a personal blog and news desk rather than a raw bookmark dump
+- a self-hosted deployment path with straightforward SQLite, media storage, and Docker support
+- AI assistance for summaries and tags without turning the product into a chat app or replacing authored content
+
+## Core Features
+
+- private markdown note editing with source-first authoring and preview modes
+- private link capture with manual URL and title plus generated AI summary and tags
+- selective publishing for both notes and links
+- a mixed public homepage for published writing and curated news/reference items
+- title-only public search for fast discovery without a heavy search UI
+- owner-only search across private notes and links by title, URL, or tag
+- automatic AI enrichment after save with visible retry and failure states
+- uploaded note images and cached link favicons
+- demo workspace mode for showcasing the product without opening write access
+- self-hosted Docker and Compose deployment with mounted data, media, and logs
+
+## Product Positioning
+
+Minakeep is best understood as a personal Blog & News platform:
+
+- use notes for essays, working drafts, and evergreen writing
+- use links for curated news, references, and external resources
+- publish only what should be public, while keeping the rest of the vault private
+
+The result is a site that can act as your writing studio, reading desk, and lightweight public publication layer at the same time.
+
+## Tech Stack
 
 - Next.js App Router
 - TypeScript
 - Prisma + SQLite
+- Auth.js
 - Playwright
-- Ralph-style task loop under `scripts/ralph/`
+- Docker / Docker Compose
 
-## Local setup
+## Local Setup
 
 Install dependencies:
 
@@ -388,9 +412,9 @@ npm run test:e2e -- --grep @demo-user
 - AI credentials are server-only and should stay in local or shell environment, not committed project files.
 - Docker Compose is the primary container deployment path; `docker run` is a secondary fallback, not the main operator model.
 
-## Build journey
+## Development Workflow
 
-This project was built through the Mina-Ralph loop workflow rather than by hand-coding one large feature branch.
+This repository still includes the Ralph-style planning and promotion loop used to build and maintain the product, but that workflow is infrastructure around Minakeep rather than the product itself.
 
 The practical flow was:
 
@@ -401,7 +425,7 @@ The practical flow was:
 5. promote the next task only when the required checks passed
 6. reopen planning when one queue wave was exhausted
 
-The Mina-Ralph skill handled the repeatable engineering loop:
+The Ralph loop handles the repeatable engineering workflow:
 
 - write and refresh product specs, design docs, and exec plans
 - keep the repo-local docs tree as the system of record
@@ -409,7 +433,7 @@ The Mina-Ralph skill handled the repeatable engineering loop:
 - run verification commands and Playwright coverage
 - maintain Ralph state, task history, and promotion flow
 
-The founder still guided the product direction between waves. In other words, this repository was not created with zero human input; it was built through founder-directed wave planning plus skill-driven implementation and verification.
+Product direction still comes from human planning and review; the loop is there to keep execution, verification, and promotion disciplined.
 
 ### Major waves so far
 
@@ -422,4 +446,4 @@ The founder still guided the product direction between waves. In other words, th
 - public-home density refinement
 - markdown editor workbench, toolbar, modes, mobile workflow, and hardening
 
-For the concrete promotion history, see [state/task-history.md](state/task-history.md).
+If you want the concrete promotion history, see [state/task-history.md](state/task-history.md).
