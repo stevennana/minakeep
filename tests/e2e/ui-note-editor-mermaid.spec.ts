@@ -247,14 +247,14 @@ async function expectMermaidPreviewContent(page: Page) {
   await expect(sharedDiagram).toBeVisible();
   await expect(renderedDiagrams).toHaveCount(4, { timeout: 15000 });
   await expect(sharedDiagram).toHaveAttribute("data-mermaid-source", /flowchart%20LR/);
-  await expect(preview.locator(".markdown-mermaid--fallback")).toContainText("Diagram preview unavailable");
-  await expect(preview.locator(".markdown-mermaid--fallback")).toContainText("classDiagram");
-  await expect(preview.locator(".markdown-mermaid--fallback")).toContainText("This is not valid Mermaid source.");
+  await expect(page.getByTestId("note-editor-mermaid-status")).toContainText("Mermaid syntax");
+  await expect(preview.locator(".markdown-mermaid--fallback")).toBeHidden();
   await expect(preview).not.toContainText("sequenceDiagram");
   await expect(preview).not.toContainText("participant Owner as Owner preview");
   await expect(preview).not.toContainText("OwnerNote --> PublicNotePage : ships to");
   await expect(preview).not.toContainText("Draft --> Review: save");
   await expect(preview).not.toContainText("```mermaid");
+  await expect(preview).not.toContainText("This is not valid Mermaid source.");
   await expect(preview.locator("[data-processed='true']")).toHaveCount(0);
 }
 

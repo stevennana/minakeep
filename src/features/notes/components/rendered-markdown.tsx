@@ -9,6 +9,7 @@ type RenderedMarkdownProps = {
   className: string;
   containerRef?: RefObject<HTMLDivElement | null>;
   html: string;
+  onMermaidStatusChange?: (summary: { syntaxIssueCount: number }) => void;
   testId?: string;
 };
 
@@ -17,6 +18,7 @@ export function RenderedMarkdown({
   className,
   containerRef,
   html,
+  onMermaidStatusChange,
   testId
 }: RenderedMarkdownProps) {
   const localRef = useRef<HTMLDivElement | null>(null);
@@ -40,7 +42,7 @@ export function RenderedMarkdown({
 
     const maxVisibilityChecks = 20;
 
-    const runEnhancement = () => {
+    const runEnhancement = async () => {
       if (cancelled) {
         return;
       }
@@ -54,19 +56,27 @@ export function RenderedMarkdown({
         return;
       }
 
-      void enhanceMermaidFigures(container);
+      const summary = await enhanceMermaidFigures(container);
+
+      if (!cancelled) {
+        onMermaidStatusChange?.(summary);
+      }
     };
 
-    runEnhancement();
-    frame = window.requestAnimationFrame(runEnhancement);
-    timer = window.setTimeout(runEnhancement, 180);
+    void runEnhancement();
+    frame = window.requestAnimationFrame(() => {
+      void runEnhancement();
+    });
+    timer = window.setTimeout(() => {
+      void runEnhancement();
+    }, 180);
 
     return () => {
       cancelled = true;
       window.cancelAnimationFrame(frame);
       window.clearTimeout(timer);
     };
-  }, [autoEnhance, html, resolvedRef]);
+  }, [autoEnhance, html, onMermaidStatusChange, resolvedRef]);
 
   return (
     <div

@@ -12,8 +12,13 @@ const MERMAID_MAX_LINE_LENGTH = 72;
 type MermaidRenderState = "fallback" | "pending" | "rendered";
 
 type MermaidShellResult = {
+  issue?: "syntax";
   markup: string;
   state: MermaidRenderState;
+};
+
+type MermaidEnhancementSummary = {
+  syntaxIssueCount: number;
 };
 
 type MermaidModule = typeof import("mermaid").default;
@@ -159,9 +164,17 @@ async function loadMermaid() {
 async function renderMermaidSvg(source: string) {
   const mermaid = await loadMermaid();
   const renderId = `minakeep-mermaid-${mermaidIdCounter += 1}`;
-  const { svg } = await mermaid.render(renderId, source);
 
-  return sanitizeRenderedSvg(svg);
+  try {
+    const { svg } = await mermaid.render(renderId, source);
+
+    return sanitizeRenderedSvg(svg);
+  } finally {
+    if (typeof document !== "undefined") {
+      document.getElementById(renderId)?.remove();
+      document.getElementById(`d${renderId}`)?.remove();
+    }
+  }
 }
 
 export async function renderMermaidShell(
@@ -175,14 +188,16 @@ export async function renderMermaidShell(
     };
   } catch {
     return {
+      issue: isSupportedRoot(getMermaidRoot(source)) ? "syntax" : undefined,
       markup: getFallbackShellMarkup(source),
       state: "fallback"
     };
   }
 }
 
-export async function enhanceMermaidFigures(root: ParentNode) {
+export async function enhanceMermaidFigures(root: ParentNode): Promise<MermaidEnhancementSummary> {
   const figures = Array.from(root.querySelectorAll<HTMLElement>(".markdown-mermaid[data-mermaid-source]"));
+  let syntaxIssueCount = 0;
 
   for (const figure of figures) {
     const encodedSource = figure.dataset.mermaidSource;
@@ -202,5 +217,18 @@ export async function enhanceMermaidFigures(root: ParentNode) {
     shell.innerHTML = result.markup;
     figure.classList.remove("markdown-mermaid--pending", "markdown-mermaid--fallback", "markdown-mermaid--rendered");
     figure.classList.add(`markdown-mermaid--${result.state}`);
+
+    if (result.issue) {
+      figure.dataset.mermaidIssue = result.issue;
+      if (result.issue === "syntax") {
+        syntaxIssueCount += 1;
+      }
+    } else {
+      delete figure.dataset.mermaidIssue;
+    }
   }
+
+  return {
+    syntaxIssueCount
+  };
 }

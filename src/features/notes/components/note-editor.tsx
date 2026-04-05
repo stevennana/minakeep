@@ -147,6 +147,7 @@ export function NoteEditor({
   const [imageUploadError, setImageUploadError] = useState<string | null>(null);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [imageUploadNotice, setImageUploadNotice] = useState<string | null>(null);
+  const [mermaidSyntaxIssueCount, setMermaidSyntaxIssueCount] = useState(0);
   const markdownRef = useRef(initialMarkdown);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const measurementRef = useRef<HTMLDivElement | null>(null);
@@ -749,6 +750,11 @@ export function NoteEditor({
                     </span>
                   </div>
                   <div className="note-editor-statusbar" role="status">
+                    {mermaidSyntaxIssueCount > 0 ? (
+                      <span className="note-editor-mermaid-status" data-testid="note-editor-mermaid-status">
+                        {mermaidSyntaxIssueCount > 1 ? `Mermaid syntax x${mermaidSyntaxIssueCount}` : "Mermaid syntax"}
+                      </span>
+                    ) : null}
                     <span>L{cursorState.line}:C{cursorState.column}</span>
                     <span>{lineCount} lines</span>
                     <span>{wordCount} words</span>
@@ -882,6 +888,7 @@ Use headings, lists, quotes, links, code, and $...$ math without leaving markdow
                       className="markdown-preview"
                       html={previewHtml || "<p>Start writing to see the rendered preview.</p>"}
                       key={previewPaneHidden ? "preview-hidden" : `preview-${viewMode}`}
+                      onMermaidStatusChange={({ syntaxIssueCount }) => setMermaidSyntaxIssueCount(syntaxIssueCount)}
                       testId="note-markdown-preview"
                     />
                   </div>

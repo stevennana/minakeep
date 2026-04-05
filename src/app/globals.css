@@ -1319,6 +1319,25 @@ textarea {
   letter-spacing: 0.02em;
 }
 
+.note-editor-mermaid-status {
+  background: var(--danger-soft);
+  border: 1px solid var(--danger-line);
+  border-radius: var(--radius-pill);
+  color: #991b1b;
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0.18rem 0.5rem;
+  text-transform: uppercase;
+}
+
+.note-editor-statusbar .note-editor-mermaid-status {
+  background: var(--danger-soft);
+  border-color: var(--danger-line);
+  color: #991b1b;
+}
+
 .note-editor-toolbar-controls {
   flex: 1 1 100%;
   gap: 0.45rem;
@@ -2791,6 +2810,10 @@ textarea {
   display: grid;
   gap: 0.65rem;
   padding: 1rem;
+}
+
+.note-editor-pane-preview .markdown-mermaid[data-mermaid-issue="syntax"] {
+  display: none;
 }
 
 .public-note-body--published .markdown-mermaid--fallback .markdown-mermaid-shell {
