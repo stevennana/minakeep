@@ -105,13 +105,24 @@ export function getMermaidBlockMarkup(source: string) {
 function sanitizeRenderedSvg(svg: string) {
   const withoutUnsafeTags = svg
     .replace(/<\?xml[\s\S]*?\?>/gi, "")
-    .replace(/<script[\s\S]*?<\/script>/gi, "")
-    .replace(/<foreignObject[\s\S]*?<\/foreignObject>/gi, "");
+    .replace(/<script[\s\S]*?<\/script>/gi, "");
   const withoutUnsafeAttrs = withoutUnsafeTags
     .replace(/\s+on[a-z-]+\s*=\s*(["']).*?\1/gi, "")
     .replace(/\s+(?:href|xlink:href)\s*=\s*(["'])\s*javascript:[\s\S]*?\1/gi, "");
+  const paddedForeignObjects = withoutUnsafeAttrs.replace(
+    /<foreignObject\b([^>]*?)\bheight=(["'])(\d+(?:\.\d+)?)\2([^>]*)>/gi,
+    (_match, before: string, quote: string, rawHeight: string, after: string) => {
+      const height = Number.parseFloat(rawHeight);
 
-  return withoutUnsafeAttrs.replace(/<svg\b([^>]*)>/i, (_match, attributes: string) => {
+      if (!Number.isFinite(height)) {
+        return `<foreignObject${before}height=${quote}${rawHeight}${quote}${after}>`;
+      }
+
+      return `<foreignObject${before}height=${quote}${Math.ceil(height + 6)}${quote}${after}>`;
+    }
+  );
+
+  return paddedForeignObjects.replace(/<svg\b([^>]*)>/i, (_match, attributes: string) => {
     const classMatch = attributes.match(/\bclass=(["'])(.*?)\1/i);
     const nextClassName = classMatch
       ? classMatch[2]

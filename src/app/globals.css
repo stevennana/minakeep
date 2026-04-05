@@ -2765,6 +2765,28 @@ textarea {
   font-family: var(--font-ui);
 }
 
+.markdown-preview .markdown-mermaid--rendered .markdown-mermaid-shell foreignObject {
+  overflow: visible;
+}
+
+.markdown-preview .markdown-mermaid--rendered .markdown-mermaid-shell foreignObject > div,
+.markdown-preview .markdown-mermaid--rendered .markdown-mermaid-shell foreignObject .nodeLabel,
+.markdown-preview .markdown-mermaid--rendered .markdown-mermaid-shell foreignObject .edgeLabel {
+  align-items: center;
+  display: flex !important;
+  justify-content: center;
+  line-height: 1.2 !important;
+  min-height: 24px;
+  overflow: visible;
+}
+
+.markdown-preview .markdown-mermaid--rendered .markdown-mermaid-shell foreignObject p,
+.markdown-preview .markdown-mermaid--rendered .markdown-mermaid-shell foreignObject span {
+  line-height: 1.2 !important;
+  margin: 0;
+  overflow: visible;
+}
+
 .markdown-preview .markdown-mermaid--fallback .markdown-mermaid-shell {
   display: grid;
   gap: 0.65rem;
