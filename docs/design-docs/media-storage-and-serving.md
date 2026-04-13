@@ -19,6 +19,7 @@ Add note-image uploads and cached favicons without weakening the private-vault m
 - the first embedded markdown image is the derived note card/showroom image
 - do not add a second explicit cover-image field in this wave
 - if a note has no embedded image, note cards fall back to the existing text-first treatment
+- loading-priority policy should sit above this derived-image contract rather than introducing separate stored "priority image" metadata
 
 ## Failure Rules
 - note save must not fail because a card image cannot be derived

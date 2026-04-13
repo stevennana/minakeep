@@ -77,6 +77,7 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
     countPublishedOwnerLinks(workspace.owner.id)
   ]);
   const dateFormatter = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
+  let remainingPrioritizedFavicons = 1;
   const statusMessage =
     resolvedSearchParams.saved === "1"
       ? "Link saved."
@@ -170,141 +171,150 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
           ) : (
             <>
               <div className="link-list">
-                {links.map((link) => (
-                  <article className="link-list-item secondary-link-item" key={link.id}>
-                    <div className="secondary-link-main">
-                      <div className="link-list-heading secondary-link-heading">
-                        <div className="secondary-link-favicon-stack">
-                          <LinkFavicon
-                            faviconAssetId={link.faviconAssetId}
-                            frameClassName="link-favicon-frame secondary-link-favicon-frame"
-                            imageClassName="link-favicon-image secondary-link-favicon-image"
-                            testId="owner-link-favicon"
-                          />
-                          {isReadOnly ? (
-                            <Button aria-label="Refresh favicon unavailable" disabled title="Refresh favicon unavailable in read-only mode" type="button" variant="ghost">
-                              ↻
-                            </Button>
-                          ) : (
-                            <form action={refreshLinkFaviconAction.bind(null, link.id)} className="secondary-link-favicon-refresh">
-                              <Button aria-label="Refresh favicon" title="Refresh favicon" type="submit" variant="ghost">
+                {links.map((link) => {
+                  const loadingIntent = remainingPrioritizedFavicons > 0 ? "prioritized" : "lazy";
+
+                  if (loadingIntent === "prioritized") {
+                    remainingPrioritizedFavicons -= 1;
+                  }
+
+                  return (
+                    <article className="link-list-item secondary-link-item" key={link.id}>
+                      <div className="secondary-link-main">
+                        <div className="link-list-heading secondary-link-heading">
+                          <div className="secondary-link-favicon-stack">
+                            <LinkFavicon
+                              faviconAssetId={link.faviconAssetId}
+                              frameClassName="link-favicon-frame secondary-link-favicon-frame"
+                              imageClassName="link-favicon-image secondary-link-favicon-image"
+                              loadingIntent={loadingIntent}
+                              testId="owner-link-favicon"
+                            />
+                            {isReadOnly ? (
+                              <Button aria-label="Refresh favicon unavailable" disabled title="Refresh favicon unavailable in read-only mode" type="button" variant="ghost">
                                 ↻
                               </Button>
-                            </form>
-                          )}
+                            ) : (
+                              <form action={refreshLinkFaviconAction.bind(null, link.id)} className="secondary-link-favicon-refresh">
+                                <Button aria-label="Refresh favicon" title="Refresh favicon" type="submit" variant="ghost">
+                                  ↻
+                                </Button>
+                              </form>
+                            )}
+                          </div>
+                          <div className="secondary-link-heading-copy">
+                            <MetadataRow leading>
+                              <span>{link.isPublished ? "Published link" : "Private link"}</span>
+                              <span>{dateFormatter.format(link.isPublished && link.publishedAt ? link.publishedAt : link.updatedAt)}</span>
+                            </MetadataRow>
+                            <a className="note-list-link" href={link.url} rel="noopener noreferrer" target="_blank">
+                              {link.title}
+                            </a>
+                            <p className="link-url">{link.url}</p>
+                          </div>
                         </div>
-                        <div className="secondary-link-heading-copy">
-                          <MetadataRow leading>
-                            <span>{link.isPublished ? "Published link" : "Private link"}</span>
-                            <span>{dateFormatter.format(link.isPublished && link.publishedAt ? link.publishedAt : link.updatedAt)}</span>
+                        <div className="link-list-footer secondary-link-footer">
+                          <MetadataRow>
+                            <span>Visibility</span>
+                            <span>{link.isPublished ? "Public showroom" : "Owner only"}</span>
                           </MetadataRow>
-                          <a className="note-list-link" href={link.url} rel="noopener noreferrer" target="_blank">
-                            {link.title}
-                          </a>
-                          <p className="link-url">{link.url}</p>
                         </div>
                       </div>
-                      <div className="link-list-footer secondary-link-footer">
-                        <MetadataRow>
-                          <span>Visibility</span>
-                          <span>{link.isPublished ? "Public showroom" : "Owner only"}</span>
-                        </MetadataRow>
-                      </div>
-                    </div>
-                    <div className="secondary-link-meta">
-                      <EnrichmentStatusBlock detailClassName="secondary-link-status" state={link.enrichment} />
-                      <div className="note-generated-copy secondary-generated-copy">
-                        <strong>AI summary:</strong>
-                        {link.summary ? (
-                          <p className="link-summary" data-testid="link-ai-summary">
-                            {link.summary}
-                          </p>
-                        ) : (
-                          <p className="field-note">Waiting for AI summary.</p>
-                        )}
-                      </div>
-                      <div className="note-generated-copy secondary-generated-copy">
-                        <strong>AI tags</strong>
-                        <TagList aria-label="Link tags" data-testid="link-ai-tags">
-                          {link.tags.length === 0 ? (
-                            <TagChip muted>No AI tags yet</TagChip>
+                      <div className="secondary-link-meta">
+                        <EnrichmentStatusBlock detailClassName="secondary-link-status" state={link.enrichment} />
+                        <div className="note-generated-copy secondary-generated-copy">
+                          <strong>AI summary:</strong>
+                          {link.summary ? (
+                            <p className="link-summary" data-testid="link-ai-summary">
+                              {link.summary}
+                            </p>
                           ) : (
-                            link.tags.map((tag) => (
-                              <TagChip key={tag.id}>
-                                {tag.name}
-                              </TagChip>
-                            ))
+                            <p className="field-note">Waiting for AI summary.</p>
                           )}
-                        </TagList>
+                        </div>
+                        <div className="note-generated-copy secondary-generated-copy">
+                          <strong>AI tags</strong>
+                          <TagList aria-label="Link tags" data-testid="link-ai-tags">
+                            {link.tags.length === 0 ? (
+                              <TagChip muted>No AI tags yet</TagChip>
+                            ) : (
+                              link.tags.map((tag) => (
+                                <TagChip key={tag.id}>
+                                  {tag.name}
+                                </TagChip>
+                              ))
+                            )}
+                          </TagList>
+                        </div>
                       </div>
-                    </div>
-                    <div className="button-row secondary-link-actions">
-                      {isReadOnly ? (
-                        <>
-                          <Button disabled type="button" variant="ghost">
-                            {link.isPublished ? "Unpublish unavailable" : "Publish unavailable"}
-                          </Button>
-                          <Button disabled type="button" variant="ghost">
-                            Delete unavailable
-                          </Button>
-                        </>
-                      ) : (
-                        <>
-                          {link.isPublished ? (
-                            <form action={unpublishLinkAction.bind(null, link.id)}>
-                              <Button type="submit" variant="ghost">
-                                Unpublish link
-                              </Button>
-                            </form>
-                          ) : (
-                            <form action={publishLinkAction.bind(null, link.id)}>
-                              <Button type="submit">Publish link</Button>
-                            </form>
-                          )}
-                          {link.isPublished ? (
-                            <Button
-                              aria-label="Delete unavailable until unpublished"
-                              disabled
-                              title="Unpublish this link before deleting it permanently."
-                              type="button"
-                              variant="ghost"
-                            >
+                      <div className="button-row secondary-link-actions">
+                        {isReadOnly ? (
+                          <>
+                            <Button disabled type="button" variant="ghost">
+                              {link.isPublished ? "Unpublish unavailable" : "Publish unavailable"}
+                            </Button>
+                            <Button disabled type="button" variant="ghost">
                               Delete unavailable
                             </Button>
-                          ) : (
-                            <details className="delete-disclosure secondary-link-delete-disclosure">
-                              <summary className="ghost-button delete-disclosure-summary">Delete link</summary>
-                              <div className="delete-disclosure-panel">
-                                <p>This permanently removes this unpublished link. There is no trash or restore step.</p>
-                                <form action={deleteLinkAction.bind(null, link.id)} className="delete-confirmation-form">
-                                  <input name="confirmDelete" type="hidden" value="permanent" />
-                                  <div className="button-row delete-confirmation-actions">
-                                    <Button className="delete-action-button" type="submit">
-                                      Delete permanently
-                                    </Button>
-                                  </div>
-                                </form>
-                              </div>
-                            </details>
-                          )}
-                        </>
-                      )}
-                    </div>
-                    {link.enrichment.status === "failed" ? (
-                      isReadOnly ? (
-                        <Button disabled type="button" variant="ghost">
-                          Retry unavailable
-                        </Button>
-                      ) : (
-                        <form action={retryLinkEnrichmentAction.bind(null, link.id)} className="secondary-link-retry">
-                          <Button type="submit" variant="ghost">
-                            Retry AI enrichment
+                          </>
+                        ) : (
+                          <>
+                            {link.isPublished ? (
+                              <form action={unpublishLinkAction.bind(null, link.id)}>
+                                <Button type="submit" variant="ghost">
+                                  Unpublish link
+                                </Button>
+                              </form>
+                            ) : (
+                              <form action={publishLinkAction.bind(null, link.id)}>
+                                <Button type="submit">Publish link</Button>
+                              </form>
+                            )}
+                            {link.isPublished ? (
+                              <Button
+                                aria-label="Delete unavailable until unpublished"
+                                disabled
+                                title="Unpublish this link before deleting it permanently."
+                                type="button"
+                                variant="ghost"
+                              >
+                                Delete unavailable
+                              </Button>
+                            ) : (
+                              <details className="delete-disclosure secondary-link-delete-disclosure">
+                                <summary className="ghost-button delete-disclosure-summary">Delete link</summary>
+                                <div className="delete-disclosure-panel">
+                                  <p>This permanently removes this unpublished link. There is no trash or restore step.</p>
+                                  <form action={deleteLinkAction.bind(null, link.id)} className="delete-confirmation-form">
+                                    <input name="confirmDelete" type="hidden" value="permanent" />
+                                    <div className="button-row delete-confirmation-actions">
+                                      <Button className="delete-action-button" type="submit">
+                                        Delete permanently
+                                      </Button>
+                                    </div>
+                                  </form>
+                                </div>
+                              </details>
+                            )}
+                          </>
+                        )}
+                      </div>
+                      {link.enrichment.status === "failed" ? (
+                        isReadOnly ? (
+                          <Button disabled type="button" variant="ghost">
+                            Retry unavailable
                           </Button>
-                        </form>
-                      )
-                    ) : null}
-                  </article>
-                ))}
+                        ) : (
+                          <form action={retryLinkEnrichmentAction.bind(null, link.id)} className="secondary-link-retry">
+                            <Button type="submit" variant="ghost">
+                              Retry AI enrichment
+                            </Button>
+                          </form>
+                        )
+                      ) : null}
+                    </article>
+                  );
+                })}
               </div>
               <AutoLoadMore
                 buttonLabel="Load more links"

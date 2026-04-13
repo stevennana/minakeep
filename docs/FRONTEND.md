@@ -28,10 +28,10 @@ Describe the user-facing structure of Minakeep so an agent can implement the UI 
 
 ## Primary Screens
 ### Public homepage
-Acts as a mixed public showroom first. It should emphasize a dynamic masonry-style archive of published note and published link previews, remove the old owner-entrance side section, keep framing copy minimal, use a compact archive header instead of a hero block, keep the public title-only search control collapsed into a small button-and-summary row until the visitor explicitly expands it, and load only the first 10 matching public items before continuing automatically from a bottom `Load more` control.
+Acts as a mixed public showroom first. It should emphasize a dynamic masonry-style archive of published note and published link previews, remove the old owner-entrance side section, keep framing copy minimal, use a compact archive header instead of a hero block, keep the public title-only search control collapsed into a small button-and-summary row until the visitor explicitly expands it, load only the first 10 matching public items before continuing automatically from a bottom `Load more` control, and give only the first visible preview media a higher load priority than offscreen cards.
 
 ### Public note page
-Prioritizes reading comfort with narrower measure, calmer human-made typography, quieter metadata, uploaded note images, supporting AI summary/tags, rendered footnote-style reference links collected into a bottom `References` section, and rendered Mermaid diagrams from note markdown.
+Prioritizes reading comfort with narrower measure, calmer human-made typography, quieter metadata, uploaded note images, supporting AI summary/tags, rendered footnote-style reference links collected into a bottom `References` section, rendered Mermaid diagrams from note markdown, and a first-image loading policy that does not defer the image a reader sees immediately.
 
 ### Published link cards
 Appear in the public showroom alongside note cards, with a cached favicon head image, title, summary, and tags, and open the external destination in a new tab.
@@ -40,7 +40,7 @@ Appear in the public showroom alongside note cards, with a cached favicon head i
 Simple credentials screen with reduced visual bulk and cleaner desktop/mobile balance. Public navigation should preserve owner continuity when an authenticated owner moves between public and private routes. When demo credentials are configured, the login surface should also admit the demonstration user without implying write access.
 
 ### Private dashboard
-Compact professional workspace with slimmer navigation, tighter lists, and more visible note content above the fold on desktop. Secondary route-promoting blocks should not steal prime desktop width from the Notes section. The notes list should load the first 20 items and continue from a bottom `Load more` control when the owner reaches it.
+Compact professional workspace with slimmer navigation, tighter lists, and more visible note content above the fold on desktop. Secondary route-promoting blocks should not steal prime desktop width from the Notes section. The notes list should load the first 20 items and continue from a bottom `Load more` control when the owner reaches it. If top visible note cards have derived images, those images should load ahead of lower-list media.
 
 ### Demonstration workspace mode
 The demonstration user should see the same owner workspace routes and content model, but all mutating actions must be unavailable or clearly disabled. The demo experience is for product inspection, not content editing.
@@ -49,7 +49,7 @@ The demonstration user should see the same owner workspace routes and content mo
 Smaller typographic hierarchy, reduced padding, and reusable form/layout primitives without changing existing logic flows. The note editor should evolve into a source-first markdown workbench with syntax-aware editing, a compact formatting toolbar, `Source / Split / Preview` modes on desktop, a cleaner `Edit / Preview` toggle on mobile, an upload path that inserts note images into markdown automatically, preview parity for footnote-style reference links collected into a bottom `References` section, and preview parity for Mermaid fenced diagrams without changing the stored markdown source.
 
 ### Links, tags, and search
-Secondary owner surfaces should inherit the same density and responsive behavior as the dashboard rather than looking like oversized standalone cards. The links route should load the first 20 saved links and continue from a bottom `Load more` control when the owner reaches it.
+Secondary owner surfaces should inherit the same density and responsive behavior as the dashboard rather than looking like oversized standalone cards. The links route should load the first 20 saved links and continue from a bottom `Load more` control when the owner reaches it. The first visible favicon on initial render should load ahead of lower-list favicons.
 
 ### Settings
 The owner workspace should expose a dedicated settings section for service configuration. The first wave needs only title and description, but the route and storage model should feel like the start of an extendable settings area rather than an isolated one-off form.
@@ -86,6 +86,7 @@ The owner workspace should expose a dedicated settings section for service confi
 - build reusable design primitives and CSS tokens so style changes do not require route-level logic edits
 - make mobile layouts easy to scan and operate with one hand
 - keep note authoring markdown-native; richer editor controls should still save one markdown string, not a separate rich-text document model
+- use explicit image loading intent so first-screen note images and favicons load before offscreen card/media assets on initial render; do not eager-load an entire initial slice just because it is server-rendered
 - keep markdown reference links markdown-native; supported `[^label]` markers and `[^label]: [Title](url)` definitions should render as bottom references without introducing a second citation model
 - Mermaid support should be limited to fenced ```` ```mermaid ```` blocks rendered through the shared note markdown path; do not introduce inline script execution or a second diagram document model
 

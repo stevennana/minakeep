@@ -6,11 +6,11 @@ Only task files in this directory that contain a `taskmeta` JSON block are eligi
 
 ## Current recommended sequence
 
-1. `103-markdown-reference-renderer-foundation.md` -> teach the shared note renderer the supported footnote-style reference syntax and extracted bottom-reference contract.
-2. `104-reference-link-note-surfaces.md` -> ship the owner-preview and public-note reading experience for inline markers plus the bottom `References` section.
-3. `105-reference-link-wave-hardening.md` -> close the wave with bundled regression replay, duplicate/malformed fallback verification, and final queue/doc reconciliation.
+1. `106-image-loading-priority-foundation.md` -> replace the current always-lazy image defaults with one shared loading-intent contract for note cards, favicons, and rendered markdown images.
+2. `107-first-screen-card-media-priority.md` -> apply the contract to the public showroom plus owner dashboard and links surfaces so visible card media loads before lower-list media.
+3. `108-image-loading-wave-hardening.md` -> close the wave by extending the contract to rendered note-body images and bundling regression coverage for the shipped viewport-first loading behavior.
 
-Task `102` is already preserved in completed history as the final Mermaid expansion hardening step. This next wave is a separate markdown-reader feature front focused on footnote-style reference links, not an extension of Mermaid scope.
+Task `105` is already preserved in completed history as the reference-link closeout. This next wave is a separate cross-surface media-loading pass focused on viewport-first image delivery, not a continuation of markdown reference rendering.
 
 ## Operating rule
 
@@ -27,5 +27,5 @@ For tasks with `"promotion_mode": "deterministic_only"`, evaluator narrative is 
 
 ## When this queue ends
 
-When the reference-link wave closes, do not continue with ad hoc prompts alone.
+When the image-loading wave closes, do not continue with ad hoc prompts alone.
 Update the relevant product specs and design docs first, then seed the next active queue for the next feature wave.

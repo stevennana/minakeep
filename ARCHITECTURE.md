@@ -70,6 +70,7 @@ Prisma runtime prep, startup smoke, operator logging, Docker packaging, Ralph lo
 - server components should be the default for route shells and static surfaces
 - interactive owner forms should stay localized to small client components
 - large public or owner collections should load through small server-side slices with URL-driven continuation state instead of fetching the entire note/link archive on first render
+- first-screen image media on initial route render should use an explicit loading-priority contract so visible note images and favicons load before offscreen media without eager-loading whole collections
 - the next wave should converge public and private surfaces on one elegant knowledge-studio visual system
 
 ### Server

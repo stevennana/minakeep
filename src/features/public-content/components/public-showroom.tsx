@@ -7,6 +7,7 @@ import { useDeferredValue, useEffect, useRef, useState, useTransition } from "re
 
 import { AutoLoadMore } from "@/components/ui/auto-load-more";
 import { Button, MetadataRow, SectionHeading, Surface, TagChip, TagList } from "@/components/ui/primitives";
+import type { ImageLoadingIntent } from "@/features/media/loading-intent";
 import { PUBLIC_COLLECTION_PAGE_SIZE } from "@/lib/pagination";
 import { LinkFavicon } from "@/features/links/components/link-favicon";
 import { NoteCardImage } from "@/features/notes/components/note-card-image";
@@ -84,7 +85,7 @@ function getContentPreviewVariant(item: PublicShowroomItem): ContentPreviewVaria
   return "balanced";
 }
 
-function PublishedContentPreviewCard({ item }: { item: PublicShowroomItem }) {
+function PublishedContentPreviewCard({ item, loadingIntent }: { item: PublicShowroomItem; loadingIntent: ImageLoadingIntent }) {
   const variant = getContentPreviewVariant(item);
   const isNote = item.kind === "note";
   const primaryPreview = isNote ? item.summary?.trim() || item.excerpt.trim() || "Published note" : item.summary?.trim() || "Published link";
@@ -118,6 +119,7 @@ function PublishedContentPreviewCard({ item }: { item: PublicShowroomItem }) {
               frameClassName="note-card-image-frame note-preview-card-image-frame"
               image={item.cardImage}
               imageClassName="note-card-image note-preview-card-image"
+              loadingIntent={loadingIntent}
               testId="public-note-card-image"
               title={item.title}
             />
@@ -180,6 +182,7 @@ function PublishedContentPreviewCard({ item }: { item: PublicShowroomItem }) {
           faviconAssetId={item.faviconAssetId}
           frameClassName="link-favicon-frame note-preview-card-image-frame link-preview-card-image-frame"
           imageClassName="link-favicon-image note-preview-card-image link-preview-card-image"
+          loadingIntent={loadingIntent}
           testId="public-link-card-favicon"
         />
       </a>
@@ -284,6 +287,7 @@ export function PublicShowroom({
       : hasPublishedLinks
         ? "No published notes or links match this title."
         : "No published notes match this title.";
+  let remainingPrioritizedMedia = 2;
 
   useEffect(() => {
     if (isSearchExpanded) {
@@ -424,9 +428,16 @@ export function PublicShowroom({
         ) : (
           <>
             <div className="note-list public-note-list public-note-showroom" data-testid="public-home-showroom">
-              {items.map((item) => (
-                <PublishedContentPreviewCard key={`${item.kind}-${item.id}`} item={item} />
-              ))}
+              {items.map((item) => {
+                const hasMedia = item.kind === "link" || Boolean(item.cardImage);
+                const loadingIntent: ImageLoadingIntent = hasMedia && remainingPrioritizedMedia > 0 ? "prioritized" : "lazy";
+
+                if (loadingIntent === "prioritized") {
+                  remainingPrioritizedMedia -= 1;
+                }
+
+                return <PublishedContentPreviewCard key={`${item.kind}-${item.id}`} item={item} loadingIntent={loadingIntent} />;
+              })}
             </div>
             <AutoLoadMore
               buttonLabel="Load more published items"

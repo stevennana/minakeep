@@ -2,17 +2,19 @@ import Link from "next/link";
 
 import { MetadataRow, TagChip, TagList } from "@/components/ui/primitives";
 import { EnrichmentStatusBlock } from "@/features/enrichment/components/status-block";
+import type { ImageLoadingIntent } from "@/features/media/loading-intent";
 import { NoteCardImage } from "@/features/notes/components/note-card-image";
 import type { NoteSummary } from "@/features/notes/types";
 
 type OwnerNoteCardProps = {
   href: React.ComponentProps<typeof Link>["href"];
+  loadingIntent?: ImageLoadingIntent;
   note: NoteSummary;
   secondary?: boolean;
   updatedAtLabel: string;
 };
 
-export function OwnerNoteCard({ href, note, secondary = false, updatedAtLabel }: OwnerNoteCardProps) {
+export function OwnerNoteCard({ href, loadingIntent = "lazy", note, secondary = false, updatedAtLabel }: OwnerNoteCardProps) {
   const itemClassName = secondary ? "note-list-item dashboard-note-item secondary-note-item" : "note-list-item dashboard-note-item";
   const linkClassName = secondary ? "note-list-link" : "note-list-link dashboard-note-link";
   const secondaryClassName = secondary ? "dashboard-note-secondary secondary-note-secondary" : "dashboard-note-secondary";
@@ -26,6 +28,7 @@ export function OwnerNoteCard({ href, note, secondary = false, updatedAtLabel }:
             frameClassName="note-card-image-frame dashboard-note-image-frame"
             image={note.cardImage}
             imageClassName="note-card-image dashboard-note-image"
+            loadingIntent={loadingIntent}
             testId="owner-note-card-image"
             title={note.title}
           />

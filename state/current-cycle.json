@@ -1,8 +1,8 @@
 {
-  "task_id": "105-reference-link-wave-hardening",
-  "started_at": "2026-04-13T21:13:24+09:00",
-  "artifact_dir": "state/artifacts/20260413T211324-105-reference-link-wave-hardening",
+  "task_id": "106-image-loading-priority-foundation",
+  "started_at": "2026-04-13T21:34:16+09:00",
+  "artifact_dir": "state/artifacts/20260413T213416-106-image-loading-priority-foundation",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-04-13T12:21:44.015Z"
+  "updated_at": "2026-04-13T12:44:02.683Z"
 }

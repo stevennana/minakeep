@@ -29,7 +29,7 @@ export default async function PublicNotePage({ params }: PublicNotePageProps) {
   const publishedAt = note.publishedAt ?? note.updatedAt;
   const formattedPublishedAt = new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(publishedAt);
   const hasSupportContent = Boolean(note.summary) || note.tags.length > 0;
-  const renderedMarkdown = renderMarkdown(note.markdown);
+  const renderedMarkdown = renderMarkdown(note.markdown, { prioritizedImageCount: 1 });
 
   return (
     <div className="feature-layout public-note-layout">

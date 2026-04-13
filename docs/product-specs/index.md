@@ -12,6 +12,7 @@ If a UI or API behavior is visible to users, it should be defined here before im
 | `markdown-reference-links.md` | confirmed | Footnote-style reference-link rendering across owner preview and published note reading |
 | `markdown-mermaid-diagrams.md` | confirmed | Mermaid fenced-diagram rendering across note preview and published note surfaces |
 | `note-image-attachments.md` | confirmed | Uploaded note images, markdown embedding, and derived note-card image behavior |
+| `image-loading-priority.md` | confirmed | Viewport-first loading hints for note images and link favicons across public and owner surfaces |
 | `external-note-api.md` | confirmed | Server-to-server note creation through one environment API key |
 | `workspace-settings.md` | confirmed | Owner-editable site title/description with an extensible settings surface |
 | `owner-content-deletion.md` | confirmed | Permanent delete for unpublished owner notes and links |

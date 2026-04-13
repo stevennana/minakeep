@@ -2,48 +2,51 @@ Read the following repository documents before making changes:
 - AGENTS.md
 - ARCHITECTURE.md
 - docs/FRONTEND.md
-- docs/product-specs/markdown-reference-links.md
-- docs/design-docs/markdown-reference-link-rendering.md
-- docs/references/ui-verification-contract.md
-- docs/exec-plans/active/105-reference-link-wave-hardening.md
+- docs/product-specs/image-loading-priority.md
+- docs/product-specs/note-image-attachments.md
+- docs/product-specs/link-favicon-caching.md
+- docs/design-docs/image-loading-strategy.md
+- docs/design-docs/media-storage-and-serving.md
+- docs/exec-plans/active/106-image-loading-priority-foundation.md
 
-Current task id: 105-reference-link-wave-hardening
-Current task title: Reference-link wave hardening
+Current task id: 106-image-loading-priority-foundation
+Current task title: Image loading priority foundation
 
 Objective:
-Close the markdown reference-link wave by bundling the renderer, public-note, and owner-preview coverage into one durable regression contract and reconciling the docs/queue with the shipped feature.
+Create one shared loading-intent contract for note-card images, cached favicons, and rendered markdown images so first-screen media can be prioritized without forking separate ad hoc rules per surface.
 
 Scope:
-- bundled regression replay for supported reference-link behavior
-- final doc and queue reconciliation for the shipped syntax and UI contract
-- malformed-syntax and repeated-reference regression cleanup that remains after the first two slices
+- shared loading-intent API for note-card and favicon helpers
+- markdown-renderer support for a small prioritized-image budget
+- targeted unit coverage for the generated image attributes
+- doc alignment for the new viewport-first loading policy
 
 Out of scope:
-- richer academic-citation tooling beyond the documented markdown syntax
-- non-note markdown enhancements unrelated to reference links
-- future generalized markdown-library migration work
+- public-home screenshot regression work
+- owner-route screenshot regression work
+- broader image optimization or format conversion
 
 Exit criteria:
-1. One deterministic reference-link regression command replays the shipped public-note and owner-preview reference experience.
-2. Docs and queue history reflect the actual shipped supported syntax and fallback behavior without overclaiming broader markdown-footnote compatibility.
-3. `npm run test:e2e -- --grep @ui-reference-link-regression` and `npm run verify` pass.
+1. Shared note-image, favicon, and markdown-rendering helpers can express both prioritized and lazy image modes without changing media URLs or accessibility labels.
+2. The contract makes it possible to cap eager/high-priority media per surface instead of upgrading an entire list by accident.
+3. `npm run test:unit` and `npm run typecheck` pass.
 
 Required checks:
-- `npm run test:e2e -- --grep @ui-reference-link-regression`
-- `npm run verify`
+- `npm run test:unit`
+- `npm run typecheck`
 
 Evaluator notes:
-Promote only when the reference-link wave reads as closed and regression-protected rather than as a one-off parser tweak with unfinished verification.
+Promote only when the codebase has one clear image-loading contract that future surfaces can reuse, rather than one-off eager/lazy overrides scattered through route files.
 
 Required repository artifacts for this task:
 - docs
-- tests/e2e
-- tests/unit
+- src/features/links
 - src/features/notes
+- tests/unit
 
 Required commands for this task:
-- npm run test:e2e -- --grep @ui-reference-link-regression
-- npm run verify
+- npm run test:unit
+- npm run typecheck
 
 Previous known gaps from the last evaluation:
 - none

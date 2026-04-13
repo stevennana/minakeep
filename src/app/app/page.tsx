@@ -45,6 +45,7 @@ export default async function PrivateDashboardPage({ searchParams }: PrivateDash
     countPendingOwnerNotes(workspace.owner.id)
   ]);
   const dateFormatter = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
+  let remainingPrioritizedNoteImages = 1;
 
   return (
     <div className="feature-layout">
@@ -99,14 +100,23 @@ export default async function PrivateDashboardPage({ searchParams }: PrivateDash
           ) : (
             <>
               <div className="note-list owner-dashboard-note-list" data-testid="owner-dashboard-note-list">
-                {notes.map((note) => (
-                  <OwnerNoteCard
-                    href={`/app/notes/${note.id}/edit` as Route}
-                    key={note.id}
-                    note={note}
-                    updatedAtLabel={dateFormatter.format(note.updatedAt)}
-                  />
-                ))}
+                {notes.map((note) => {
+                  const loadingIntent = note.cardImage && remainingPrioritizedNoteImages > 0 ? "prioritized" : "lazy";
+
+                  if (loadingIntent === "prioritized") {
+                    remainingPrioritizedNoteImages -= 1;
+                  }
+
+                  return (
+                    <OwnerNoteCard
+                      href={`/app/notes/${note.id}/edit` as Route}
+                      key={note.id}
+                      loadingIntent={loadingIntent}
+                      note={note}
+                      updatedAtLabel={dateFormatter.format(note.updatedAt)}
+                    />
+                  );
+                })}
               </div>
               <AutoLoadMore
                 buttonLabel="Load more notes"

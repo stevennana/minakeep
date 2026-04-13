@@ -15,6 +15,7 @@ An anonymous visitor opens `/notes/[slug]`.
 - The page shares the same cool monochrome visual system as the homepage.
 - Footnote-style reference links written in the note markdown render as inline reference markers with one bottom `References` section instead of leaving citation definitions inside the article body.
 - Mermaid diagrams written in the note markdown render inline with the article body instead of exposing raw fenced code.
+- If the note opens with an image already inside the initial reading viewport, that first article image should not be left to the same lazy policy as lower images farther down the page.
 - `h1` and `strong` no longer dominate the page with oversized scale or overly black emphasis.
 - Tag chips fit their content and support longer labels without overflow.
 - The note title should avoid premature wrapping; when the available page width comfortably fits it, it should stay on one line, while longer desktop titles may wrap to a second line without feeling cramped.
@@ -26,6 +27,7 @@ An anonymous visitor opens `/notes/[slug]`.
 - AI summary and tags appear before the article body.
 - Reference links stay easy to follow because their collected bottom section is readable and visually secondary to the main article body.
 - Mermaid blocks remain readable on desktop and mobile without horizontal overflow or client-side script chrome leaking into the article.
+- The first article image does not flash in noticeably later than the surrounding opening content.
 - Title wrapping feels intentional rather than prematurely narrow, especially on desktop widths.
 - Mobile reading remains comfortable.
 - `npm run verify` passes.

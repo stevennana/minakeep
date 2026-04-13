@@ -94,5 +94,8 @@
 - [x] 102-mermaid-expansion-hardening — Mermaid expansion hardening
 - [x] 103-markdown-reference-renderer-foundation — Markdown reference renderer foundation
 - [x] 104-reference-link-note-surfaces — Reference-link note surfaces
-- [ ] 105-reference-link-wave-hardening — Reference-link wave hardening ← current
+- [x] 105-reference-link-wave-hardening — Reference-link wave hardening
+- [ ] 106-image-loading-priority-foundation — Image loading priority foundation ← current
+- [ ] 107-first-screen-card-media-priority — First-screen card media priority
+- [ ] 108-image-loading-wave-hardening — Image loading wave hardening
 

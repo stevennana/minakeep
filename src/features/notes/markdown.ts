@@ -1,5 +1,6 @@
 import katex from "katex";
 
+import { getImageLoadingAttributes } from "@/features/media/loading-intent";
 import { getMermaidBlockMarkup } from "@/features/notes/mermaid";
 
 function escapeHtml(value: string) {
@@ -62,6 +63,7 @@ type ReferenceDefinition = {
 
 type MarkdownRenderContext = {
   definitions: Map<string, ReferenceDefinition>;
+  remainingPrioritizedImageCount: number;
   referencesByLabel: Map<string, MarkdownReference>;
   referencesInOrder: MarkdownReference[];
 };
@@ -209,6 +211,10 @@ function resolveReferenceDefinitionPlaceholders(
   });
 }
 
+type RenderMarkdownOptions = {
+  prioritizedImageCount?: number;
+};
+
 function renderInlineMarkdown(markdown: string, context?: MarkdownRenderContext): string {
   let result = "";
   let cursor = 0;
@@ -225,7 +231,15 @@ function renderInlineMarkdown(markdown: string, context?: MarkdownRenderContext)
     const imageMatch = markdown.slice(cursor).match(/^!\[([^\]]*)\]\(([^)]+)\)/);
 
     if (imageMatch) {
-      result += `<img alt="${escapeHtml(imageMatch[1] ?? "")}" loading="lazy" src="${escapeHtml(sanitizeUrl(imageMatch[2] ?? ""))}" />`;
+      const intent = (context?.remainingPrioritizedImageCount ?? 0) > 0 ? "prioritized" : "lazy";
+      const loadingAttributes = getImageLoadingAttributes(intent);
+
+      if (intent === "prioritized" && context) {
+        context.remainingPrioritizedImageCount -= 1;
+      }
+
+      const fetchPriorityAttribute = loadingAttributes.fetchPriority ? ` fetchpriority="${loadingAttributes.fetchPriority}"` : "";
+      result += `<img alt="${escapeHtml(imageMatch[1] ?? "")}" decoding="${loadingAttributes.decoding}"${fetchPriorityAttribute} loading="${loadingAttributes.loading}" src="${escapeHtml(sanitizeUrl(imageMatch[2] ?? ""))}" />`;
       cursor += imageMatch[0].length;
       continue;
     }
@@ -541,12 +555,14 @@ function renderMarkdownBlocks(normalizedLines: string[], renderContext?: Markdow
   return blocks.join("\n");
 }
 
-export function renderMarkdown(markdown: string): RenderedMarkdownResult {
+export function renderMarkdown(markdown: string, options: RenderMarkdownOptions = {}): RenderedMarkdownResult {
   const { articleLines, definitions, placeholderDefinitions } = extractReferenceDefinitions(markdown);
+  const remainingPrioritizedImageCount = Math.max(0, options.prioritizedImageCount ?? 0);
   const renderContext: MarkdownRenderContext | undefined =
-    definitions.size > 0
+    definitions.size > 0 || remainingPrioritizedImageCount > 0
       ? {
           definitions,
+          remainingPrioritizedImageCount,
           referencesByLabel: new Map<string, MarkdownReference>(),
           referencesInOrder: []
         }
@@ -554,6 +570,7 @@ export function renderMarkdown(markdown: string): RenderedMarkdownResult {
 
   if (renderContext) {
     renderMarkdownBlocks(articleLines, renderContext);
+    renderContext.remainingPrioritizedImageCount = remainingPrioritizedImageCount;
   }
 
   const resolvedArticleLines = resolveReferenceDefinitionPlaceholders(articleLines, placeholderDefinitions, renderContext);
@@ -564,6 +581,6 @@ export function renderMarkdown(markdown: string): RenderedMarkdownResult {
   };
 }
 
-export function renderMarkdownToHtml(markdown: string) {
-  return renderMarkdown(markdown).articleHtml;
+export function renderMarkdownToHtml(markdown: string, options: RenderMarkdownOptions = {}) {
+  return renderMarkdown(markdown, options).articleHtml;
 }
