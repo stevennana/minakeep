@@ -1,8 +1,8 @@
 {
-  "task_id": "104-reference-link-note-surfaces",
-  "started_at": "2026-04-13T21:01:05+09:00",
-  "artifact_dir": "state/artifacts/20260413T210105-104-reference-link-note-surfaces",
+  "task_id": "105-reference-link-wave-hardening",
+  "started_at": "2026-04-13T21:13:24+09:00",
+  "artifact_dir": "state/artifacts/20260413T211324-105-reference-link-wave-hardening",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-04-13T12:12:53.955Z"
+  "updated_at": "2026-04-13T12:21:44.015Z"
 }

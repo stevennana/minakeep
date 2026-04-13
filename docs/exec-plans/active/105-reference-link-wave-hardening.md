@@ -5,7 +5,7 @@
   "id": "105-reference-link-wave-hardening",
   "title": "Reference-link wave hardening",
   "order": 105,
-  "status": "planned",
+  "status": "active",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "NONE",
   "prompt_docs": [
@@ -68,3 +68,7 @@ Promote only when the reference-link wave reads as closed and regression-protect
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-04-13T12:12:54.173Z: restored as current task after 104-reference-link-note-surfaces promotion.
+- 2026-04-13 22:08 KST: tightened the shared renderer fallback so duplicate unused supported definitions now stay visible exactly as authored instead of being rewritten to the first matching definition line.
+- 2026-04-13 22:08 KST: expanded unit regression coverage for duplicate unused definitions and unsupported multi-line definitions, then reconciled the product/design/queue docs to describe the shipped narrow syntax and fallback contract without implying broader Markdown footnote support.
+- 2026-04-13 21:19 UTC: `npm run test:e2e -- --grep @ui-reference-link-regression` passed with 4 tests, and `npm run verify` passed with lint, db prepare, typecheck, build, 91 unit tests, 96 Playwright tests, and startup smoke.

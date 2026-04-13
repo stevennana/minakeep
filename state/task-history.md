@@ -90,3 +90,4 @@
 - 2026-04-04T16:11:57.064Z: promoted 101-broader-mermaid-root-support -> 102-mermaid-expansion-hardening
 - 2026-04-05T01:18:43.666Z: manually promoted 102-mermaid-expansion-hardening -> NONE | reason=skill-sync sanity check | artifact=none
 - 2026-04-13T12:00:35.278Z: promoted 103-markdown-reference-renderer-foundation -> 104-reference-link-note-surfaces
+- 2026-04-13T12:12:54.173Z: promoted 104-reference-link-note-surfaces -> 105-reference-link-wave-hardening

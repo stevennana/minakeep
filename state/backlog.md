@@ -93,6 +93,6 @@
 - [x] 101-broader-mermaid-root-support — Broader Mermaid root support
 - [x] 102-mermaid-expansion-hardening — Mermaid expansion hardening
 - [x] 103-markdown-reference-renderer-foundation — Markdown reference renderer foundation
-- [ ] 104-reference-link-note-surfaces — Reference-link note surfaces ← current
-- [ ] 105-reference-link-wave-hardening — Reference-link wave hardening
+- [x] 104-reference-link-note-surfaces — Reference-link note surfaces
+- [ ] 105-reference-link-wave-hardening — Reference-link wave hardening ← current
 

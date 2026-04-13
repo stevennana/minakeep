@@ -170,6 +170,33 @@ test("renderMarkdown keeps unused supported reference definitions visible instea
   );
 });
 
+test("renderMarkdown keeps duplicate unused supported reference definitions visible as authored", () => {
+  const rendered = renderMarkdown(`Paragraph without matching markers.
+
+[^orphan]: [First source](https://example.com/first)
+[^orphan]: [Second source](https://example.com/second)`);
+
+  assert.equal(rendered.references.length, 0);
+  assert.match(
+    rendered.articleHtml,
+    /<p>\[\^orphan\]: <a href="https:\/\/example.com\/first" rel="noreferrer noopener" target="_blank">First source<\/a><br \/>\[\^orphan\]: <a href="https:\/\/example.com\/second" rel="noreferrer noopener" target="_blank">Second source<\/a><\/p>/
+  );
+});
+
+test("renderMarkdown leaves unsupported multi-line reference definitions visible and keeps inline markers readable", () => {
+  const rendered = renderMarkdown(`Unsupported [^split] syntax should stay visible.
+
+[^split]: [Split source](https://example.com/split)
+  continuation text`);
+
+  assert.equal(rendered.references.length, 0);
+  assert.match(rendered.articleHtml, /Unsupported \[\^split\] syntax should stay visible\./);
+  assert.match(
+    rendered.articleHtml,
+    /<p>\[\^split\]: <a href="https:\/\/example.com\/split" rel="noreferrer noopener" target="_blank">Split source<\/a><br \/>  continuation text<\/p>/
+  );
+});
+
 test("renderMermaidShell returns sanitized SVG markup when the library render succeeds", async () => {
   const result = await renderMermaidShell("flowchart TD\nA-->B", async () =>
     `<svg class="flowchart" onclick="alert(1)" xmlns="http://www.w3.org/2000/svg"><style>.accent{fill:#dbeafe;stroke:#2563eb;}.accent-text{fill:#0f172a;}</style><script>alert(1)</script><g class="cluster accent"><text class="accent-text">Hello</text></g></svg>`

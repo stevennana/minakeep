@@ -66,6 +66,11 @@ type MarkdownRenderContext = {
   referencesInOrder: MarkdownReference[];
 };
 
+type ReferenceDefinitionPlaceholder = {
+  label: string;
+  rawLine: string;
+};
+
 function isEscaped(markdown: string, index: number) {
   let slashCount = 0;
 
@@ -107,17 +112,20 @@ function createReferenceEntryId(label: string) {
   return `markdown-reference-${encodeURIComponent(label.trim())}`;
 }
 
-function createReferenceDefinitionPlaceholder(label: string) {
-  return `__MINAKEEP_REFERENCE_DEFINITION__${encodeURIComponent(label.trim())}__`;
+function createReferenceDefinitionPlaceholder(index: number) {
+  return `__MINAKEEP_REFERENCE_DEFINITION__${index}__`;
 }
 
 function extractReferenceDefinitions(markdown: string) {
   const articleLines: string[] = [];
   const definitions = new Map<string, ReferenceDefinition>();
+  const placeholderDefinitions = new Map<string, ReferenceDefinitionPlaceholder>();
   const normalizedLines = markdown.replace(/\r\n?/g, "\n").split("\n");
   let inFence = false;
+  let placeholderIndex = 0;
 
-  for (const line of normalizedLines) {
+  for (let index = 0; index < normalizedLines.length; index += 1) {
+    const line = normalizedLines[index];
     const trimmedLine = line.trim();
 
     if (trimmedLine.startsWith("```")) {
@@ -134,6 +142,14 @@ function extractReferenceDefinitions(markdown: string) {
     const definitionMatch = trimmedLine.match(/^\[\^([^\]]+)\]:\s+\[([^\]]+)\]\(([^)]+)\)$/);
 
     if (!definitionMatch) {
+      articleLines.push(line);
+      continue;
+    }
+
+    const nextLine = normalizedLines[index + 1] ?? "";
+    const hasIndentedContinuation = nextLine.length > 0 && /^(?:\t| {2,})\S/.test(nextLine);
+
+    if (hasIndentedContinuation) {
       articleLines.push(line);
       continue;
     }
@@ -157,35 +173,39 @@ function extractReferenceDefinitions(markdown: string) {
       });
     }
 
-    articleLines.push(createReferenceDefinitionPlaceholder(label));
+    const placeholder = createReferenceDefinitionPlaceholder(placeholderIndex);
+    placeholderIndex += 1;
+    placeholderDefinitions.set(placeholder, {
+      label,
+      rawLine: line
+    });
+    articleLines.push(placeholder);
   }
 
   return {
     articleLines,
-    definitions
+    definitions,
+    placeholderDefinitions
   };
 }
 
-function resolveReferenceDefinitionPlaceholders(lines: string[], context?: MarkdownRenderContext) {
-  if (!context) {
+function resolveReferenceDefinitionPlaceholders(
+  lines: string[],
+  placeholderDefinitions: Map<string, ReferenceDefinitionPlaceholder>,
+  context?: MarkdownRenderContext
+) {
+  if (placeholderDefinitions.size === 0) {
     return lines;
   }
 
   return lines.flatMap((line) => {
-    const placeholderMatch = line.match(/^__MINAKEEP_REFERENCE_DEFINITION__(.+)__$/);
+    const placeholder = placeholderDefinitions.get(line);
 
-    if (!placeholderMatch) {
+    if (!placeholder) {
       return [line];
     }
 
-    const label = decodeURIComponent(placeholderMatch[1] ?? "");
-    const definition = context.definitions.get(label);
-
-    if (!definition) {
-      return [];
-    }
-
-    return context.referencesByLabel.has(label) ? [] : [definition.rawLine];
+    return context?.referencesByLabel.has(placeholder.label) ? [] : [placeholder.rawLine];
   });
 }
 
@@ -522,7 +542,7 @@ function renderMarkdownBlocks(normalizedLines: string[], renderContext?: Markdow
 }
 
 export function renderMarkdown(markdown: string): RenderedMarkdownResult {
-  const { articleLines, definitions } = extractReferenceDefinitions(markdown);
+  const { articleLines, definitions, placeholderDefinitions } = extractReferenceDefinitions(markdown);
   const renderContext: MarkdownRenderContext | undefined =
     definitions.size > 0
       ? {
@@ -536,7 +556,7 @@ export function renderMarkdown(markdown: string): RenderedMarkdownResult {
     renderMarkdownBlocks(articleLines, renderContext);
   }
 
-  const resolvedArticleLines = resolveReferenceDefinitionPlaceholders(articleLines, renderContext);
+  const resolvedArticleLines = resolveReferenceDefinitionPlaceholders(articleLines, placeholderDefinitions, renderContext);
 
   return {
     articleHtml: renderMarkdownBlocks(resolvedArticleLines, renderContext),

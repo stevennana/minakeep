@@ -3,52 +3,46 @@ Read the following repository documents before making changes:
 - ARCHITECTURE.md
 - docs/FRONTEND.md
 - docs/product-specs/markdown-reference-links.md
-- docs/product-specs/markdown-editor-workbench.md
-- docs/product-specs/public-note-reading.md
 - docs/design-docs/markdown-reference-link-rendering.md
 - docs/references/ui-verification-contract.md
-- docs/exec-plans/active/104-reference-link-note-surfaces.md
+- docs/exec-plans/active/105-reference-link-wave-hardening.md
 
-Current task id: 104-reference-link-note-surfaces
-Current task title: Reference-link note surfaces
+Current task id: 105-reference-link-wave-hardening
+Current task title: Reference-link wave hardening
 
 Objective:
-Ship the visible owner-preview and public-note experience for reference links so supported markdown references read as calm, accessible citations instead of raw source syntax.
+Close the markdown reference-link wave by bundling the renderer, public-note, and owner-preview coverage into one durable regression contract and reconciling the docs/queue with the shipped feature.
 
 Scope:
-- public note rendering for inline markers and bottom references
-- owner preview parity in split and preview-only modes
-- responsive spacing, anchor navigation, and bottom-reference styling
-- deterministic Playwright coverage for public note and owner preview reference-link behavior
+- bundled regression replay for supported reference-link behavior
+- final doc and queue reconciliation for the shipped syntax and UI contract
+- malformed-syntax and repeated-reference regression cleanup that remains after the first two slices
 
 Out of scope:
-- additional markdown syntax beyond the supported reference-link contract
-- homepage/showroom rendering changes
-- editor toolbar shortcuts for reference insertion
+- richer academic-citation tooling beyond the documented markdown syntax
+- non-note markdown enhancements unrelated to reference links
+- future generalized markdown-library migration work
 
 Exit criteria:
-1. Public note pages render supported reference markers and the bottom `References` section with readable hierarchy.
-2. Owner preview matches the same rendered reference behavior in split and preview-only modes.
-3. Desktop and mobile surfaces keep markers discoverable, links tappable, and the references section bounded.
-4. `npm run test:e2e -- --grep @ui-public-note-reference-links`, `npm run test:e2e -- --grep @ui-note-editor-reference-links`, and `npm run verify` pass.
+1. One deterministic reference-link regression command replays the shipped public-note and owner-preview reference experience.
+2. Docs and queue history reflect the actual shipped supported syntax and fallback behavior without overclaiming broader markdown-footnote compatibility.
+3. `npm run test:e2e -- --grep @ui-reference-link-regression` and `npm run verify` pass.
 
 Required checks:
-- `npm run test:e2e -- --grep @ui-public-note-reference-links`
-- `npm run test:e2e -- --grep @ui-note-editor-reference-links`
+- `npm run test:e2e -- --grep @ui-reference-link-regression`
 - `npm run verify`
 
 Evaluator notes:
-Promote only when the shipped surface actually improves reading ergonomics and preview parity instead of just exposing extracted links somewhere below the article.
+Promote only when the reference-link wave reads as closed and regression-protected rather than as a one-off parser tweak with unfinished verification.
 
 Required repository artifacts for this task:
-- src/features/notes/components
-- src/app/globals.css
-- tests/e2e
 - docs
+- tests/e2e
+- tests/unit
+- src/features/notes
 
 Required commands for this task:
-- npm run test:e2e -- --grep @ui-public-note-reference-links
-- npm run test:e2e -- --grep @ui-note-editor-reference-links
+- npm run test:e2e -- --grep @ui-reference-link-regression
 - npm run verify
 
 Previous known gaps from the last evaluation:

@@ -20,6 +20,7 @@ Add citation-style reference-link support to the shared note-markdown pipeline w
 - If a reference marker has no matching supported definition, the note should stay readable rather than dropping surrounding prose.
 - If a definition is malformed or uses unsupported multi-paragraph footnote content, Minakeep should fall back safely instead of corrupting the rest of the note body.
 - If a supported one-line definition has no matching inline marker, Minakeep should leave that authored line visible in the article body rather than dropping it silently.
+- If the author repeats a supported-looking definition line for the same label, Minakeep should not claim broader footnote merge behavior; unused duplicates stay visible as authored, while used duplicates collapse to the same one extracted reference entry.
 - Failed reference extraction must not block note save or note publish.
 
 ## UI Rules

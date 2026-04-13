@@ -8,7 +8,7 @@ Only task files in this directory that contain a `taskmeta` JSON block are eligi
 
 1. `103-markdown-reference-renderer-foundation.md` -> teach the shared note renderer the supported footnote-style reference syntax and extracted bottom-reference contract.
 2. `104-reference-link-note-surfaces.md` -> ship the owner-preview and public-note reading experience for inline markers plus the bottom `References` section.
-3. `105-reference-link-wave-hardening.md` -> close the wave with bundled regression replay, fallback verification, and queue/doc reconciliation.
+3. `105-reference-link-wave-hardening.md` -> close the wave with bundled regression replay, duplicate/malformed fallback verification, and final queue/doc reconciliation.
 
 Task `102` is already preserved in completed history as the final Mermaid expansion hardening step. This next wave is a separate markdown-reader feature front focused on footnote-style reference links, not an extension of Mermaid scope.
 
@@ -27,5 +27,5 @@ For tasks with `"promotion_mode": "deterministic_only"`, evaluator narrative is 
 
 ## When this queue ends
 
-When the active sequence is exhausted, do not continue with ad hoc prompts alone.
+When the reference-link wave closes, do not continue with ad hoc prompts alone.
 Update the relevant product specs and design docs first, then seed the next active queue for the next feature wave.
