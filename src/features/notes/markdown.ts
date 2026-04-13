@@ -55,6 +55,7 @@ export type RenderedMarkdownResult = {
 type ReferenceDefinition = {
   entryId: string;
   label: string;
+  rawLine: string;
   sanitizedUrl: string;
   title: string;
 };
@@ -106,6 +107,10 @@ function createReferenceEntryId(label: string) {
   return `markdown-reference-${encodeURIComponent(label.trim())}`;
 }
 
+function createReferenceDefinitionPlaceholder(label: string) {
+  return `__MINAKEEP_REFERENCE_DEFINITION__${encodeURIComponent(label.trim())}__`;
+}
+
 function extractReferenceDefinitions(markdown: string) {
   const articleLines: string[] = [];
   const definitions = new Map<string, ReferenceDefinition>();
@@ -146,16 +151,42 @@ function extractReferenceDefinitions(markdown: string) {
       definitions.set(label, {
         entryId: createReferenceEntryId(label),
         label,
+        rawLine: line,
         sanitizedUrl: sanitizeUrl(rawUrl),
         title
       });
     }
+
+    articleLines.push(createReferenceDefinitionPlaceholder(label));
   }
 
   return {
     articleLines,
     definitions
   };
+}
+
+function resolveReferenceDefinitionPlaceholders(lines: string[], context?: MarkdownRenderContext) {
+  if (!context) {
+    return lines;
+  }
+
+  return lines.flatMap((line) => {
+    const placeholderMatch = line.match(/^__MINAKEEP_REFERENCE_DEFINITION__(.+)__$/);
+
+    if (!placeholderMatch) {
+      return [line];
+    }
+
+    const label = decodeURIComponent(placeholderMatch[1] ?? "");
+    const definition = context.definitions.get(label);
+
+    if (!definition) {
+      return [];
+    }
+
+    return context.referencesByLabel.has(label) ? [] : [definition.rawLine];
+  });
 }
 
 function renderInlineMarkdown(markdown: string, context?: MarkdownRenderContext): string {
@@ -179,7 +210,7 @@ function renderInlineMarkdown(markdown: string, context?: MarkdownRenderContext)
       continue;
     }
 
-    const referenceMatch = markdown.slice(cursor).match(/^\[\^([^\]]+)\]/);
+    const referenceMatch = markdown.slice(cursor).match(/^\[\^([^\]]+)\](?!:)/);
 
     if (referenceMatch && context) {
       const label = (referenceMatch[1] ?? "").trim();
@@ -324,18 +355,8 @@ export function getFirstEmbeddedMarkdownImage(markdown: string): EmbeddedMarkdow
   return null;
 }
 
-export function renderMarkdown(markdown: string): RenderedMarkdownResult {
-  const { articleLines, definitions } = extractReferenceDefinitions(markdown);
-  const normalizedLines = articleLines;
+function renderMarkdownBlocks(normalizedLines: string[], renderContext?: MarkdownRenderContext) {
   const blocks: string[] = [];
-  const renderContext: MarkdownRenderContext | undefined =
-    definitions.size > 0
-      ? {
-          definitions,
-          referencesByLabel: new Map<string, MarkdownReference>(),
-          referencesInOrder: []
-        }
-      : undefined;
 
   for (let index = 0; index < normalizedLines.length; ) {
     const line = normalizedLines[index];
@@ -497,8 +518,28 @@ export function renderMarkdown(markdown: string): RenderedMarkdownResult {
     blocks.push(`<p>${paragraphContent}</p>`);
   }
 
+  return blocks.join("\n");
+}
+
+export function renderMarkdown(markdown: string): RenderedMarkdownResult {
+  const { articleLines, definitions } = extractReferenceDefinitions(markdown);
+  const renderContext: MarkdownRenderContext | undefined =
+    definitions.size > 0
+      ? {
+          definitions,
+          referencesByLabel: new Map<string, MarkdownReference>(),
+          referencesInOrder: []
+        }
+      : undefined;
+
+  if (renderContext) {
+    renderMarkdownBlocks(articleLines, renderContext);
+  }
+
+  const resolvedArticleLines = resolveReferenceDefinitionPlaceholders(articleLines, renderContext);
+
   return {
-    articleHtml: blocks.join("\n"),
+    articleHtml: renderMarkdownBlocks(resolvedArticleLines, renderContext),
     references: renderContext?.referencesInOrder ?? []
   };
 }

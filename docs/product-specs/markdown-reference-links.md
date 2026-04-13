@@ -17,6 +17,7 @@ The owner writes or previews a note that uses footnote-style reference syntax, o
 - Reusing the same reference label multiple times in the note reuses the same bottom reference entry instead of duplicating it.
 - Readers can move from an inline reference marker to the matching bottom reference entry easily on desktop and mobile.
 - Owner preview uses the same extracted-reference rendering rules as the published note page.
+- A supported-looking reference definition that is never used by any inline `[^label]` marker stays visible in the article body instead of disappearing silently.
 
 ## Validation
 - Notes can stay readable even when they contain many source links.

@@ -151,6 +151,19 @@ Supported [^unsafe] still renders safely.`);
   assert.match(rendered.articleHtml, /Supported <sup class="markdown-reference-marker"><a aria-label="Reference 1" href="#markdown-reference-unsafe">\[1\]<\/a><\/sup> still renders safely\./);
 });
 
+test("renderMarkdown keeps unused supported reference definitions visible instead of dropping them", () => {
+  const rendered = renderMarkdown(`Paragraph without matching markers.
+
+[^orphan]: [Visible source](https://example.com/orphan)`);
+
+  assert.equal(rendered.references.length, 0);
+  assert.match(rendered.articleHtml, /Paragraph without matching markers\./);
+  assert.match(
+    rendered.articleHtml,
+    /<p>\[\^orphan\]: <a href="https:\/\/example.com\/orphan" rel="noreferrer noopener" target="_blank">Visible source<\/a><\/p>/
+  );
+});
+
 test("renderMermaidShell returns sanitized SVG markup when the library render succeeds", async () => {
   const result = await renderMermaidShell("flowchart TD\nA-->B", async () =>
     `<svg class="flowchart" onclick="alert(1)" xmlns="http://www.w3.org/2000/svg"><style>.accent{fill:#dbeafe;stroke:#2563eb;}.accent-text{fill:#0f172a;}</style><script>alert(1)</script><g class="cluster accent"><text class="accent-text">Hello</text></g></svg>`
