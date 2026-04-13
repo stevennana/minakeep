@@ -97,5 +97,5 @@
 - [x] 105-reference-link-wave-hardening — Reference-link wave hardening
 - [x] 106-image-loading-priority-foundation — Image loading priority foundation
 - [x] 107-first-screen-card-media-priority — First-screen card media priority
-- [ ] 108-image-loading-wave-hardening — Image loading wave hardening ← current
+- [x] 108-image-loading-wave-hardening — Image loading wave hardening
 

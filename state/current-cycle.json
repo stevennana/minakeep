@@ -2,7 +2,7 @@
   "task_id": "108-image-loading-wave-hardening",
   "started_at": "2026-04-13T21:58:25+09:00",
   "artifact_dir": "state/artifacts/20260413T215825-108-image-loading-wave-hardening",
-  "phase": "commit",
-  "status": "running",
-  "updated_at": "2026-04-13T13:14:19.900Z"
+  "phase": "finished",
+  "status": "finished",
+  "updated_at": "2026-04-13T13:14:20.247Z"
 }

@@ -5,7 +5,7 @@
   "id": "108-image-loading-wave-hardening",
   "title": "Image loading wave hardening",
   "order": 108,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "NONE",
   "prompt_docs": [
@@ -34,7 +34,8 @@
     "Rendered markdown images remain globally lazy even when the first article image sits in the opening viewport.",
     "The hardening pass closes the wave without one bundled regression command for the shipped image-loading behavior.",
     "The new policy regresses public-note reading, owner preview parity, or media privacy boundaries."
-  ]
+  ],
+  "completed_at": "2026-04-13T13:14:20.122Z"
 }
 ```
 
@@ -77,3 +78,4 @@ Promote only when the image-loading wave reads as fully closed and regression-pr
 - 2026-04-13T12:57:55.179Z: restored as current task after 107-first-screen-card-media-priority promotion.
 - 2026-04-13T23:35:00+0900: replaced the unconditional public-note and owner-preview markdown image budget with an opening-viewport heuristic so only the first rendered article image in the opening band gets prioritized; deeper article images stay lazy.
 - 2026-04-13T23:35:00+0900: bundled `@ui-image-loading-card-media` and new rendered-markdown coverage under `@ui-image-loading-regression`, added unit coverage for the opening-viewport decision, and reconciled the image-loading docs to describe the shipped contract precisely.
+- 2026-04-13T13:14:20.122Z: automatically promoted after deterministic checks and evaluator approval.

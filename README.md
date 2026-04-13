@@ -162,7 +162,7 @@ npm run verify
 Published images are available on Docker Hub, but the shipped Compose contract is source-built from the checked-out repo:
 
 ```bash
-docker pull stevenna050/minakeep:1.0.1
+docker pull stevenna050/minakeep:1.0.9
 ```
 
 The official release path is multi-arch (`linux/amd64` and `linux/arm64`) and is published from Git tags through GitHub Actions.
