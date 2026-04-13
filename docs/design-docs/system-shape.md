@@ -7,4 +7,5 @@ Capture the project-specific design constraints for Minakeep that are too detail
 - separate public reading routes from private authoring routes at the filesystem level
 - give owner-only workflows a consistent `/app` prefix
 - keep markdown rendering and slug rules reusable across public and private note flows
+- keep markdown reference extraction reusable across owner preview and published note reading
 - keep Prisma and environment access behind small server-side helpers

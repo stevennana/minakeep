@@ -3,13 +3,16 @@
 import { useEffect, useRef, type RefObject } from "react";
 
 import { enhanceMermaidFigures } from "@/features/notes/mermaid";
+import type { RenderedMarkdownResult } from "@/features/notes/markdown";
 
 type RenderedMarkdownProps = {
   autoEnhance?: boolean;
   className: string;
   containerRef?: RefObject<HTMLDivElement | null>;
-  html: string;
+  html?: string;
+  hideMermaidSyntaxFallbackSource?: boolean;
   onMermaidStatusChange?: (summary: { syntaxIssueCount: number }) => void;
+  rendered?: RenderedMarkdownResult;
   testId?: string;
 };
 
@@ -18,11 +21,25 @@ export function RenderedMarkdown({
   className,
   containerRef,
   html,
+  hideMermaidSyntaxFallbackSource = false,
   onMermaidStatusChange,
+  rendered,
   testId
 }: RenderedMarkdownProps) {
   const localRef = useRef<HTMLDivElement | null>(null);
   const resolvedRef = containerRef ?? localRef;
+  const articleHtml = rendered?.articleHtml ?? html ?? "";
+  const references = rendered?.references ?? [];
+  const referencesHtml =
+    references.length > 0
+      ? `<section aria-label="References" class="markdown-reference-section"><h2>References</h2><ol class="markdown-reference-list">${references
+          .map(
+            (reference) =>
+              `<li class="markdown-reference-list-item" id="${reference.entryId}"><a href="${reference.url}" rel="noreferrer noopener" target="_blank">${reference.titleHtml}</a></li>`
+          )
+          .join("")}</ol></section>`
+      : "";
+  const combinedHtml = `${articleHtml}${referencesHtml ? `\n${referencesHtml}` : ""}`;
 
   useEffect(() => {
     if (!autoEnhance) {
@@ -81,8 +98,9 @@ export function RenderedMarkdown({
   return (
     <div
       className={className}
+      data-hide-mermaid-syntax-fallback-source={hideMermaidSyntaxFallbackSource ? "true" : undefined}
       data-testid={testId}
-      dangerouslySetInnerHTML={{ __html: html }}
+      dangerouslySetInnerHTML={{ __html: combinedHtml }}
       ref={resolvedRef}
     />
   );

@@ -19,6 +19,15 @@ import {
 
 const DEFAULT_MANUAL_PROMOTION_REASON = "operator manual promotion";
 
+function normalizeNextTaskTarget(raw) {
+  if (raw === null || raw === undefined) return null;
+  const normalized = normalizeTaskId(raw);
+  if (!normalized || normalized === "NONE") {
+    return null;
+  }
+  return normalized;
+}
+
 function parseTaskMeta(markdown, label) {
   const match = markdown.match(/```json taskmeta\s*([\s\S]*?)```/);
   if (!match) {
@@ -127,7 +136,7 @@ if (!task) {
 }
 
 const completedAt = timestamp();
-const nextTaskId = task.meta.next_task_on_success ?? null;
+const nextTaskId = normalizeNextTaskTarget(task.meta.next_task_on_success);
 const parentTaskId = task.meta.rca_for_task_id ?? null;
 const overrideArtifact = options.artifact.trim();
 const manualOverride = options.manual

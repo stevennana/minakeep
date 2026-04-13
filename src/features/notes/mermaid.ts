@@ -78,14 +78,22 @@ function getFallbackShellMarkup(
   source: string,
   {
     body = "The Mermaid block was kept as authored, but this diagram could not be rendered safely.",
+    includeSourcePreview = true,
     meta = "Diagram preview unavailable"
-  }: { body?: string; meta?: string } = {}
+  }: { body?: string; includeSourcePreview?: boolean; meta?: string } = {}
 ) {
   const previewLines = getSourcePreview(source);
   const previewMarkup =
     previewLines.length > 0 ? escapeHtml(previewLines.join("\n")) : "Add Mermaid source inside the fenced block.";
+  const hiddenPreviewMarkup =
+    previewLines.length > 0
+      ? escapeHtml(previewLines.map(() => "Mermaid source preview hidden.").join("\n"))
+      : "Mermaid source preview hidden.";
+  const previewBlockMarkup = includeSourcePreview
+    ? `<pre><code>${previewMarkup}</code></pre>`
+    : `<pre><code>${hiddenPreviewMarkup}</code></pre>`;
 
-  return `<div class="markdown-mermaid-shell__meta">${escapeHtml(meta)}</div><p class="markdown-mermaid-shell__body">${escapeHtml(body)}</p><pre><code>${previewMarkup}</code></pre>`;
+  return `<div class="markdown-mermaid-shell__meta">${escapeHtml(meta)}</div><p class="markdown-mermaid-shell__body">${escapeHtml(body)}</p>${previewBlockMarkup}`;
 }
 
 function getRenderedShellMarkup(svg: string) {
@@ -198,6 +206,8 @@ export async function renderMermaidShell(
 export async function enhanceMermaidFigures(root: ParentNode): Promise<MermaidEnhancementSummary> {
   const figures = Array.from(root.querySelectorAll<HTMLElement>(".markdown-mermaid[data-mermaid-source]"));
   let syntaxIssueCount = 0;
+  const hideSyntaxFallbackSource =
+    root instanceof HTMLElement && root.dataset.hideMermaidSyntaxFallbackSource === "true";
 
   for (const figure of figures) {
     const encodedSource = figure.dataset.mermaidSource;
@@ -214,7 +224,13 @@ export async function enhanceMermaidFigures(root: ParentNode): Promise<MermaidEn
     }
 
     const result = await renderMermaidShell(source);
-    shell.innerHTML = result.markup;
+    shell.innerHTML =
+      result.issue === "syntax" && hideSyntaxFallbackSource
+        ? getFallbackShellMarkup(source, {
+            body: "The Mermaid block was kept as authored, but this diagram could not be rendered safely.",
+            includeSourcePreview: false
+          })
+        : result.markup;
     figure.classList.remove("markdown-mermaid--pending", "markdown-mermaid--fallback", "markdown-mermaid--rendered");
     figure.classList.add(`markdown-mermaid--${result.state}`);
 

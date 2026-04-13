@@ -5,7 +5,7 @@
   "id": "102-mermaid-expansion-hardening",
   "title": "Mermaid expansion hardening",
   "order": 102,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "NONE",
   "prompt_docs": [
@@ -30,7 +30,14 @@
     "The bundled Mermaid regression command misses newly supported flowchart styling or broader root surfaces.",
     "Docs, active queue, and shipped Mermaid capabilities drift apart again by the end of the wave.",
     "The full verify gate passes only in isolation but the Mermaid expansion still leaves regression risk unprotected."
-  ]
+  ],
+  "completed_at": "2026-04-05T01:18:43.666Z",
+  "manual_override": {
+    "reason": "skill-sync sanity check",
+    "artifact": "none",
+    "previous_evaluation_status": "done",
+    "promoted_at": "2026-04-05T01:18:43.666Z"
+  }
 }
 ```
 
@@ -75,3 +82,5 @@ Promote only when the expanded Mermaid wave reads as a finished shipped slice ra
 - 2026-04-05 01:24 KST: reran the task gates from the current workspace and reconfirmed the shipped hardening bundle without further code changes; `npm run test:e2e -- --grep @ui-mermaid-regression` passed with 4 Mermaid replay tests across owner preview and published note desktop/mobile surfaces, and `npm run verify` passed end to end with lint, typecheck, build, 85 unit tests, 92 Playwright tests, and startup smoke.
 - 2026-04-05 01:31 KST: re-audited the live workspace against the task contract, confirmed the shared Mermaid renderer and doc set still match the shipped supported roots and fallback rules, then reran the required gates; `npm run test:e2e -- --grep @ui-mermaid-regression` passed with 4 Mermaid replay tests and `npm run verify` passed again with lint, db prepare, typecheck, build, 85 unit tests, 92 Playwright tests, and startup smoke.
 - 2026-04-05 01:38 KST: revalidated task `102` from the current workspace without widening the Mermaid scope. Confirmed the shared renderer still limits deterministic success to `flowchart` / `graph`, `sequenceDiagram`, `classDiagram`, and `stateDiagram` / `stateDiagram-v2`, while the bundled owner-preview and public-note regression specs still prove advanced flowchart styling, broader-root rendering, malformed-supported-root fallback, and mobile containment. `npm run test:e2e -- --grep @ui-mermaid-regression` passed with 4 tests, and `npm run verify` passed with lint, db prepare, typecheck, build, 85 unit tests, 92 Playwright tests, and startup smoke.
+- 2026-04-05 01:44 KST: reran the task `102` hardening bundle from the current workspace to verify the claimed shipped slice still holds without additional scope changes. Reconfirmed that the shared Mermaid contract, docs, and active queue all align on deterministic support for `flowchart` / `graph`, `sequenceDiagram`, `classDiagram`, and `stateDiagram` / `stateDiagram-v2`; `npm run test:e2e -- --grep @ui-mermaid-regression` passed with 4 replay tests across owner preview and published note desktop/mobile surfaces, and `npm run verify` passed with lint, db prepare, typecheck, build, 85 unit tests, 92 Playwright tests, and startup smoke.
+- 2026-04-05T01:18:43.666Z: manually promoted by operator override. Reason: skill-sync sanity check Artifact: none.

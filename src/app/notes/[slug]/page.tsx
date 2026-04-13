@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { ButtonLink, MetadataRow, Surface, TagChip, TagList } from "@/components/ui/primitives";
 import { RenderedMarkdown } from "@/features/notes/components/rendered-markdown";
-import { renderMarkdownToHtml } from "@/features/notes/markdown";
+import { renderMarkdown } from "@/features/notes/markdown";
 import { getPublishedNoteBySlug } from "@/features/notes/service";
 import { getPublicPageMetadata, getPublishedNotePath } from "@/features/public-site/metadata";
 
@@ -29,7 +29,7 @@ export default async function PublicNotePage({ params }: PublicNotePageProps) {
   const publishedAt = note.publishedAt ?? note.updatedAt;
   const formattedPublishedAt = new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(publishedAt);
   const hasSupportContent = Boolean(note.summary) || note.tags.length > 0;
-  const renderedMarkdown = renderMarkdownToHtml(note.markdown);
+  const renderedMarkdown = renderMarkdown(note.markdown);
 
   return (
     <div className="feature-layout public-note-layout">
@@ -73,7 +73,7 @@ export default async function PublicNotePage({ params }: PublicNotePageProps) {
         </header>
         <RenderedMarkdown
           className="markdown-preview public-note-body public-note-body--published"
-          html={renderedMarkdown}
+          rendered={renderedMarkdown}
           testId="public-note-markdown"
         />
       </Surface>

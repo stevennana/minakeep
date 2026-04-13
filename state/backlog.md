@@ -91,5 +91,8 @@
 - [x] 100-flowchart-advanced-mermaid-features-rca-npm-run-verify-auth-spec-delete-spec-7828b3cc — RCA: Flowchart advanced Mermaid features blocker
 - [x] 100-flowchart-advanced-mermaid-features-rca-npm-run-verify-auth-spec-delete-spec-e5cc86b6 — RCA: Flowchart advanced Mermaid features blocker
 - [x] 101-broader-mermaid-root-support — Broader Mermaid root support
-- [ ] 102-mermaid-expansion-hardening — Mermaid expansion hardening ← current
+- [x] 102-mermaid-expansion-hardening — Mermaid expansion hardening
+- [ ] 103-markdown-reference-renderer-foundation — Markdown reference renderer foundation ← current
+- [ ] 104-reference-link-note-surfaces — Reference-link note surfaces
+- [ ] 105-reference-link-wave-hardening — Reference-link wave hardening
 

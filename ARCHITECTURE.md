@@ -40,7 +40,7 @@ Single-owner authentication, route protection, and owner-session checks.
 Static-key server-to-server note creation that writes into the existing single-owner note model without adding multi-user API key management. Requests stay private by default unless they explicitly opt into publish-on-create with `isPublished: true`.
 
 ### Notes
-Markdown note drafts, publishing state, slugs, public rendering, and note-side enrichment state.
+Markdown note drafts, publishing state, slugs, public rendering, extracted reference-link rendering, and note-side enrichment state.
 
 ### Links
 Manual bookmark capture with URL/title plus AI-generated summary and shared tags.

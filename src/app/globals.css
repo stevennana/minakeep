@@ -2710,6 +2710,28 @@ textarea {
   padding-bottom: 0.1rem;
 }
 
+.markdown-preview .markdown-reference-marker {
+  font-size: 0.72em;
+  line-height: 0;
+  vertical-align: super;
+}
+
+.markdown-preview .markdown-reference-section {
+  border-top: 1px solid rgba(100, 116, 139, 0.16);
+  margin-top: 1.7rem;
+  padding-top: 1.15rem;
+}
+
+.markdown-preview .markdown-reference-list {
+  margin: 0.85rem 0 0;
+  padding-left: 1.3rem;
+}
+
+.markdown-preview .markdown-reference-list-item {
+  color: var(--ink-muted);
+  margin-bottom: 0.55rem;
+}
+
 .markdown-preview .markdown-mermaid {
   margin: 1.05rem 0 1.2rem;
 }
@@ -2813,7 +2835,7 @@ textarea {
 }
 
 .note-editor-pane-preview .markdown-mermaid[data-mermaid-issue="syntax"] {
-  display: none;
+  visibility: hidden;
 }
 
 .public-note-body--published .markdown-mermaid--fallback .markdown-mermaid-shell {

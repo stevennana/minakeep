@@ -38,6 +38,33 @@ export type EmbeddedMarkdownImage = {
   src: string;
 };
 
+export type MarkdownReference = {
+  entryId: string;
+  index: number;
+  label: string;
+  title: string;
+  titleHtml: string;
+  url: string;
+};
+
+export type RenderedMarkdownResult = {
+  articleHtml: string;
+  references: MarkdownReference[];
+};
+
+type ReferenceDefinition = {
+  entryId: string;
+  label: string;
+  sanitizedUrl: string;
+  title: string;
+};
+
+type MarkdownRenderContext = {
+  definitions: Map<string, ReferenceDefinition>;
+  referencesByLabel: Map<string, MarkdownReference>;
+  referencesInOrder: MarkdownReference[];
+};
+
 function isEscaped(markdown: string, index: number) {
   let slashCount = 0;
 
@@ -75,7 +102,63 @@ function findInlineMathEnd(markdown: string, start: number) {
   return -1;
 }
 
-function renderInlineMarkdown(markdown: string): string {
+function createReferenceEntryId(label: string) {
+  return `markdown-reference-${encodeURIComponent(label.trim())}`;
+}
+
+function extractReferenceDefinitions(markdown: string) {
+  const articleLines: string[] = [];
+  const definitions = new Map<string, ReferenceDefinition>();
+  const normalizedLines = markdown.replace(/\r\n?/g, "\n").split("\n");
+  let inFence = false;
+
+  for (const line of normalizedLines) {
+    const trimmedLine = line.trim();
+
+    if (trimmedLine.startsWith("```")) {
+      inFence = !inFence;
+      articleLines.push(line);
+      continue;
+    }
+
+    if (inFence) {
+      articleLines.push(line);
+      continue;
+    }
+
+    const definitionMatch = trimmedLine.match(/^\[\^([^\]]+)\]:\s+\[([^\]]+)\]\(([^)]+)\)$/);
+
+    if (!definitionMatch) {
+      articleLines.push(line);
+      continue;
+    }
+
+    const label = (definitionMatch[1] ?? "").trim();
+    const title = (definitionMatch[2] ?? "").trim();
+    const rawUrl = (definitionMatch[3] ?? "").trim();
+
+    if (!label || !title || !rawUrl) {
+      articleLines.push(line);
+      continue;
+    }
+
+    if (!definitions.has(label)) {
+      definitions.set(label, {
+        entryId: createReferenceEntryId(label),
+        label,
+        sanitizedUrl: sanitizeUrl(rawUrl),
+        title
+      });
+    }
+  }
+
+  return {
+    articleLines,
+    definitions
+  };
+}
+
+function renderInlineMarkdown(markdown: string, context?: MarkdownRenderContext): string {
   let result = "";
   let cursor = 0;
 
@@ -96,10 +179,38 @@ function renderInlineMarkdown(markdown: string): string {
       continue;
     }
 
+    const referenceMatch = markdown.slice(cursor).match(/^\[\^([^\]]+)\]/);
+
+    if (referenceMatch && context) {
+      const label = (referenceMatch[1] ?? "").trim();
+      const definition = context.definitions.get(label);
+
+      if (definition) {
+        let reference = context.referencesByLabel.get(label);
+
+        if (!reference) {
+          reference = {
+            entryId: definition.entryId,
+            index: context.referencesInOrder.length + 1,
+            label,
+            title: definition.title,
+            titleHtml: renderInlineMarkdown(definition.title),
+            url: definition.sanitizedUrl
+          };
+          context.referencesByLabel.set(label, reference);
+          context.referencesInOrder.push(reference);
+        }
+
+        result += `<sup class="markdown-reference-marker"><a aria-label="Reference ${reference.index}" href="#${reference.entryId}">[${reference.index}]</a></sup>`;
+        cursor += referenceMatch[0].length;
+        continue;
+      }
+    }
+
     const linkMatch = markdown.slice(cursor).match(/^\[([^\]]+)\]\(([^)]+)\)/);
 
     if (linkMatch) {
-      result += `<a href="${escapeHtml(sanitizeUrl(linkMatch[2] ?? ""))}" rel="noreferrer noopener" target="_blank">${renderInlineMarkdown(linkMatch[1] ?? "")}</a>`;
+      result += `<a href="${escapeHtml(sanitizeUrl(linkMatch[2] ?? ""))}" rel="noreferrer noopener" target="_blank">${renderInlineMarkdown(linkMatch[1] ?? "", context)}</a>`;
       cursor += linkMatch[0].length;
       continue;
     }
@@ -107,7 +218,7 @@ function renderInlineMarkdown(markdown: string): string {
     const strongMatch = markdown.slice(cursor).match(/^\*\*([^*]+)\*\*/);
 
     if (strongMatch) {
-      result += `<strong>${renderInlineMarkdown(strongMatch[1] ?? "")}</strong>`;
+      result += `<strong>${renderInlineMarkdown(strongMatch[1] ?? "", context)}</strong>`;
       cursor += strongMatch[0].length;
       continue;
     }
@@ -115,7 +226,7 @@ function renderInlineMarkdown(markdown: string): string {
     const emphasisMatch = markdown.slice(cursor).match(/^\*([^*]+)\*/);
 
     if (emphasisMatch) {
-      result += `<em>${renderInlineMarkdown(emphasisMatch[1] ?? "")}</em>`;
+      result += `<em>${renderInlineMarkdown(emphasisMatch[1] ?? "", context)}</em>`;
       cursor += emphasisMatch[0].length;
       continue;
     }
@@ -213,9 +324,18 @@ export function getFirstEmbeddedMarkdownImage(markdown: string): EmbeddedMarkdow
   return null;
 }
 
-export function renderMarkdownToHtml(markdown: string) {
-  const normalizedLines = markdown.replace(/\r\n?/g, "\n").split("\n");
+export function renderMarkdown(markdown: string): RenderedMarkdownResult {
+  const { articleLines, definitions } = extractReferenceDefinitions(markdown);
+  const normalizedLines = articleLines;
   const blocks: string[] = [];
+  const renderContext: MarkdownRenderContext | undefined =
+    definitions.size > 0
+      ? {
+          definitions,
+          referencesByLabel: new Map<string, MarkdownReference>(),
+          referencesInOrder: []
+        }
+      : undefined;
 
   for (let index = 0; index < normalizedLines.length; ) {
     const line = normalizedLines[index];
@@ -276,7 +396,7 @@ export function renderMarkdownToHtml(markdown: string) {
 
     if (headingMatch) {
       const level = headingMatch[1].length;
-      blocks.push(`<h${level}>${renderInlineMarkdown(headingMatch[2])}</h${level}>`);
+      blocks.push(`<h${level}>${renderInlineMarkdown(headingMatch[2], renderContext)}</h${level}>`);
       index += 1;
       continue;
     }
@@ -295,7 +415,7 @@ export function renderMarkdownToHtml(markdown: string) {
         index += 1;
       }
 
-      const quoteContent = quoteLines.map((quoteLine) => renderInlineMarkdown(quoteLine)).join("<br />");
+      const quoteContent = quoteLines.map((quoteLine) => renderInlineMarkdown(quoteLine, renderContext)).join("<br />");
       blocks.push(`<blockquote><p>${quoteContent}</p></blockquote>`);
       continue;
     }
@@ -304,7 +424,7 @@ export function renderMarkdownToHtml(markdown: string) {
       const items: string[] = [];
 
       while (index < normalizedLines.length && isUnorderedListItem(normalizedLines[index].trim())) {
-        items.push(`<li>${renderInlineMarkdown(normalizedLines[index].trim().replace(/^[-*]\s+/, ""))}</li>`);
+        items.push(`<li>${renderInlineMarkdown(normalizedLines[index].trim().replace(/^[-*]\s+/, ""), renderContext)}</li>`);
         index += 1;
       }
 
@@ -316,7 +436,7 @@ export function renderMarkdownToHtml(markdown: string) {
       const items: string[] = [];
 
       while (index < normalizedLines.length && isOrderedListItem(normalizedLines[index].trim())) {
-        items.push(`<li>${renderInlineMarkdown(normalizedLines[index].trim().replace(/^\d+\.\s+/, ""))}</li>`);
+        items.push(`<li>${renderInlineMarkdown(normalizedLines[index].trim().replace(/^\d+\.\s+/, ""), renderContext)}</li>`);
         index += 1;
       }
 
@@ -335,12 +455,12 @@ export function renderMarkdownToHtml(markdown: string) {
 
       while (index < normalizedLines.length && isTableRow(normalizedLines[index])) {
         const rowCells = splitTableCells(normalizedLines[index]);
-        const cells = headerCells.map((_, cellIndex) => `<td>${renderInlineMarkdown(rowCells[cellIndex] ?? "")}</td>`);
+        const cells = headerCells.map((_, cellIndex) => `<td>${renderInlineMarkdown(rowCells[cellIndex] ?? "", renderContext)}</td>`);
         bodyRows.push(`<tr>${cells.join("")}</tr>`);
         index += 1;
       }
 
-      const header = headerCells.map((cell) => `<th>${renderInlineMarkdown(cell)}</th>`).join("");
+      const header = headerCells.map((cell) => `<th>${renderInlineMarkdown(cell, renderContext)}</th>`).join("");
       const body = bodyRows.length > 0 ? `<tbody>${bodyRows.join("")}</tbody>` : "";
       blocks.push(`<table><thead><tr>${header}</tr></thead>${body}</table>`);
       continue;
@@ -373,9 +493,16 @@ export function renderMarkdownToHtml(markdown: string) {
       index += 1;
     }
 
-    const paragraphContent = paragraphLines.map((paragraphLine) => renderInlineMarkdown(paragraphLine)).join("<br />");
+    const paragraphContent = paragraphLines.map((paragraphLine) => renderInlineMarkdown(paragraphLine, renderContext)).join("<br />");
     blocks.push(`<p>${paragraphContent}</p>`);
   }
 
-  return blocks.join("\n");
+  return {
+    articleHtml: blocks.join("\n"),
+    references: renderContext?.referencesInOrder ?? []
+  };
+}
+
+export function renderMarkdownToHtml(markdown: string) {
+  return renderMarkdown(markdown).articleHtml;
 }

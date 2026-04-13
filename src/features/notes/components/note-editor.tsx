@@ -38,7 +38,7 @@ import {
   type NoteEditorViewMode,
   type SelectionRange
 } from "@/features/notes/editor-markdown";
-import { renderMarkdownToHtml } from "@/features/notes/markdown";
+import { renderMarkdown } from "@/features/notes/markdown";
 import type { SavedTag } from "@/features/tags/types";
 
 type NoteEditorProps = {
@@ -162,7 +162,8 @@ export function NoteEditor({
   const editorHintId = useId();
   const previewHeadingId = useId();
   const previewTitle = title.trim() || "Untitled note";
-  const previewHtml = renderMarkdownToHtml(markdown);
+  const previewRender = renderMarkdown(markdown);
+  const hasPreviewContent = Boolean(previewRender.articleHtml) || previewRender.references.length > 0;
   const isMobileViewport = !isDesktopViewport;
   const sourcePaneHidden = viewMode === "preview";
   const previewPaneHidden = viewMode !== "preview" && (isMobileViewport || viewMode === "source");
@@ -886,9 +887,11 @@ Use headings, lists, quotes, links, code, and $...$ math without leaving markdow
                     <h2 id={previewHeadingId}>{previewTitle}</h2>
                     <RenderedMarkdown
                       className="markdown-preview"
-                      html={previewHtml || "<p>Start writing to see the rendered preview.</p>"}
                       key={previewPaneHidden ? "preview-hidden" : `preview-${viewMode}`}
+                      hideMermaidSyntaxFallbackSource
                       onMermaidStatusChange={({ syntaxIssueCount }) => setMermaidSyntaxIssueCount(syntaxIssueCount)}
+                      html={hasPreviewContent ? undefined : "<p>Start writing to see the rendered preview.</p>"}
+                      rendered={hasPreviewContent ? previewRender : undefined}
                       testId="note-markdown-preview"
                     />
                   </div>

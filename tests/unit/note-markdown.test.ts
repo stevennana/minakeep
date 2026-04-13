@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { renderMermaidShell } from "../../src/features/notes/mermaid";
-import { createNoteExcerpt, renderMarkdownToHtml } from "../../src/features/notes/markdown";
+import { createNoteExcerpt, renderMarkdown, renderMarkdownToHtml } from "../../src/features/notes/markdown";
 
 test("renderMarkdownToHtml preserves common note-writing structures while escaping unsafe HTML", () => {
   const html = renderMarkdownToHtml(`# Heading
@@ -82,6 +82,73 @@ flowchart TD
   assert.match(html, /classDef accent fill:#dbeafe,stroke:#2563eb,color:#0f172a/);
   assert.match(html, /style B fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#7c2d12/);
   assert.doesNotMatch(html, /```mermaid/);
+});
+
+test("renderMarkdown collects supported reference links into first-use order and removes definitions from the article body", () => {
+  const rendered = renderMarkdown(`Paragraph with [^beta] before [^alpha].
+
+Another mention of [^beta].
+
+[^alpha]: [Alpha source](https://example.com/alpha)
+[^beta]: [Beta source](https://example.com/beta)`);
+
+  assert.match(rendered.articleHtml, /Paragraph with <sup class="markdown-reference-marker"><a aria-label="Reference 1" href="#markdown-reference-beta">\[1\]<\/a><\/sup> before <sup class="markdown-reference-marker"><a aria-label="Reference 2" href="#markdown-reference-alpha">\[2\]<\/a><\/sup>\./);
+  assert.equal(rendered.references.length, 2);
+  assert.deepEqual(
+    rendered.references.map((reference) => ({
+      entryId: reference.entryId,
+      index: reference.index,
+      label: reference.label,
+      title: reference.title,
+      url: reference.url
+    })),
+    [
+      {
+        entryId: "markdown-reference-beta",
+        index: 1,
+        label: "beta",
+        title: "Beta source",
+        url: "https://example.com/beta"
+      },
+      {
+        entryId: "markdown-reference-alpha",
+        index: 2,
+        label: "alpha",
+        title: "Alpha source",
+        url: "https://example.com/alpha"
+      }
+    ]
+  );
+  assert.doesNotMatch(rendered.articleHtml, /\[\^alpha\]:/);
+  assert.doesNotMatch(rendered.articleHtml, /\[\^beta\]:/);
+});
+
+test("renderMarkdown reuses one extracted reference entry when the same label appears multiple times", () => {
+  const rendered = renderMarkdown(`Repeated [^same] markers stay stable.
+
+Again [^same].
+
+[^same]: [One source](https://example.com/source)`);
+
+  assert.equal(rendered.references.length, 1);
+  assert.equal(rendered.references[0]?.index, 1);
+  assert.match(rendered.articleHtml, /\[1\]<\/a><\/sup> markers stay stable\./);
+  assert.equal(rendered.articleHtml.match(/href="#markdown-reference-same"/g)?.length, 2);
+});
+
+test("renderMarkdown keeps malformed reference syntax visible and sanitizes unsafe supported URLs", () => {
+  const rendered = renderMarkdown(`Malformed [^missing] stays readable.
+
+[^missing]: not a supported definition
+[^unsafe]: [Unsafe source](javascript:alert)
+
+Supported [^unsafe] still renders safely.`);
+
+  assert.match(rendered.articleHtml, /Malformed \[\^missing\] stays readable\./);
+  assert.match(rendered.articleHtml, /\[\^missing\]: not a supported definition/);
+  assert.equal(rendered.references.length, 1);
+  assert.equal(rendered.references[0]?.url, "#");
+  assert.match(rendered.articleHtml, /Supported <sup class="markdown-reference-marker"><a aria-label="Reference 1" href="#markdown-reference-unsafe">\[1\]<\/a><\/sup> still renders safely\./);
 });
 
 test("renderMermaidShell returns sanitized SVG markup when the library render succeeds", async () => {

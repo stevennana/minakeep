@@ -2237,3 +2237,27 @@ run-once failed with exit code 1. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260405T013448-102-mermaid-expansion-hardening/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260405T013448-102-mermaid-expansion-hardening/npm-run-test-e2e-grep-ui-mermaid-regression-next-server.log
+- commit: commit: created
+- promote: failed -> state/artifacts/20260405T013448-102-mermaid-expansion-hardening/promote.log
+- backlog: rendered current=102-mermaid-expansion-hardening
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxoooxxooxoxxxooxxxoxxoooxxxxxxxxxooooxxxxxxxxxxxxxoooxxxx
+- cycle: finished
+
+### cycle 2026-04-05T01:41:33+09:00 task=102-mermaid-expansion-hardening
+- artifacts: state/artifacts/20260405T014133-102-mermaid-expansion-hardening
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260405T014133-102-mermaid-expansion-hardening/worker.jsonl
+- worker-summary: No product code changes were needed. I revalidated the shipped Mermaid hardening slice, appended the fresh run record to [102-mermaid-expansion-hardening.md](/Users/stevenna/WebstormProjects/minakeep/docs/exec-plans/active/102-mermaid-expansion-hardening.md#L78), and wrote the operator handoff summary to [last-result.txt](/Users/stevenna/WebstormProjects/minakeep/state/last-result.txt#L1).
+- evaluator: started
+## loop start 2026-04-13T20:22:28+09:00
+
+### cycle 2026-04-13T20:22:28+09:00 task=103-markdown-reference-renderer-foundation
+- artifacts: state/artifacts/20260413T202228-103-markdown-reference-renderer-foundation
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260413T202228-103-markdown-reference-renderer-foundation/worker.jsonl
+- worker-summary: Implemented task 103 in the shared markdown path.
+- evaluator: started
+- evaluator: status=not_done promotion=false The shared renderer and tests are mostly in place, and `npm run test:unit` plus `npm run verify` both pass, but the implementation is not safe enough to promote yet. In [src/features/notes/markdown.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/markdown.ts:109), `extractReferenceDefinitions()` removes every syntactically supported `[^label]: [Title](url)` definition from the article before the renderer knows whether that label is ever referenced. Later, only actually-used labels are emitted into `references` ([src/features/notes/markdown.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/markdown.ts:184)). That means an authored supported definition with no matching inline `[^label]` marker silently disappears from both the article body and the bottom `References` section. This violates the task’s requirement for a narrow, explicit, safe contract and leaves unmatched-but-supported syntax with destructive behavior rather than safe fallback. -> state/artifacts/20260413T202228-103-markdown-reference-renderer-foundation/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260413T202228-103-markdown-reference-renderer-foundation/npm-run-verify-next-server.log

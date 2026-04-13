@@ -6,9 +6,11 @@ Only task files in this directory that contain a `taskmeta` JSON block are eligi
 
 ## Current recommended sequence
 
-1. `102-mermaid-expansion-hardening.md` -> close the expansion wave with bundled regression replay, fallback verification, and queue/doc reconciliation.
+1. `103-markdown-reference-renderer-foundation.md` -> teach the shared note renderer the supported footnote-style reference syntax and extracted bottom-reference contract.
+2. `104-reference-link-note-surfaces.md` -> ship the owner-preview and public-note reading experience for inline markers plus the bottom `References` section.
+3. `105-reference-link-wave-hardening.md` -> close the wave with bundled regression replay, fallback verification, and queue/doc reconciliation.
 
-Tasks `099` through `101` are already preserved in completed history as the completed expansion steps. Tasks `092` through `098` remain preserved in completed history as the earlier Mermaid tranche. This queue now ends with task `102`, which reconciles the shipped renderer contract and deterministic replay coverage rather than introducing new Mermaid scope.
+Task `102` is already preserved in completed history as the final Mermaid expansion hardening step. This next wave is a separate markdown-reader feature front focused on footnote-style reference links, not an extension of Mermaid scope.
 
 ## Operating rule
 

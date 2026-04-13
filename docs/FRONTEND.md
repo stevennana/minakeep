@@ -31,7 +31,7 @@ Describe the user-facing structure of Minakeep so an agent can implement the UI 
 Acts as a mixed public showroom first. It should emphasize a dynamic masonry-style archive of published note and published link previews, remove the old owner-entrance side section, keep framing copy minimal, use a compact archive header instead of a hero block, keep the public title-only search control collapsed into a small button-and-summary row until the visitor explicitly expands it, and load only the first 10 matching public items before continuing automatically from a bottom `Load more` control.
 
 ### Public note page
-Prioritizes reading comfort with narrower measure, calmer human-made typography, quieter metadata, uploaded note images, supporting AI summary/tags, and rendered Mermaid diagrams from note markdown.
+Prioritizes reading comfort with narrower measure, calmer human-made typography, quieter metadata, uploaded note images, supporting AI summary/tags, rendered footnote-style reference links collected into a bottom `References` section, and rendered Mermaid diagrams from note markdown.
 
 ### Published link cards
 Appear in the public showroom alongside note cards, with a cached favicon head image, title, summary, and tags, and open the external destination in a new tab.
@@ -46,7 +46,7 @@ Compact professional workspace with slimmer navigation, tighter lists, and more 
 The demonstration user should see the same owner workspace routes and content model, but all mutating actions must be unavailable or clearly disabled. The demo experience is for product inspection, not content editing.
 
 ### Note editor and owner forms
-Smaller typographic hierarchy, reduced padding, and reusable form/layout primitives without changing existing logic flows. The note editor should evolve into a source-first markdown workbench with syntax-aware editing, a compact formatting toolbar, `Source / Split / Preview` modes on desktop, a cleaner `Edit / Preview` toggle on mobile, an upload path that inserts note images into markdown automatically, and preview parity for Mermaid fenced diagrams without changing the stored markdown source.
+Smaller typographic hierarchy, reduced padding, and reusable form/layout primitives without changing existing logic flows. The note editor should evolve into a source-first markdown workbench with syntax-aware editing, a compact formatting toolbar, `Source / Split / Preview` modes on desktop, a cleaner `Edit / Preview` toggle on mobile, an upload path that inserts note images into markdown automatically, preview parity for footnote-style reference links collected into a bottom `References` section, and preview parity for Mermaid fenced diagrams without changing the stored markdown source.
 
 ### Links, tags, and search
 Secondary owner surfaces should inherit the same density and responsive behavior as the dashboard rather than looking like oversized standalone cards. The links route should load the first 20 saved links and continue from a bottom `Load more` control when the owner reaches it.
@@ -86,6 +86,7 @@ The owner workspace should expose a dedicated settings section for service confi
 - build reusable design primitives and CSS tokens so style changes do not require route-level logic edits
 - make mobile layouts easy to scan and operate with one hand
 - keep note authoring markdown-native; richer editor controls should still save one markdown string, not a separate rich-text document model
+- keep markdown reference links markdown-native; supported `[^label]` markers and `[^label]: [Title](url)` definitions should render as bottom references without introducing a second citation model
 - Mermaid support should be limited to fenced ```` ```mermaid ```` blocks rendered through the shared note markdown path; do not introduce inline script execution or a second diagram document model
 
 ## Search / Share / Admin Notes
