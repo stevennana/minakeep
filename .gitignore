@@ -10,7 +10,7 @@ playwright-report
 test-results
 logs/*.log
 data/
-media/
+/media/
 tsconfig.tsbuildinfo
 
 !logs/.gitkeep
