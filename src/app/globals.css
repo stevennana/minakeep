@@ -2711,25 +2711,159 @@ textarea {
 }
 
 .markdown-preview .markdown-reference-marker {
-  font-size: 0.72em;
+  font-size: 0.78em;
   line-height: 0;
+  margin: 0 0.08rem;
   vertical-align: super;
 }
 
+.markdown-preview .markdown-reference-marker-link {
+  align-items: center;
+  background: rgba(226, 232, 240, 0.72);
+  border: 1px solid rgba(100, 116, 139, 0.18);
+  border-radius: 999px;
+  color: var(--accent-strong);
+  display: inline-flex;
+  justify-content: center;
+  min-height: 1.45rem;
+  min-width: 1.45rem;
+  padding: 0.08rem 0.38rem;
+  scroll-margin-top: 6rem;
+  text-decoration: none;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease,
+    transform 140ms ease;
+}
+
+.markdown-preview .markdown-reference-marker-link:hover {
+  background: rgba(219, 234, 254, 0.82);
+  border-color: rgba(37, 99, 235, 0.24);
+  color: var(--accent-strong);
+}
+
+.markdown-preview .markdown-reference-marker-link:focus-visible {
+  background: rgba(219, 234, 254, 0.92);
+  border-color: rgba(37, 99, 235, 0.32);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.16);
+  color: var(--accent-strong);
+  outline: none;
+}
+
 .markdown-preview .markdown-reference-section {
-  border-top: 1px solid rgba(100, 116, 139, 0.16);
-  margin-top: 1.7rem;
-  padding-top: 1.15rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(248, 250, 252, 0.92)),
+    linear-gradient(135deg, rgba(148, 163, 184, 0.08), transparent 60%);
+  border: 1px solid rgba(100, 116, 139, 0.14);
+  border-radius: calc(var(--radius-2) + 0.15rem);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  margin-top: 1.8rem;
+  padding: 1rem 0.95rem 1rem;
+  scroll-margin-top: 6rem;
+}
+
+.markdown-preview .markdown-reference-section-head {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.7rem;
+}
+
+.markdown-preview .markdown-reference-eyebrow {
+  color: var(--ink-muted);
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.markdown-preview .markdown-reference-section h2 {
+  font-size: clamp(1rem, 1.5vw, 1.08rem);
+  letter-spacing: -0.016em;
+  line-height: 1.2;
+  margin: 0;
 }
 
 .markdown-preview .markdown-reference-list {
-  margin: 0.85rem 0 0;
-  padding-left: 1.3rem;
+  display: grid;
+  gap: 0.65rem;
+  list-style: none;
+  margin: 0.9rem 0 0;
+  padding: 0;
 }
 
 .markdown-preview .markdown-reference-list-item {
   color: var(--ink-muted);
-  margin-bottom: 0.55rem;
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: auto minmax(0, 1fr);
+  margin: 0;
+  min-width: 0;
+  padding: 0.1rem 0;
+  scroll-margin-top: 6rem;
+}
+
+.markdown-preview .markdown-reference-list-item:target {
+  background: rgba(219, 234, 254, 0.34);
+  border-radius: var(--radius-2);
+  margin-inline: -0.3rem;
+  padding-inline: 0.3rem;
+}
+
+.markdown-preview .markdown-reference-index {
+  align-items: center;
+  align-self: start;
+  background: rgba(226, 232, 240, 0.86);
+  border: 1px solid rgba(100, 116, 139, 0.18);
+  border-radius: 999px;
+  color: var(--ink);
+  display: inline-flex;
+  font-family: var(--font-ui);
+  font-size: 0.76rem;
+  font-weight: 700;
+  justify-content: center;
+  line-height: 1;
+  min-height: 1.6rem;
+  min-width: 1.6rem;
+  padding: 0.2rem;
+}
+
+.markdown-preview .markdown-reference-link {
+  color: var(--ink-soft);
+  display: inline;
+  overflow-wrap: anywhere;
+  text-decoration-color: rgba(37, 99, 235, 0.34);
+}
+
+.markdown-preview .markdown-reference-link:hover,
+.markdown-preview .markdown-reference-link:focus-visible {
+  color: var(--accent-strong);
+}
+
+.public-note-body--published .markdown-reference-section {
+  margin-top: 2.05rem;
+  padding: 1.05rem 1.05rem 1.1rem;
+}
+
+@media (max-width: 767px) {
+  .markdown-preview .markdown-reference-marker-link {
+    min-height: 1.6rem;
+    min-width: 1.6rem;
+    padding: 0.1rem 0.44rem;
+  }
+
+  .markdown-preview .markdown-reference-section {
+    margin-top: 1.6rem;
+    padding: 0.95rem 0.85rem 0.95rem;
+  }
+
+  .markdown-preview .markdown-reference-list-item {
+    gap: 0.6rem;
+    grid-template-columns: 1.6rem minmax(0, 1fr);
+  }
 }
 
 .markdown-preview .markdown-mermaid {

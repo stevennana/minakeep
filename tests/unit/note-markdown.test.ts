@@ -92,7 +92,10 @@ Another mention of [^beta].
 [^alpha]: [Alpha source](https://example.com/alpha)
 [^beta]: [Beta source](https://example.com/beta)`);
 
-  assert.match(rendered.articleHtml, /Paragraph with <sup class="markdown-reference-marker"><a aria-label="Reference 1" href="#markdown-reference-beta">\[1\]<\/a><\/sup> before <sup class="markdown-reference-marker"><a aria-label="Reference 2" href="#markdown-reference-alpha">\[2\]<\/a><\/sup>\./);
+  assert.match(
+    rendered.articleHtml,
+    /Paragraph with <sup class="markdown-reference-marker"><a aria-label="Jump to reference 1" class="markdown-reference-marker-link" href="#markdown-reference-beta">\[1\]<\/a><\/sup> before <sup class="markdown-reference-marker"><a aria-label="Jump to reference 2" class="markdown-reference-marker-link" href="#markdown-reference-alpha">\[2\]<\/a><\/sup>\./
+  );
   assert.equal(rendered.references.length, 2);
   assert.deepEqual(
     rendered.references.map((reference) => ({
@@ -133,7 +136,7 @@ Again [^same].
   assert.equal(rendered.references.length, 1);
   assert.equal(rendered.references[0]?.index, 1);
   assert.match(rendered.articleHtml, /\[1\]<\/a><\/sup> markers stay stable\./);
-  assert.equal(rendered.articleHtml.match(/href="#markdown-reference-same"/g)?.length, 2);
+  assert.equal(rendered.articleHtml.match(/class="markdown-reference-marker-link" href="#markdown-reference-same"/g)?.length, 2);
 });
 
 test("renderMarkdown keeps malformed reference syntax visible and sanitizes unsafe supported URLs", () => {
@@ -148,7 +151,10 @@ Supported [^unsafe] still renders safely.`);
   assert.match(rendered.articleHtml, /\[\^missing\]: not a supported definition/);
   assert.equal(rendered.references.length, 1);
   assert.equal(rendered.references[0]?.url, "#");
-  assert.match(rendered.articleHtml, /Supported <sup class="markdown-reference-marker"><a aria-label="Reference 1" href="#markdown-reference-unsafe">\[1\]<\/a><\/sup> still renders safely\./);
+  assert.match(
+    rendered.articleHtml,
+    /Supported <sup class="markdown-reference-marker"><a aria-label="Jump to reference 1" class="markdown-reference-marker-link" href="#markdown-reference-unsafe">\[1\]<\/a><\/sup> still renders safely\./
+  );
 });
 
 test("renderMarkdown keeps unused supported reference definitions visible instead of dropping them", () => {

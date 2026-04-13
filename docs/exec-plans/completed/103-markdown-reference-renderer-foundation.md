@@ -5,7 +5,7 @@
   "id": "103-markdown-reference-renderer-foundation",
   "title": "Markdown reference renderer foundation",
   "order": 103,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "standard",
   "next_task_on_success": "104-reference-link-note-surfaces",
   "prompt_docs": [
@@ -31,7 +31,8 @@
     "The implementation claims reference-link support but still leaves supported definitions duplicated inside the visible article body.",
     "Reference extraction mutates the saved markdown source or introduces a second persisted note-reference model.",
     "Unsafe URLs or malformed reference definitions can escape through the new rendering path."
-  ]
+  ],
+  "completed_at": "2026-04-13T12:00:35.278Z"
 }
 ```
 
@@ -76,3 +77,4 @@ Promote only when the renderer contract is narrow, explicit, and safe rather tha
 - 2026-04-13 16:56 KST: Added unit coverage for first-use ordering, duplicate-label reuse, malformed-definition fallback, and unsafe URL sanitization for extracted references.
 - 2026-04-13 20:43 KST: Fixed the remaining safe-fallback gap by keeping supported-looking definitions visible when no inline `[^label]` marker uses them, added a unit regression for that orphan-definition case, and tightened the reference-link docs to match the shipped fallback contract.
 - 2026-04-13 20:58 KST: Re-ran the task gates to completion and confirmed `npm run test:unit` plus `npm run verify` pass against the shipped reference-renderer foundation.
+- 2026-04-13T12:00:35.278Z: automatically promoted after deterministic checks and evaluator approval.

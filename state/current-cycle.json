@@ -1,8 +1,8 @@
 {
-  "task_id": "103-markdown-reference-renderer-foundation",
-  "started_at": "2026-04-13T20:52:05+09:00",
-  "artifact_dir": "state/artifacts/20260413T205205-103-markdown-reference-renderer-foundation",
+  "task_id": "104-reference-link-note-surfaces",
+  "started_at": "2026-04-13T21:01:05+09:00",
+  "artifact_dir": "state/artifacts/20260413T210105-104-reference-link-note-surfaces",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-04-13T12:00:35.102Z"
+  "updated_at": "2026-04-13T12:12:53.955Z"
 }

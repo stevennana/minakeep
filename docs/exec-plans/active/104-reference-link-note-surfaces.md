@@ -5,7 +5,7 @@
   "id": "104-reference-link-note-surfaces",
   "title": "Reference-link note surfaces",
   "order": 104,
-  "status": "planned",
+  "status": "active",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "105-reference-link-wave-hardening",
   "prompt_docs": [
@@ -74,3 +74,6 @@ Promote only when the shipped surface actually improves reading ergonomics and p
 ## Progress log
 
 - Start here. Append timestamped progress notes as work lands.
+- 2026-04-13T12:00:35.278Z: restored as current task after 103-markdown-reference-renderer-foundation promotion.
+- 2026-04-13 21:06 KST: Refined the shared rendered-markdown reference-link surface so public notes and owner preview now share calmer inline citation markers, a bounded bottom `References` block, stable anchor targets, and mobile-safe spacing from one shared UI path.
+- 2026-04-13 21:06 KST: Added deterministic Playwright coverage for public-note and owner-preview reference-link behavior on desktop and mobile, including marker counts, bottom-reference rendering, anchor navigation, new-tab external links, bounded layout checks, and screenshot baselines.

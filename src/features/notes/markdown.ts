@@ -232,7 +232,7 @@ function renderInlineMarkdown(markdown: string, context?: MarkdownRenderContext)
           context.referencesInOrder.push(reference);
         }
 
-        result += `<sup class="markdown-reference-marker"><a aria-label="Reference ${reference.index}" href="#${reference.entryId}">[${reference.index}]</a></sup>`;
+        result += `<sup class="markdown-reference-marker"><a aria-label="Jump to reference ${reference.index}" class="markdown-reference-marker-link" href="#${reference.entryId}">[${reference.index}]</a></sup>`;
         cursor += referenceMatch[0].length;
         continue;
       }

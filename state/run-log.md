@@ -2292,3 +2292,18 @@ run-once failed with exit code 1. Stopping loop.
 - evaluator: started
 - evaluator: status=done promotion=true Task 103 appears complete in substance. The shared renderer in `src/features/notes/markdown.ts` now extracts only the documented `[^label]` / `[^label]: [Title](url)` pattern into an explicit `{ articleHtml, references[] }` contract, preserves the stored markdown body, removes used supported definitions from the article body, reuses a single stable reference entry per label, and leaves malformed or unused supported-looking definitions visible as safe fallback. Owner preview and published note reading both consume the same shared render contract via `RenderedMarkdown`. The required docs were updated to match the shipped fallback behavior, and the recorded `npm run test:unit` plus `npm run verify` gates passed. -> state/artifacts/20260413T205205-103-markdown-reference-renderer-foundation/evaluator.log
 - next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260413T205205-103-markdown-reference-renderer-foundation/npm-run-verify-next-server.log
+- commit: commit: created
+- promote: Promoted 103-markdown-reference-renderer-foundation -> 104-reference-link-note-surfaces
+- backlog: rendered current=104-reference-link-note-surfaces
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxoooxxooxoxxxooxxxoxxoooxxxxxxxxxooooxxxxxxxxxxxxxoooxxxxxxo
+- cycle: finished
+
+### cycle 2026-04-13T21:01:05+09:00 task=104-reference-link-note-surfaces
+- artifacts: state/artifacts/20260413T210105-104-reference-link-note-surfaces
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260413T210105-104-reference-link-note-surfaces/worker.jsonl
+- worker-summary: Implemented task `104-reference-link-note-surfaces`.
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260413T210105-104-reference-link-note-surfaces/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260413T210105-104-reference-link-note-surfaces/npm-run-test-e2e-grep-ui-public-note-reference-l-next-server.log

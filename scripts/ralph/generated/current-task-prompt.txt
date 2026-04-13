@@ -3,49 +3,52 @@ Read the following repository documents before making changes:
 - ARCHITECTURE.md
 - docs/FRONTEND.md
 - docs/product-specs/markdown-reference-links.md
-- docs/product-specs/note-authoring.md
+- docs/product-specs/markdown-editor-workbench.md
 - docs/product-specs/public-note-reading.md
 - docs/design-docs/markdown-reference-link-rendering.md
-- docs/exec-plans/active/103-markdown-reference-renderer-foundation.md
+- docs/references/ui-verification-contract.md
+- docs/exec-plans/active/104-reference-link-note-surfaces.md
 
-Current task id: 103-markdown-reference-renderer-foundation
-Current task title: Markdown reference renderer foundation
+Current task id: 104-reference-link-note-surfaces
+Current task title: Reference-link note surfaces
 
 Objective:
-Teach the shared markdown renderer to recognize the supported footnote-style reference-link syntax and emit one reusable article-plus-references render contract.
+Ship the visible owner-preview and public-note experience for reference links so supported markdown references read as calm, accessible citations instead of raw source syntax.
 
 Scope:
-- shared markdown parsing and rendering for `[^label]` markers plus `[^label]: [Title](url)` definitions
-- reusable extracted-reference structure for owner preview and published note reading
-- unit coverage for reference ordering, duplicate-label reuse, and safe fallback behavior
-- doc alignment for the shipped supported syntax
+- public note rendering for inline markers and bottom references
+- owner preview parity in split and preview-only modes
+- responsive spacing, anchor navigation, and bottom-reference styling
+- deterministic Playwright coverage for public note and owner preview reference-link behavior
 
 Out of scope:
-- broader arbitrary markdown-footnote compatibility
-- screenshot and responsive verification for the rendered reference section
-- toolbar helpers or authoring affordances beyond raw markdown syntax
+- additional markdown syntax beyond the supported reference-link contract
+- homepage/showroom rendering changes
+- editor toolbar shortcuts for reference insertion
 
 Exit criteria:
-1. The shared note renderer supports the documented reference-link syntax without changing the stored markdown body.
-2. Supported definitions render once in a bottom `References` section instead of remaining duplicated in the article body.
-3. Reused reference labels resolve to one stable rendered entry.
-4. `npm run test:unit` and `npm run verify` pass.
+1. Public note pages render supported reference markers and the bottom `References` section with readable hierarchy.
+2. Owner preview matches the same rendered reference behavior in split and preview-only modes.
+3. Desktop and mobile surfaces keep markers discoverable, links tappable, and the references section bounded.
+4. `npm run test:e2e -- --grep @ui-public-note-reference-links`, `npm run test:e2e -- --grep @ui-note-editor-reference-links`, and `npm run verify` pass.
 
 Required checks:
-- `npm run test:unit`
+- `npm run test:e2e -- --grep @ui-public-note-reference-links`
+- `npm run test:e2e -- --grep @ui-note-editor-reference-links`
 - `npm run verify`
 
 Evaluator notes:
-Promote only when the renderer contract is narrow, explicit, and safe rather than a partial parser change that still leaves body/reference duplication or undefined malformed-syntax behavior.
+Promote only when the shipped surface actually improves reading ergonomics and preview parity instead of just exposing extracted links somewhere below the article.
 
 Required repository artifacts for this task:
-- src/features/notes/markdown.ts
 - src/features/notes/components
-- tests/unit
+- src/app/globals.css
+- tests/e2e
 - docs
 
 Required commands for this task:
-- npm run test:unit
+- npm run test:e2e -- --grep @ui-public-note-reference-links
+- npm run test:e2e -- --grep @ui-note-editor-reference-links
 - npm run verify
 
 Previous known gaps from the last evaluation:

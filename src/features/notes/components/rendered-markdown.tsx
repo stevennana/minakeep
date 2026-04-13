@@ -32,10 +32,10 @@ export function RenderedMarkdown({
   const references = rendered?.references ?? [];
   const referencesHtml =
     references.length > 0
-      ? `<section aria-label="References" class="markdown-reference-section"><h2>References</h2><ol class="markdown-reference-list">${references
+      ? `<section aria-label="References" class="markdown-reference-section"><div class="markdown-reference-section-head"><p class="markdown-reference-eyebrow">Supporting sources</p><h2>References</h2></div><ol class="markdown-reference-list">${references
           .map(
             (reference) =>
-              `<li class="markdown-reference-list-item" id="${reference.entryId}"><a href="${reference.url}" rel="noreferrer noopener" target="_blank">${reference.titleHtml}</a></li>`
+              `<li class="markdown-reference-list-item" id="${reference.entryId}" tabindex="-1"><span aria-hidden="true" class="markdown-reference-index">${reference.index}</span><a class="markdown-reference-link" href="${reference.url}" rel="noreferrer noopener" target="_blank">${reference.titleHtml}</a></li>`
           )
           .join("")}</ol></section>`
       : "";
