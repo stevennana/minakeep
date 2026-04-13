@@ -1,8 +1,8 @@
 {
-  "task_id": "107-first-screen-card-media-priority",
-  "started_at": "2026-04-13T21:44:33+09:00",
-  "artifact_dir": "state/artifacts/20260413T214433-107-first-screen-card-media-priority",
+  "task_id": "108-image-loading-wave-hardening",
+  "started_at": "2026-04-13T21:58:25+09:00",
+  "artifact_dir": "state/artifacts/20260413T215825-108-image-loading-wave-hardening",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-04-13T12:57:54.959Z"
+  "updated_at": "2026-04-13T13:14:19.900Z"
 }

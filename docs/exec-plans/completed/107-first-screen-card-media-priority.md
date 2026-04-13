@@ -5,7 +5,7 @@
   "id": "107-first-screen-card-media-priority",
   "title": "First-screen card media priority",
   "order": 107,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "108-image-loading-wave-hardening",
   "prompt_docs": [
@@ -37,7 +37,8 @@
     "The public showroom upgrades all initial card media to eager/high priority instead of only the visible budget.",
     "Owner dashboard or links surfaces regress layout, click targets, or read-only behavior while adding loading hints.",
     "The new UI test only checks for attribute presence and misses desktop/mobile first-screen behavior."
-  ]
+  ],
+  "completed_at": "2026-04-13T12:57:55.179Z"
 }
 ```
 
@@ -80,3 +81,4 @@ Promote only when the change clearly improves first-screen media delivery withou
 - 2026-04-13T12:44:02.878Z: restored as current task after 106-image-loading-priority-foundation promotion.
 - 2026-04-13T22:02:00+0900: confirmed the public showroom, owner dashboard, and owner links routes already apply the intended prioritized-media budgets from the shared loading contract; added dedicated `@ui-image-loading-card-media` Playwright coverage for desktop/mobile loading hints, unchanged card destinations, and screenshot-based rhythm checks instead of widening route logic.
 - 2026-04-13T22:54:40+0900: replaced render-scope mutable priority counters in the public showroom, owner dashboard, and owner links routes with deterministic precomputed loading-intent assignments so lint and full promotion checks pass without changing the visible media budget.
+- 2026-04-13T12:57:55.179Z: automatically promoted after deterministic checks and evaluator approval.

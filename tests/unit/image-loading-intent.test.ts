@@ -4,7 +4,7 @@ import test from "node:test";
 import { LinkFavicon, LINK_FAVICON_FALLBACK_PATH } from "../../src/features/links/components/link-favicon";
 import { getImageLoadingAttributes } from "../../src/features/media/loading-intent";
 import { NoteCardImage } from "../../src/features/notes/components/note-card-image";
-import { renderMarkdownToHtml } from "../../src/features/notes/markdown";
+import { getOpeningViewportPrioritizedImageCount, renderMarkdownToHtml } from "../../src/features/notes/markdown";
 
 test("getImageLoadingAttributes maps lazy intent to native lazy-loading defaults", () => {
   assert.deepEqual(getImageLoadingAttributes("lazy"), {
@@ -72,4 +72,26 @@ test("renderMarkdownToHtml keeps all rendered images lazy when no prioritized bu
 
   assert.match(html, /<img alt="Only" decoding="async" loading="lazy" src="\/media\/only" \/>/);
   assert.doesNotMatch(html, /fetchpriority="high"/);
+});
+
+test("getOpeningViewportPrioritizedImageCount spends one slot when the first image lands in the opening content band", () => {
+  const markdown = `## Opening image
+
+![Only](/media/only)
+
+Short framing copy keeps the image in the initial reading viewport.`;
+
+  assert.equal(getOpeningViewportPrioritizedImageCount(markdown), 1);
+});
+
+test("getOpeningViewportPrioritizedImageCount keeps later article images lazy after deeper opening copy", () => {
+  const markdown = `## Deferred image
+
+The opening of this note spends enough room on written setup that the first image should not take the eager slot.
+
+Another paragraph adds more distance before the image arrives, which keeps the browser focused on the opening reading content.
+
+![Later](/media/later)`;
+
+  assert.equal(getOpeningViewportPrioritizedImageCount(markdown), 0);
 });

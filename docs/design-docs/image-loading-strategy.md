@@ -17,11 +17,11 @@ Prefer viewport-first media loading across Minakeep without changing the existin
 - Public showroom initial render: prioritize at most the first two media-bearing cards in the initial server slice.
 - Owner dashboard initial render: prioritize only the first visible note-card image.
 - Owner links initial render: prioritize only the first visible favicon.
-- Public note reading and owner note preview: prioritize only the first rendered markdown image in the article body.
+- Public note reading and owner note preview: prioritize only the first rendered markdown image in the article body when it falls inside the opening viewport band.
 
 ## Shared Implementation Shape
 - `NoteCardImage` and `LinkFavicon` should share one explicit loading-intent contract that maps to native `loading`, `fetchpriority`, and decoding hints.
-- The markdown renderer should consume that same contract through a narrow prioritized-image count option instead of hardcoding `loading="lazy"` for every rendered `<img>`.
+- The markdown renderer should consume that same contract through a narrow prioritized-image count option, while article surfaces decide whether to spend that slot based on an opening-viewport heuristic instead of hardcoding `loading="lazy"` or unconditional eager loading for every rendered `<img>`.
 - Route-level or surface-level components should assign the eager slots so helper components remain deterministic and reusable.
 - Accessibility names, media-link destinations, and publish-gated media URLs must stay unchanged by the loading-policy work.
 

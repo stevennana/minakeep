@@ -3,55 +3,52 @@ Read the following repository documents before making changes:
 - ARCHITECTURE.md
 - docs/FRONTEND.md
 - docs/product-specs/image-loading-priority.md
-- docs/product-specs/public-home-showroom.md
-- docs/product-specs/owner-workspace-density.md
-- docs/product-specs/link-favicon-caching.md
+- docs/product-specs/note-image-attachments.md
+- docs/product-specs/public-note-reading.md
 - docs/design-docs/image-loading-strategy.md
-- docs/design-docs/homepage-showroom-rhythm.md
-- docs/design-docs/responsive-ui-rules.md
+- docs/design-docs/media-storage-and-serving.md
 - docs/references/ui-verification-contract.md
-- docs/exec-plans/active/107-first-screen-card-media-priority.md
+- docs/exec-plans/active/108-image-loading-wave-hardening.md
 
-Current task id: 107-first-screen-card-media-priority
-Current task title: First-screen card media priority
+Current task id: 108-image-loading-wave-hardening
+Current task title: Image loading wave hardening
 
 Objective:
-Apply the shared loading contract to card media on the public showroom, owner dashboard, and owner links route so visible note images and favicons load before lower-list media.
+Close the image-loading wave by extending the loading contract to rendered markdown images and bundling durable regression coverage for the shipped viewport-first behavior.
 
 Scope:
-- public showroom loading-priority assignment for the initial media-bearing cards
-- owner dashboard note-card image priority on initial render
-- owner links favicon priority on initial render
-- dedicated desktop/mobile UI regression coverage for card-media loading policy
+- first rendered markdown-image priority for public note reading and owner preview
+- lazy fallback for later article images
+- bundled UI and unit regression coverage for the final loading-policy contract
+- final doc and queue reconciliation for the shipped behavior
 
 Out of scope:
-- rendered note-body images on public note pages or editor preview
-- `next/image` migration
-- changing collection slice sizes or pagination behavior
+- generalized asset prefetching beyond rendered note images
+- third-party CDN integration
+- unrelated public-note typography or layout redesign
 
 Exit criteria:
-1. The public showroom gives higher priority only to the small set of initial visible media-bearing cards.
-2. The owner dashboard and owner links route prioritize only their top visible card media on initial render.
-3. Existing card destinations, new-tab behavior, and layout rhythm remain intact on desktop and mobile.
-4. `npm run test:e2e -- --grep @ui-image-loading-card-media` and `npm run verify` pass.
+1. Public note reading and owner preview prioritize only the first rendered markdown image in the article body when it belongs to the initial viewport.
+2. Later article images remain lazy, and media privacy/publish gating stays unchanged.
+3. The image-loading wave ends with one bundled regression command plus reconciled docs that describe the shipped policy precisely.
+4. `npm run test:e2e -- --grep @ui-image-loading-regression` and `npm run verify` pass.
 
 Required checks:
-- `npm run test:e2e -- --grep @ui-image-loading-card-media`
+- `npm run test:e2e -- --grep @ui-image-loading-regression`
 - `npm run verify`
 
 Evaluator notes:
-Promote only when the change clearly improves first-screen media delivery without degrading the current incremental-loading discipline or over-eagerly fetching lower cards.
+Promote only when the image-loading wave reads as fully closed and regression-protected instead of as a partial card-only tweak.
 
 Required repository artifacts for this task:
+- docs
 - src/app
-- src/features/links
 - src/features/notes
-- src/features/public-content
 - tests/e2e
 - tests/unit
 
 Required commands for this task:
-- npm run test:e2e -- --grep @ui-image-loading-card-media
+- npm run test:e2e -- --grep @ui-image-loading-regression
 - npm run verify
 
 Previous known gaps from the last evaluation:

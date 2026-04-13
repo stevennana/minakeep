@@ -5,7 +5,7 @@
   "id": "108-image-loading-wave-hardening",
   "title": "Image loading wave hardening",
   "order": 108,
-  "status": "queued",
+  "status": "active",
   "promotion_mode": "deterministic_only",
   "next_task_on_success": "NONE",
   "prompt_docs": [
@@ -74,3 +74,6 @@ Promote only when the image-loading wave reads as fully closed and regression-pr
 ## Progress log
 
 - 2026-04-13T21:27:12+0900: task created during the post-reference-link continuation planning pass.
+- 2026-04-13T12:57:55.179Z: restored as current task after 107-first-screen-card-media-priority promotion.
+- 2026-04-13T23:35:00+0900: replaced the unconditional public-note and owner-preview markdown image budget with an opening-viewport heuristic so only the first rendered article image in the opening band gets prioritized; deeper article images stay lazy.
+- 2026-04-13T23:35:00+0900: bundled `@ui-image-loading-card-media` and new rendered-markdown coverage under `@ui-image-loading-regression`, added unit coverage for the opening-viewport decision, and reconciled the image-loading docs to describe the shipped contract precisely.

@@ -215,6 +215,93 @@ type RenderMarkdownOptions = {
   prioritizedImageCount?: number;
 };
 
+const markdownImagePattern = /!\[[^\]]*]\([^)]+\)/;
+const markdownImageReplacePattern = /!\[[^\]]*]\([^)]+\)/g;
+const openingViewportBlockLimit = 2;
+const openingViewportVisibleCharacterLimit = 220;
+
+function countVisibleCharacters(markdown: string) {
+  return markdown
+    .replace(markdownImageReplacePattern, " ")
+    .replaceAll(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replaceAll(/[`*_>#-]/g, " ")
+    .replaceAll(/\s+/g, " ")
+    .trim().length;
+}
+
+function classifyOpeningBlock(line: string) {
+  const trimmedLine = line.trim();
+
+  if (/^(#{1,6})\s+/.test(trimmedLine)) {
+    return "heading";
+  }
+
+  if (isUnorderedListItem(trimmedLine) || isOrderedListItem(trimmedLine)) {
+    return "list";
+  }
+
+  if (trimmedLine.startsWith(">")) {
+    return "blockquote";
+  }
+
+  if (trimmedLine === "$$" || /^\$\$.+\$\$$/.test(trimmedLine)) {
+    return "math";
+  }
+
+  if (trimmedLine.includes("|")) {
+    return "table";
+  }
+
+  return "paragraph";
+}
+
+export function getOpeningViewportPrioritizedImageCount(markdown: string) {
+  const { articleLines } = extractReferenceDefinitions(markdown);
+  let inFence = false;
+  let currentBlockType: string | null = null;
+  let precedingBlockCount = 0;
+  let precedingVisibleCharacters = 0;
+
+  for (const line of articleLines) {
+    const trimmedLine = line.trim();
+
+    if (trimmedLine.startsWith("```")) {
+      inFence = !inFence;
+      currentBlockType = null;
+      continue;
+    }
+
+    if (inFence) {
+      continue;
+    }
+
+    if (!trimmedLine) {
+      currentBlockType = null;
+      continue;
+    }
+
+    const imageMatch = line.match(markdownImagePattern);
+
+    if (imageMatch) {
+      const imageIndex = imageMatch.index ?? 0;
+      const visibleCharactersBeforeImage = precedingVisibleCharacters + countVisibleCharacters(line.slice(0, imageIndex));
+
+      return precedingBlockCount < openingViewportBlockLimit && visibleCharactersBeforeImage <= openingViewportVisibleCharacterLimit ? 1 : 0;
+    }
+
+    const nextBlockType = classifyOpeningBlock(line);
+
+    if (nextBlockType !== currentBlockType) {
+      precedingBlockCount += 1;
+      currentBlockType = nextBlockType;
+    }
+
+    precedingVisibleCharacters += countVisibleCharacters(line);
+  }
+
+  return 0;
+}
+
 function renderInlineMarkdown(markdown: string, context?: MarkdownRenderContext): string {
   let result = "";
   let cursor = 0;

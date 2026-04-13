@@ -38,7 +38,7 @@ import {
   type NoteEditorViewMode,
   type SelectionRange
 } from "@/features/notes/editor-markdown";
-import { renderMarkdown } from "@/features/notes/markdown";
+import { getOpeningViewportPrioritizedImageCount, renderMarkdown } from "@/features/notes/markdown";
 import type { SavedTag } from "@/features/tags/types";
 
 type NoteEditorProps = {
@@ -162,7 +162,9 @@ export function NoteEditor({
   const editorHintId = useId();
   const previewHeadingId = useId();
   const previewTitle = title.trim() || "Untitled note";
-  const previewRender = renderMarkdown(markdown, { prioritizedImageCount: 1 });
+  const previewRender = renderMarkdown(markdown, {
+    prioritizedImageCount: getOpeningViewportPrioritizedImageCount(markdown)
+  });
   const hasPreviewContent = Boolean(previewRender.articleHtml) || previewRender.references.length > 0;
   const isMobileViewport = !isDesktopViewport;
   const sourcePaneHidden = viewMode === "preview";

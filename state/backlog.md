@@ -96,6 +96,6 @@
 - [x] 104-reference-link-note-surfaces — Reference-link note surfaces
 - [x] 105-reference-link-wave-hardening — Reference-link wave hardening
 - [x] 106-image-loading-priority-foundation — Image loading priority foundation
-- [ ] 107-first-screen-card-media-priority — First-screen card media priority ← current
-- [ ] 108-image-loading-wave-hardening — Image loading wave hardening
+- [x] 107-first-screen-card-media-priority — First-screen card media priority
+- [ ] 108-image-loading-wave-hardening — Image loading wave hardening ← current
 

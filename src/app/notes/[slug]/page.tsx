@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { ButtonLink, MetadataRow, Surface, TagChip, TagList } from "@/components/ui/primitives";
 import { RenderedMarkdown } from "@/features/notes/components/rendered-markdown";
-import { renderMarkdown } from "@/features/notes/markdown";
+import { getOpeningViewportPrioritizedImageCount, renderMarkdown } from "@/features/notes/markdown";
 import { getPublishedNoteBySlug } from "@/features/notes/service";
 import { getPublicPageMetadata, getPublishedNotePath } from "@/features/public-site/metadata";
 
@@ -29,7 +29,9 @@ export default async function PublicNotePage({ params }: PublicNotePageProps) {
   const publishedAt = note.publishedAt ?? note.updatedAt;
   const formattedPublishedAt = new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(publishedAt);
   const hasSupportContent = Boolean(note.summary) || note.tags.length > 0;
-  const renderedMarkdown = renderMarkdown(note.markdown, { prioritizedImageCount: 1 });
+  const renderedMarkdown = renderMarkdown(note.markdown, {
+    prioritizedImageCount: getOpeningViewportPrioritizedImageCount(note.markdown)
+  });
 
   return (
     <div className="feature-layout public-note-layout">

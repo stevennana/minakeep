@@ -377,7 +377,9 @@ test.afterAll(async () => {
   await prisma.$disconnect();
 });
 
-test("@ui-image-loading-card-media desktop first-screen card media priority stays scoped to the visible budget", async ({ page }) => {
+test("@ui-image-loading-card-media @ui-image-loading-regression desktop first-screen card media priority stays scoped to the visible budget", async ({
+  page
+}) => {
   await page.setViewportSize(desktopViewport);
 
   await expectPublicShowroomLoadingPolicy(page, fixtures);
@@ -397,7 +399,9 @@ test("@ui-image-loading-card-media desktop first-screen card media priority stay
   });
 });
 
-test("@ui-image-loading-card-media mobile first-screen card media priority stays scoped to the visible budget", async ({ page }) => {
+test("@ui-image-loading-card-media @ui-image-loading-regression mobile first-screen card media priority stays scoped to the visible budget", async ({
+  page
+}) => {
   await page.setViewportSize(mobileViewport);
 
   await expectPublicShowroomLoadingPolicy(page, fixtures);
