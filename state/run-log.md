@@ -2344,3 +2344,18 @@ No remaining task. Stopping loop.
 - worker-summary: Implemented the shared image-loading contract for task `106-image-loading-priority-foundation`. The new helper in [src/features/media/loading-intent.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/media/loading-intent.ts) now drives `prioritized` versus `lazy` behavior across [src/features/notes/components/note-card-image.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/components/note-card-image.tsx), [src/features/links/components/link-favicon.tsx](/Users/stevenna/WebstormProjects/minakeep/src/features/links/components/link-favicon.tsx), and markdown rendering in [src/features/notes/markdown.ts](/Users/stevenna/WebstormProjects/minakeep/src/features/notes/markdown.ts). Surface budgets were applied only where this task called for them: the first two media-bearing public showroom cards, the first owner dashboard note image, the first owner links favicon, and the first rendered markdown image on public note pages and note-editor preview.
 - evaluator: started
 - evaluator: status=done promotion=true The implementation satisfies the task in substance. There is one shared image-loading contract in `src/features/media/loading-intent.ts`, it is reused by note-card images, link favicons, and markdown-rendered images, and route/surface code only assigns capped budgets rather than introducing separate ad hoc loading behavior. Public showroom, owner dashboard, owner links, public note pages, and note preview all apply small prioritized budgets consistent with the docs. Unit tests cover the generated attributes and markdown budget behavior, and the required checks passed. -> state/artifacts/20260413T213416-106-image-loading-priority-foundation/evaluator.log
+- commit: commit: created
+- promote: Promoted 106-image-loading-priority-foundation -> 107-first-screen-card-media-priority
+- backlog: rendered current=107-first-screen-card-media-priority
+- health: ooxxoooxoxxoxooxxxooooox!oooooxxooooooooooooooxooooooox!xooooooooooooooooooooxxxxx!!xoxooooxoooxxooxoxxxooxxxoxxoooxxxxxxxxxooooxxxxxxxxxxxxxoooxxxxxxoooo
+- cycle: finished
+
+### cycle 2026-04-13T21:44:33+09:00 task=107-first-screen-card-media-priority
+- artifacts: state/artifacts/20260413T214433-107-first-screen-card-media-priority
+- prompt: rendered -> scripts/ralph/generated/current-task-prompt.txt
+- worker: started
+- worker: completed -> state/artifacts/20260413T214433-107-first-screen-card-media-priority/worker.jsonl
+- worker-summary: Implemented task `107-first-screen-card-media-priority` with a narrow change set.
+- evaluator: started
+- evaluator: status=done promotion=true Deterministic checks passed; task is eligible for automatic promotion. -> state/artifacts/20260413T214433-107-first-screen-card-media-priority/evaluator.log
+- next-server-log: /Users/stevenna/WebstormProjects/minakeep/state/artifacts/20260413T214433-107-first-screen-card-media-priority/npm-run-test-e2e-grep-ui-image-loading-card-medi-next-server.log

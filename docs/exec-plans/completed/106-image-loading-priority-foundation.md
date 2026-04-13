@@ -5,7 +5,7 @@
   "id": "106-image-loading-priority-foundation",
   "title": "Image loading priority foundation",
   "order": 106,
-  "status": "active",
+  "status": "completed",
   "promotion_mode": "standard",
   "next_task_on_success": "107-first-screen-card-media-priority",
   "prompt_docs": [
@@ -32,7 +32,8 @@
     "The new contract still leaves every image path hardcoded to lazy loading.",
     "The helper contract silently eager-loads every image in the initial collection slice.",
     "The change weakens publish-gated media URLs or markdown-authored image compatibility."
-  ]
+  ],
+  "completed_at": "2026-04-13T12:44:02.878Z"
 }
 ```
 
@@ -73,3 +74,4 @@ Promote only when the codebase has one clear image-loading contract that future 
 - 2026-04-13T21:27:12+0900: task created during the post-reference-link continuation planning pass.
 - 2026-04-13T22:06:00+0900: added one shared image-loading intent helper, threaded it through note-card images, cached favicons, and markdown rendering, and assigned capped prioritized-image budgets on the public showroom, owner dashboard, owner links list, public note page, and note editor preview.
 - 2026-04-13T22:06:00+0900: added targeted unit coverage for shared image attributes and markdown prioritized-image budgets, then aligned the image-loading specs/design docs with the viewport-first loading contract.
+- 2026-04-13T12:44:02.878Z: automatically promoted after deterministic checks and evaluator approval.

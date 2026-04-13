@@ -92,3 +92,4 @@
 - 2026-04-13T12:00:35.278Z: promoted 103-markdown-reference-renderer-foundation -> 104-reference-link-note-surfaces
 - 2026-04-13T12:12:54.173Z: promoted 104-reference-link-note-surfaces -> 105-reference-link-wave-hardening
 - 2026-04-13T12:21:44.217Z: promoted 105-reference-link-wave-hardening -> NONE
+- 2026-04-13T12:44:02.878Z: promoted 106-image-loading-priority-foundation -> 107-first-screen-card-media-priority

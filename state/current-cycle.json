@@ -1,8 +1,8 @@
 {
-  "task_id": "106-image-loading-priority-foundation",
-  "started_at": "2026-04-13T21:34:16+09:00",
-  "artifact_dir": "state/artifacts/20260413T213416-106-image-loading-priority-foundation",
+  "task_id": "107-first-screen-card-media-priority",
+  "started_at": "2026-04-13T21:44:33+09:00",
+  "artifact_dir": "state/artifacts/20260413T214433-107-first-screen-card-media-priority",
   "phase": "commit",
   "status": "running",
-  "updated_at": "2026-04-13T12:44:02.683Z"
+  "updated_at": "2026-04-13T12:57:54.959Z"
 }

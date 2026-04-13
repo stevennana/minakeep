@@ -36,5 +36,6 @@
 - `@ui-public-note-reference-links`
 - `@ui-note-editor-reference-links`
 - `@ui-reference-link-regression`
+- `@ui-image-loading-card-media`
 - `@ui-refinement-hardening`
 - `@ui-regression`

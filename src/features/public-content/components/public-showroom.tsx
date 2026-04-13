@@ -287,7 +287,17 @@ export function PublicShowroom({
       : hasPublishedLinks
         ? "No published notes or links match this title."
         : "No published notes match this title.";
-  let remainingPrioritizedMedia = 2;
+  const showroomCards = items.reduce<Array<{ item: PublicShowroomItem; loadingIntent: ImageLoadingIntent }>>((cards, item) => {
+    const prioritizedCount = cards.filter((card) => card.loadingIntent === "prioritized").length;
+    const hasMedia = item.kind === "link" || Boolean(item.cardImage);
+
+    cards.push({
+      item,
+      loadingIntent: hasMedia && prioritizedCount < 2 ? "prioritized" : "lazy"
+    });
+
+    return cards;
+  }, []);
 
   useEffect(() => {
     if (isSearchExpanded) {
@@ -428,14 +438,7 @@ export function PublicShowroom({
         ) : (
           <>
             <div className="note-list public-note-list public-note-showroom" data-testid="public-home-showroom">
-              {items.map((item) => {
-                const hasMedia = item.kind === "link" || Boolean(item.cardImage);
-                const loadingIntent: ImageLoadingIntent = hasMedia && remainingPrioritizedMedia > 0 ? "prioritized" : "lazy";
-
-                if (loadingIntent === "prioritized") {
-                  remainingPrioritizedMedia -= 1;
-                }
-
+              {showroomCards.map(({ item, loadingIntent }) => {
                 return <PublishedContentPreviewCard key={`${item.kind}-${item.id}`} item={item} loadingIntent={loadingIntent} />;
               })}
             </div>

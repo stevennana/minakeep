@@ -45,7 +45,16 @@ export default async function PrivateDashboardPage({ searchParams }: PrivateDash
     countPendingOwnerNotes(workspace.owner.id)
   ]);
   const dateFormatter = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
-  let remainingPrioritizedNoteImages = 1;
+  const noteCards = notes.reduce<Array<{ loadingIntent: "lazy" | "prioritized"; note: (typeof notes)[number] }>>((cards, note) => {
+    const prioritizedCount = cards.filter((card) => card.loadingIntent === "prioritized").length;
+
+    cards.push({
+      loadingIntent: note.cardImage && prioritizedCount < 1 ? "prioritized" : "lazy",
+      note
+    });
+
+    return cards;
+  }, []);
 
   return (
     <div className="feature-layout">
@@ -100,13 +109,7 @@ export default async function PrivateDashboardPage({ searchParams }: PrivateDash
           ) : (
             <>
               <div className="note-list owner-dashboard-note-list" data-testid="owner-dashboard-note-list">
-                {notes.map((note) => {
-                  const loadingIntent = note.cardImage && remainingPrioritizedNoteImages > 0 ? "prioritized" : "lazy";
-
-                  if (loadingIntent === "prioritized") {
-                    remainingPrioritizedNoteImages -= 1;
-                  }
-
+                {noteCards.map(({ loadingIntent, note }) => {
                   return (
                     <OwnerNoteCard
                       href={`/app/notes/${note.id}/edit` as Route}

@@ -77,7 +77,6 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
     countPublishedOwnerLinks(workspace.owner.id)
   ]);
   const dateFormatter = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
-  let remainingPrioritizedFavicons = 1;
   const statusMessage =
     resolvedSearchParams.saved === "1"
       ? "Link saved."
@@ -92,6 +91,16 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
             : resolvedSearchParams.favicon === "1"
               ? "Favicon refresh requested."
               : getStatusMessage(resolvedSearchParams.error);
+  const linkCards = links.reduce<Array<{ link: (typeof links)[number]; loadingIntent: "lazy" | "prioritized" }>>((cards, link) => {
+    const prioritizedCount = cards.filter((card) => card.loadingIntent === "prioritized").length;
+
+    cards.push({
+      link,
+      loadingIntent: prioritizedCount < 1 ? "prioritized" : "lazy"
+    });
+
+    return cards;
+  }, []);
 
   return (
     <div className="feature-layout">
@@ -171,13 +180,7 @@ export default async function LinksPage({ searchParams }: LinksPageProps) {
           ) : (
             <>
               <div className="link-list">
-                {links.map((link) => {
-                  const loadingIntent = remainingPrioritizedFavicons > 0 ? "prioritized" : "lazy";
-
-                  if (loadingIntent === "prioritized") {
-                    remainingPrioritizedFavicons -= 1;
-                  }
-
+                {linkCards.map(({ link, loadingIntent }) => {
                   return (
                     <article className="link-list-item secondary-link-item" key={link.id}>
                       <div className="secondary-link-main">

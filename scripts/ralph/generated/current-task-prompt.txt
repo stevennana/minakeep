@@ -3,50 +3,56 @@ Read the following repository documents before making changes:
 - ARCHITECTURE.md
 - docs/FRONTEND.md
 - docs/product-specs/image-loading-priority.md
-- docs/product-specs/note-image-attachments.md
+- docs/product-specs/public-home-showroom.md
+- docs/product-specs/owner-workspace-density.md
 - docs/product-specs/link-favicon-caching.md
 - docs/design-docs/image-loading-strategy.md
-- docs/design-docs/media-storage-and-serving.md
-- docs/exec-plans/active/106-image-loading-priority-foundation.md
+- docs/design-docs/homepage-showroom-rhythm.md
+- docs/design-docs/responsive-ui-rules.md
+- docs/references/ui-verification-contract.md
+- docs/exec-plans/active/107-first-screen-card-media-priority.md
 
-Current task id: 106-image-loading-priority-foundation
-Current task title: Image loading priority foundation
+Current task id: 107-first-screen-card-media-priority
+Current task title: First-screen card media priority
 
 Objective:
-Create one shared loading-intent contract for note-card images, cached favicons, and rendered markdown images so first-screen media can be prioritized without forking separate ad hoc rules per surface.
+Apply the shared loading contract to card media on the public showroom, owner dashboard, and owner links route so visible note images and favicons load before lower-list media.
 
 Scope:
-- shared loading-intent API for note-card and favicon helpers
-- markdown-renderer support for a small prioritized-image budget
-- targeted unit coverage for the generated image attributes
-- doc alignment for the new viewport-first loading policy
+- public showroom loading-priority assignment for the initial media-bearing cards
+- owner dashboard note-card image priority on initial render
+- owner links favicon priority on initial render
+- dedicated desktop/mobile UI regression coverage for card-media loading policy
 
 Out of scope:
-- public-home screenshot regression work
-- owner-route screenshot regression work
-- broader image optimization or format conversion
+- rendered note-body images on public note pages or editor preview
+- `next/image` migration
+- changing collection slice sizes or pagination behavior
 
 Exit criteria:
-1. Shared note-image, favicon, and markdown-rendering helpers can express both prioritized and lazy image modes without changing media URLs or accessibility labels.
-2. The contract makes it possible to cap eager/high-priority media per surface instead of upgrading an entire list by accident.
-3. `npm run test:unit` and `npm run typecheck` pass.
+1. The public showroom gives higher priority only to the small set of initial visible media-bearing cards.
+2. The owner dashboard and owner links route prioritize only their top visible card media on initial render.
+3. Existing card destinations, new-tab behavior, and layout rhythm remain intact on desktop and mobile.
+4. `npm run test:e2e -- --grep @ui-image-loading-card-media` and `npm run verify` pass.
 
 Required checks:
-- `npm run test:unit`
-- `npm run typecheck`
+- `npm run test:e2e -- --grep @ui-image-loading-card-media`
+- `npm run verify`
 
 Evaluator notes:
-Promote only when the codebase has one clear image-loading contract that future surfaces can reuse, rather than one-off eager/lazy overrides scattered through route files.
+Promote only when the change clearly improves first-screen media delivery without degrading the current incremental-loading discipline or over-eagerly fetching lower cards.
 
 Required repository artifacts for this task:
-- docs
+- src/app
 - src/features/links
 - src/features/notes
+- src/features/public-content
+- tests/e2e
 - tests/unit
 
 Required commands for this task:
-- npm run test:unit
-- npm run typecheck
+- npm run test:e2e -- --grep @ui-image-loading-card-media
+- npm run verify
 
 Previous known gaps from the last evaluation:
 - none

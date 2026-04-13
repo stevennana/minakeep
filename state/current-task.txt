@@ -1,1 +1,1 @@
-106-image-loading-priority-foundation
+107-first-screen-card-media-priority
