@@ -41,7 +41,27 @@ Supporting metadata can stay available without taking the first beat of attentio
   tags: ["reading", "hierarchy", "public notes"]
 } as const;
 
-async function seedPublishedNote() {
+const seededMobileOverflowRegressionNote = {
+  title: "Kronos on GitHub: A Finance-Specific Foundation Model for Candlestick Data",
+  slug: "kronos-on-github-a-finance-specific-foundation-model-for-candlestick-data",
+  markdown: `## Key facts / comparison
+
+| Model | Tokenizer | Context Length | Parameters | Public Availability |
+| --- | --- | --- | --- | --- |
+| Kronos-mini | Kronos-Tokenizer-2k | 2048 | 4.1M | Yes |
+| Kronos-small | Kronos-Tokenizer-2k | 2048 | 26M | Yes |
+| Kronos-base | Kronos-Tokenizer-2k | 2048 | 113M | Yes |
+
+The public note should keep the table inside the reading surface on mobile instead of letting the entire card grow wider than the viewport.`,
+  summary:
+    "Kronos is a finance-focused foundation model for K-line sequences available on GitHub, with public checkpoints and a research paper.",
+  publishedAt: new Date("2024-06-18T09:30:00.000Z"),
+  tags: ["finance", "foundation-model", "github-repo", "kline-data", "transformer"]
+} as const;
+
+type SeededPublicNote = typeof seededNote;
+
+async function seedPublishedNote(note: SeededPublicNote = seededNote) {
   const username = process.env.OWNER_USERNAME ?? "owner";
   const owner = await prisma.user.findUnique({
     where: {
@@ -62,16 +82,16 @@ async function seedPublishedNote() {
   await prisma.note.create({
     data: {
       ownerId: owner.id,
-      title: seededNote.title,
-      slug: seededNote.slug,
-      markdown: seededNote.markdown,
+      title: note.title,
+      slug: note.slug,
+      markdown: note.markdown,
       excerpt: "A public note page should stay compact, quiet, and reading-first.",
-      summary: seededNote.summary,
+      summary: note.summary,
       enrichmentStatus: "ready",
       isPublished: true,
-      publishedAt: seededNote.publishedAt,
+      publishedAt: note.publishedAt,
       tags: {
-        connectOrCreate: seededNote.tags.map((tag) => ({
+        connectOrCreate: note.tags.map((tag) => ({
           where: {
             name: tag
           },
@@ -88,6 +108,25 @@ async function expectNoHorizontalOverflow(page: Page) {
   const hasOverflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
 
   expect(hasOverflow).toBe(false);
+}
+
+async function expectPublicNoteCardFitsViewport(page: Page) {
+  const metrics = await page.evaluate(() => {
+    const card = document.querySelector<HTMLElement>("[data-testid='public-note-card']");
+
+    if (!card) {
+      throw new Error("Expected public note card to exist.");
+    }
+
+    const rect = card.getBoundingClientRect();
+
+    return {
+      cardWidth: Math.round(rect.width),
+      viewportWidth: document.documentElement.clientWidth
+    };
+  });
+
+  expect(metrics.cardWidth).toBeLessThanOrEqual(metrics.viewportWidth);
 }
 
 async function expectAccessibleStructure(page: Page) {
@@ -309,4 +348,19 @@ test("@ui-regression @ui-public-note @ui-public-note-taste @ui-public-type @ui-r
   await expect(page.locator(".public-note-card")).toHaveScreenshot("ui-public-note-mobile.png", {
     animations: "disabled"
   });
+});
+
+test("@ui-regression @ui-public-note @ui-responsive @ui-public-note-overflow-regression public note card does not outgrow the mobile viewport", async ({
+  page
+}) => {
+  await seedPublishedNote(seededMobileOverflowRegressionNote);
+
+  await page.setViewportSize(mobileViewport);
+  await page.goto(`/notes/${seededMobileOverflowRegressionNote.slug}`);
+
+  await expect(page.getByRole("heading", { name: seededMobileOverflowRegressionNote.title })).toBeVisible();
+  await expect(page.getByText("Key facts / comparison")).toBeVisible();
+  await expect(page.getByRole("table")).toBeVisible();
+  await expectNoHorizontalOverflow(page);
+  await expectPublicNoteCardFitsViewport(page);
 });
