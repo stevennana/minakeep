@@ -14,6 +14,7 @@ An anonymous visitor opens `/`.
 - The showroom should be visibly present in the first screen on common desktop and mobile viewports.
 - Long explanatory paragraphs above the showroom are removed.
 - Note and link previews appear in a masonry-style arrangement with varied heights rather than rigid equal rows.
+- On desktop, the masonry behavior should preserve left-to-right reading order as much as possible instead of filling one column vertically before moving to the next.
 - Desktop widths should feel more dynamic than a simple two-column grid, while mobile collapse remains strict and readable.
 - The mixed feed sits in one shared archive surface rather than separate note and link sections.
 - The showroom loads the first 10 published items on first render, then continues from a bottom `Load more` control as visitors reach it.
@@ -28,6 +29,7 @@ An anonymous visitor opens `/`.
 - The homepage keeps only compact framing chrome above the feed rather than a hero block or explanatory lede.
 - The homepage no longer includes the extra explanatory showroom copy block above the feed.
 - The homepage grid feels dynamic without becoming visually chaotic.
+- The masonry feed keeps the dense brick-like feel without making the reading order jump unpredictably when more cards load.
 - The homepage avoids loading the full published archive on first render while still continuing automatically at the bottom of the feed.
 - Desktop does not collapse back into a generic two-column app grid.
 - Mobile layouts still scan cleanly.

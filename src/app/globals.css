@@ -1884,10 +1884,47 @@ textarea {
 }
 
 .public-note-showroom {
-  column-count: 1;
-  column-gap: 0;
-  display: block;
+  --public-showroom-columns: 1;
+  --public-showroom-gutter: var(--space-4);
+  --public-showroom-item-width: 100%;
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(var(--public-showroom-columns), minmax(0, 1fr));
   margin-top: 0.1rem;
+  position: relative;
+}
+
+.public-showroom-gutter,
+.public-showroom-sizer {
+  display: none;
+}
+
+.public-note-showroom .note-preview-card {
+  margin: 0;
+}
+
+.public-note-showroom[data-masonry-ready="true"] {
+  display: block;
+}
+
+.public-note-showroom[data-masonry-ready="true"] .public-showroom-gutter,
+.public-note-showroom[data-masonry-ready="true"] .public-showroom-sizer {
+  display: block;
+  height: 0;
+  visibility: hidden;
+}
+
+.public-note-showroom[data-masonry-ready="true"] .public-showroom-gutter {
+  width: var(--public-showroom-gutter);
+}
+
+.public-note-showroom[data-masonry-ready="true"] .public-showroom-sizer,
+.public-note-showroom[data-masonry-ready="true"] .note-preview-card {
+  width: var(--public-showroom-item-width);
+}
+
+.public-note-showroom[data-masonry-ready="true"] .note-preview-card {
+  margin-bottom: var(--space-4);
 }
 
 .note-list-item,
@@ -2278,7 +2315,6 @@ textarea {
   break-inside: avoid-column;
   display: grid;
   gap: var(--space-3);
-  margin: 0 0 var(--space-4);
   min-height: 0;
   overflow: hidden;
   padding: 1.05rem;
@@ -3267,8 +3303,8 @@ textarea {
   }
 
   .public-note-showroom {
-    column-count: 2;
-    column-gap: var(--space-4);
+    --public-showroom-columns: 2;
+    --public-showroom-item-width: calc((100% - var(--public-showroom-gutter)) / 2);
   }
 
   .ui-support-grid {
@@ -3486,8 +3522,9 @@ textarea {
   }
 
   .public-note-showroom {
-    column-count: 3;
-    column-gap: var(--space-5);
+    --public-showroom-columns: 3;
+    --public-showroom-gutter: var(--space-5);
+    --public-showroom-item-width: calc((100% - (var(--public-showroom-gutter) * 2)) / 3);
   }
 
   .public-note-header-row {
@@ -3506,6 +3543,7 @@ textarea {
 
 @media (min-width: 1280px) {
   .public-note-showroom {
-    column-count: 4;
+    --public-showroom-columns: 4;
+    --public-showroom-item-width: calc((100% - (var(--public-showroom-gutter) * 3)) / 4);
   }
 }

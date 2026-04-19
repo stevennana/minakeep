@@ -317,7 +317,11 @@ async function expectMixedFeedRhythm(page: Page, viewport: "desktop" | "mobile")
   }
 }
 
-async function expectShowroomColumns(page: Page, viewport: "desktop" | "mobile") {
+async function expectShowroomLayout(page: Page, viewport: "desktop" | "mobile") {
+  await expect
+    .poll(async () => page.getByTestId("public-home-showroom").getAttribute("data-masonry-ready"))
+    .toBe("true");
+
   const layout = await page.evaluate(() => {
     const showroom = document.querySelector<HTMLElement>("[data-testid='public-home-showroom']");
 
@@ -326,10 +330,21 @@ async function expectShowroomColumns(page: Page, viewport: "desktop" | "mobile")
     }
 
     const styles = getComputedStyle(showroom);
+    const cards = Array.from(showroom.querySelectorAll<HTMLElement>(".note-preview-card")).map((card) => {
+      const rect = card.getBoundingClientRect();
+      const title = card.querySelector(".note-list-link")?.textContent?.trim() ?? "";
+
+      return {
+        title,
+        x: Math.round(rect.x),
+        y: Math.round(rect.y)
+      };
+    });
 
     return {
-      columnCount: Number.parseInt(styles.columnCount, 10),
-      display: styles.display
+      cards,
+      display: styles.display,
+      masonryReady: showroom.dataset.masonryReady
     };
   });
 
@@ -339,12 +354,22 @@ async function expectShowroomColumns(page: Page, viewport: "desktop" | "mobile")
     return;
   }
 
+  expect(layout.masonryReady).toBe("true");
   expect(layout.display).toBe("block");
 
   if (viewport === "desktop") {
-    expect(layout.columnCount).toBeGreaterThanOrEqual(3);
+    expect(new Set(layout.cards.map((card) => card.x)).size).toBeGreaterThanOrEqual(3);
+    expect(layout.cards.slice(0, 4).map((card) => card.title)).toEqual([
+      seededPublishedNotes[0].title,
+      seededPublishedLinks[0].title,
+      seededPublishedNotes[1].title,
+      seededPublishedLinks[1].title
+    ]);
+    expect(layout.cards[1]?.x).toBeGreaterThan(layout.cards[0]?.x ?? 0);
+    expect(layout.cards[2]?.x).toBeGreaterThan(layout.cards[1]?.x ?? 0);
+    expect(layout.cards[3]?.x).toBeGreaterThan(layout.cards[2]?.x ?? 0);
   } else {
-    expect(layout.columnCount).toBe(1);
+    expect(Math.max(...layout.cards.map((card) => card.x)) - Math.min(...layout.cards.map((card) => card.x))).toBeLessThanOrEqual(2);
   }
 }
 
@@ -456,7 +481,7 @@ test("@ui-regression @ui-refinement-hardening @ui-public-showroom @ui-public-sho
   await expect(page.getByRole("link", { name: seededPublishedLinks[0].title, exact: true })).toBeVisible();
   await expect(page.getByText("Opens in new tab")).toHaveCount(seededPublishedLinks.length);
   await expect(page.getByTestId("public-home-search-summary")).toHaveText("4 public items.");
-  await expectShowroomColumns(page, "desktop");
+  await expectShowroomLayout(page, "desktop");
   await expectMixedFeedRhythm(page, "desktop");
   await expectCollapsedSearchLayout(page, "desktop");
   await expectPublicTasteFoundation(page);
@@ -538,7 +563,7 @@ test("@ui-regression @ui-refinement-hardening @ui-public-showroom @ui-public-sho
   await expect(showroomCards).toHaveCount(seededPublishedNotes.length + seededPublishedLinks.length);
   await expect(page.getByRole("link", { name: seededPublishedNotes[0].title })).toBeVisible();
   await expect(page.getByRole("link", { name: seededPublishedLinks[0].title, exact: true })).toBeVisible();
-  await expectShowroomColumns(page, "mobile");
+  await expectShowroomLayout(page, "mobile");
   await expectMixedFeedRhythm(page, "mobile");
   await expect(page.getByTestId("public-home-search-summary")).toHaveText("4 public items.");
   await expectCollapsedSearchLayout(page, "mobile");

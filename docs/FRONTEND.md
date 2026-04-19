@@ -66,7 +66,7 @@ The owner workspace should expose a dedicated settings section for service confi
 - expanded public search should use minimal labeling rather than repeating obvious “search” language around the field
 - do not spend first-screen space on multi-paragraph explanatory copy above the public showroom
 - prefer a masonry-style desktop archive with 3 to 4 columns depending on width, then fall back aggressively to 2 columns on tablet and 1 column on narrow mobile
-- if masonry behavior is implemented with CSS multi-columns, child cards must use `break-inside: avoid` and mobile must collapse back to a strict ordered stack
+- the public showroom should use a JS-enhanced masonry layout that preserves left-to-right reading order as much as possible; when JS is not active, it should fall back to a normal responsive grid rather than CSS multi-columns
 - published link cards should look related to note cards but remain visibly distinguishable as links
 - published note cards may use the first embedded note image as their head image
 - link cards should use cached favicons when available instead of depending on third-party icon URLs at render time

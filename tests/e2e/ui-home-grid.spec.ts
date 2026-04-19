@@ -239,6 +239,8 @@ async function expectShowroomRhythm(page: Page, viewport: "desktop" | "mobile") 
 }
 
 async function expectShowroomColumns(page: Page, viewport: "desktop" | "mobile") {
+  await expect.poll(async () => page.locator(".public-note-showroom").getAttribute("data-masonry-ready")).toBe("true");
+
   const layout = await page.evaluate(() => {
     const showroom = document.querySelector<HTMLElement>(".public-note-showroom");
 
@@ -247,10 +249,21 @@ async function expectShowroomColumns(page: Page, viewport: "desktop" | "mobile")
     }
 
     const styles = getComputedStyle(showroom);
+    const cards = Array.from(showroom.querySelectorAll<HTMLElement>(".note-preview-card")).map((card) => {
+      const rect = card.getBoundingClientRect();
+      const title = card.querySelector(".note-list-link")?.textContent?.trim() ?? "";
+
+      return {
+        title,
+        x: Math.round(rect.x),
+        y: Math.round(rect.y)
+      };
+    });
 
     return {
-      columnCount: Number.parseInt(styles.columnCount, 10),
-      display: styles.display
+      cards,
+      display: styles.display,
+      masonryReady: showroom.dataset.masonryReady
     };
   });
 
@@ -260,12 +273,14 @@ async function expectShowroomColumns(page: Page, viewport: "desktop" | "mobile")
     return;
   }
 
+  expect(layout.masonryReady).toBe("true");
   expect(layout.display).toBe("block");
 
   if (viewport === "desktop") {
-    expect(layout.columnCount).toBeGreaterThanOrEqual(3);
+    expect(new Set(layout.cards.slice(0, 6).map((card) => card.x)).size).toBeGreaterThanOrEqual(3);
+    expect(layout.cards.slice(0, 4).map((card) => card.title)).toEqual(seededNotes.slice(0, 4).map((note) => note.title));
   } else {
-    expect(layout.columnCount).toBe(1);
+    expect(Math.max(...layout.cards.map((card) => card.x)) - Math.min(...layout.cards.map((card) => card.x))).toBeLessThanOrEqual(2);
   }
 }
 

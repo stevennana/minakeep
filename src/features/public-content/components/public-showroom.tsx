@@ -43,6 +43,23 @@ type ShowroomLinkItem = ShowroomBaseItem & {
 export type PublicShowroomItem = ShowroomNoteItem | ShowroomLinkItem;
 
 type ContentPreviewVariant = "compact" | "balanced" | "feature";
+type MasonryInstance = {
+  destroy(): void;
+  layout(): void;
+  reloadItems(): void;
+};
+
+type MasonryConstructor = new (
+  element: Element,
+  options: {
+    columnWidth: string;
+    gutter: string;
+    horizontalOrder: boolean;
+    itemSelector: string;
+    percentPosition: boolean;
+    transitionDuration: number;
+  }
+) => MasonryInstance;
 
 function getDisplayUrl(url: string) {
   try {
@@ -264,8 +281,11 @@ export function PublicShowroom({
   const router = useRouter();
   const searchParams = useSearchParams();
   const [, startTransition] = useTransition();
+  const showroomRef = useRef<HTMLDivElement>(null);
+  const masonryRef = useRef<MasonryInstance | null>(null);
   const [isSearchExpanded, setIsSearchExpanded] = useState(defaultSearchExpanded || query.length > 0);
   const [draftQuery, setDraftQuery] = useState(query);
+  const [isMasonryReady, setIsMasonryReady] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const deferredQuery = useDeferredValue(draftQuery);
   const normalizedQuery = query.trim();
@@ -304,6 +324,107 @@ export function PublicShowroom({
       searchInputRef.current?.focus();
     }
   }, [isSearchExpanded]);
+
+  useEffect(() => {
+    const container = showroomRef.current;
+
+    if (!container || items.length === 0) {
+      setIsMasonryReady(false);
+      return;
+    }
+
+    let cancelled = false;
+    let frame = 0;
+    let resizeObserver: ResizeObserver | null = null;
+    let removeImageListeners = () => {};
+
+    const scheduleLayout = () => {
+      cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        masonryRef.current?.reloadItems();
+        masonryRef.current?.layout();
+      });
+    };
+
+    const attachImageListeners = () => {
+      const images = Array.from(container.querySelectorAll<HTMLImageElement>("img")).filter((image) => !image.complete);
+
+      if (images.length === 0) {
+        return () => {};
+      }
+
+      const onImageSettled = () => {
+        scheduleLayout();
+      };
+
+      images.forEach((image) => {
+        image.addEventListener("error", onImageSettled);
+        image.addEventListener("load", onImageSettled);
+      });
+
+      return () => {
+        images.forEach((image) => {
+          image.removeEventListener("error", onImageSettled);
+          image.removeEventListener("load", onImageSettled);
+        });
+      };
+    };
+
+    const initializeMasonry = async () => {
+      const masonryModule = await import("masonry-layout");
+
+      if (cancelled) {
+        return;
+      }
+
+      const Masonry = masonryModule.default as MasonryConstructor;
+      const masonry = new Masonry(container, {
+        columnWidth: ".public-showroom-sizer",
+        gutter: ".public-showroom-gutter",
+        horizontalOrder: true,
+        itemSelector: ".note-preview-card",
+        percentPosition: true,
+        transitionDuration: 0
+      });
+
+      masonryRef.current = masonry;
+      resizeObserver = new ResizeObserver(() => {
+        scheduleLayout();
+      });
+
+      resizeObserver.observe(container);
+
+      Array.from(container.querySelectorAll<HTMLElement>(".note-preview-card")).forEach((card) => {
+        resizeObserver?.observe(card);
+      });
+
+      removeImageListeners = attachImageListeners();
+
+      if (document.fonts) {
+        void document.fonts.ready.then(() => {
+          if (!cancelled) {
+            scheduleLayout();
+          }
+        });
+      }
+
+      setIsMasonryReady(true);
+      scheduleLayout();
+    };
+
+    setIsMasonryReady(false);
+    void initializeMasonry();
+
+    return () => {
+      cancelled = true;
+      setIsMasonryReady(false);
+      cancelAnimationFrame(frame);
+      removeImageListeners();
+      resizeObserver?.disconnect();
+      masonryRef.current?.destroy();
+      masonryRef.current = null;
+    };
+  }, [items]);
 
   useEffect(() => {
     const nextQuery = deferredQuery.trim();
@@ -437,7 +558,14 @@ export function PublicShowroom({
           <p data-testid="public-home-empty-state">{emptyStateMessage}</p>
         ) : (
           <>
-            <div className="note-list public-note-list public-note-showroom" data-testid="public-home-showroom">
+            <div
+              className="note-list public-note-list public-note-showroom"
+              data-masonry-ready={isMasonryReady ? "true" : "false"}
+              data-testid="public-home-showroom"
+              ref={showroomRef}
+            >
+              <div aria-hidden="true" className="public-showroom-gutter" />
+              <div aria-hidden="true" className="public-showroom-sizer" />
               {showroomCards.map(({ item, loadingIntent }) => {
                 return <PublishedContentPreviewCard key={`${item.kind}-${item.id}`} item={item} loadingIntent={loadingIntent} />;
               })}

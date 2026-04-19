@@ -112,6 +112,22 @@ async function signIn(page: Page) {
   await expect(page).toHaveURL(/\/app$/);
 }
 
+async function getFirstCardRowOrder(page: Page, count: number) {
+  return page.evaluate((visibleCount) => {
+    const cards = Array.from(document.querySelectorAll<HTMLElement>("[data-testid='public-home-showroom'] .note-preview-card")).slice(0, visibleCount);
+
+    return cards.map((card) => {
+      const rect = card.getBoundingClientRect();
+
+      return {
+        title: card.querySelector(".note-list-link")?.textContent?.trim() ?? "",
+        x: Math.round(rect.x),
+        y: Math.round(rect.y)
+      };
+    });
+  }, count);
+}
+
 let ownerId: string;
 
 test.describe.configure({ mode: "serial" });
@@ -130,11 +146,26 @@ test("@incremental-loading public and owner collections use bounded initial slic
   const publicCards = page.locator("[data-testid='public-home-showroom'] .note-preview-card");
 
   await expect(publicCards).toHaveCount(10);
+  await expect.poll(async () => page.getByTestId("public-home-showroom").getAttribute("data-masonry-ready")).toBe("true");
+
+  const firstRowBeforeLoadMore = await getFirstCardRowOrder(page, 4);
+
+  expect(firstRowBeforeLoadMore.map((card) => card.x)).toEqual(
+    [...firstRowBeforeLoadMore.map((card) => card.x)].sort((left, right) => left - right)
+  );
+
   await expect(page.getByTestId("public-home-load-more")).toBeVisible();
 
   await page.getByTestId("public-home-load-more").scrollIntoViewIfNeeded();
   await expect.poll(async () => publicCards.count()).toBe(20);
   await expect(page).toHaveURL(/limit=20/);
+
+  const firstRowAfterLoadMore = await getFirstCardRowOrder(page, 4);
+
+  expect(firstRowAfterLoadMore.map((card) => card.title)).toEqual(firstRowBeforeLoadMore.map((card) => card.title));
+  expect(firstRowAfterLoadMore.map((card) => card.x)).toEqual(
+    [...firstRowAfterLoadMore.map((card) => card.x)].sort((left, right) => left - right)
+  );
 
   await page.getByRole("button", { name: "Open public title search" }).click();
   await page.getByRole("searchbox", { name: "Search public titles" }).fill("Public note load case");

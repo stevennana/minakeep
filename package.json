@@ -25,6 +25,7 @@
     "@prisma/client": "^7.5.0",
     "better-sqlite3": "^12.8.0",
     "katex": "^0.16.43",
+    "masonry-layout": "^4.2.2",
     "mermaid": "^11.11.0",
     "next": "^16.2.0",
     "next-auth": "^5.0.0-beta.30",

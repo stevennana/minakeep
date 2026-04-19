@@ -59,7 +59,14 @@ The public note should keep the table inside the reading surface on mobile inste
   tags: ["finance", "foundation-model", "github-repo", "kline-data", "transformer"]
 } as const;
 
-type SeededPublicNote = typeof seededNote;
+type SeededPublicNote = {
+  markdown: string;
+  publishedAt: Date;
+  slug: string;
+  summary: string;
+  tags: readonly string[];
+  title: string;
+};
 
 async function seedPublishedNote(note: SeededPublicNote = seededNote) {
   const username = process.env.OWNER_USERNAME ?? "owner";
