@@ -4,7 +4,7 @@ import { normalizeSiteBranding, toSiteSettings, type PersistedSiteSettings, type
 
 export type SiteSettingsRepository = {
   get(): Promise<PersistedSiteSettings | null>;
-  save(branding: SiteBranding): Promise<PersistedSiteSettings>;
+  save(settings: { branding: SiteBranding; seoDebugLoggingEnabled: boolean }): Promise<PersistedSiteSettings>;
 };
 
 async function resolveRepository(repository?: SiteSettingsRepository) {
@@ -22,5 +22,10 @@ export async function getSiteSettings(repository?: SiteSettingsRepository) {
 
 export async function saveSiteSettings(input: SiteSettingsInput, repository?: SiteSettingsRepository) {
   const branding = normalizeSiteBranding(input);
-  return toSiteSettings(await (await resolveRepository(repository)).save(branding));
+  return toSiteSettings(
+    await (await resolveRepository(repository)).save({
+      branding,
+      seoDebugLoggingEnabled: input.seoDebugLoggingEnabled
+    })
+  );
 }

@@ -37,7 +37,8 @@ export async function saveSiteSettingsAction(formData: FormData) {
   await withWritableOwnerSession("/app/settings", () =>
     saveSiteSettings({
       title: String(formData.get("title") ?? ""),
-      description: String(formData.get("description") ?? "")
+      description: String(formData.get("description") ?? ""),
+      seoDebugLoggingEnabled: formData.get("seoDebugLoggingEnabled") === "on"
     })
   );
 

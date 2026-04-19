@@ -5,7 +5,7 @@ Define an owner-editable settings foundation for site-wide service configuration
 
 ## Scope for this wave
 - add one owner settings section inside the private workspace
-- persist a site title and site description in app data
+- persist a site title, site description, and one low-risk owner debugging toggle in app data
 - apply those values where the current fixed service branding appears
 
 ## Architecture Rules
@@ -17,6 +17,6 @@ Define an owner-editable settings foundation for site-wide service configuration
 - reads must fall back to deterministic defaults when no saved settings record exists yet
 
 ## Extensibility Rules
-- the first version may ship only title and description
+- the first version may ship title, description, and a low-risk debugging toggle that does not replace operator-owned deployment config
 - later settings should be able to attach to the same domain boundary without replacing the storage contract
 - future additions should not require inventing a second configuration route or a second persistence model

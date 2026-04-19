@@ -89,8 +89,20 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
             </Button>
           </div>
         </div>
+        <SectionHeading meta="Crawler diagnostics" title="SEO debugging" />
+        <div className="owner-links-capture-fields">
+          <FormField
+            hint="When enabled, `/robots.txt` and `/sitemap.xml` requests write structured request metadata to the server logs so Googlebot fetch failures can be diagnosed."
+            label="SEO request logging"
+          >
+            <label className="checkbox-input">
+              <input defaultChecked={siteSettings.seo.debugLoggingEnabled} disabled={isReadOnly} name="seoDebugLoggingEnabled" type="checkbox" />
+              <span>Enable structured logs for crawler-facing discovery routes</span>
+            </label>
+          </FormField>
+        </div>
         <Disclosure summary="Configuration boundary">
-          <p>This route is the durable home for broader site-wide configuration. This wave stores only title and description; canonical public origin remains operator-owned `SITE_URL` runtime config.</p>
+          <p>This route is the durable home for broader site-wide configuration. Canonical public origin remains operator-owned `SITE_URL` runtime config, while SEO request logging can be toggled here for Googlebot debugging without redeploying the app.</p>
         </Disclosure>
       </Surface>
     </div>

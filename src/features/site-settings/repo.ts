@@ -9,6 +9,7 @@ const siteSettingsSelect = {
   id: true,
   siteTitle: true,
   siteDescription: true,
+  seoDebugLoggingEnabled: true,
   updatedAt: true
 };
 
@@ -21,6 +22,7 @@ function mapSiteSettingsRecord(record: SiteSettingsRow): PersistedSiteSettings {
     id: record.id,
     siteTitle: record.siteTitle,
     siteDescription: record.siteDescription,
+    seoDebugLoggingEnabled: record.seoDebugLoggingEnabled,
     updatedAt: record.updatedAt
   };
 }
@@ -36,19 +38,21 @@ export const siteSettingsRepo = {
 
     return settings ? mapSiteSettingsRecord(settings) : null;
   },
-  async save(branding: SiteBranding) {
+  async save(settingsInput: { branding: SiteBranding; seoDebugLoggingEnabled: boolean }) {
     const settings = await prisma.siteSettings.upsert({
       where: {
         id: SITE_SETTINGS_SINGLETON_ID
       },
       update: {
-        siteTitle: branding.title,
-        siteDescription: branding.description
+        siteTitle: settingsInput.branding.title,
+        siteDescription: settingsInput.branding.description,
+        seoDebugLoggingEnabled: settingsInput.seoDebugLoggingEnabled
       },
       create: {
         id: SITE_SETTINGS_SINGLETON_ID,
-        siteTitle: branding.title,
-        siteDescription: branding.description
+        siteTitle: settingsInput.branding.title,
+        siteDescription: settingsInput.branding.description,
+        seoDebugLoggingEnabled: settingsInput.seoDebugLoggingEnabled
       },
       select: siteSettingsSelect
     });

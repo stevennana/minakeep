@@ -10,19 +10,26 @@ export type SiteBranding = {
   description: string;
 };
 
+export type SiteSeoSettings = {
+  debugLoggingEnabled: boolean;
+};
+
 export type SiteSettings = {
   branding: SiteBranding;
+  seo: SiteSeoSettings;
 };
 
 export type SiteSettingsInput = {
   title: string | null | undefined;
   description: string | null | undefined;
+  seoDebugLoggingEnabled: boolean;
 };
 
 export type PersistedSiteSettings = {
   id: string;
   siteTitle: string;
   siteDescription: string;
+  seoDebugLoggingEnabled: boolean;
   updatedAt: Date;
 };
 
@@ -42,7 +49,11 @@ export function toSiteSettings(record: PersistedSiteSettings | null): SiteSettin
   return {
     branding: normalizeSiteBranding({
       title: record?.siteTitle,
-      description: record?.siteDescription
-    })
+      description: record?.siteDescription,
+      seoDebugLoggingEnabled: record?.seoDebugLoggingEnabled ?? false
+    }),
+    seo: {
+      debugLoggingEnabled: record?.seoDebugLoggingEnabled ?? false
+    }
   };
 }

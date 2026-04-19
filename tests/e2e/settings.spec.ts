@@ -20,17 +20,20 @@ const prisma = new PrismaClient({
 
 const defaultBranding = {
   title: "Minakeep",
-  description: "Private notes and saved references, with selectively public reading."
+  description: "Private notes and saved references, with selectively public reading.",
+  seoDebugLoggingEnabled: false
 } as const;
 
 const ownerBranding = {
   title: "Atlas Shelf",
-  description: "Private field notes and selected public references."
+  description: "Private field notes and selected public references.",
+  seoDebugLoggingEnabled: true
 } as const;
 
 const demoBranding = {
   title: "Inspection Vault",
-  description: "A seeded description for read-only settings coverage."
+  description: "A seeded description for read-only settings coverage.",
+  seoDebugLoggingEnabled: true
 } as const;
 
 type ServerActionDescriptor = {
@@ -59,19 +62,21 @@ async function resetSiteSettings() {
   await prisma.siteSettings.deleteMany();
 }
 
-async function seedSiteSettings(branding: { title: string; description: string }) {
+async function seedSiteSettings(branding: { title: string; description: string; seoDebugLoggingEnabled: boolean }) {
   await prisma.siteSettings.upsert({
     where: {
       id: "site"
     },
     update: {
       siteTitle: branding.title,
-      siteDescription: branding.description
+      siteDescription: branding.description,
+      seoDebugLoggingEnabled: branding.seoDebugLoggingEnabled
     },
     create: {
       id: "site",
       siteTitle: branding.title,
-      siteDescription: branding.description
+      siteDescription: branding.description,
+      seoDebugLoggingEnabled: branding.seoDebugLoggingEnabled
     }
   });
 }
@@ -164,15 +169,18 @@ test("@settings owner can save site settings and the branding propagates across 
   await expect(page.getByRole("heading", { name: "Site configuration" })).toBeVisible();
   await expect(page.getByLabel("Site title")).toHaveValue(defaultBranding.title);
   await expect(page.getByLabel("Site description")).toHaveValue(defaultBranding.description);
+  await expect(page.getByRole("checkbox", { name: "Enable structured logs for crawler-facing discovery routes" })).not.toBeChecked();
 
   await page.getByLabel("Site title").fill(ownerBranding.title);
   await page.getByLabel("Site description").fill(ownerBranding.description);
+  await page.getByRole("checkbox", { name: "Enable structured logs for crawler-facing discovery routes" }).check();
   await page.getByRole("button", { name: "Save settings" }).click();
 
   await expect(page).toHaveURL(/\/app\/settings\?saved=1$/);
   await expect(page.getByText("Site settings saved.")).toBeVisible();
   await expect(page.getByLabel("Site title")).toHaveValue(ownerBranding.title);
   await expect(page.getByLabel("Site description")).toHaveValue(ownerBranding.description);
+  await expect(page.getByRole("checkbox", { name: "Enable structured logs for crawler-facing discovery routes" })).toBeChecked();
   await expectSharedBranding(page, ownerBranding);
 
   await page.getByRole("navigation", { name: "Primary" }).getByRole("link", { name: "Published notes" }).click();
@@ -187,6 +195,7 @@ test("@settings owner can save site settings and the branding propagates across 
 
   expect(persistedSettings.siteTitle).toBe(ownerBranding.title);
   expect(persistedSettings.siteDescription).toBe(ownerBranding.description);
+  expect(persistedSettings.seoDebugLoggingEnabled).toBe(true);
 });
 
 test("@settings demo users can inspect settings but cannot save them", async ({ page, browser }) => {
@@ -203,6 +212,8 @@ test("@settings demo users can inspect settings but cannot save them", async ({ 
   await expect(page.getByLabel("Site title")).toBeDisabled();
   await expect(page.getByLabel("Site description")).toHaveValue(demoBranding.description);
   await expect(page.getByLabel("Site description")).toBeDisabled();
+  await expect(page.getByRole("checkbox", { name: "Enable structured logs for crawler-facing discovery routes" })).toBeChecked();
+  await expect(page.getByRole("checkbox", { name: "Enable structured logs for crawler-facing discovery routes" })).toBeDisabled();
   await expect(page.getByRole("button", { name: "Save unavailable" })).toBeDisabled();
   await expectSharedBranding(page, demoBranding);
 
@@ -214,7 +225,8 @@ test("@settings demo users can inspect settings but cannot save them", async ({ 
 
   const blockedSave = await postServerAction(page, saveSettingsAction, [
     ["title", "Tampered demo title"],
-    ["description", "Tampered demo description"]
+    ["description", "Tampered demo description"],
+    ["seoDebugLoggingEnabled", ""]
   ]);
 
   expect(blockedSave.redirected).toBe(true);
@@ -234,4 +246,5 @@ test("@settings demo users can inspect settings but cannot save them", async ({ 
 
   expect(persistedSettings.siteTitle).toBe(demoBranding.title);
   expect(persistedSettings.siteDescription).toBe(demoBranding.description);
+  expect(persistedSettings.seoDebugLoggingEnabled).toBe(true);
 });
